@@ -73,6 +73,7 @@ class Pendaftaran extends CI_Controller
 			//Cek status dokter, jika kosong maka isi no_pendaftaran
 			$dokter = $this->Tbl_dokter_model->get_by_id($this->input->post('nama_dokter'));
 			$dokter = $this->Tbl_dokter_model->get_by_id($this->input->post('nama_dokter'));
+            // var_dump($dokter);
 			// if($dokter->no_pendaftaran == null || trim($dokter->no_pendaftaran) == '' ){
 			//     $this->Tbl_dokter_model->update($this->input->post('nama_dokter'), array(
 			//         'no_pendaftaran' => $no_pendaftaran,

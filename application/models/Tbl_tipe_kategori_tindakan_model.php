@@ -3,20 +3,19 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Tbl_tindakan_model extends CI_Model
+class Tbl_tipe_kategori_tindakan_model extends CI_Model
 {
-    public $table = 'tbl_tindakan';
-    public $id = 'kode_tindakan';
+    public $table = 'tbl_kategori_tindakan';
+    public $id = 'id_kategori';
     public $order = 'DESC';
 
     public function json()
     {
-        $this->datatables->select("ti.kode_tindakan,ti.tindakan,ti.biaya,tk.id_kategori");
-        $this->datatables->from("tbl_tindakan ti");
-        $this->datatables->join("tbl_kategori_tindakan tk", "ti.id_kategori = tk.id_kategori");
+        $this->datatables->select("id_kategori, item");
+        $this->datatables->from($this->table);
         $this->datatables->add_column('action', 
-                anchor(site_url('tindakan/edit/$1'),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>', array('class' => 'btn btn-success btn-sm'))." 
-                ".anchor(site_url('tindakan/delete/$1'),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'), 'kode_tindakan');
+                anchor(site_url('tipe_kategori_tindakan/edit/$1'),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>', array('class' => 'btn btn-success btn-sm'))." 
+                ".anchor(site_url('tipe_kategori_tindakan/delete/$1'),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'), 'id_kategori');
             
         return $this->datatables->generate();
     }
@@ -29,6 +28,11 @@ class Tbl_tindakan_model extends CI_Model
     {
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
+    }
+    // get all data
+    function get_all()
+    {
+        return $this->db->get($this->table)->result();
     }
     // update data
     function update($id, $data)
