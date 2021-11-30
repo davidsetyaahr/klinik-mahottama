@@ -27,6 +27,7 @@ class Periksamedis extends CI_Controller
 		$this->load->model('Periksa_model');
 		$this->load->model('Transaksi_model');
 		$this->load->model('Tbl_dokter_model');
+		$this->load->model('Tbl_kamar_model');
 		$this->load->model('Master_reference_model');
         $this->load->library('form_validation');
         $this->load->library('datatables');
@@ -958,6 +959,62 @@ class Periksamedis extends CI_Controller
         
         redirect(site_url('periksamedis'));
     }
+
+    public function periksa_radiologi(){
+        $data_pendaftaran = $this->Pendaftaran_model->get_by_id($this->no_pendaftaran);
+        $data_pasien = $this->Tbl_pasien_model->get_by_id($data_pendaftaran->no_rekam_medis);
+        $date_now = date('Ymd', time());
+
+        if(isset($data_pasien)) {
+            $this->data['nama_lengkap'] = $data_pasien->nama_lengkap;
+            $this->data['alamat'] = $data_pasien->alamat.' '.$data_pasien->kabupaten.' '.'RT '.$data_pasien->rt.' '.'RW '.$data_pasien->rw;
+        }
+
+        $this->data['no_periksa'] = $data_pendaftaran->no_pendaftaran.'/'.$date_now.'/'.$data_pendaftaran->no_rekam_medis;
+
+        $this->data['periksa_radiologi'] = $this->db->get('tbl_tipe_periksa_radiologi')->result();
+
+        $this->data['alkes'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik,false,2);
+        $this->template->load('template','periksa-radiologi/periksa-radiologi',$this->data);
+    }
+
+    public function newItemRadiologi()
+    {
+        $this->data['periksa_radiologi'] = $this->db->get('tbl_tipe_periksa_radiologi')->result();
+        $this->data['alkes'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik,false,2);
+        $this->data['no'] = $_GET['no'];
+        // $this->data['alkes'] = $this->db->get('tbl_obat_alkes_bhp')->result();
+        $this->load->view('periksa-radiologi/loop-pilihan-radiologi',$this->data);
+    }
+
+    public function rawat_inap(){
+        $data_pendaftaran = $this->Pendaftaran_model->get_by_id($this->no_pendaftaran);
+        $data_pasien = $this->Tbl_pasien_model->get_by_id($data_pendaftaran->no_rekam_medis);
+        $date_now = date('Ymd', time());
+
+        if(isset($data_pasien)) {
+            $this->data['nama_lengkap'] = $data_pasien->nama_lengkap;
+            $this->data['alamat'] = $data_pasien->alamat.' '.$data_pasien->kabupaten.' '.'RT '.$data_pasien->rt.' '.'RW '.$data_pasien->rw;
+        }
+
+        $this->data['no_periksa'] = $data_pendaftaran->no_pendaftaran.'/'.$date_now.'/'.$data_pendaftaran->no_rekam_medis;
+
+        $this->data['kamar'] = $this->Tbl_kamar_model->get_kamar();
+
+        $this->data['alkes'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik,false,2);
+        $this->template->load('template','rawat-inap/rawat-inap',$this->data);
+    }
+
+    public function newItemRawatInap()
+    {
+        // $this->data['periksa_radiologi'] = $this->db->get('tbl_tipe_periksa_radiologi')->result();
+        // $this->data['alkes'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik,false,2);
+        $this->data['no'] = $_GET['no'];
+        $this->data['kamar'] = $this->Tbl_kamar_model->get_kamar();
+        // $this->data['alkes'] = $this->db->get('tbl_obat_alkes_bhp')->result();
+        $this->load->view('rawat-inap/loop-pilihan-kamar',$this->data);
+    }
+
     public function imunisasi(){
         $data_pendaftaran = $this->Pendaftaran_model->get_by_id($this->no_pendaftaran);
         $data_pasien = $this->Tbl_pasien_model->get_by_id($data_pendaftaran->no_rekam_medis);
