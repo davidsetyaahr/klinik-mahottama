@@ -73,7 +73,7 @@ class Pendaftaran extends CI_Controller
                 'no_pendaftaran' => $data_pendaftaran['no_pendaftaran'],
                 'tipe_periksa' => '1',
                 'tanggal' => date('Y-m-d H:i:s'),
-                'is_periksa' => 1,
+                'is_periksa' => '1',
             );
             $this->db->insert('tbl_periksa_lanjutan',$periksaLanjutan);
 			
