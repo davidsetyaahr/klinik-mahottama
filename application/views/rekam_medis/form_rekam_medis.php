@@ -767,7 +767,7 @@
             },
             processing: true,
             serverSide: true,
-            ajax: {"url": "periksamedis/json_by_id", "type": "POST"},
+            ajax: {"url": "<?= base_url() ?>periksamedis/json_by_id", "type": "POST"},
             columns: [
                 {
                     "data": "no_periksa",

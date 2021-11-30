@@ -17,12 +17,13 @@ class Tbl_dokter_model extends CI_Model
 
     // datatables
     function json() {
-        $this->datatables->select('tbl_dokter.id_dokter,tbl_dokter.nama_dokter,tbl_dokter.no_hp,tbl_spesialis.spesialis,tbl_dokter.no_izin_praktek,tbl_dokter.alumni,tbl_klinik.nama as klinik');
+        $this->datatables->select('tbl_dokter.id_dokter,tbl_dokter.nama_dokter,tbl_dokter.no_hp,tbl_spesialis.spesialis,tbl_dokter.no_izin_praktek,tbl_dokter.alumni,tbl_klinik.nama as klinik,tbl_poli.item poli');
         $this->datatables->from('tbl_dokter');
         //add this line for join
         $this->datatables->join('tbl_spesialis', 'tbl_dokter.id_spesialis = tbl_spesialis.id_spesialis');
         $this->datatables->join('tbl_user','tbl_dokter.id_dokter=tbl_user.id_dokter', 'left');
         $this->datatables->join('tbl_klinik','tbl_user.id_klinik=tbl_klinik.id_klinik','left');
+        $this->datatables->join('tbl_poli','tbl_dokter.id_poli=tbl_poli.id_poli','left');
         $this->datatables->add_column('action', anchor(site_url('dokter/update/$1'),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>', array('class' => 'btn btn-success btn-sm'))." 
                 ".anchor(site_url('dokter/delete/$1'),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'), 'id_dokter');
         return $this->datatables->generate();

@@ -107,9 +107,10 @@ class Pendaftaran_model extends CI_Model
         return $this->datatables->generate();
     }
     
-    function json_antrian($id_dokter,$lanjutan=0){
-        $this->datatables->select('pd.no_pendaftaran,pd.periksa_lanjutan,pd.no_rekam_medis,ps.no_id_pasien,ps.nama_lengkap as nama_pasien,k.nama as klinik,d.nama_dokter,pd.dtm_crt as tgl_pendaftaran,(CASE dd.no_pendaftaran WHEN pd.no_pendaftaran THEN "Dalam Proses" ELSE (CASE pd.is_periksa WHEN 0 THEN "Dalam Antrian" END) END) as status, (CASE dd.no_pendaftaran WHEN pd.no_pendaftaran THEN "disabled" END) as status_antrian,tipe_periksa');
-        $this->datatables->from('tbl_pendaftaran pd');
+    function json_antrian($id_dokter,$tipePeriksa){
+        $this->datatables->select('pd.no_pendaftaran,pd.no_rekam_medis,ps.no_id_pasien,ps.nama_lengkap as nama_pasien,k.nama as klinik,d.nama_dokter,pd.dtm_crt as tgl_pendaftaran,(CASE dd.no_pendaftaran WHEN pd.no_pendaftaran THEN "Dalam Proses" ELSE (CASE pd.is_periksa WHEN 0 THEN "Dalam Antrian" END) END) as status, (CASE dd.no_pendaftaran WHEN pd.no_pendaftaran THEN "disabled" END) as status_antrian,pl.tipe_periksa');
+        $this->datatables->from('tbl_periksa_lanjutan pl');
+        $this->datatables->join('tbl_pendaftaran pd','pl.no_pendaftaran=pd.no_pendaftaran');
         $this->datatables->join('tbl_pasien ps','pd.no_rekam_medis=ps.no_rekam_medis');
         $this->datatables->join('tbl_dokter d','pd.id_dokter=d.id_dokter');
         $this->datatables->join('tbl_dokter dd','pd.no_pendaftaran=dd.no_pendaftaran', 'left');
@@ -120,7 +121,7 @@ class Pendaftaran_model extends CI_Model
         else{
             $whereDokter = "";
         }
-        $where = "pd.is_periksa = '0' $whereDokter and periksa_lanjutan = '$lanjutan'";
+        $where = "pd.is_periksa = '0' $whereDokter and pl.tipe_periksa = '$tipePeriksa'";
         // $this->datatables->where('pd.is_periksa', 0);
         // $this->datatables->where('pd.id_dokter', $id_dokter);
 /*         if($tipe==1 || $tipe==4){
@@ -135,7 +136,7 @@ class Pendaftaran_model extends CI_Model
  */        $this->datatables->where($where);
 
         // $this->datatables->add_column('action',anchor(site_url('periksamedis/periksa/$1?lanjutan=$3'),'Periksa','class="btn btn-warning btn-sm $2"'),'no_pendaftaran,status_antrian,periksa_lanjutan');
-        $this->datatables->add_column('action',anchor(site_url('periksamedis/periksa/$1?lanjutan=$3'),'Periksa','class="btn btn-warning btn-sm "'),'no_pendaftaran,status_antrian,periksa_lanjutan');
+        $this->datatables->add_column('action',anchor(site_url('periksamedis/periksa/$1?tipe=$3'),'Periksa','class="btn btn-warning btn-sm $2 "'),'no_pendaftaran,status_antrian,tipe_periksa');
             
         return $this->datatables->generate();
     }

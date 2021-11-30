@@ -34,6 +34,7 @@
                         <ul class="nav nav-tabs">
                             <li class="active"><a data-toggle="tab" href="#medis">Poli</a></li>
                             <li><a data-toggle="tab" href="#inap">Rawat Inap</a></li>
+                            <li><a data-toggle="tab" href="#operasi">Operasi</a></li>
                             <li><a data-toggle="tab" href="#lab">Laboratorium</a></li>
                             <li><a data-toggle="tab" href="#radiologi">Radiologi</a></li>
                         </ul>
@@ -59,6 +60,24 @@
                             </div>
                             <div id="inap" class="tab-pane fade in">
                             <table class="table table-bordered table-striped" width="100%" id="tableInap">
+                                    <thead>
+                                        <tr>
+                                            <th width="30px">No</th>
+                                            <th>No Pendaftaran</th>
+                                            <th>No Rekam Medis</th>
+                                            <th>No ID Pasien</th>
+                                            <th>Nama Pasien</th>
+                                            <th>Klinik</th>
+                                            <th>Nama Dokter</th>
+                                            <th>Tgl Pendaftaran</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div id="operasi" class="tab-pane fade in">
+                            <table class="table table-bordered table-striped" width="100%" id="tableOperasi">
                                     <thead>
                                         <tr>
                                             <th width="30px">No</th>
@@ -188,7 +207,44 @@
             },
             processing: true,
             serverSide: true,
-            ajax: {"url": "../periksamedis/json_antrian/1", "type": "POST"},
+            ajax: {"url": "../periksamedis/json_antrian/2", "type": "POST"},
+            columns: [
+                {
+                    "data": "no_pendaftaran",
+                    "orderable": false
+                },{"data": "no_pendaftaran"},{"data": "no_rekam_medis"},{"data": "no_id_pasien"},{"data": "nama_pasien"},{"data": "klinik"},{"data": "nama_dokter"},{"data": "tgl_pendaftaran"},{"data": "status"},
+                {
+                    "data": "action",
+                    "orderable": false,
+                    "className" : "text-center"
+                }
+            ],
+            order: [[1, 'asc']],
+            rowCallback: function(row, data, iDisplayIndex) {
+                var info = this.fnPagingInfo();
+                var page = info.iPage;
+                var length = info.iLength;
+                var index = page * length + (iDisplayIndex + 1);
+                $('td:eq(0)', row).html(index);
+            }
+        });
+        var t = $("#tableOperasi").dataTable({
+            initComplete: function() {
+                var api = this.api();
+                $('#mytable_filter input')
+                .off('.DT')
+                .on('keyup.DT', function(e) {
+                    if (e.keyCode == 13) {
+                        api.search(this.value).draw();
+                    }
+                });
+            },
+            oLanguage: {
+                sProcessing: "loading..."
+            },
+            processing: true,
+            serverSide: true,
+            ajax: {"url": "../periksamedis/json_antrian/3", "type": "POST"},
             columns: [
                 {
                     "data": "no_pendaftaran",
@@ -225,7 +281,7 @@
             },
             processing: true,
             serverSide: true,
-            ajax: {"url": "../periksamedis/json_antrian/2", "type": "POST"},
+            ajax: {"url": "../periksamedis/json_antrian/4", "type": "POST"},
             columns: [
                 {
                     "data": "no_pendaftaran",

@@ -64,7 +64,13 @@ class Tbl_pasien_model extends CI_Model
             
         return $this->datatables->generate();
     }
-
+    function lastNoId(){
+        $this->db->select('no_id_pasien');
+        $this->db->from('tbl_pasien');
+        $this->db->order_by('no_id_pasien','desc');
+        $this->db->limit(1);
+        return $this->db->get()->row_array();
+    }
 }
 
 /* End of file Tbl_pasien_model.php */

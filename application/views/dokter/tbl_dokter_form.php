@@ -45,10 +45,14 @@
                         <span class="input-group-addon" id="basic-addon2">%</span>
                         </div>
                 </td></tr>
-                    <tr><td width='200'>Tipe Dokter <?php echo form_error('tipe_dokter') ?></td><td><div class="input-group mb-3">
-                            <select name="tipe_dokter" id="" class="form-control">
-                                <option value="1" <?= $tipe_dokter=='1' ? 'selected' : '' ?>>Dokter Umum</option>
-                                <option value="2" <?= $tipe_dokter=='2' ? 'selected' : '' ?>>Dokter Gigi</option>
+                    <tr><td width='200'>Poli <?php echo form_error('id_poli') ?></td><td><div class="input-group mb-3">
+                            <select name="id_poli" id="" class="form-control">
+                                <?php 
+                                    foreach ($poli as $key => $value) {
+                                        $s = $id_poli == $value->id_poli ? 'selected' : '';
+                                        echo "<option value='".$value->id_poli."' $s>".$value->item."</option>";
+                                    }
+                                ?>
                             </select>
                         <span class="input-group-addon" id="basic-addon2">%</span>
                         </div>

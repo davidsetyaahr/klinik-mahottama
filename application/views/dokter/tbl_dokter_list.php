@@ -21,7 +21,7 @@
 		    <th>No Hp</th>
 		    <th>Spesialis</th>
 		    <th>No Izin Praktek</th>
-		    <th>Klinik</th>
+		    <th>Poli</th>
 		    <th width="100px">Action</th>
                 </tr>
             </thead>
@@ -72,7 +72,7 @@
                         {
                             "data": "id_dokter",
                             "orderable": false
-                        },{"data": "nama_dokter"},{"data": "no_hp"},{"data": "spesialis"},{"data": "no_izin_praktek"},{"data": "klinik"},
+                        },{"data": "nama_dokter"},{"data": "no_hp"},{"data": "spesialis"},{"data": "no_izin_praktek"},{"data": "poli"},
                         {
                             "data" : "action",
                             "orderable": false,

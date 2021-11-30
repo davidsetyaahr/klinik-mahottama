@@ -57,7 +57,7 @@ class Pendaftaran extends CI_Controller
 				'no_rekam_medis' => $this->input->post('no_rekam_medis'),
 				'id_dokter' => $this->input->post('nama_dokter'),
 				'id_klinik' => $this->id_klinik,
-				'tipe_periksa' => $this->input->post('tipe_periksa'),
+				'id_poli' => $this->input->post('id_poli'),
 	        );
 
 			$row = $this->Tbl_pasien_model->get_by_id($this->input->post('no_rekam_medis'));
@@ -69,17 +69,23 @@ class Pendaftaran extends CI_Controller
 			    $this->Tbl_pasien_model->update($row->no_rekam_medis, $data_pasien);
 			}
 			$this->Pendaftaran_model->insert($data_pendaftaran);
+            $periksaLanjutan = array(
+                'no_pendaftaran' => $data_pendaftaran['no_pendaftaran'],
+                'tipe_periksa' => '1',
+                'tanggal' => date('Y-m-d H:i:s'),
+                'is_periksa' => 1,
+            );
+            $this->db->insert('tbl_periksa_lanjutan',$periksaLanjutan);
 			
 			//Cek status dokter, jika kosong maka isi no_pendaftaran
 			$dokter = $this->Tbl_dokter_model->get_by_id($this->input->post('nama_dokter'));
-			$dokter = $this->Tbl_dokter_model->get_by_id($this->input->post('nama_dokter'));
             // var_dump($dokter);
-			// if($dokter->no_pendaftaran == null || trim($dokter->no_pendaftaran) == '' ){
-			//     $this->Tbl_dokter_model->update($this->input->post('nama_dokter'), array(
-			//         'no_pendaftaran' => $no_pendaftaran,
-			//         'dtm_upd' => date("Y-m-d H:i:s",  time())
-			//     ));
-			// }
+			if($dokter->no_pendaftaran == null || trim($dokter->no_pendaftaran) == '' ){
+			    $this->Tbl_dokter_model->update($this->input->post('nama_dokter'), array(
+			        'no_pendaftaran' => $no_pendaftaran,
+			        'dtm_upd' => date("Y-m-d H:i:s",  time())
+			    ));
+			}
 			
 			//Set session sukses
             $this->session->set_flashdata('message', 'Data pendaftaran berhasil disimpan, No Rekam Medis ' . $this->input->post('no_rekam_medis'));
@@ -95,10 +101,19 @@ class Pendaftaran extends CI_Controller
 			
 			$this->db->where('no_id_pasien', set_value('no_id'));
 			$dataPasien = $this->db->get('tbl_pasien')->row();
+            $lastNoId = $this->Tbl_pasien_model->lastNoId();
+            if(count($lastNoId)==1){
+                $id = (int)$lastNoId['no_id_pasien'];
+                $nextId = $id+1;
+                $this->data['no_id_pasien'] = sprintf('%06s',$nextId);
+            }
+            else{
+                $this->data['no_id_pasien'] = '000001';
+            }
 			$this->data['no_rekam_medis_default'] = $this->Master_sequence_model->set_code_by_master_seq_code("NOREKAMMEDIS");
 			
 			$this->data['no_rekam_medis'] = $pasien_existing != null ? $pasien_existing->no_rekam_medis : ($dataPasien != null ? set_value('no_rekam_medis') : $this->data['no_rekam_medis_default']);
-			$this->data['no_id'] = $pasien_existing != null ? $pasien_existing->no_id_pasien : set_value('no_id');
+			$this->data['no_id'] = $pasien_existing != null ? $pasien_existing->no_id_pasien : $this->data['no_id_pasien'];
 			$this->data['nama_lengkap'] = $pasien_existing != null ? $pasien_existing->nama_lengkap : set_value('nama_lengkap');
 			$this->data['nik'] = $pasien_existing != null ? $pasien_existing->nik : set_value('nik');
 			$this->data['tanggal_lahir'] = $pasien_existing != null ? $pasien_existing->tanggal_lahir : set_value('tanggal_lahir');
@@ -112,6 +127,7 @@ class Pendaftaran extends CI_Controller
 			$this->data['nama_orangtua_atau_istri'] = $pasien_existing != null ? $pasien_existing->nama_orang_tua_atau_istri : set_value('nama_orangtua_atau_istri');
 			$this->data['nomor_telepon'] = $pasien_existing != null ? $pasien_existing->nomer_telepon : set_value('nomor_telepon');
 			$this->data['nama_dokter'] = set_value('nama_dokter');	
+            $this->data['poli'] = $this->db->get('tbl_poli')->result();
 			
 			// $this->data['option_dokter'] = array();
 			// $this->data['option_dokter'][''] = 'Pilih Dokter';
@@ -128,6 +144,17 @@ class Pendaftaran extends CI_Controller
 		}
         
         $this->template->load('template','pendaftaran/create', $this->data);
+    }
+
+    public function getDokter()
+    {
+        $this->db->select('id_dokter,nama_dokter,id_poli');
+        $this->db->where(['is_jaga' => '1']);
+        if($_GET['id_poli']!=0){
+            $this->db->where(['id_poli' => $_GET['id_poli']]);
+        }
+        $dokter = $this->db->get('tbl_dokter',)->result_array();
+        echo json_encode($dokter);
     }
     
     public function pencarian(){

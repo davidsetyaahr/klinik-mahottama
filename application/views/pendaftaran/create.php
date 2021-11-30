@@ -24,12 +24,25 @@
                             <div class="col-sm-4">Nama Dokter <?php echo form_error('nama_dokter'); ?></div>
                             <div class="col-sm-8">
                                 <select name="nama_dokter" id="nama_dokter" class="form-control select2 namaDokter">
-                                    <option value="">Pilih Dokter</option>
-                                <?php 
+                                    <option value="" data-poli='0'>Pilih Dokter</option>
+                                    <?php 
                                     foreach ($dokter as $key => $value) {
-                                        echo "<option data-tipe='".$value->tipe_dokter."' value='".$value->id_dokter."'>".$value->nama_dokter."</option>";
+                                        echo "<option data-poli='".$value->id_poli."' value='".$value->id_dokter."'>".$value->nama_dokter."</option>";
                                     }
                                 ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4">Poli</div>
+                            <div class="col-sm-8">
+                                <select name="id_poli" class="form-control select2 poli">
+                                    <option value="">Pilih Poli</option>
+                                    <?php 
+                                        foreach ($poli as $key => $value) {
+                                            echo "<option value='".$value->id_poli."'>".$value->item."</option>";
+                                        }
+                                    ?>
                                 </select>
                             </div>
                         </div>
@@ -42,7 +55,7 @@
                         <div class="form-group">
                             <div class="col-sm-4">No ID <?php echo form_error('no_id'); ?></div>
                             <div class="col-sm-8">
-                                <?php echo form_input(array('id'=>'no_id','name'=>'no_id','type'=>'text','value'=>$no_id,'class'=>'form-control','onkeyup'=>'autocomplate_no_id()'));?>
+                                <?php echo form_input(array('id'=>'no_id','name'=>'no_id','type'=>'text','value'=>$no_id,'class'=>'form-control','readonly' => 'readonly'));?>
                             </div>
                         </div>
                         <div class="form-group">
@@ -133,45 +146,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-4">Tipe Pemeriksaan</div>
-                            <div class="col-sm-8">
-                                <select name="tipe_periksa" id="tipe_dokter_umum" class="form-control">
-                                    <option value="1">Periksa Medis</option>
-                                    <option value="2">Imunisasi Anak</option>
-                                    <option value="3">Kontrol Kehamilan</option>
-                                    <option value="5">Jasa Lainnya</option>
-                                    <option value="6">Pemeriksaan LAB</option>
-                                </select>
-                                <select name="tipe_periksa" id="tipe_dokter_gigi" class="form-control" style="display:none" readonly>
-                                    <option value="4">Pemeriksaan Gigi</option>
-                                </select>
-                            </div>
-                        </div>
-                        <!-- <div class="form-group" id="jasa_lainnya" style="display:none">
-                            <div class="col-sm-4">Jasa Lainnya</div>
-                            <div class="col-sm-8">
-                                <select name="periksa_jasa[]" class="form-control select2" multiple="multiple" style="width:100%" disabled>
-                                    <?php 
-                                        foreach ($jasa_lainnya as $key => $value) {
-                                            echo "<option value='".$value->id_tipe."'>".$value->item."</option>";
-                                        }
-                                    ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group" id="pemeriksaan_lab" style="display:none">
-                            <div class="col-sm-4">Pemeriksaan LAB</div>
-                            <div class="col-sm-8">
-                                <select name="periksa_lab[]" class="form-control select2" multiple="multiple" style="width:100%" disabled>
-                                    <?php 
-                                        foreach ($periksa_lab as $key => $value) {
-                                            echo "<option value='".$value->id_tipe."'>".$value->item."</option>";
-                                        }
-                                    ?>
-                                </select>
-                            </div>
-                        </div> -->
-                        <div class="form-group">
                             <div class="col-sm-12">
                                 <div align="right">
                                     <a href="<?php echo site_url('pendaftaran') ?>" class="btn btn-info"><i class="fa fa-sign-out"></i> Kembali</a>
@@ -229,27 +203,48 @@
         </div>
     </section>
 </div>
-
+<style>
+select[readonly].select2+.select2-container {
+  pointer-events: none;
+  touch-action: none;
+}
+select[readonly].select2+.select2-container .select2-selection {
+    background : #eee;
+}
+</style>
 <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
 <script src="<?php echo base_url('assets/datatables/jquery.dataTables.js') ?>"></script>
 <script src="<?php echo base_url('assets/datatables/dataTables.bootstrap.js') ?>"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $(".namaDokter").change(function(){
-            var tipe = $(this).find(":selected").attr('data-tipe')
-
-            if(tipe=='2'){
-                $("#tipe_dokter_gigi").show()
-                $("#tipe_dokter_gigi").attr('disabled',false)
-                $("#tipe_dokter_umum").hide()
-                $("#tipe_dokter_umum").attr('disabled',true)
+            var idPoli = $(this).find(":selected").attr('data-poli')
+            $(".poli").val(idPoli)
+            $(".poli").select2()
+            $(".poli").removeAttr('readonly');
+            if(idPoli!=0){
+                $(".poli").attr('readonly','true');
             }
-            else{
-                $("#tipe_dokter_gigi").hide()
-                $("#tipe_dokter_gigi").attr('disabled',true)
-                $("#tipe_dokter_umum").show()
-                $("#tipe_dokter_umum").attr('disabled',false)
-            }
+        })
+        function changePoli(thisAttr){
+            var idPoli = thisAttr.val()
+            // console.log()
+            $.ajax({
+                type : 'get',
+                url : '<?= base_url().'pendaftaran/getDokter' ?>',
+                data : {id_poli : idPoli},
+                success : function(res){
+                    $(".namaDokter option").remove()
+                    res = JSON.parse(res)
+                    $(".namaDokter").append(`<option value='0' data-poli='0'>Pilih Dokter</option>`)
+                    $.each(res,function(i,v){
+                        $(".namaDokter").append(`<option value='${v.id_dokter}' data-poli='${v.id_poli}'>${v.nama_dokter}</option>`)
+                    })
+                }
+            })
+        }
+        $(".poli").change(function(){
+            changePoli($(this))
         })
         // $("#tipe_dokter_umum").change(function(){
         //     var thisVal = $(this).val()
