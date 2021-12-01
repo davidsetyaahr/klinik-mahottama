@@ -369,9 +369,8 @@
 						<!--</div>-->
 						<!--<hr />-->
 						<div class="form-group">
-    							<div class="col-sm-2"></div>
     							<div class="col-sm-2" align="center">
-                                    <label>Nama Obat</label>
+                                    <label>Nama Obat / BMHP</label>
                                 </div>
     							<div class="col-sm-2" align="center">
                                     <label>Ket (Puyer/Non Puyer)</label>
@@ -388,7 +387,6 @@
     						</div>
 						<div id="input_fields_wrap_obat">
     						<div class="form-group">
-    							<div class="col-sm-2">Obat</div>
     							<div class="col-sm-2">
                                     <div class="input-group">
                                         <span class="input-group-addon">1</span>
@@ -399,7 +397,7 @@
                                     <?php echo form_dropdown('ket_obat[]', array(''=>'Pilih Keterangan'),'',array('id'=>'ket_obat[]','class'=>'form-control','onchange'=>'get_obat(this)'));?>
                                 </div>
     							<div class="col-sm-2">
-                                    <?php echo form_dropdown('jml_obat[]', array(''=>'Pilih Jumlah'),'',array('id'=>'jml_obat[]','class'=>'form-control select2','onchange'=>'get_obat(this,true)'));?>
+                                    <?php echo form_dropdown('jml_obat[]', array(''=>'Pilih Jumlah'),'',array('id'=>'jml_obat[]','class'=>'form-control select2','onchange'=>'get_obat(this,true)','style'=>'width:100%;'));?>
                                 </div>
     							<div class="col-sm-2">
                                     <input type="text" id="anjuran_obat[]" name="anjuran_obat[]" class="form-control">
@@ -408,102 +406,14 @@
                                 <div class="col-sm-2">
                                     <?php echo form_input(array('id'=>'kegunaan_obat[]','name'=>'kegunaan_obat[]','type'=>'text','value'=>'','class'=>'form-control'));?>
                                 </div>
-    							<div style="display:none;">
+    							<div class="col-sm-2">
                                     <?php echo form_input(array('id'=>'harga_obat[]','name'=>'harga_obat[]','type'=>'text','value'=>'','class'=>'form-control', 'readonly'=>'readonly','style'=>'text-align:right;'));?>
                                 </div>
                                 <!-- <div class="col-sm-2">
                                     <?php echo form_input(array('id'=>'harga_obat_real[]','name'=>'harga_obat_real[]','type'=>'text','value'=>'','class'=>'form-control', 'readonly'=>'readonly','style'=>'text-align:right;'));?>
                                 </div> -->
-                </div>
-    						<!-- <div class="form-group">
-    							<div class="col-sm-2"></div>
-    							<div class="col-sm-2">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">2</span>
-                                        <?php echo form_dropdown('obat[]',$obat_option,'',array('id'=>'obat[]','class'=>'form-control select2','onchange'=>'get_obat(this)','style'=>'width:100%;'));?>
-                                        </div>
-                                </div>
-    							<div class="col-sm-2">
-                                    <?php echo form_dropdown('ket_obat[]', array(''=>'Pilih Keterangan'),'',array('id'=>'ket_obat[]','class'=>'form-control','onchange'=>'get_obat(this)'));?>
-                                </div>
-    							<div class="col-sm-2">
-                                    <?php echo form_dropdown('jml_obat[]', array(''=>'Pilih Jumlah'),'',array('id'=>'jml_obat[]','class'=>'form-control','onchange'=>'get_obat(this,true)'));?>
-                                </div>
-    							<div class="col-sm-2">
-                                    <?php echo form_dropdown('anjuran_obat[]',array(''=>'Pilih Anjuran'),'',array('id'=>'anjuran_obat[]','class'=>'form-control'));?>
-                                </div>
-    							<div class="col-sm-2">
-                                    <?php echo form_input(array('id'=>'kegunaan_obat[]','name'=>'kegunaan_obat[]','type'=>'text','value'=>'','class'=>'form-control'));?>
-                                </div>
-    							<div style="display:;">
-                                    <?php echo form_input(array('id'=>'harga_obat[]','name'=>'harga_obat[]','type'=>'text','value'=>'','class'=>'form-control', 'readonly'=>'readonly','style'=>'text-align:right;'));?>
-                                </div>
-                                <div class="col-sm-2">
-                                    <?php echo form_input(array('id'=>'harga_obat_real[]','name'=>'harga_obat_real[]','type'=>'text','value'=>'','class'=>'form-control', 'readonly'=>'readonly','style'=>'text-align:right;'));?>
-                                </div>
-    						</div>
-    						<div class="form-group">
-    							<div class="col-sm-2"></div>
-    							<div class="col-sm-2">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">3</span>
-                                        <?php echo form_dropdown('obat[]',$obat_option,'',array('id'=>'obat[]','class'=>'form-control select2','onchange'=>'get_obat(this)','style'=>'width:100%;'));?>
-                                        </div>
-                                </div>
-    							<div class="col-sm-2">
-                                    <?php echo form_dropdown('ket_obat[]', array(''=>'Pilih Keterangan'),'',array('id'=>'ket_obat[]','class'=>'form-control','onchange'=>'get_obat(this)'));?>
-                                </div>
-    							<div class="col-sm-2">
-                                    <?php echo form_dropdown('jml_obat[]', array(''=>'Pilih Jumlah'),'',array('id'=>'jml_obat[]','class'=>'form-control','onchange'=>'get_obat(this,true)'));?>
-                                </div>
-    							<div class="col-sm-2">
-                                    <?php echo form_dropdown('anjuran_obat[]',array(''=>'Pilih Anjuran'),'',array('id'=>'anjuran_obat[]','class'=>'form-control'));?>
-                                </div>
-    							<div class="col-sm-2">
-                                    <?php echo form_input(array('id'=>'kegunaan_obat[]','name'=>'kegunaan_obat[]','type'=>'text','value'=>'','class'=>'form-control'));?>
-                                </div>
-    							<div style="display:;">
-                                    <?php echo form_input(array('id'=>'harga_obat[]','name'=>'harga_obat[]','type'=>'text','value'=>'','class'=>'form-control', 'readonly'=>'readonly','style'=>'text-align:right;'));?>
-                                </div>
-                                <div class="col-sm-2">
-                                    <?php echo form_input(array('id'=>'harga_obat_real[]','name'=>'harga_obat_real[]','type'=>'text','value'=>'','class'=>'form-control', 'readonly'=>'readonly','style'=>'text-align:right;'));?>
-                                </div>
-    						</div>
-    						<div class="form-group">
-    							<div class="col-sm-2"></div>
-    							<div class="col-sm-2">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">4</span>
-                                        <?php echo form_dropdown('obat[]',$obat_option,'',array('id'=>'obat[]','class'=>'form-control select2','onchange'=>'get_obat(this)','style'=>'width:100%;'));?>
-                                        </div>
-                                </div>
-    							<div class="col-sm-2">
-                                    <?php echo form_dropdown('ket_obat[]', array(''=>'Pilih Keterangan'),'',array('id'=>'ket_obat[]','class'=>'form-control','onchange'=>'get_obat(this)'));?>
-                                </div>
-    							<div class="col-sm-2">
-                                    <?php echo form_dropdown('jml_obat[]', array(''=>'Pilih Jumlah'),'',array('id'=>'jml_obat[]','class'=>'form-control','onchange'=>'get_obat(this,true)'));?>
-                                </div>
-    							<div class="col-sm-2">
-                                    <?php echo form_dropdown('anjuran_obat[]',array(''=>'Pilih Anjuran'),'',array('id'=>'anjuran_obat[]','class'=>'form-control'));?>
-                                </div>
-    							<div class="col-sm-2">
-                                    <?php echo form_input(array('id'=>'kegunaan_obat[]','name'=>'kegunaan_obat[]','type'=>'text','value'=>'','class'=>'form-control'));?>
-                                </div>
-    							<div style="display:;">
-                                    <?php echo form_input(array('id'=>'harga_obat[]','name'=>'harga_obat[]','type'=>'text','value'=>'','class'=>'form-control', 'readonly'=>'readonly','style'=>'text-align:right;'));?>
-                                </div>
-                                <div class="col-sm-2">
-                                    <?php echo form_input(array('id'=>'harga_obat_real[]','name'=>'harga_obat_real[]','type'=>'text','value'=>'','class'=>'form-control', 'readonly'=>'readonly','style'=>'text-align:right;'));?>
-                                </div>
-    						</div> -->
+                             </div>
     					</div>
-						<div class="form-group">
-							<div class="col-sm-2">Catatan Apoteker</div>
-							<div class="col-sm-10">
-								<?php echo form_textarea(array('id'=>'note_apoteker','name'=>'note_apoteker','type'=>'textarea','value'=>'','rows'=>'4','class'=>'form-control'));?>
-							</div>
-						</div>
-
     					<div class="form-group">
 							<div class="col-sm-12">
 								<div align="right">
@@ -511,6 +421,38 @@
 								</div>
 							</div>
 						</div>
+                        <div id="input_fields_wrap_alkes">
+    						<div class="form-group">
+    							<div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">1</span>
+                                        <?php echo form_dropdown('alat_kesehatan[]',$alkes_option,'',array('id'=>'alat_kesehatan[]','class'=>'form-control select2','onchange'=>'get_alkes(this)','style'=>'width:100%;'));?>
+                                        </div>
+                                </div>
+    							<div class="col-sm-4">
+                                    <select id="jml_alat_kesehatan[]" name="jml_alat_kesehatan[]" class="form-control select2" onchange="get_alkes(this, true)" style="width:100%">
+                                        <option value="">Pilih Jumlah</option>
+                                    </select>
+                                </div>
+    							<div class="col-sm-2">
+                                    <input id="harga_alkes[]" name="harga_alkes[]" type="text" value="" class="form-control" readonly="readonly" style="text-align:right;" />
+                                </div>
+                            </div>
+                        </div>
+    					<div class="form-group">
+							<div class="col-sm-12">
+								<div align="right">
+									<button id="add_field_button_alkes"><i class="fa fa-plus"></i>Tambah</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-2">Catatan Apoteker</div>
+							<div class="col-sm-10">
+								<?php echo form_textarea(array('id'=>'note_apoteker','name'=>'note_apoteker','type'=>'textarea','value'=>'','rows'=>'4','class'=>'form-control'));?>
+							</div>
+						</div>
+
 						<hr />
 						<div class="form-group">
 							<div class="col-sm-8"></div>
@@ -610,7 +552,7 @@
 								<div class="input-group">
                                     <span class="input-group-addon" style="background-color: #fcffc4;">Tindakan</span>
                                     <input type="hidden" name="tindakan" id="nameTindakan">
-                                    <select name="biaya_tindakan" id="biaya_tindakan" style="width:100%" class="select2 form-control" onchange="hitung_biaya()">
+                                    <select name="biaya_tindakan" id="biaya_tindakan" style="width:100%" class="select2 form-control" onchange="hitung_biaya()" multiple='multiple'>
                                         <option value="0">---Pilih Tindakan---</option>
                                         <?php 
                                             foreach ($master_tindakan as $key => $value) {
@@ -634,7 +576,7 @@
 							<div class="col-sm-2"></div>
 							<div class="col-sm-4">
 								<div class="input-group">
-                                    <span class="input-group-addon" style="background-color: #fcffc4;">Obat-obatan</span>
+                                    <span class="input-group-addon" style="background-color: #fcffc4;">Obat-obatan dan BMHP</span>
                                     <?php echo form_input(array('id'=>'biaya_obat_obatan','name'=>'biaya_obat_obatan','type'=>'number','value'=>'','class'=>'form-control','style'=>'text-align:right;', 'onchange'=>'hitung_biaya()','placeholder'=>'0'));?>
                                 </div>
 							</div>
@@ -679,9 +621,9 @@
 							<div class="col-sm-4">
                                 <select name="pemeriksaan_selanjutnya" id="" style="width:100%" class="select2 form-control">
                                         <option value="0">Tidak Ada</option>
-                                        <option value="1">Rawat Inap</option>
-                                        <option value="2">Laboratorium</option>
-                                        <option value="3">Radiologi</option>
+                                        <option value="2">Rawat Inap</option>
+                                        <option value="4">Laboratorium</option>
+                                        <option value="5">Radiologi</option>
                                 </select>
 							</div>
 						</div>
@@ -985,12 +927,20 @@ $(document).ready(function() {
         
         if(z < max_fields){ //max input box allowed
             z++; //text box increment
-            $(wrapper_alkes).append('<div class="form-group"><div class="col-sm-2"></div><div class="col-sm-6"><div class="input-group"><span class="input-group-addon"><a href="#" class="remove_field_alkes">X</a></span>'+input_alkes+'</div></div><div class="col-sm-2">'+input_jml_alkes+'</div><div class="col-sm-2">'+input_harga_alkes+'</div></div>'); //add input box
+            $(wrapper_alkes).append('<div class="form-group"><div class="col-sm-6"><div class="input-group"><span class="input-group-addon"><a href="#" class="remove_field_alkes">X</a></span>'+input_alkes+'</div></div><div class="col-sm-4">'+input_jml_alkes+'</div><div class="col-sm-2">'+input_harga_alkes+'</div></div>'); //add input box
         }
+        $('select').select2({
+            // dropdownAutoWidth : false,
+            width: '100%'
+        })
+
     });
     
     $(wrapper_alkes).on("click",".remove_field_alkes", function(e){ //user click on remove text
         e.preventDefault(); $(this).closest('.form-group').remove(); z--;
+        display_total_harga();
+        hitung_biaya();
+
     });
     
     var y = 1; //initlal text box count
@@ -1015,7 +965,7 @@ $(document).ready(function() {
         
         if(y < max_fields){ //max input box allowed
             y++; //text box increment
-            $(wrapper_obat).append('<div class="form-group"><div class="col-sm-2"></div><div class="col-sm-2"><div class="input-group"><span class="input-group-addon"><a href="#" class="remove_field_obat">X</a></span>'+input_alkes+'</div></div><div class="col-sm-2">'+input_ket_obat+'</div><div class="col-sm-2">'+input_jml_obat+'</div><div class="col-sm-2">'+input_anjuran_obat+'</div><div class="col-sm-2">'+input_kegunaan_obat+'</div><div style="display:none;">'
+            $(wrapper_obat).append('<div class="form-group"><div class="col-sm-2"><div class="input-group"><span class="input-group-addon"><a href="#" class="remove_field_obat">X</a></span>'+input_alkes+'</div></div><div class="col-sm-2">'+input_ket_obat+'</div><div class="col-sm-2">'+input_jml_obat+'</div><div class="col-sm-2">'+input_anjuran_obat+'</div><div class="col-sm-2">'+input_kegunaan_obat+'</div><div class="col-sm-2">'
                 +input_harga_obat+'</div>'); //add input box
         }
         $('select').select2({
@@ -1028,6 +978,7 @@ $(document).ready(function() {
         e.preventDefault(); 
         $(this).closest('.form-group').remove(); y--;
         get_obat(null);
+
     });
     
     display_total_harga();
@@ -1253,7 +1204,12 @@ $(document).ready(function() {
         
         //Get Biaya
         var pemeriksaan = $('#biaya_pemeriksaan').val() != '' ? $('#biaya_pemeriksaan').val() : 0;
-        var tindakan = $('#biaya_tindakan').val() != '' ? $('#biaya_tindakan').val() : 0;
+        var tindakan = 0;
+        if($('#biaya_tindakan').val()!=null ){
+            $.each($('#biaya_tindakan').val(), function(key,val){
+                tindakan+=parseInt(val)
+            })
+        }
         var obat_obatan = $('#biaya_obat_obatan').val() != '' ? $('#biaya_obat_obatan').val() : 0;
         // var administrasi = $('#biaya_administrasi').val() != '' ? $('#biaya_administrasi').val() : 0;
         $('#biaya_total').val(parseInt(pemeriksaan) + parseInt(tindakan) + parseInt(obat_obatan)/* + parseInt(administrasi)*/);

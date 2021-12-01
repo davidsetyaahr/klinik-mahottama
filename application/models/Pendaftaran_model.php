@@ -121,7 +121,7 @@ class Pendaftaran_model extends CI_Model
         else{
             $whereDokter = "";
         }
-        $where = "pd.is_periksa = '0' $whereDokter and pl.tipe_periksa = '$tipePeriksa' and pl.is_periksa = '1'";
+        $where = "pl.tipe_periksa = '$tipePeriksa' and pl.is_periksa = '1' ";
         // $this->datatables->where('pd.is_periksa', 0);
         // $this->datatables->where('pd.id_dokter', $id_dokter);
 /*         if($tipe==1 || $tipe==4){
