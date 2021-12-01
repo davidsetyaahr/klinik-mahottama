@@ -20,20 +20,5 @@
             <a href="" class="btn btn-danger btn-sm remove-radiologi" data-no="<?= $no ?>"><span class="fa fa-trash"></span></a>
         </div>
     <?php } ?>
-    <div class="col-md-6">
-    <br>
-        <select name="kode_barang[]" class="form-control select2 selectAlkes">
-            <option value="">---Pilih Alkes---</option>
-            <?php
-                foreach ($alkes as $key => $value) {
-                    echo "<option data-stok='".$value->stok_barang."' value='".$value->kode_barang."'>".$value->nama_barang."</option>";
-                }
-                ?>
-        </select>
-    </div>
-    <div class='col-md-6'">
-        <br>
-        <select name="jml_barang[]" class="form-control stokAlkes">
-        </select>
-    </div>
+    
 </div>

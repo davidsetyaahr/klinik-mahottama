@@ -1,11 +1,11 @@
-<div class="row loop-kamar" data-no="<?= $no ?>">
+<div class="row loop-biaya" data-no="<?= $no ?>">
 <br>
     <div class="col-md-6">
         <select name="periksa_kamar[]" class="form-control select2 getHarga" style="width:100%">
-        <option value="">---Pilih Kamar---</option>
+        <option value="">---Pilih Biaya---</option>
         <?php 
-            foreach ($kamar as $key => $value) {
-                    echo "<option data-harga='".$value->harga."' value='".$value->id_kamar."'>".$value->nama."</option>";
+            foreach ($biaya as $key => $value) {
+                    echo "<option data-harga='".$value->biaya."' value='".$value->id_biaya."'>".$value->nama_biaya."</option>";
             }
         ?>
         </select>
@@ -24,7 +24,7 @@
     ?>
         <div class="col-md-1">
             <!-- <br> -->
-            <a href="" class="btn btn-danger btn-xl remove-kamar" data-no="<?= $no ?>"><span class="fa fa-trash"></span></a>
+            <a href="" class="btn btn-danger btn-xl remove-biaya" data-no="<?= $no ?>"><span class="fa fa-trash"></span></a>
         </div>
     <?php } ?>
     

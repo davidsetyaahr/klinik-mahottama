@@ -37,6 +37,31 @@
                                     <a href="" class="btn btn-info btn-sm" id="addItemRadiologi"><span class="fa fa-plus"></span> Tambah Item</a>
                                 </div>
                             </div>
+                            <div class="form-group" id="row-obat" data-row='0'>
+                                <?php 
+                                    $this->load->view('loop/loop-pilihan-obat',['no' => 0])
+                                ?>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <a href="" class="btn btn-info btn-sm" id="addItemObat"><span class="fa fa-plus"></span> Tambah Item</a>
+                                </div>
+                            </div>
+                            <div class="form-group" id="row-alkes" data-row='0'>
+                                <?php 
+                                    $this->load->view('loop/loop-pilihan-alkes',['no' => 0])
+                                ?>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <a href="" class="btn btn-info btn-sm" id="addItemAlkes"><span class="fa fa-plus"></span> Tambah Item</a>
+                                </div>
+                            </div>
+                            <div class="form-group" id="row-tindakan" data-row='0'>
+                                <?php 
+                                    $this->load->view('loop/loop-pilihan-tindakan',['no' => 0])
+                                ?>
+                            </div>
                             <hr>
                             <div class="form-group row">
 							<div class="col-sm-2">Pemeriksaan Selanjutnya</div>
@@ -71,8 +96,8 @@
     $(document).ready(function(){
         function selectAlkes(thisAttr){
             var stok = thisAttr.find(':selected').data('stok')
-            var dataId = thisAttr.closest('.loop-radiologi').attr('data-no')
-            $(".loop-radiologi[data-no='"+dataId+"'] .stokAlkes option").remove();
+            var dataId = thisAttr.closest('.loop-alkes').attr('data-no')
+            $(".loop-alkes[data-no='"+dataId+"'] .stokAlkes option").remove();
             var option = "";
             if(stok==0){
                 option = "<option value=''>Habis</option>";
@@ -82,11 +107,31 @@
                     option+="<option>"+s+"</option>";
                 }
             }
-            $(".loop-radiologi[data-no='"+dataId+"'] .stokAlkes").append(option);
+            $(".loop-alkes[data-no='"+dataId+"'] .stokAlkes").append(option);
         }
 
         $(".selectAlkes").change(function(){
             selectAlkes($(this))            
+        })
+
+        function selectObat(thisAttr){
+            var stok = thisAttr.find(':selected').data('stok')
+            var dataId = thisAttr.closest('.loop-obat').attr('data-no')
+            $(".loop-obat[data-no='"+dataId+"'] .stokObat option").remove();
+            var option = "";
+            if(stok==0){
+                option = "<option value=''>Habis</option>";
+            }
+            else{
+                for (let s = 1; s <= stok; s++) {
+                    option+="<option>"+s+"</option>";
+                }
+            }
+            $(".loop-obat[data-no='"+dataId+"'] .stokObat").append(option);
+        }
+
+        $(".selectObat").change(function(){
+            selectObat($(this))            
         })
 
         $("#addItemRadiologi").click(function(e){
@@ -99,10 +144,6 @@
                 success : function(data){
                     $('#row-radiologi').append(data)
                     $('#row-radiologi').attr('data-row',dataRow + 1)
-                    // $(".select2").select2()
-                    $(".selectAlkes").change(function(){
-                        selectAlkes($(this))
-                    })
 
                     $(".remove-radiologi").click(function(e){
                         e.preventDefault();
@@ -110,6 +151,82 @@
                         var dataRow = parseInt($('#row-radiologi').attr('data-row'))
                         $('.loop-radiologi[data-no="'+dataNo+'"]').remove()
                         $('#row-radiologi').attr('data-row',dataRow-1)
+                    })
+                    $(".select2").select2()
+                }
+            })
+        })
+
+        $("#addItemObat").click(function(e){
+            e.preventDefault();
+            var dataRow = parseInt($('#row-obat').attr('data-row'))
+            $.ajax({
+                type : 'get',
+                url : '<?= base_url().'periksamedis/newItemLoopObat' ?>',
+                data : {no : dataRow+1},
+                success : function(data){
+                    $('#row-obat').append(data)
+                    $('#row-obat').attr('data-row',dataRow + 1)
+                    $(".selectObat").change(function(){
+                        selectObat($(this))
+                    })
+                    $(".remove-obat").click(function(e){
+                        e.preventDefault();
+                        var dataNo = $(this).attr('data-no')
+                        var dataRow = parseInt($('#row-obat').attr('data-row'))
+                        $('.loop-obat[data-no="'+dataNo+'"]').remove()
+                        $('#row-obat').attr('data-row',dataRow-1)
+                    })
+                    $(".select2").select2()
+                }
+            })
+        })
+
+        $("#addItemAlkes").click(function(e){
+            e.preventDefault();
+            var dataRow = parseInt($('#row-alkes').attr('data-row'))
+            $.ajax({
+                type : 'get',
+                url : '<?= base_url().'periksamedis/newItemLoopAlkes' ?>',
+                data : {no : dataRow+1},
+                success : function(data){
+                    $('#row-alkes').append(data)
+                    $('#row-alkes').attr('data-row',dataRow + 1)
+                    // $(".select2").select2()
+                    $(".selectAlkes").change(function(){
+                        selectAlkes($(this))
+                    })
+
+                    $(".remove-alkes").click(function(e){
+                        e.preventDefault();
+                        var dataNo = $(this).attr('data-no')
+                        var dataRow = parseInt($('#row-alkes').attr('data-row'))
+                        $('.loop-alkes[data-no="'+dataNo+'"]').remove()
+                        $('#row-alkes').attr('data-row',dataRow-1)
+                    })
+                    $(".select2").select2()
+                }
+            })
+        })
+        
+        $("#addItemTindakan").click(function(e){
+            e.preventDefault();
+            var dataRow = parseInt($('#row-tindakan').attr('data-row'))
+            $.ajax({
+                type : 'get',
+                url : '<?= base_url().'periksamedis/newItemLoopTindakan' ?>',
+                data : {no : dataRow+1},
+                success : function(data){
+                    $('#row-tindakan').append(data)
+                    $('#row-tindakan').attr('data-row',dataRow + 1)
+
+
+                    $(".remove-tindakan").click(function(e){
+                        e.preventDefault();
+                        var dataNo = $(this).attr('data-no')
+                        var dataRow = parseInt($('#row-tindakan').attr('data-row'))
+                        $('.loop-tindakan[data-no="'+dataNo+'"]').remove()
+                        $('#row-tindakan').attr('data-row',dataRow-1)
                     })
                     $(".select2").select2()
                 }
