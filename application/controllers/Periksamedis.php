@@ -64,11 +64,11 @@ class Periksamedis extends CI_Controller
         }
         else if($periksaLanjutan->tipe_periksa=='2'){
             //rawat inap
-            redirect(base_url()."periksamedis/imunisasi");
+            redirect(base_url()."periksamedis/rawat_inap");
         }
         else if($periksaLanjutan->tipe_periksa=='3'){
             //operasi
-            redirect(base_url()."periksamedis/kontrol_kehamilan");
+            redirect(base_url()."periksamedis/operasi");
         }
         else if($periksaLanjutan->tipe_periksa=='4'){
             //lab
@@ -76,7 +76,7 @@ class Periksamedis extends CI_Controller
         }
         else if($periksaLanjutan->tipe_periksa=='6'){
             //radiologi
-            redirect(site_url('periksamedis/periksa_lab/'));
+            redirect(site_url('periksamedis/periksa_radiologi/'));
         }
     }
     function poli(){
@@ -773,17 +773,17 @@ class Periksamedis extends CI_Controller
             redirect(site_url('periksamedis/poli'));
         }
         else if($_GET['tipe']=='2'){
-            redirect(site_url('periksamedis/imunisasi/'));
+            redirect(site_url('periksamedis/rawat_inap/'));
         }
         else if($_GET['tipe']=='3'){
-            redirect(site_url('periksamedis/periksa_lab/'));
+            redirect(site_url('periksamedis/operasi/'));
             // redirect(site_url('periksamedis/kontrol_kehamilan/'));
         }
         else if($_GET['tipe']=='4'){
-            redirect(site_url('periksamedis/periksa_jasa/'));
+            redirect(site_url('periksamedis/periksa_lab/'));
         }
         else if($_GET['tipe']=='5'){
-            redirect(site_url('periksamedis/periksa_lab/'));
+            redirect(site_url('periksamedis/periksa_radiologi/'));
         }
     }
     public function periksa_jasa(){
