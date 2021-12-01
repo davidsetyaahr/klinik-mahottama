@@ -11,7 +11,7 @@ class Tbl_tindakan_model extends CI_Model
 
     public function json()
     {
-        $this->datatables->select("ti.kode_tindakan,ti.tindakan,ti.biaya,tk.id_kategori");
+        $this->datatables->select("ti.kode_tindakan,ti.tindakan,ti.biaya,tk.item");
         $this->datatables->from("tbl_tindakan ti");
         $this->datatables->join("tbl_kategori_tindakan tk", "ti.id_kategori = tk.id_kategori");
         $this->datatables->add_column('action', 

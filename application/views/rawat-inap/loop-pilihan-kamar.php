@@ -1,7 +1,7 @@
 <div class="row loop-kamar" data-no="<?= $no ?>">
 <br>
     <div class="col-md-6">
-        <select name="periksa_kamar[]" class="form-control select2 getHarga" style="width:100%">
+        <select name="kamar[]" class="form-control select2 getHarga" style="width:100%">
         <option value="">---Pilih Kamar---</option>
         <?php 
             foreach ($kamar as $key => $value) {

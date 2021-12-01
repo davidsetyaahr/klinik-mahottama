@@ -41,9 +41,6 @@
                             		<th>Nama Kategori</th>
                             		<th>Nama Biaya</th>
                             		<th>Biaya</th>
-                            		<th>Tipe Biaya</th>
-                            		<th>Presentase</th>
-                            		<th>ID Biaya Presentase</th>
                             		<th width="100px">Action</th>
                                 </tr>
                             </thead>
@@ -94,7 +91,7 @@
                 {
                     "data": "id_biaya",
                     "orderable": false
-                },{"data": "item"},{"data": "nama_biaya"},{"data": "biaya"},{"data": "tipe_biaya"},{"data": "presentase "},{"data": "id_biaya_presentase"},
+                },{"data": "item"},{"data": "nama_biaya"},{"data": "biaya"},
                 {
                     "data" : "action",
                     "orderable": false,

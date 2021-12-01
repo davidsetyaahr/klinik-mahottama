@@ -92,9 +92,11 @@
                 {
                     "data": "kode_tindakan",
                     "orderable": false
-                },{"data": "kode_tindakan"},{"data": "tindakan"},{"data": "biaya"},{"render": function(data,type,row){
-                    return (row.tipe==1) ? 'Umum' : 'Gigi'
-                }},
+                },{"data": "kode_tindakan"},{"data": "tindakan"},{"data": "biaya"},{"data": "item"},
+                // {"render": function(data,type,row){
+                //     return (row.tipe==1) ? 'Umum' : 'Gigi'
+                // }
+                // },
                 {
                     "data" : "action",
                     "orderable": false,

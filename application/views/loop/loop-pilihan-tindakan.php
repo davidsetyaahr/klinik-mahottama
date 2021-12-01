@@ -1,13 +1,13 @@
 <div class="row loop-tindakan" data-no="<?= $no ?>">
 <br>
 <div class="col-md-2">Pilih Tindakan</div>
-<div class="<?= $no!=0 ? 'col-md-9' : 'col-md-10' ?>">
-        <select name="kode_tindakan[]" class="form-control select2" at multiple="multiple">
-        <?php 
-            foreach ($tindakan as $key => $value) {
-                    echo "<option value='".$value->kode_tindakan."'>".$value->tindakan."</option>";
-            }
-        ?>
+<div class="col-md-10">
+        <select name="tindakan[]" multiple="multiple" style="width:100%" class="select2 form-control">
+            <?php 
+                foreach ($tindakan as $key => $value) {
+                        echo "<option value='".$value->kode_tindakan."'>".$value->tindakan."</option>";
+                }
+            ?>
         </select>
     </div>
     <?php 

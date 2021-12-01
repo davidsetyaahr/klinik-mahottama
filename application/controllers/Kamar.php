@@ -38,7 +38,7 @@
             'id_kamar' => set_value('id_kamar'),
             'id_kategori_kamar' => set_value('id_kategori_kamar'),
             'no_kamar' => set_value('no_kamar'),
-            'status' => set_value('status'),
+            'status' => set_value('0'),
             'item' => $this->Tbl_kategori_kamar_model->get_all()
         );
         $this->template->load('template','master_data/kamar/tbl_kamar_form', $data);
@@ -53,7 +53,7 @@
             $data = array(
                 'id_kategori_kamar' => $this->input->post('id_kategori_kamar', TRUE),
                 'no_kamar' => $this->input->post('no_kamar',TRUE),
-                'status' => $this->input->post('status',TRUE),
+                'status' => $this->input->post('0',TRUE),
             );
             $this->Tbl_kamar_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');

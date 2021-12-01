@@ -997,7 +997,7 @@ class Periksamedis extends CI_Controller
         $this->load->view('loop/loop-pilihan-obat',$this->data);
     }
 
-    public function newItemAlkesLoopAlkes()
+    public function newItemLoopAlkes()
     {
         $this->data['periksa_radiologi'] = $this->db->get('tbl_tipe_periksa_radiologi')->result();
         $this->data['alkes'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik,false,2);

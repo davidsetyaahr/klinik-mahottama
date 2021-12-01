@@ -4,7 +4,7 @@
             <div class="col-md-12">
                 <div class="box box-warning box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">PERIKSA RADIOLOGI</h3>
+                        <h3 class="box-title">OPERASI</h3>
                     </div>
                     <div class="box-body">
                         <div class="row col-md-12">
@@ -86,8 +86,8 @@
     $(document).ready(function(){
         function selectAlkes(thisAttr){
             var stok = thisAttr.find(':selected').data('stok')
-            var dataId = thisAttr.closest('.loop-radiologi').attr('data-no')
-            $(".loop-radiologi[data-no='"+dataId+"'] .stokAlkes option").remove();
+            var dataId = thisAttr.closest('.loop-alkes').attr('data-no')
+            $(".loop-alkes[data-no='"+dataId+"'] .stokAlkes option").remove();
             var option = "";
             if(stok==0){
                 option = "<option value=''>Habis</option>";
@@ -97,7 +97,7 @@
                     option+="<option>"+s+"</option>";
                 }
             }
-            $(".loop-radiologi[data-no='"+dataId+"'] .stokAlkes").append(option);
+            $(".loop-alkes[data-no='"+dataId+"'] .stokAlkes").append(option);
         }
 
         $(".selectAlkes").change(function(){

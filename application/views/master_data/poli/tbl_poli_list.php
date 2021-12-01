@@ -66,7 +66,7 @@
                     ajax: {"url": "poli/json", "type": "POST"},
                     columns: [
                         {
-                            "data": "id_layanan",
+                            "data": "id_poli",
                             "orderable": false
                         },{"data" : "item"},
                         {

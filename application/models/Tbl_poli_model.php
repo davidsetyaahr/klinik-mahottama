@@ -49,7 +49,7 @@ class Tbl_poli_model extends CI_Model
     }
 
     function json(){
-        $this->datatables->select('id_layanan, item');
+        $this->datatables->select('id_poli, item');
         $this->datatables->from('tbl_poli');
         $this->datatables->add_column('action', anchor(site_url('poli/edit/$1'),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>', array('class' => 'btn btn-success btn-sm'))." 
                 ".anchor(site_url('poli/delete/$1'),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'), 'id_layanan');

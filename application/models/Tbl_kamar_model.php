@@ -11,7 +11,7 @@ class Tbl_kamar_model extends CI_Model
 
     public function json()
     {
-        $this->datatables->select('k.id_kamar, kk.nama, kk.harga, k.no_kamar, (CASE k.status WHEN 0 THEN "sad" WHEN 1 THEN "Terisi"  END) as status');
+        $this->datatables->select('k.id_kamar, kk.nama, kk.harga, k.no_kamar, (CASE k.status WHEN 1 THEN "Terisi" ELSE "Kosong" END) as status');
         $this->datatables->from("tbl_kamar k");
         $this->datatables->join("tbl_kategori_kamar kk", "kk.id_kategori_kamar = k.id_kategori_kamar");
         $this->datatables->add_column('action', 
@@ -49,6 +49,7 @@ class Tbl_kamar_model extends CI_Model
         $this->db->select('k.id_kamar, kk.nama, k.no_kamar, kk.harga');
         $this->db->from('tbl_kamar k');
         $this->db->join('tbl_kategori_kamar kk','kk.id_kategori_kamar = k.id_kategori_kamar');
+        $this->db->where('k.status','0');
         return $this->db->get()->result();
         // return $this->db->result();
     }

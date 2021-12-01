@@ -11,7 +11,7 @@ class Tbl_biaya_model extends CI_Model
 
     public function json()
     {
-        $this->datatables->select("b.id_biaya, kb.item, b.nama_biaya, b.biaya, b.tipe_biaya, b.presentase, b.id_biaya_presentase");
+        $this->datatables->select("b.id_biaya, kb.item, b.nama_biaya, b.biaya");
         $this->datatables->from("tbl_biaya b");
         $this->datatables->join("tbl_kategori_biaya kb", "b.id_kategori_biaya = kb.id_kategori_biaya");
         $this->datatables->add_column('action', 
