@@ -1,10 +1,10 @@
-<div class="row loop-lab" data-no="<?= $no ?>">
+<div class="row loop-radiologi" data-no="<?= $no ?>">
 <br>
     <div class="col-md-6">
-        <select name="periksa_lab[]" class="form-control select2" style="width:100%">
-        <option value="">---Pilih Pemeriksaan LAB---</option>
+        <select name="periksa_radiologi[]" class="form-control select2" style="width:100%">
+        <option value="">---Pilih Pemeriksaan Radiologi---</option>
         <?php 
-                foreach ($periksa_lab as $key => $value) {
+                foreach ($periksa_radiologi as $key => $value) {
                     echo "<option value='".$value->id_tipe."'>".$value->item."</option>";
                 }
                 ?>
@@ -17,7 +17,8 @@
         if($no!=0){
     ?>
         <div class="col-md-1">
-            <a href="" class="btn btn-danger btn-sm remove-lab" data-no="<?= $no ?>"><span class="fa fa-trash"></span></a>
+            <a href="" class="btn btn-danger btn-sm remove-radiologi" data-no="<?= $no ?>"><span class="fa fa-trash"></span></a>
         </div>
     <?php } ?>
+    
 </div>

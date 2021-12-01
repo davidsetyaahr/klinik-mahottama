@@ -4,11 +4,11 @@
             <div class="col-md-12">
                 <div class="box box-warning box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">PERIKSA LAB</h3>
+                        <h3 class="box-title">PERIKSA RADIOLOGI</h3>
                     </div>
                     <div class="box-body">
                         <div class="row col-md-12">
-                        <form action="<?= base_url()."periksamedis/save_periksa_lab" ?>" method="post">
+                        <form action="<?= base_url()."periksamedis/save_periksa_radiologi" ?>" method="post">
                             <div class="form-group row">
                                 <div class="col-md-2">No Periksa </div>
                                 <div class="col-md-10">
@@ -27,14 +27,14 @@
                                     <textarea name="alamat" class="form-control" rows="6" readonly><?= isset($alamat) ? $alamat : '' ?></textarea>
                                 </div>
                             </div>
-                            <div class="form-group" id="row-lab" data-row='0'>
+                            <div class="form-group" id="row-radiologi" data-row='0'>
                                 <?php 
-                                    $this->load->view('periksa-lab/loop-pilihan-lab',['no' => 0])
+                                    $this->load->view('periksa-radiologi/loop-pilihan-radiologi',['no' => 0])
                                 ?>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-4">
-                                    <a href="" class="btn btn-info btn-sm" id="addItemLab"><span class="fa fa-plus"></span> Tambah Item</a>
+                                    <a href="" class="btn btn-info btn-sm" id="addItemRadiologi"><span class="fa fa-plus"></span> Tambah Item</a>
                                 </div>
                             </div>
                             <div class="form-group" id="row-obat" data-row='0'>
@@ -134,27 +134,23 @@
             selectObat($(this))            
         })
 
-        $("#addItemLab").click(function(e){
+        $("#addItemRadiologi").click(function(e){
             e.preventDefault();
-            var dataRow = parseInt($('#row-lab').attr('data-row'))
+            var dataRow = parseInt($('#row-radiologi').attr('data-row'))
             $.ajax({
                 type : 'get',
-                url : '<?= base_url().'periksamedis/newItemLab' ?>',
+                url : '<?= base_url().'periksamedis/newItemradiologi' ?>',
                 data : {no : dataRow+1},
                 success : function(data){
-                    $('#row-lab').append(data)
-                    $('#row-lab').attr('data-row',dataRow + 1)
-                    // $(".select2").select2()
-                    $(".selectAlkes").change(function(){
-                        selectAlkes($(this))
-                    })
+                    $('#row-radiologi').append(data)
+                    $('#row-radiologi').attr('data-row',dataRow + 1)
 
-                    $(".remove-lab").click(function(e){
+                    $(".remove-radiologi").click(function(e){
                         e.preventDefault();
                         var dataNo = $(this).attr('data-no')
-                        var dataRow = parseInt($('#row-lab').attr('data-row'))
-                        $('.loop-lab[data-no="'+dataNo+'"]').remove()
-                        $('#row-lab').attr('data-row',dataRow-1)
+                        var dataRow = parseInt($('#row-radiologi').attr('data-row'))
+                        $('.loop-radiologi[data-no="'+dataNo+'"]').remove()
+                        $('#row-radiologi').attr('data-row',dataRow-1)
                     })
                     $(".select2").select2()
                 }
@@ -171,7 +167,9 @@
                 success : function(data){
                     $('#row-obat').append(data)
                     $('#row-obat').attr('data-row',dataRow + 1)
-
+                    $(".selectObat").change(function(){
+                        selectObat($(this))
+                    })
                     $(".remove-obat").click(function(e){
                         e.preventDefault();
                         var dataNo = $(this).attr('data-no')

@@ -4,11 +4,11 @@
             <div class="col-md-12">
                 <div class="box box-warning box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">PERIKSA LAB</h3>
+                        <h3 class="box-title">RAWAT INAP</h3>
                     </div>
                     <div class="box-body">
                         <div class="row col-md-12">
-                        <form action="<?= base_url()."periksamedis/save_periksa_lab" ?>" method="post">
+                        <form action="<?= base_url()."periksamedis/save_periksa_radiologi" ?>" method="post">
                             <div class="form-group row">
                                 <div class="col-md-2">No Periksa </div>
                                 <div class="col-md-10">
@@ -27,14 +27,24 @@
                                     <textarea name="alamat" class="form-control" rows="6" readonly><?= isset($alamat) ? $alamat : '' ?></textarea>
                                 </div>
                             </div>
-                            <div class="form-group" id="row-lab" data-row='0'>
+                            <div class="form-group" id="row-kamar" data-row='0'>
                                 <?php 
-                                    $this->load->view('periksa-lab/loop-pilihan-lab',['no' => 0])
+                                    $this->load->view('rawat-inap/loop-pilihan-kamar',['no' => 0])
                                 ?>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-4">
-                                    <a href="" class="btn btn-info btn-sm" id="addItemLab"><span class="fa fa-plus"></span> Tambah Item</a>
+                                    <a href="" class="btn btn-info btn-sm" id="addItemKamar"><span class="fa fa-plus"></span> Tambah Item</a>
+                                </div>
+                            </div>
+                            <div class="form-group" id="row-biaya" data-row='0'>
+                                <?php 
+                                    $this->load->view('rawat-inap/loop-pilihan-biaya',['no' => 0])
+                                ?>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <a href="" class="btn btn-info btn-sm" id="addItemBiaya"><span class="fa fa-plus"></span> Tambah Item</a>
                                 </div>
                             </div>
                             <div class="form-group" id="row-obat" data-row='0'>
@@ -63,17 +73,6 @@
                                 ?>
                             </div>
                             <hr>
-                            <div class="form-group row">
-							<div class="col-sm-2">Pemeriksaan Selanjutnya</div>
-							<div class="col-sm-10">
-                                <select name="pemeriksaan_selanjutnya" id="" style="width:100%" class="select2 form-control">
-                                        <option value="0">Tidak Ada</option>
-                                        <option value="1">Rawat Inap</option>
-                                        <option value="2">Laboratorium</option>
-                                        <option value="3">Radiologi</option>
-                                </select>
-							</div>
-						</div>
                             <div class="form-group row">
                             <br>
                                 <div class="col-md-12">
@@ -133,34 +132,84 @@
         $(".selectObat").change(function(){
             selectObat($(this))            
         })
+        
+        function getHarga(thisParam){
+            var harga = thisParam.find(":selected").attr('data-harga')
+            var getNo = thisParam.closest('.loop-kamar').attr('data-no')
+            $(".box-body[data-no='"+getNo+"'] .harga").val(harga)
+            // $(".box-body[data-no='"+getNo+"'] .jumlah option").remove()
+            // for (let index = stok; index > 0; index--) {
+            //     $(".box-body[data-no='"+getNo+"'] .jumlah").append("<option>"+index+"</option>")
+            // }
+        }
+        $(".getHarga").change(function(){
+            getHarga($(this))
+        })
 
-        $("#addItemLab").click(function(e){
+        function selectBiaya(thisAttr){
+            var harga = thisParam.find(":selected").attr('data-harga')
+            var getNo = thisParam.closest('.loop-biaya').attr('data-no')
+            $(".box-body[data-no='"+getNo+"'] .harga").val(harga)
+            
+        }
+
+        $(".selectBiaya").change(function(){
+            selectBiaya($(this))            
+        })
+
+        $("#addItemKamar").click(function(e){
             e.preventDefault();
-            var dataRow = parseInt($('#row-lab').attr('data-row'))
+            var dataRow = parseInt($('#row-kamar').attr('data-row'))
             $.ajax({
                 type : 'get',
-                url : '<?= base_url().'periksamedis/newItemLab' ?>',
+                url : '<?= base_url().'periksamedis/newItemRawatInap' ?>',
                 data : {no : dataRow+1},
                 success : function(data){
-                    $('#row-lab').append(data)
-                    $('#row-lab').attr('data-row',dataRow + 1)
+                    $('#row-kamar').append(data)
+                    $('#row-kamar').attr('data-row',dataRow + 1)
                     // $(".select2").select2()
                     $(".selectAlkes").change(function(){
                         selectAlkes($(this))
                     })
 
-                    $(".remove-lab").click(function(e){
+                    $(".remove-kamar").click(function(e){
                         e.preventDefault();
                         var dataNo = $(this).attr('data-no')
-                        var dataRow = parseInt($('#row-lab').attr('data-row'))
-                        $('.loop-lab[data-no="'+dataNo+'"]').remove()
-                        $('#row-lab').attr('data-row',dataRow-1)
+                        var dataRow = parseInt($('#row-kamar').attr('data-row'))
+                        $('.loop-kamar[data-no="'+dataNo+'"]').remove()
+                        $('#row-kamar').attr('data-row',dataRow-1)
                     })
                     $(".select2").select2()
                 }
             })
         })
 
+        $("#addItemBiaya").click(function(e){
+            e.preventDefault();
+            var dataRow = parseInt($('#row-biaya').attr('data-row'))
+            $.ajax({
+                type : 'get',
+                url : '<?= base_url().'periksamedis/newItemRawatInapBiaya' ?>',
+                data : {no : dataRow+1},
+                success : function(data){
+                    $('#row-biaya').append(data)
+                    $('#row-biaya').attr('data-row',dataRow + 1)
+                    // $(".select2").select2()
+                    $(".selectAlkes").change(function(){
+                        selectAlkes($(this))
+                    })
+
+                    $(".remove-biaya").click(function(e){
+                        e.preventDefault();
+                        var dataNo = $(this).attr('data-no')
+                        var dataRow = parseInt($('#row-biaya').attr('data-row'))
+                        $('.loop-biaya[data-no="'+dataNo+'"]').remove()
+                        $('#row-biaya').attr('data-row',dataRow-1)
+                    })
+                    $(".select2").select2()
+                }
+            })
+        })
         $("#addItemObat").click(function(e){
             e.preventDefault();
             var dataRow = parseInt($('#row-obat').attr('data-row'))
@@ -205,30 +254,6 @@
                         var dataRow = parseInt($('#row-alkes').attr('data-row'))
                         $('.loop-alkes[data-no="'+dataNo+'"]').remove()
                         $('#row-alkes').attr('data-row',dataRow-1)
-                    })
-                    $(".select2").select2()
-                }
-            })
-        })
-        
-        $("#addItemTindakan").click(function(e){
-            e.preventDefault();
-            var dataRow = parseInt($('#row-tindakan').attr('data-row'))
-            $.ajax({
-                type : 'get',
-                url : '<?= base_url().'periksamedis/newItemLoopTindakan' ?>',
-                data : {no : dataRow+1},
-                success : function(data){
-                    $('#row-tindakan').append(data)
-                    $('#row-tindakan').attr('data-row',dataRow + 1)
-
-
-                    $(".remove-tindakan").click(function(e){
-                        e.preventDefault();
-                        var dataNo = $(this).attr('data-no')
-                        var dataRow = parseInt($('#row-tindakan').attr('data-row'))
-                        $('.loop-tindakan[data-no="'+dataNo+'"]').remove()
-                        $('#row-tindakan').attr('data-row',dataRow-1)
                     })
                     $(".select2").select2()
                 }

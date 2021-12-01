@@ -4,11 +4,11 @@
             <div class="col-md-12">
                 <div class="box box-warning box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">PERIKSA LAB</h3>
+                        <h3 class="box-title">PERIKSA RADIOLOGI</h3>
                     </div>
                     <div class="box-body">
                         <div class="row col-md-12">
-                        <form action="<?= base_url()."periksamedis/save_periksa_lab" ?>" method="post">
+                        <form action="<?= base_url()."periksamedis/save_periksa_radiologi" ?>" method="post">
                             <div class="form-group row">
                                 <div class="col-md-2">No Periksa </div>
                                 <div class="col-md-10">
@@ -27,15 +27,10 @@
                                     <textarea name="alamat" class="form-control" rows="6" readonly><?= isset($alamat) ? $alamat : '' ?></textarea>
                                 </div>
                             </div>
-                            <div class="form-group" id="row-lab" data-row='0'>
+                            <div class="form-group" id="row-tindakan" data-row='0'>
                                 <?php 
-                                    $this->load->view('periksa-lab/loop-pilihan-lab',['no' => 0])
+                                    $this->load->view('loop/loop-pilihan-tindakan',['no' => 0])
                                 ?>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-md-4">
-                                    <a href="" class="btn btn-info btn-sm" id="addItemLab"><span class="fa fa-plus"></span> Tambah Item</a>
-                                </div>
                             </div>
                             <div class="form-group" id="row-obat" data-row='0'>
                                 <?php 
@@ -56,11 +51,6 @@
                                 <div class="col-md-4">
                                     <a href="" class="btn btn-info btn-sm" id="addItemAlkes"><span class="fa fa-plus"></span> Tambah Item</a>
                                 </div>
-                            </div>
-                            <div class="form-group" id="row-tindakan" data-row='0'>
-                                <?php 
-                                    $this->load->view('loop/loop-pilihan-tindakan',['no' => 0])
-                                ?>
                             </div>
                             <hr>
                             <div class="form-group row">
@@ -96,8 +86,8 @@
     $(document).ready(function(){
         function selectAlkes(thisAttr){
             var stok = thisAttr.find(':selected').data('stok')
-            var dataId = thisAttr.closest('.loop-alkes').attr('data-no')
-            $(".loop-alkes[data-no='"+dataId+"'] .stokAlkes option").remove();
+            var dataId = thisAttr.closest('.loop-radiologi').attr('data-no')
+            $(".loop-radiologi[data-no='"+dataId+"'] .stokAlkes option").remove();
             var option = "";
             if(stok==0){
                 option = "<option value=''>Habis</option>";
@@ -107,7 +97,7 @@
                     option+="<option>"+s+"</option>";
                 }
             }
-            $(".loop-alkes[data-no='"+dataId+"'] .stokAlkes").append(option);
+            $(".loop-radiologi[data-no='"+dataId+"'] .stokAlkes").append(option);
         }
 
         $(".selectAlkes").change(function(){
@@ -132,33 +122,6 @@
 
         $(".selectObat").change(function(){
             selectObat($(this))            
-        })
-
-        $("#addItemLab").click(function(e){
-            e.preventDefault();
-            var dataRow = parseInt($('#row-lab').attr('data-row'))
-            $.ajax({
-                type : 'get',
-                url : '<?= base_url().'periksamedis/newItemLab' ?>',
-                data : {no : dataRow+1},
-                success : function(data){
-                    $('#row-lab').append(data)
-                    $('#row-lab').attr('data-row',dataRow + 1)
-                    // $(".select2").select2()
-                    $(".selectAlkes").change(function(){
-                        selectAlkes($(this))
-                    })
-
-                    $(".remove-lab").click(function(e){
-                        e.preventDefault();
-                        var dataNo = $(this).attr('data-no')
-                        var dataRow = parseInt($('#row-lab').attr('data-row'))
-                        $('.loop-lab[data-no="'+dataNo+'"]').remove()
-                        $('#row-lab').attr('data-row',dataRow-1)
-                    })
-                    $(".select2").select2()
-                }
-            })
         })
 
         $("#addItemObat").click(function(e){

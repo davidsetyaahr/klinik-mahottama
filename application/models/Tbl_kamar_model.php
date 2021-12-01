@@ -44,4 +44,13 @@ class Tbl_kamar_model extends CI_Model
         $this->db->delete($this->table);
     }
 
+    public function get_kamar()
+    {
+        $this->db->select('k.id_kamar, kk.nama, k.no_kamar, kk.harga');
+        $this->db->from('tbl_kamar k');
+        $this->db->join('tbl_kategori_kamar kk','kk.id_kategori_kamar = k.id_kategori_kamar');
+        return $this->db->get()->result();
+        // return $this->db->result();
+    }
+
 }
