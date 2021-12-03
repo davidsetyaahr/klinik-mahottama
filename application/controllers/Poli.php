@@ -57,6 +57,39 @@ class Poli extends CI_Controller
         }
     }
 
+    public function edit($id)
+    {
+        $row = $this->Tbl_poli_model->get_by_id($id);
+
+        if ($row) {
+            $data = array(
+                'button' => 'Create',
+                'action' => site_url('poli/create_action'),
+	            'item' => set_value('item'),
+            );
+            $this->template->load('template','master_data/poli/tbl_poli_form', $data);
+        } else {
+            $this->session->set_flashdata('message', 'Record Not Found');
+            redirect(site_url('poli'));
+        }
+    }
+
+    public function update() 
+    {
+        $this->_rules();
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->edit($this->input->post('id_poli', TRUE));
+        } else {
+            $data = array(
+                'item' => $this->input->post('item',TRUE),
+            );
+            $this->Tbl_poli_model->update($this->input->post('id_poli', TRUE), $data);
+            $this->session->set_flashdata('message', 'Update Record Success');
+            redirect(site_url('poli'));
+        }
+    }
+
     public function delete($id) 
     {
         $row = $this->Tbl_poli_model->get_by_id($id);

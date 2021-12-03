@@ -6,7 +6,7 @@ if (!defined('BASEPATH'))
 class Tbl_poli_model extends CI_Model
 {
     public $table = 'tbl_poli';
-    public $id = 'id_layanan';
+    public $id = 'id_poli';
     public $order = 'DESC';
 
     function __construct()
@@ -52,7 +52,7 @@ class Tbl_poli_model extends CI_Model
         $this->datatables->select('id_poli, item');
         $this->datatables->from('tbl_poli');
         $this->datatables->add_column('action', anchor(site_url('poli/edit/$1'),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>', array('class' => 'btn btn-success btn-sm'))." 
-                ".anchor(site_url('poli/delete/$1'),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'), 'id_layanan');
+                ".anchor(site_url('poli/delete/$1'),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'), 'id_poli');
         return $this->datatables->generate();
     }
 }
