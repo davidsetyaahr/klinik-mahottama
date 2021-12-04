@@ -12,11 +12,15 @@
     </div>
     <div class='col-md-2'">
         <!-- <br> -->
-        <input type="text" class="form-control" placeholder="Kuantitas">
+        <!-- <input type="text" class="form-control" placeholder="Kuantitas"> -->
+        <?php echo form_input(array('id'=>'qty','name'=>'qty[]','type'=>'text','value'=>'','class'=>'form-control','placeholder'=>'Kuantitas','style'=>'text-align:left;'));?>
     </div>
     <div class="<?= $no!=0 ? 'col-md-2' : 'col-md-3' ?>">  
         <!-- <br> -->
-        <input type="text" class="form-control" placeholder="Sub Total" readonly>
+        <!-- <input type="text" id="harga_kamar" class="form-control harga"> -->
+        <?php echo form_input(array('id'=>'harga_kamar','name'=>'harga_kamar[]','type'=>'text','value'=>'','class'=>'form-control harga', 'readonly'=>'readonly','placeholder'=>'Sub Total','style'=>'text-align:left;'));?>
+        <br>
+        <?php echo form_input(array('id'=>'total_harga','name'=>'harga_kamar[]','type'=>'text','value'=>'','class'=>'form-control', 'readonly'=>'readonly','placeholder'=>'Grand Total','style'=>'text-align:left;'));?>
     <!--  -->
     </div>
     <?php 

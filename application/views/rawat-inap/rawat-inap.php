@@ -93,6 +93,9 @@
 <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
 <script>
     $(document).ready(function(){
+        var max_fields      = 10; //maximum input boxes allowed
+        var add_button_kamar = $("#addItemKamar");
+        var add_button_biaya = $("#addItemBiaya");
         function selectAlkes(thisAttr){
             var stok = thisAttr.find(':selected').data('stok')
             var dataId = thisAttr.closest('.loop-alkes').attr('data-no')
@@ -112,6 +115,7 @@
         $(".selectAlkes").change(function(){
             selectAlkes($(this))            
         })
+
 
         function selectObat(thisAttr){
             var stok = thisAttr.find(':selected').data('stok')
@@ -136,7 +140,19 @@
         function getHarga(thisParam){
             var harga = thisParam.find(":selected").attr('data-harga')
             var getNo = thisParam.closest('.loop-kamar').attr('data-no')
-            $(".box-body[data-no='"+getNo+"'] .harga").val(harga)
+            $(".loop-kamar[data-no='"+getNo+"'] .harga").val(harga)
+            $("#qty").keyup(function(){
+                var a = parseInt($("#qty").val());
+                var b = parseInt($("#harga_kamar").val());
+                var c = a*b;
+            $("#total_harga").val(c);
+            })
+            $("#harga_kamar").keyup(function(){
+                var a = parseInt($("#qty").val());
+                var b = parseInt($("#harga_kamar").val());
+                var c = a*b;
+                $("#total_harga").val(c);
+            })
             // $(".box-body[data-no='"+getNo+"'] .jumlah option").remove()
             // for (let index = stok; index > 0; index--) {
             //     $(".box-body[data-no='"+getNo+"'] .jumlah").append("<option>"+index+"</option>")
@@ -146,16 +162,18 @@
             getHarga($(this))
         })
 
-        function selectBiaya(thisAttr){
-            var harga = thisParam.find(":selected").attr('data-harga')
-            var getNo = thisParam.closest('.loop-biaya').attr('data-no')
-            $(".box-body[data-no='"+getNo+"'] .harga").val(harga)
-            
-        }
-
-        $(".selectBiaya").change(function(){
-            selectBiaya($(this))            
-        })
+        // function getBiaya(thisParam){
+        //     var harga = thisParam.find(":selected").attr('data-harga')
+        //     var getNo = thisParam.closest('.loop-biaya').attr('data-no')
+        //     $(".loop-biaya[data-no='"+getNo+"'] .harga").val(harga)
+        //     // $(".box-body[data-no='"+getNo+"'] .jumlah option").remove()
+        //     // for (let index = stok; index > 0; index--) {
+        //     //     $(".box-body[data-no='"+getNo+"'] .jumlah").append("<option>"+index+"</option>")
+        //     // }
+        // }
+        // $(".getBiaya").change(function(){
+        //     getBiaya($(this))
+        // })
 
         $("#addItemKamar").click(function(e){
             e.preventDefault();
@@ -168,8 +186,21 @@
                     $('#row-kamar').append(data)
                     $('#row-kamar').attr('data-row',dataRow + 1)
                     // $(".select2").select2()
-                    $(".selectAlkes").change(function(){
-                        selectAlkes($(this))
+                    $(".getHarga").change(function(){
+                        getHarga($(this))
+                    })
+                    
+                    $("#qty").keyup(function(){
+                        var a = parseInt($("#qty").val());
+                        var b = parseInt($("#harga_kamar").val());
+                        var c = a*b;
+                        $("#total_harga").val(c);
+                    })
+                    $("#harga_kamar").keyup(function(){
+                        var a = parseInt($("#qty").val());
+                        var b = parseInt($("#harga_kamar").val());
+                        var c = a*b;
+                        $("#total_harga").val(c);
                     })
 
                     $(".remove-kamar").click(function(e){
@@ -184,6 +215,49 @@
             })
         })
 
+        var x = 1 //initlal text box count 
+
+        // $(add_button_kamar).click(function(e){
+        //     e.preventDefault();
+
+        //     var option_kamar = '<option value="">---Pilih Kamar---</option>'
+        //     var kamar_option_js = ;
+        //     for (i=1;i<kamar_option_js;i++){
+        //         option_kamar += '<option value="'+kamar_option_js[i].value+'">'+kamar_option_js[i].label+'</option>'
+        //     }
+
+        //     var input_kamar = '<select id="kamar[]" name="kamar[]" class="form-control select2">'+option_kamar+'</select>';
+        //     var input_qty_kamar = '<input id="qty[]" name="qty[]" type="text" class="form-control"';
+        //     var sub_total_kamar = '<input id="harga_kamar[]" name="harga_kamar[]" type="text" value="" class="form-control" readonly="readonly" style="text-align:left;" />';
+
+        //     if(x < max_fields){
+        //         x++;
+        //         ()
+        //     }
+        // });
+        function getBiaya(thisParam){
+            var biaya = thisParam.find(":selected").attr('data-biaya')
+            var getNo = thisParam.closest('.loop-biaya').attr('data-no')
+            $(".loop-biaya[data-no='"+getNo+"'] .biaya").val(biaya)
+            $("#biaya").keyup(function(){
+                var d = parseInt($("#qty_biaya").val());
+                var e = parseInt($("#biaya").val());
+                var f = d*e;
+                $("#total_biaya").val(f);
+            })
+            $("#qty_biaya").keyup(function(){
+                var d = parseInt($("#qty_biaya").val());
+                var e = parseInt($("#biaya").val());
+                var f = d*e;
+                $("#total_biaya").val(f);
+            })
+            
+        }
+
+        $(".getBiaya").change(function(){
+            getBiaya($(this))            
+        })
+
         $("#addItemBiaya").click(function(e){
             e.preventDefault();
             var dataRow = parseInt($('#row-biaya').attr('data-row'))
@@ -195,8 +269,8 @@
                     $('#row-biaya').append(data)
                     $('#row-biaya').attr('data-row',dataRow + 1)
                     // $(".select2").select2()
-                    $(".selectAlkes").change(function(){
-                        selectAlkes($(this))
+                    $(".getBiaya").change(function(){
+                        getBiaya($(this))
                     })
 
                     $(".remove-biaya").click(function(e){
