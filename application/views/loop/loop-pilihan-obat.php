@@ -1,19 +1,27 @@
 <div class="row loop-obat" data-no="<?= $no ?>">
 <br>
-<div class="col-md-6">
-        <select name="kode_barang[]" class="form-control select2 selectObat">
+<div class="col-md-5">
+        <select name="kode_barang[]" class="form-control select2 selectObat obat">
             <option value="">---Pilih Obat---</option>
             <?php 
             foreach ($obat as $key => $value) {
-                    echo "<option data-stok='".$value->stok_barang."' value='".$value->kode_barang."'>".$value->nama_barang."</option>";
+                    echo "<option data-stok='".$value->stok_barang."' data-harga='".$value->harga."' value='".$value->kode_barang."'>".$value->nama_barang."</option>";
             }
         ?>
         </select>
     </div>
-    <div class="<?= $no!=0 ? 'col-md-5' : 'col-md-6' ?>">
-        <select name="jml_barang[]" class="form-control stokObat">
+    <div class="col-md-2">
+        <select name="jml_barang[]" class="form-control stokObat qty">
         </select>
         <!-- <input type="text" name="hasil[]" class="form-control" placeholder="Hasil" id="" style="<?php echo ($no!=0) ? 'margin-right:10px' : '' ?>"> -->
+    </div>
+    <div class="col-md-2">
+        <input type="text" class="form-control harga" placeholder="Harga Obat" readonly>
+        <!-- <?php echo form_input(array('id'=>'harga_obat','name'=>'harga_obat[]','type'=>'text','value'=>'', 'readonly'=>'readonly','class'=>'form-control harga_obat','placeholder'=>'Harga Obat','style'=>'text-align:left;'));?> -->
+    </div>
+    <div class="<?= $no!=0 ? 'col-md-2' : 'col-md-3' ?>">
+    <input type="text" class="form-control total" placeholder="Sub Total" readonly>
+        <!-- <?php echo form_input(array('id'=>'harga_obat','name'=>'harga_obat[]','type'=>'text','value'=>'', 'readonly'=>'readonly','class'=>'form-control harga_obat','placeholder'=>'Sub Total','style'=>'text-align:left;'));?> -->
     </div>
     <?php 
         if($no!=0){

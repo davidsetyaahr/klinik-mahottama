@@ -27,16 +27,21 @@
                                     <textarea name="alamat" class="form-control" rows="6" readonly><?= isset($alamat) ? $alamat : '' ?></textarea>
                                 </div>
                             </div>
-                            <div class="form-group" id="row-kamar" data-row='0'>
-                                <?php 
-                                    $this->load->view('rawat-inap/loop-pilihan-kamar',['no' => 0])
-                                ?>
+                            <!-- START: input kamar -->
+                            <div id="input_fields_wrap_kamar">
+                                <div class="form-group" id="row-kamar" data-row='0'>
+                                    <?php 
+                                        $this->load->view('rawat-inap/loop-pilihan-kamar',['no' => 0])
+                                    ?>
+                                </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-md-4">
+                                <div class="col-md-12">
+                                    <!-- <button id="addItemKamar" class="btn btn-info btn-md"><i class="fa fa-plus"> Tambah item</i></button> -->
                                     <a href="" class="btn btn-info btn-sm" id="addItemKamar"><span class="fa fa-plus"></span> Tambah Item</a>
                                 </div>
                             </div>
+                            <!-- END: input kamar -->
                             <div class="form-group" id="row-biaya" data-row='0'>
                                 <?php 
                                     $this->load->view('rawat-inap/loop-pilihan-biaya',['no' => 0])
@@ -93,11 +98,12 @@
 <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
 <script>
     $(document).ready(function(){
-        var max_fields      = 10; //maximum input boxes allowed
-        var add_button_kamar = $("#addItemKamar");
-        var add_button_biaya = $("#addItemBiaya");
+        function get_kamar(selectObject = null, isCheckJml = false){
+
+        }
         function selectAlkes(thisAttr){
             var stok = thisAttr.find(':selected').data('stok')
+            var harga = thisAttr.find(':selected').data('harga')
             var dataId = thisAttr.closest('.loop-alkes').attr('data-no')
             $(".loop-alkes[data-no='"+dataId+"'] .stokAlkes option").remove();
             var option = "";
@@ -110,15 +116,16 @@
                 }
             }
             $(".loop-alkes[data-no='"+dataId+"'] .stokAlkes").append(option);
+            $(".loop-alkes[data-no='"+dataId+"'] .harga").val(harga)
         }
 
         $(".selectAlkes").change(function(){
             selectAlkes($(this))            
         })
 
-
         function selectObat(thisAttr){
             var stok = thisAttr.find(':selected').data('stok')
+            var harga = thisAttr.find(':selected').data('harga')
             var dataId = thisAttr.closest('.loop-obat').attr('data-no')
             $(".loop-obat[data-no='"+dataId+"'] .stokObat option").remove();
             var option = "";
@@ -131,49 +138,67 @@
                 }
             }
             $(".loop-obat[data-no='"+dataId+"'] .stokObat").append(option);
+            $(".loop-obat[data-no='"+dataId+"'] .harga").val(harga);
         }
 
         $(".selectObat").change(function(){
             selectObat($(this))            
         })
-        
+
+        function subTotalObat(dataNo){
+            var qty = parseInt($(".loop-obat[data-no='"+dataNo+"'] .qty").val())
+            console.log(qty);
+            var harga = parseInt($(".loop-obat[data-no='"+dataNo+"'] .harga").val())
+            var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
+            $(".loop-obat[data-no='"+dataNo+"'] .total").val(subtotal)
+        }
+        $(".qty").keyup(function(){
+            var dataNo = $(this).closest('.loop-obat').attr('data-no')
+            subTotalObat(dataNo)            
+        })
+        $(".obat").change(function(){
+            var dataNo = $(this).closest('.loop-obat').attr('data-no')
+            subTotalObat(dataNo)            
+        })
+
+        function subTotalAlkes(dataNo){
+            var qty = parseInt($(".loop-alkes[data-no='"+dataNo+"'] .qty").val())
+            var harga = parseInt($(".loop-alkes[data-no='"+dataNo+"'] .harga").val())
+            var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
+            $(".loop-alkes[data-no='"+dataNo+"'] .total").val(subtotal)
+        }
+        $(".qty").keyup(function(){
+            var dataNo = $(this).closest('.loop-alkes').attr('data-no')
+            subTotalAlkes(dataNo)            
+        })
+        $(".alkes").change(function(){
+            var dataNo = $(this).closest('.loop-alkes').attr('data-no')
+            subTotalAlkes(dataNo)            
+        })
+
+        function subTotalKamar(dataNo){
+            var qty = parseInt($(".loop-kamar[data-no='"+dataNo+"'] .qty").val())
+            var harga = parseInt($(".loop-kamar[data-no='"+dataNo+"'] .harga").val())
+            var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
+            $(".loop-kamar[data-no='"+dataNo+"'] .total").val(subtotal)
+        }
+        $(".qty").keyup(function(){
+            var dataNo = $(this).closest('.loop-kamar').attr('data-no')
+            subTotalKamar(dataNo)            
+        })
+        $(".kamar").change(function(){
+            var dataNo = $(this).closest('.loop-kamar').attr('data-no')
+            subTotalKamar(dataNo)            
+        })
+
         function getHarga(thisParam){
             var harga = thisParam.find(":selected").attr('data-harga')
             var getNo = thisParam.closest('.loop-kamar').attr('data-no')
             $(".loop-kamar[data-no='"+getNo+"'] .harga").val(harga)
-            $("#qty").keyup(function(){
-                var a = parseInt($("#qty").val());
-                var b = parseInt($("#harga_kamar").val());
-                var c = a*b;
-            $("#total_harga").val(c);
+            }
+            $(".getHarga").change(function(){
+                getHarga($(this))
             })
-            $("#harga_kamar").keyup(function(){
-                var a = parseInt($("#qty").val());
-                var b = parseInt($("#harga_kamar").val());
-                var c = a*b;
-                $("#total_harga").val(c);
-            })
-            // $(".box-body[data-no='"+getNo+"'] .jumlah option").remove()
-            // for (let index = stok; index > 0; index--) {
-            //     $(".box-body[data-no='"+getNo+"'] .jumlah").append("<option>"+index+"</option>")
-            // }
-        }
-        $(".getHarga").change(function(){
-            getHarga($(this))
-        })
-
-        // function getBiaya(thisParam){
-        //     var harga = thisParam.find(":selected").attr('data-harga')
-        //     var getNo = thisParam.closest('.loop-biaya').attr('data-no')
-        //     $(".loop-biaya[data-no='"+getNo+"'] .harga").val(harga)
-        //     // $(".box-body[data-no='"+getNo+"'] .jumlah option").remove()
-        //     // for (let index = stok; index > 0; index--) {
-        //     //     $(".box-body[data-no='"+getNo+"'] .jumlah").append("<option>"+index+"</option>")
-        //     // }
-        // }
-        // $(".getBiaya").change(function(){
-        //     getBiaya($(this))
-        // })
 
         $("#addItemKamar").click(function(e){
             e.preventDefault();
@@ -185,22 +210,16 @@
                 success : function(data){
                     $('#row-kamar').append(data)
                     $('#row-kamar').attr('data-row',dataRow + 1)
-                    // $(".select2").select2()
                     $(".getHarga").change(function(){
                         getHarga($(this))
                     })
-                    
-                    $("#qty").keyup(function(){
-                        var a = parseInt($("#qty").val());
-                        var b = parseInt($("#harga_kamar").val());
-                        var c = a*b;
-                        $("#total_harga").val(c);
+                    $(".qty").keyup(function(){
+                        var dataNo = $(this).closest('.loop-kamar').attr('data-no')
+                        subTotalKamar(dataNo)            
                     })
-                    $("#harga_kamar").keyup(function(){
-                        var a = parseInt($("#qty").val());
-                        var b = parseInt($("#harga_kamar").val());
-                        var c = a*b;
-                        $("#total_harga").val(c);
+                    $(".kamar").change(function(){
+                        var dataNo = $(this).closest('.loop-kamar').attr('data-no')
+                        subTotalKamar(dataNo)            
                     })
 
                     $(".remove-kamar").click(function(e){
@@ -215,47 +234,30 @@
             })
         })
 
-        var x = 1 //initlal text box count 
+        function subTotalBiaya(dataNo){
+            var qty_biaya = parseInt($(".loop-biaya[data-no='"+dataNo+"'] .qty_biaya").val())
+            var biaya = parseInt($(".loop-biaya[data-no='"+dataNo+"'] .biaya").val())
+            var subtotal = isNaN(qty_biaya*biaya) ? 0 : qty_biaya*biaya 
+            $(".loop-biaya[data-no='"+dataNo+"'] .total_biaya").val(subtotal)
+        }
 
-        // $(add_button_kamar).click(function(e){
-        //     e.preventDefault();
+        $(".qty_biaya").keyup(function(){
+            var dataNo = $(this).closest('.loop-biaya').attr('data-no')
+            subTotalBiaya(dataNo)            
+        })
+        $(".tipe-biaya").change(function(){
+            var dataNo = $(this).closest('.loop-biaya').attr('data-no')
+            subTotalBiaya(dataNo)            
+        })
 
-        //     var option_kamar = '<option value="">---Pilih Kamar---</option>'
-        //     var kamar_option_js = ;
-        //     for (i=1;i<kamar_option_js;i++){
-        //         option_kamar += '<option value="'+kamar_option_js[i].value+'">'+kamar_option_js[i].label+'</option>'
-        //     }
-
-        //     var input_kamar = '<select id="kamar[]" name="kamar[]" class="form-control select2">'+option_kamar+'</select>';
-        //     var input_qty_kamar = '<input id="qty[]" name="qty[]" type="text" class="form-control"';
-        //     var sub_total_kamar = '<input id="harga_kamar[]" name="harga_kamar[]" type="text" value="" class="form-control" readonly="readonly" style="text-align:left;" />';
-
-        //     if(x < max_fields){
-        //         x++;
-        //         ()
-        //     }
-        // });
         function getBiaya(thisParam){
             var biaya = thisParam.find(":selected").attr('data-biaya')
             var getNo = thisParam.closest('.loop-biaya').attr('data-no')
             $(".loop-biaya[data-no='"+getNo+"'] .biaya").val(biaya)
-            $("#biaya").keyup(function(){
-                var d = parseInt($("#qty_biaya").val());
-                var e = parseInt($("#biaya").val());
-                var f = d*e;
-                $("#total_biaya").val(f);
-            })
-            $("#qty_biaya").keyup(function(){
-                var d = parseInt($("#qty_biaya").val());
-                var e = parseInt($("#biaya").val());
-                var f = d*e;
-                $("#total_biaya").val(f);
-            })
-            
         }
 
         $(".getBiaya").change(function(){
-            getBiaya($(this))            
+            getBiaya($(this))
         })
 
         $("#addItemBiaya").click(function(e){
@@ -268,11 +270,17 @@
                 success : function(data){
                     $('#row-biaya').append(data)
                     $('#row-biaya').attr('data-row',dataRow + 1)
-                    // $(".select2").select2()
                     $(".getBiaya").change(function(){
                         getBiaya($(this))
                     })
-
+                    $(".qty_biaya").keyup(function(){
+                        var dataNo = $(this).closest('.loop-biaya').attr('data-no')
+                        subTotalBiaya(dataNo)            
+                    })
+                    $(".tipe-biaya").change(function(){
+                        var dataNo = $(this).closest('.loop-biaya').attr('data-no')
+                        subTotalBiaya(dataNo)            
+                    })
                     $(".remove-biaya").click(function(e){
                         e.preventDefault();
                         var dataNo = $(this).attr('data-no')
@@ -294,7 +302,10 @@
                 success : function(data){
                     $('#row-obat').append(data)
                     $('#row-obat').attr('data-row',dataRow + 1)
-
+                    $(".selectObat").change(function(){
+                        selectObat($(this))            
+                    })
+        
                     $(".remove-obat").click(function(e){
                         e.preventDefault();
                         var dataNo = $(this).attr('data-no')
@@ -317,7 +328,6 @@
                 success : function(data){
                     $('#row-alkes').append(data)
                     $('#row-alkes').attr('data-row',dataRow + 1)
-                    // $(".select2").select2()
                     $(".selectAlkes").change(function(){
                         selectAlkes($(this))
                     })

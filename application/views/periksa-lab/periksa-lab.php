@@ -96,6 +96,7 @@
     $(document).ready(function(){
         function selectAlkes(thisAttr){
             var stok = thisAttr.find(':selected').data('stok')
+            var harga = thisAttr.find(':selected').data('harga')
             var dataId = thisAttr.closest('.loop-alkes').attr('data-no')
             $(".loop-alkes[data-no='"+dataId+"'] .stokAlkes option").remove();
             var option = "";
@@ -108,6 +109,7 @@
                 }
             }
             $(".loop-alkes[data-no='"+dataId+"'] .stokAlkes").append(option);
+            $(".loop-alkes[data-no='"+dataId+"'] .harga").val(harga);
         }
 
         $(".selectAlkes").change(function(){
@@ -116,6 +118,7 @@
 
         function selectObat(thisAttr){
             var stok = thisAttr.find(':selected').data('stok')
+            var harga = thisAttr.find(':selected').data('harga')
             var dataId = thisAttr.closest('.loop-obat').attr('data-no')
             $(".loop-obat[data-no='"+dataId+"'] .stokObat option").remove();
             var option = "";
@@ -128,10 +131,41 @@
                 }
             }
             $(".loop-obat[data-no='"+dataId+"'] .stokObat").append(option);
+            $(".loop-obat[data-no='"+dataId+"'] .harga").val(harga)
         }
 
         $(".selectObat").change(function(){
             selectObat($(this))            
+        })
+
+        function subTotalObat(dataNo){
+            var qty = parseInt($(".loop-obat[data-no='"+dataNo+"'] .qty").val())
+            var harga = parseInt($(".loop-obat[data-no='"+dataNo+"'] .harga").val())
+            var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
+            $(".loop-obat[data-no='"+dataNo+"'] .total").val(subtotal)
+        }
+        $(".qty").keyup(function(){
+            var dataNo = $(this).closest('.loop-obat').attr('data-no')
+            subTotalObat(dataNo)            
+        })
+        $(".obat").change(function(){
+            var dataNo = $(this).closest('.loop-obat').attr('data-no')
+            subTotalObat(dataNo)            
+        })
+
+        function subTotalAlkes(dataNo){
+            var qty = parseInt($(".loop-alkes[data-no='"+dataNo+"'] .qty").val())
+            var harga = parseInt($(".loop-alkes[data-no='"+dataNo+"'] .harga").val())
+            var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
+            $(".loop-alkes[data-no='"+dataNo+"'] .total").val(subtotal)
+        }
+        $(".qty").keyup(function(){
+            var dataNo = $(this).closest('.loop-alkes').attr('data-no')
+            subTotalAlkes(dataNo)            
+        })
+        $(".alkes").change(function(){
+            var dataNo = $(this).closest('.loop-alkes').attr('data-no')
+            subTotalAlkes(dataNo)            
         })
 
         $("#addItemLab").click(function(e){
@@ -171,7 +205,9 @@
                 success : function(data){
                     $('#row-obat').append(data)
                     $('#row-obat').attr('data-row',dataRow + 1)
-
+                    $(".selectObat").change(function(e){
+                        selectObat($(this))
+                    })
                     $(".remove-obat").click(function(e){
                         e.preventDefault();
                         var dataNo = $(this).attr('data-no')

@@ -1061,7 +1061,6 @@ class Periksamedis extends CI_Controller
 
     public function newItemLoopObat()
     {
-        $this->data['periksa_radiologi'] = $this->db->get('tbl_tipe_periksa_radiologi')->result();
         $this->data['obat'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik,false,1);
         $this->data['no'] = $_GET['no'];
         $this->load->view('loop/loop-pilihan-obat',$this->data);
@@ -1069,7 +1068,6 @@ class Periksamedis extends CI_Controller
 
     public function newItemLoopAlkes()
     {
-        $this->data['periksa_radiologi'] = $this->db->get('tbl_tipe_periksa_radiologi')->result();
         $this->data['alkes'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik,false,2);
         $this->data['no'] = $_GET['no'];
         $this->load->view('loop/loop-pilihan-alkes',$this->data);
@@ -1077,7 +1075,6 @@ class Periksamedis extends CI_Controller
 
     public function newItemLoopTindakan()
     {
-        $this->data['periksa_radiologi'] = $this->db->get('tbl_tipe_periksa_radiologi')->result();
         $this->data['tindakan'] = $this->db->get('tbl_tipe_periksa_radiologi')->result();
         $this->data['no'] = $_GET['no'];
         $this->load->view('loop/loop-pilihan-tindakan',$this->data);
@@ -1094,8 +1091,6 @@ class Periksamedis extends CI_Controller
         }
 
         $this->data['no_periksa'] = $data_pendaftaran->no_pendaftaran.'/'.$date_now.'/'.$data_pendaftaran->no_rekam_medis;
-
-        // $this->data['periksa_radiologi'] = $this->db->get('tbl_tipe_periksa_radiologi')->result();
         $this->data['tindakan'] = $this->db->get('tbl_tindakan')->result();
         $this->data['obat'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik,false,1);
         $this->data['alkes'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik,false,2);
@@ -1126,7 +1121,6 @@ class Periksamedis extends CI_Controller
     {
         $this->data['no'] = $_GET['no'];
         $this->data['kamar'] = $this->Tbl_kamar_model->get_kamar();
-        $this->data['alkes'] = $this->db->get('tbl_obat_alkes_bhp')->result();
         $this->load->view('rawat-inap/loop-pilihan-kamar',$this->data);
     }
 
