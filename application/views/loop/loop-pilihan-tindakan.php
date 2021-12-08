@@ -5,7 +5,7 @@
         <select name="tindakan[]" multiple="multiple" style="width:100%" class="select2 form-control">
             <?php 
                 foreach ($tindakan as $key => $value) {
-                        echo "<option value='".$value->kode_tindakan."'>".$value->tindakan."</option>";
+                        echo "<option value='".$value->kode_tindakan."'>Tindakan ".$value->tindakan." Biaya ".$value->biaya."</option>";
                 }
             ?>
         </select>

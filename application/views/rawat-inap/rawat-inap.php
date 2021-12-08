@@ -78,6 +78,12 @@
                                 ?>
                             </div>
                             <hr>
+                            <div class="form-group">
+                                <div class="col-md-5 pull-right">
+                                    <input type="text" class="form-control grandtotal" placeholder="Grand Total" readonly>
+                                </div>
+                            </div>
+                            <br>
                             <div class="form-group row">
                             <br>
                                 <div class="col-md-12">
@@ -185,7 +191,7 @@
             var dataNo = $(this).closest('.loop-kamar').attr('data-no')
             subTotalKamar(dataNo)            
         })
-        $(".kamar").change(function(){
+        $(".tipe-kamar").change(function(){
             var dataNo = $(this).closest('.loop-kamar').attr('data-no')
             subTotalKamar(dataNo)            
         })
@@ -216,7 +222,7 @@
                         var dataNo = $(this).closest('.loop-kamar').attr('data-no')
                         subTotalKamar(dataNo)            
                     })
-                    $(".kamar").change(function(){
+                    $(".tipe-kamar").change(function(){
                         var dataNo = $(this).closest('.loop-kamar').attr('data-no')
                         subTotalKamar(dataNo)            
                     })
@@ -258,6 +264,11 @@
         $(".getBiaya").change(function(){
             getBiaya($(this))
         })
+
+        function grandTotal(){
+            var x = subTotalBiaya(dataNo)+subTotalBiaya(dataNo)
+            console.log(x);
+        }
 
         $("#addItemBiaya").click(function(e){
             e.preventDefault();

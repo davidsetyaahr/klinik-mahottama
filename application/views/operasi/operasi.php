@@ -134,7 +134,7 @@
             var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
             $(".loop-obat[data-no='"+dataNo+"'] .total").val(subtotal)
         }
-        $(".qty").keyup(function(){
+        $(".qty").change(function(){
             var dataNo = $(this).closest('.loop-obat').attr('data-no')
             subTotalObat(dataNo)            
         })
@@ -149,7 +149,7 @@
             var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
             $(".loop-alkes[data-no='"+dataNo+"'] .total").val(subtotal)
         }
-        $(".qty").keyup(function(){
+        $(".qty").change(function(){
             var dataNo = $(this).closest('.loop-alkes').attr('data-no')
             subTotalAlkes(dataNo)            
         })
@@ -170,6 +170,14 @@
                     $('#row-obat').attr('data-row',dataRow + 1)
                     $(".selectObat").change(function(e){
                         selectObat($(this))
+                    })
+                    $(".qty").change(function(){
+                        var dataNo = $(this).closest('.loop-obat').attr('data-no')
+                        subTotalObat(dataNo)            
+                    })
+                    $(".obat").change(function(){
+                        var dataNo = $(this).closest('.loop-obat').attr('data-no')
+                        subTotalObat(dataNo)            
                     })
                     $(".remove-obat").click(function(e){
                         e.preventDefault();
@@ -197,7 +205,14 @@
                     $(".selectAlkes").change(function(){
                         selectAlkes($(this))
                     })
-
+                    $(".qty").change(function(){
+                        var dataNo = $(this).closest('.loop-alkes').attr('data-no')
+                        subTotalAlkes(dataNo)            
+                    })
+                    $(".alkes").change(function(){
+                        var dataNo = $(this).closest('.loop-alkes').attr('data-no')
+                        subTotalAlkes(dataNo)            
+                    })
                     $(".remove-alkes").click(function(e){
                         e.preventDefault();
                         var dataNo = $(this).attr('data-no')
