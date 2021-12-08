@@ -11,7 +11,7 @@
         </select>
     </div>
     <div class="col-md-2">
-        <select name="jml_barang[]" class="form-control stokAlkes qty">
+        <select name="jml_barang[]" class="form-control stokAlkes qty" >
         </select>
         <!-- <input type="text" name="hasil[]" class="form-control" placeholder="Hasil" id="" style="<?php echo ($no!=0) ? 'margin-right:10px' : '' ?>"> -->
     </div>

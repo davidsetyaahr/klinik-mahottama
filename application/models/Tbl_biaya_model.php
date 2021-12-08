@@ -16,7 +16,7 @@ class Tbl_biaya_model extends CI_Model
         $this->datatables->join("tbl_kategori_biaya kb", "b.id_kategori_biaya = kb.id_kategori_biaya");
         $this->datatables->add_column('action', 
                 anchor(site_url('biaya/edit/$1'),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>', array('class' => 'btn btn-success btn-sm'))." 
-                ".anchor(site_url('biaya/delete/$1'),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'), 'id_tipe');
+                ".anchor(site_url('biaya/delete/$1'),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'), 'id_biaya');
             
         return $this->datatables->generate();
     }

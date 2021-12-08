@@ -1,7 +1,7 @@
 <div class="row loop-biaya" data-no="<?= $no ?>">
 <br>
     <div class="col-md-5">
-        <select name="biaya[]" class="form-control select2 getBiaya tipe-biaya" style="width:100%">
+        <select name="biaya[]" class="form-control select2 getBiaya tipe-biaya" style="width:100%" onkeyup="subTotalBiaya()">
         <option value="">---Pilih Biaya---</option>
         <?php 
             foreach ($biaya as $key => $value) {
