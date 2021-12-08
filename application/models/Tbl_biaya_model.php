@@ -11,7 +11,7 @@ class Tbl_biaya_model extends CI_Model
 
     public function json()
     {
-        $this->datatables->select("b.id_biaya, kb.item, b.nama_biaya, b.biaya");
+        $this->datatables->select("b.id_biaya, kb.item, b.nama_biaya, b.tipe_biaya, case when b.tipe_biaya = '1' then b.biaya else b.presentase / 100 * (select biaya from tbl_biaya where id_biaya = b.id_biaya_presentase) end as biaya");
         $this->datatables->from("tbl_biaya b");
         $this->datatables->join("tbl_kategori_biaya kb", "b.id_kategori_biaya = kb.id_kategori_biaya");
         $this->datatables->add_column('action', 
@@ -20,6 +20,14 @@ class Tbl_biaya_model extends CI_Model
             
         return $this->datatables->generate();
     }
+    function getBiayaFix($not=null){
+        $this->db->select('id_biaya,nama_biaya,biaya');
+        $where = ['tipe_biaya' => '1'];
+        if($not!=null){
+            $where['id_biaya !='] = $not;
+        }
+        return $this->db->get_where('tbl_biaya',$where)->result();
+    }
     public function insert($data)
     {
         $this->db->insert($this->table,$data);
@@ -27,8 +35,9 @@ class Tbl_biaya_model extends CI_Model
     // get data by id
     function get_by_id($id)
     {
+        $this->db->select("b.*,case when b.tipe_biaya = '1' then b.biaya else b.presentase / 100 * (select biaya from tbl_biaya where id_biaya = b.id_biaya_presentase) end as biaya");
         $this->db->where($this->id, $id);
-        return $this->db->get($this->table)->row();
+        return $this->db->get($this->table." b")->row();
     }
     // update data
     function update($id, $data)

@@ -38,8 +38,12 @@ class Biaya extends CI_Controller
             'id_biaya' => set_value('id_biaya'),
             'id_kategori_biaya' => set_value('id_kategori_biaya'),
             'nama_biaya' => set_value('nama_biaya'),
+            'tipe_biaya' => set_value('tipe_biaya'),
+            'presentase' => set_value('presentase'),
+            'id_biaya_presentase' => set_value('id_biaya_presentase'),
             'biaya' => set_value('biaya'),
-            'item' => $this->Tbl_kategori_biaya_model->get_all()
+            'item' => $this->Tbl_kategori_biaya_model->get_all(),
+            'biayaFix' => $this->Tbl_biaya_model->getBiayaFix()
         );
         $this->template->load('template','master_data/biaya/tbl_biaya_form', $data);
     }
@@ -54,8 +58,15 @@ class Biaya extends CI_Controller
             $data = array(
                 'id_kategori_biaya' => $this->input->post('id_kategori_biaya', TRUE),
                 'nama_biaya' => $this->input->post('nama_biaya', TRUE),
-                'biaya' => $this->input->post('biaya', TRUE),
+                'tipe_biaya' => $this->input->post('tipe_biaya', TRUE),
             );
+            if($data['tipe_biaya']=='1'){
+                $data['biaya'] = $this->input->post('biaya', TRUE);
+            }
+            else{
+                $data['presentase'] = $this->input->post('persentase', TRUE);
+                $data['id_biaya_presentase'] = $this->input->post('id_biaya_persentase', TRUE);
+            }
             $this->Tbl_biaya_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('biaya'));
@@ -65,16 +76,19 @@ class Biaya extends CI_Controller
     public function edit($id)
     {
         $row = $this->Tbl_biaya_model->get_by_id($id);
-
         if ($row) {
             $data = array(
                 'button' => 'Update',
                 'action' => site_url('biaya/update'),
                 'id_biaya' => set_value('id_biaya',$row->id_biaya),
                 'id_kategori_biaya' => set_value('id_kategori_biaya',$row->id_kategori_biaya),
+                'tipe_biaya' => set_value('tipe_biaya',$row->tipe_biaya),
+                'presentase' => set_value('presentase',$row->presentase),
+                'id_biaya_presentase' => set_value('id_biaya_presentase',$row->id_biaya_presentase),
                 'nama_biaya' => set_value('nama_biaya',$row->nama_biaya),
                 'biaya' => set_value('biaya',$row->biaya),
-                'item' => $this->Tbl_kategori_biaya_model->get_all()
+                'item' => $this->Tbl_kategori_biaya_model->get_all(),
+                'biayaFix' => $this->Tbl_biaya_model->getBiayaFix($not=$id)
             );
             $this->template->load('template','master_data/biaya/tbl_biaya_form', $data);
         } else {
@@ -93,8 +107,19 @@ class Biaya extends CI_Controller
             $data = array(
                 'id_kategori_biaya' => $this->input->post('id_kategori_biaya', TRUE),
                 'nama_biaya' => $this->input->post('nama_biaya', TRUE),
-                'biaya' => $this->input->post('biaya', TRUE),
+                'tipe_biaya' => $this->input->post('tipe_biaya', TRUE),
             );
+            if($data['tipe_biaya']=='1'){
+                $data['biaya'] = $this->input->post('biaya', TRUE);
+                $data['presentase'] = null;
+                $data['id_biaya_presentase'] = null;
+            }
+            else{
+                $data['biaya'] = 0;
+                $data['presentase'] = $this->input->post('persentase', TRUE);
+                $data['id_biaya_presentase'] = $this->input->post('id_biaya_persentase', TRUE);
+            }
+
             $this->Tbl_biaya_model->update($this->input->post('id_biaya', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('biaya'));
