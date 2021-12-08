@@ -1,7 +1,7 @@
 <div class="row loop-alkes" data-no="<?= $no ?>">
 <br>
 <div class="col-md-5">
-        <select name="kode_barang[]" class="form-control select2 selectAlkes alkes">
+        <select name="kode_obat[]" class="form-control select2 selectAlkes alkes">
             <option value="">---Pilih Alkes---</option>
             <?php 
             foreach ($alkes as $key => $value) {
@@ -11,7 +11,7 @@
         </select>
     </div>
     <div class="col-md-2">
-        <select name="jml_barang[]" class="form-control stokAlkes qty" >
+        <select name="jml_obat[]" class="form-control stokAlkes qty" >
         </select>
         <!-- <input type="text" name="hasil[]" class="form-control" placeholder="Hasil" id="" style="<?php echo ($no!=0) ? 'margin-right:10px' : '' ?>"> -->
     </div>

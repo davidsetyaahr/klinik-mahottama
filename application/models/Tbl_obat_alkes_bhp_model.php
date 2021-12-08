@@ -272,8 +272,8 @@ class Tbl_obat_alkes_bhp_model extends CI_Model
     {
         $this->db->select('tbl_obat_alkes_bhp.*, tbl_pabrik.nama_pabrik,nama_kategori as kategori_barang,nama_satuan as satuan_barang');
         $this->db->join('tbl_pabrik','tbl_obat_alkes_bhp.kode_pabrik=tbl_pabrik.kode_pabrik', 'left');
-        $this->db->join('tbl_kategori_barang', 'tbl_obat_alkes_bhp.id_kategori_barang=tbl_kategori_barang.id_kategori_barang');
-        $this->db->join('tbl_satuan_barang', 'tbl_obat_alkes_bhp.id_satuan_barang=tbl_satuan_barang.id_satuan');
+        $this->db->join('tbl_kategori_barang', 'tbl_obat_alkes_bhp.id_kategori_barang=tbl_kategori_barang.id_kategori_barang','left');
+        $this->db->join('tbl_satuan_barang', 'tbl_obat_alkes_bhp.id_satuan_barang=tbl_satuan_barang.id_satuan','left');
         // $this->db->where('tbl_obat_alkes_bhp.jenis_barang', '1'); //Get jenis barang = obat
 
         return $this->db->get($this->table)->result();

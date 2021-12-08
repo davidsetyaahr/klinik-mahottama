@@ -62,6 +62,36 @@
                                     $this->load->view('loop/loop-pilihan-tindakan',['no' => 0])
                                 ?>
                             </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Total Biaya Periksa Lab</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="totalLab" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Total Biaya Obat</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="totalObat" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Total Biaya BMHP</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="totalAlkes" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Total Biaya Tindakan</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="totalTindakan" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Grand Total</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="grandTotal" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
                             <hr>
                             <div class="form-group row">
 							<div class="col-sm-2">Pemeriksaan Selanjutnya</div>
@@ -115,6 +145,69 @@
         $(".selectAlkes").change(function(){
             selectAlkes($(this))            
         })
+        function getHargaLab(thisAttr){
+            var getHarga = thisAttr.find(':selected').data('harga')
+            var dataId = thisAttr.closest('.loop-lab').attr('data-no')
+            $(".loop-lab[data-no='"+dataId+"'] .total").val(getHarga);
+        }
+        $(".periksaLab").change(function(){
+            getHargaLab($(this))
+            totalPeriksaLab()
+        })
+
+        function totalObat(){
+            var totalObat = 0
+            $(".loop-obat .total").each(function(i,v){
+                var subtotal = parseInt(v.value)
+                totalObat+=subtotal
+            })
+            $("#totalObat").val(totalObat)
+            grandTotal()
+        }
+
+        function totalAlkes(){
+            var totalAlkes = 0
+            $(".loop-alkes .total").each(function(i,v){
+                var subtotal = parseInt(v.value)
+                totalAlkes+=subtotal
+            })
+            $("#totalAlkes").val(totalAlkes)
+            grandTotal()
+        }
+        $(".tindakan").change(function(){
+            var totalTindakan = 0
+            var valTindakan = $(this).val()
+            if(valTindakan!=null){
+                $.each(valTindakan, function(i,v){
+                    var harga = parseInt($(".tindakan option[value='"+v+"']").attr('data-harga'))
+                    totalTindakan+=harga
+                })
+            }
+            $("#totalTindakan").val(totalTindakan)
+            grandTotal()
+        })
+
+        function totalPeriksaLab(){
+            var totalLab = 0
+            $(".loop-lab .total").each(function(i,v){
+                var subtotal = parseInt(v.value)
+                totalLab+=subtotal
+            })
+            $("#totalLab").val(totalLab)
+            grandTotal()
+        }
+
+        function grandTotal(){
+            var totalObat = parseInt($("#totalObat").val())
+            var totalAlkes = parseInt($("#totalAlkes").val())
+            var totalTindakan = parseInt($("#totalTindakan").val())
+            var totalLab = parseInt($("#totalLab").val())
+
+            var grandTotal = totalObat + totalAlkes + totalTindakan + totalLab
+            $("#grandTotal").val(grandTotal)
+        }
+
+        
 
         function selectObat(thisAttr){
             var stok = thisAttr.find(':selected').data('stok')
@@ -144,13 +237,15 @@
             var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
             $(".loop-obat[data-no='"+dataNo+"'] .total").val(subtotal)
         }
-        $(".qty").change(function(){
+        $(".loop-obat .qty").change(function(){
             var dataNo = $(this).closest('.loop-obat').attr('data-no')
-            subTotalObat(dataNo)            
+            subTotalObat(dataNo)         
+            totalObat()
         })
-        $(".obat").change(function(){
+        $(".loop-obat .obat").change(function(){
             var dataNo = $(this).closest('.loop-obat').attr('data-no')
             subTotalObat(dataNo)            
+            totalObat()
         })
 
         function subTotalAlkes(dataNo){
@@ -159,13 +254,15 @@
             var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
             $(".loop-alkes[data-no='"+dataNo+"'] .total").val(subtotal)
         }
-        $(".qty").change(function(){
+        $(".loop-alkes .qty").change(function(){
             var dataNo = $(this).closest('.loop-alkes').attr('data-no')
             subTotalAlkes(dataNo)            
+            totalAlkes()
         })
-        $(".alkes").change(function(){
+        $(".loop-alkes .alkes").change(function(){
             var dataNo = $(this).closest('.loop-alkes').attr('data-no')
             subTotalAlkes(dataNo)            
+            totalAlkes()
         })
 
         $("#addItemLab").click(function(e){
@@ -189,8 +286,16 @@
                         var dataRow = parseInt($('#row-lab').attr('data-row'))
                         $('.loop-lab[data-no="'+dataNo+'"]').remove()
                         $('#row-lab').attr('data-row',dataRow-1)
+                        totalPeriksaLab()
+
                     })
                     $(".select2").select2()
+                    
+                    $(".periksaLab").change(function(){
+                        getHargaLab($(this))
+                        totalPeriksaLab()
+                    })
+
                 }
             })
         })
@@ -208,13 +313,15 @@
                     $(".selectObat").change(function(e){
                         selectObat($(this))
                     })
-                    $(".qty").change(function(){
+                    $(".loop-obat .qty").change(function(){
                         var dataNo = $(this).closest('.loop-obat').attr('data-no')
                         subTotalObat(dataNo)            
+                        totalObat()
                     })
-                    $(".obat").change(function(){
+                    $(".loop-obat .obat").change(function(){
                         var dataNo = $(this).closest('.loop-obat').attr('data-no')
                         subTotalObat(dataNo)            
+                        totalObat()
                     })
                     $(".remove-obat").click(function(e){
                         e.preventDefault();
@@ -222,6 +329,8 @@
                         var dataRow = parseInt($('#row-obat').attr('data-row'))
                         $('.loop-obat[data-no="'+dataNo+'"]').remove()
                         $('#row-obat').attr('data-row',dataRow-1)
+                        totalObat()
+
                     })
                     $(".select2").select2()
                 }
@@ -242,13 +351,15 @@
                     $(".selectAlkes").change(function(){
                         selectAlkes($(this))
                     })
-                    $(".qty").change(function(){
+                    $(".loop-alkes .qty").change(function(){
                         var dataNo = $(this).closest('.loop-alkes').attr('data-no')
-                        subTotalAlkes(dataNo)            
+                        subTotalAlkes(dataNo)  
+                        totalAlkes()
                     })
-                    $(".alkes").change(function(){
+                    $(".loop-alkes .alkes").change(function(){
                         var dataNo = $(this).closest('.loop-alkes').attr('data-no')
-                        subTotalAlkes(dataNo)            
+                        subTotalAlkes(dataNo)
+                        totalAlkes()
                     })
                     $(".remove-alkes").click(function(e){
                         e.preventDefault();
@@ -256,6 +367,8 @@
                         var dataRow = parseInt($('#row-alkes').attr('data-row'))
                         $('.loop-alkes[data-no="'+dataNo+'"]').remove()
                         $('#row-alkes').attr('data-row',dataRow-1)
+                        totalAlkes()
+
                     })
                     $(".select2").select2()
                 }

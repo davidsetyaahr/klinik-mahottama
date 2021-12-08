@@ -2,10 +2,10 @@
 <br>
 <div class="col-md-2">Pilih Tindakan</div>
 <div class="col-md-10">
-        <select name="tindakan[]" multiple="multiple" style="width:100%" class="select2 form-control">
+        <select name="tindakan[]" multiple="multiple" style="width:100%" class="select2 form-control tindakan">
             <?php 
                 foreach ($tindakan as $key => $value) {
-                        echo "<option value='".$value->kode_tindakan."'>".$value->tindakan."</option>";
+                        echo "<option value='".$value->kode_tindakan."' data-harga='".$value->biaya."'>".$value->tindakan."</option>";
                 }
             ?>
         </select>
