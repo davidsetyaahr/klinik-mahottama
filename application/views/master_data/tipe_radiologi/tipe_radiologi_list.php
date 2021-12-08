@@ -41,6 +41,7 @@
                             		<th>Item</th>
                             		<th>Harga</th>
                             		<th>Nilai Normal</th>
+                            		<th>Kategori</th>
                             		<th width="100px">Action</th>
                                 </tr>
                             </thead>
@@ -91,7 +92,7 @@
                 {
                     "data": "id_tipe",
                     "orderable": false
-                },{"data": "item"},{"data": "harga"},{"data": "nilai_normal"},
+                },{"data": "item"},{"data": "harga"},{"data": "nilai_normal"},{"data": "nama_kategori"},
                 {
                     "data" : "action",
                     "orderable": false,

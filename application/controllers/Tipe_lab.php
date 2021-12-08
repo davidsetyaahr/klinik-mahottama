@@ -11,6 +11,7 @@ class Tipe_lab extends CI_Controller
         is_login();
 	    $this->load->library('datatables');
         $this->load->model('Tbl_tipe_lab_model');
+        $this->load->model('Tbl_kategori_periksa_lab_radiologi_model');
         $this->load->library('form_validation');        
     }
     public function index()
@@ -26,6 +27,7 @@ class Tipe_lab extends CI_Controller
         // $this->form_validation->set_rules('kode_tindakan', 'Kode Tindakan', 'trim|required');
         $this->form_validation->set_rules('item', 'Item', 'trim|required');
         $this->form_validation->set_rules('harga', 'Harga', 'trim|required');
+        $this->form_validation->set_rules('id_kategori', 'id_kategori', 'trim|required');
         $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
     
@@ -39,6 +41,8 @@ class Tipe_lab extends CI_Controller
             'harga' => set_value('harga'),
             'nilai_normal' => set_value('nilai_normal'),
             'diet' => set_value('diet'),
+            'id_kategori' => set_value('id_kategori'),
+            'kategori' => $this->Tbl_kategori_periksa_lab_radiologi_model->get_all(),
         );
         $this->template->load('template','master_data/tipe_lab/tbl_tipe_lab_form', $data);
     }
@@ -54,6 +58,7 @@ class Tipe_lab extends CI_Controller
                 'harga' => $this->input->post('harga',TRUE),
                 'nilai_normal' => $this->input->post('nilai_normal',TRUE),
                 'diet' => $this->input->post('diet',TRUE),
+                'id_kategori' => $this->input->post('id_kategori',TRUE),
             );
             $this->Tbl_tipe_lab_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success 2');
@@ -74,6 +79,8 @@ class Tipe_lab extends CI_Controller
                 'harga' => set_value('harga',$row->harga),
                 'nilai_normal' => set_value('nilai_normal',$row->nilai_normal),
                 'diet' => set_value('diet',$row->diet),
+                'id_kategori' => set_value('id_kategori',$row->id_kategori),
+                'kategori' => $this->Tbl_kategori_periksa_lab_radiologi_model->get_all(),
             );
             $this->template->load('template','master_data/tipe_lab/tbl_tipe_lab_form', $data);
         } else {
@@ -93,6 +100,7 @@ class Tipe_lab extends CI_Controller
                 'harga' => $this->input->post('harga',TRUE),
                 'nilai_normal' => $this->input->post('nilai_normal',TRUE),
                 'diet' => $this->input->post('diet',TRUE),
+                'id_kategori' => $this->input->post('id_kategori',TRUE),
             );
             $this->Tbl_tipe_lab_model->update($this->input->post('id_tipe', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');

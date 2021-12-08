@@ -15,6 +15,18 @@
                             <input type="text" class="form-control" name="nilai_normal" id="nilai_normal" placeholder="Nilai Normal" value="<?php echo $nilai_normal; ?>" />
                             </td>
                         </tr>
+                        <tr><td width='200'>Kategori Pemeriksaan <?php echo form_error('id_kategori')?></td>
+                            <td>
+                                <select name="id_kategori" class="form-control select2" selected="selected" style="width:100%">
+                                    <option value="0">---Pilih Kategori Pemeriksaan Radiologi---</option>
+                                    <?php
+                                        foreach ($kategori as $key => $value) {
+                                            echo "<option value='".$value->id_kategori."'>".$value->nama_kategori."</option>";
+                                        }
+                                    ?>
+                                </select>
+                            </td>
+                        </tr>
                         <tr><td></td><td>
                             <button type="submit" class="btn btn-danger"><i class="fa fa-floppy-o"></i> <?php echo $button ?></button> 
                             <a href="<?php echo site_url('tipe_radiologi') ?>" class="btn btn-info"><i class="fa fa-sign-out"></i> Kembali</a></td></tr>

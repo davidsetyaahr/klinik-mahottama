@@ -11,6 +11,7 @@ class Tipe_radiologi extends CI_Controller
         is_login();
 	    $this->load->library('datatables');
         $this->load->model('Tbl_tipe_radiologi_model');
+        $this->load->model('Tbl_kategori_periksa_lab_radiologi_model');
         $this->load->library('form_validation');        
     }
     public function index()
@@ -37,6 +38,8 @@ class Tipe_radiologi extends CI_Controller
             'item' => set_value('item'),
             'harga' => set_value('harga'),
             'nilai_normal' => set_value('nilai_normal'),
+            'id_kategori' => set_value('id_kategori'),
+            'kategori' => $this->Tbl_kategori_periksa_lab_radiologi_model->get_all(),
         );
         $this->template->load('template','master_data/tipe_radiologi/tbl_tipe_radiologi_form', $data);
     }
@@ -52,6 +55,7 @@ class Tipe_radiologi extends CI_Controller
                 'item' => $this->input->post('item', TRUE),
                 'harga' => $this->input->post('harga',TRUE),
                 'nilai_normal' => $this->input->post('nilai_normal',TRUE),
+                'id_kategori' => $this->input->post('id_kategori',TRUE),
             );
             $this->Tbl_tipe_radiologi_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
@@ -71,6 +75,8 @@ class Tipe_radiologi extends CI_Controller
                 'item' => set_value('item',$row->item),
                 'harga' => set_value('harga',$row->harga),
                 'nilai_normal' => set_value('nilai_normal',$row->nilai_normal),
+                'id_kategori' => set_value('id_kategori', $row->id_kategori),
+                'kategori' => $this->Tbl_kategori_periksa_lab_radiologi_model->get_all(),
             );
             $this->template->load('template','master_data/tipe_radiologi/tbl_tipe_radiologi_form', $data);
         } else {
