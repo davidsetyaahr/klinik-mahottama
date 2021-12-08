@@ -96,6 +96,7 @@ class Tipe_radiologi extends CI_Controller
                 'item' => $this->input->post('item', TRUE),
                 'harga' => $this->input->post('harga',TRUE),
                 'nilai_normal' => $this->input->post('nilai_normal',TRUE),
+                'id_kategori' => $this->input->post('id_kategori',TRUE),
             );
             $this->Tbl_tipe_radiologi_model->update($this->input->post('id_tipe', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');

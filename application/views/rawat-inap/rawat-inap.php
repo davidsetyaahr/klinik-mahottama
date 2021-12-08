@@ -213,7 +213,7 @@
             var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
             $(".loop-alkes[data-no='"+dataNo+"'] .total").val(subtotal)
         }
-        $(".qty").change(function(){
+        $(".loop-alkes .qty").change(function(){
             var dataNo = $(this).closest('.loop-alkes').attr('data-no')
             subTotalAlkes(dataNo)   
             totalAlkes()         
