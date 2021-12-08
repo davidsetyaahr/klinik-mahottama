@@ -62,6 +62,36 @@
                                     $this->load->view('loop/loop-pilihan-tindakan',['no' => 0])
                                 ?>
                             </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Total Biaya Periksa Radiologi</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="totalRadiologi" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Total Biaya Obat</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="totalObat" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Total Biaya BMHP</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="totalAlkes" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Total Biaya Tindakan</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="totalTindakan" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Grand Total</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="grandTotal" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
                             <hr>
                             <div class="form-group row">
 							<div class="col-sm-2">Pemeriksaan Selanjutnya</div>
@@ -116,6 +146,16 @@
             selectAlkes($(this))            
         })
 
+        function getHargaRadiologi(thisAttr){
+            var getHarga = thisAttr.find(':selected').data('harga')
+            var dataId = thisAttr.closest('.loop-radiologi').attr('data-no')
+            $(".loop-radiologi[data-no='"+dataId+"'] .total").val(getHarga);
+        }
+        $(".periksaRadiologi").change(function(){
+            getHargaRadiologi($(this))
+            totalPeriksaRadiologi()
+        })
+
         function selectObat(thisAttr){
             var stok = thisAttr.find(':selected').data('stok')
             var harga = thisAttr.find(':selected').data('harga')
@@ -139,33 +179,37 @@
         })
 
         function subTotalObat(dataNo){
-            var qty = parseInt($(".loop-obat[data-no='"+dataNo+"'] .qty-obat").val())
+            var qty = parseInt($(".loop-obat[data-no='"+dataNo+"'] .qty").val())
             var harga = parseInt($(".loop-obat[data-no='"+dataNo+"'] .harga").val())
             var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
             $(".loop-obat[data-no='"+dataNo+"'] .total").val(subtotal)
         }
-        $(".qty-obat").change(function(){
+        $(".loop-obat .qty").change(function(){
             var dataNo = $(this).closest('.loop-obat').attr('data-no')
-            subTotalObat(dataNo)            
+            subTotalObat(dataNo)    
+            totalObat()        
         })
-        $(".obat").change(function(){
+        $(".loop-obat .obat").change(function(){
             var dataNo = $(this).closest('.loop-obat').attr('data-no')
-            subTotalObat(dataNo)            
+            subTotalObat(dataNo)   
+            totalObat()         
         })
 
         function subTotalAlkes(dataNo){
-            var qty = parseInt($(".loop-alkes[data-no='"+dataNo+"'] .qty-alkes").val())
+            var qty = parseInt($(".loop-alkes[data-no='"+dataNo+"'] .qty").val())
             var harga = parseInt($(".loop-alkes[data-no='"+dataNo+"'] .harga").val())
             var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
             $(".loop-alkes[data-no='"+dataNo+"'] .total").val(subtotal)
         }
-        $(".qty-alkes").change(function(){
+        $(".loop-alkes .qty").change(function(){
             var dataNo = $(this).closest('.loop-alkes').attr('data-no')
-            subTotalAlkes(dataNo)            
+            subTotalAlkes(dataNo)     
+            totalAlkes()       
         })
         $(".alkes").change(function(){
             var dataNo = $(this).closest('.loop-alkes').attr('data-no')
-            subTotalAlkes(dataNo)            
+            subTotalAlkes(dataNo)    
+            totalAlkes()          
         })
 
         $("#addItemRadiologi").click(function(e){
@@ -178,7 +222,10 @@
                 success : function(data){
                     $('#row-radiologi').append(data)
                     $('#row-radiologi').attr('data-row',dataRow + 1)
-
+                    $(".periksaRadiologi").change(function(){
+                        getHargaRadiologi($(this))
+                        totalPeriksaRadiologi()
+                    })
                     $(".remove-radiologi").click(function(e){
                         e.preventDefault();
                         var dataNo = $(this).attr('data-no')
@@ -204,13 +251,15 @@
                     $(".selectObat").change(function(){
                         selectObat($(this))
                     })
-                    $(".qty-obat").change(function(){
+                    $(".loop-obat .qty").change(function(){
                         var dataNo = $(this).closest('.loop-obat').attr('data-no')
-                        subTotalObat(dataNo)            
+                        subTotalObat(dataNo)    
+                        totalObat()        
                     })
-                    $(".obat").change(function(){
+                    $(".loop-obat .obat").change(function(){
                         var dataNo = $(this).closest('.loop-obat').attr('data-no')
-                        subTotalObat(dataNo)            
+                        subTotalObat(dataNo)   
+                        totalObat()         
                     })
                     $(".remove-obat").click(function(e){
                         e.preventDefault();
@@ -234,17 +283,18 @@
                 success : function(data){
                     $('#row-alkes').append(data)
                     $('#row-alkes').attr('data-row',dataRow + 1)
-                    // $(".select2").select2()
                     $(".selectAlkes").change(function(){
                         selectAlkes($(this))
                     })
-                    $(".qty-alkes").change(function(){
+                    $(".loop-alkes .qty").change(function(){
                         var dataNo = $(this).closest('.loop-alkes').attr('data-no')
-                        subTotalAlkes(dataNo)            
+                        subTotalAlkes(dataNo) 
+                        totalAlkes()             
                     })
                     $(".alkes").change(function(){
                         var dataNo = $(this).closest('.loop-alkes').attr('data-no')
-                        subTotalAlkes(dataNo)            
+                        subTotalAlkes(dataNo)  
+                        totalAlkes()            
                     })
                     $(".remove-alkes").click(function(e){
                         e.preventDefault();
@@ -281,5 +331,58 @@
                 }
             })
         })
+
+        function totalPeriksaRadiologi(){
+            var totalRadiologi = 0
+            $(".loop-radiologi .total").each(function(i,v){
+                var subtotal = parseInt(v.value)
+                totalRadiologi+=subtotal
+            })
+            $("#totalRadiologi").val(totalRadiologi)
+            grandTotal()
+        }
+
+        function totalObat() {
+            var totalObat = 0
+            $(".loop-obat .total").each(function(i,v){
+                var subTotal = parseInt(v.value)
+                totalObat+=subTotal
+            })
+            $("#totalObat").val(totalObat)
+            grandTotal()
+        }
+
+        $(".tindakan").change(function(){
+            var totalTindakan = 0
+            var valTindakan = $(this).val()
+            if(valTindakan!=null){
+                $.each(valTindakan, function(i,v){
+                    var harga = parseInt($(".tindakan option[value='"+v+"']").attr('data-harga'))
+                    totalTindakan+=harga
+                })
+            }
+            $("#totalTindakan").val(totalTindakan)
+            grandTotal()
+        })
+
+        function totalAlkes(){
+            var totalAlkes = 0
+            $(".loop-alkes .total").each(function(i,v){
+                var subtotal = parseInt(v.value)
+                totalAlkes+=subtotal
+            })
+            $("#totalAlkes").val(totalAlkes)
+            grandTotal()
+        }
+
+        function grandTotal(){
+            var totalObat = parseInt($("#totalObat").val())
+            var totalAlkes = parseInt($("#totalAlkes").val())
+            var totalTindakan = parseInt($("#totalTindakan").val())
+            var totalRadiologi = parseInt($("#totalRadiologi").val())
+
+            var grandTotal = totalObat + totalAlkes + totalTindakan + totalRadiologi
+            $("#grandTotal").val(grandTotal)
+        }
     })
 </script>
