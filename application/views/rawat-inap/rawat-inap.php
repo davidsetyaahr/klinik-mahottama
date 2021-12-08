@@ -146,9 +146,6 @@
 <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
 <script>
     $(document).ready(function(){
-        function get_kamar(selectObject = null, isCheckJml = false){
-
-        }
         function selectAlkes(thisAttr){
             var stok = thisAttr.find(':selected').data('stok')
             var harga = thisAttr.find(':selected').data('harga')
