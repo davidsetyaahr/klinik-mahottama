@@ -52,6 +52,30 @@
                                     <a href="" class="btn btn-info btn-sm" id="addItemAlkes"><span class="fa fa-plus"></span> Tambah Item</a>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Total Biaya Tindakan</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="totalTindakan" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Total Biaya Obat</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="totalObat" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Total Biaya BMHP</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="totalAlkes" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Grand Total</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="grandTotal" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
                             <hr>
                             <div class="form-group row">
 							<div class="col-sm-2">Pemeriksaan Selanjutnya</div>
@@ -134,13 +158,15 @@
             var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
             $(".loop-obat[data-no='"+dataNo+"'] .total").val(subtotal)
         }
-        $(".qty").change(function(){
+        $(".loop-obat .qty").change(function(){
             var dataNo = $(this).closest('.loop-obat').attr('data-no')
-            subTotalObat(dataNo)            
+            subTotalObat(dataNo)    
+            totalObat()        
         })
         $(".obat").change(function(){
             var dataNo = $(this).closest('.loop-obat').attr('data-no')
-            subTotalObat(dataNo)            
+            subTotalObat(dataNo)       
+            totalObat()     
         })
 
         function subTotalAlkes(dataNo){
@@ -149,13 +175,15 @@
             var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
             $(".loop-alkes[data-no='"+dataNo+"'] .total").val(subtotal)
         }
-        $(".qty").change(function(){
+        $(".loop-alkes .qty").change(function(){
             var dataNo = $(this).closest('.loop-alkes').attr('data-no')
-            subTotalAlkes(dataNo)            
+            subTotalAlkes(dataNo) 
+            totalAlkes()           
         })
         $(".alkes").change(function(){
             var dataNo = $(this).closest('.loop-alkes').attr('data-no')
-            subTotalAlkes(dataNo)            
+            subTotalAlkes(dataNo)    
+            totalAlkes()        
         })
 
         $("#addItemObat").click(function(e){
@@ -171,13 +199,15 @@
                     $(".selectObat").change(function(e){
                         selectObat($(this))
                     })
-                    $(".qty").change(function(){
+                    $(".loop-obat .qty").change(function(){
                         var dataNo = $(this).closest('.loop-obat').attr('data-no')
-                        subTotalObat(dataNo)            
+                        subTotalObat(dataNo)   
+                        totalAlkes()         
                     })
                     $(".obat").change(function(){
                         var dataNo = $(this).closest('.loop-obat').attr('data-no')
-                        subTotalObat(dataNo)            
+                        subTotalObat(dataNo)   
+                        totalAlkes()         
                     })
                     $(".remove-obat").click(function(e){
                         e.preventDefault();
@@ -205,13 +235,15 @@
                     $(".selectAlkes").change(function(){
                         selectAlkes($(this))
                     })
-                    $(".qty").change(function(){
+                    $(".loop-alkes .qty").change(function(){
                         var dataNo = $(this).closest('.loop-alkes').attr('data-no')
-                        subTotalAlkes(dataNo)            
+                        subTotalAlkes(dataNo)    
+                        totalAlkes()        
                     })
                     $(".alkes").change(function(){
                         var dataNo = $(this).closest('.loop-alkes').attr('data-no')
-                        subTotalAlkes(dataNo)            
+                        subTotalAlkes(dataNo) 
+                        totalAlkes()           
                     })
                     $(".remove-alkes").click(function(e){
                         e.preventDefault();
@@ -248,5 +280,46 @@
                 }
             })
         })
+        function totalObat() {
+            var totalObat = 0
+            $(".loop-obat .total").each(function(i,v){
+                var subTotal = parseInt(v.value)
+                totalObat+=subTotal
+            })
+            $("#totalObat").val(totalObat)
+            grandTotal()
+        }
+
+        $(".tindakan").change(function(){
+            var totalTindakan = 0
+            var valTindakan = $(this).val()
+            if(valTindakan!=null){
+                $.each(valTindakan, function(i,v){
+                    var harga = parseInt($(".tindakan option[value='"+v+"']").attr('data-harga'))
+                    totalTindakan+=harga
+                })
+            }
+            $("#totalTindakan").val(totalTindakan)
+            grandTotal()
+        })
+
+        function totalAlkes(){
+            var totalAlkes = 0
+            $(".loop-alkes .total").each(function(i,v){
+                var subtotal = parseInt(v.value)
+                totalAlkes+=subtotal
+            })
+            $("#totalAlkes").val(totalAlkes)
+            grandTotal()
+        }
+
+        function grandTotal(){
+            var totalObat = parseInt($("#totalObat").val())
+            var totalAlkes = parseInt($("#totalAlkes").val())
+            var totalTindakan = parseInt($("#totalTindakan").val())
+
+            var grandTotal = totalObat + totalAlkes + totalTindakan
+            $("#grandTotal").val(grandTotal)
+        }
     })
 </script>

@@ -77,12 +77,54 @@
                                     $this->load->view('loop/loop-pilihan-tindakan',['no' => 0])
                                 ?>
                             </div>
-                            <hr>
-                            <div class="form-group">
-                                <div class="col-md-5 pull-right">
-                                    <input type="text" class="form-control grandtotal" placeholder="Grand Total" readonly>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Total Biaya Kamar</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="totalKamar" class="form-control" value='0' readonly>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Total Biaya</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="totalBiaya" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Total Biaya Obat</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="totalObat" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Total Biaya BMHP</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="totalAlkes" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Total Biaya Tindakan</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="totalTindakan" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Grand Total</div>
+                                <div class="col-sm-10">
+                                    <input type="text" id="grandTotal" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Pemeriksaan Selanjutnya</div>
+                                <div class="col-sm-10">
+                                    <select name="pemeriksaan_selanjutnya" id="" style="width:100%" class="select2 form-control">
+                                            <option value="0">Tidak Ada</option>
+                                            <option value="1">Rawat Inap</option>
+                                            <option value="2">Laboratorium</option>
+                                            <option value="3">Radiologi</option>
+                                    </select>
+                                </div>
+						    </div>
                             <br>
                             <div class="form-group row">
                             <br>
@@ -157,13 +199,15 @@
             var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
             $(".loop-obat[data-no='"+dataNo+"'] .total").val(subtotal)
         }
-        $(".qty").change(function(){
+        $(".loop-obat .qty").change(function(){
             var dataNo = $(this).closest('.loop-obat').attr('data-no')
-            subTotalObat(dataNo)            
+            subTotalObat(dataNo)  
+            totalObat()          
         })
         $(".obat").change(function(){
             var dataNo = $(this).closest('.loop-obat').attr('data-no')
-            subTotalObat(dataNo)            
+            subTotalObat(dataNo)     
+            totalObat()       
         })
 
         function subTotalAlkes(dataNo){
@@ -174,11 +218,13 @@
         }
         $(".qty").change(function(){
             var dataNo = $(this).closest('.loop-alkes').attr('data-no')
-            subTotalAlkes(dataNo)            
+            subTotalAlkes(dataNo)   
+            totalAlkes()         
         })
         $(".alkes").change(function(){
             var dataNo = $(this).closest('.loop-alkes').attr('data-no')
-            subTotalAlkes(dataNo)            
+            subTotalAlkes(dataNo)   
+            totalAlkes()          
         })
 
         function subTotalKamar(dataNo){
@@ -187,13 +233,15 @@
             var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
             $(".loop-kamar[data-no='"+dataNo+"'] .total").val(subtotal)
         }
-        $(".qty").keyup(function(){
+        $(".loop-kamar .qty").keyup(function(){
             var dataNo = $(this).closest('.loop-kamar').attr('data-no')
-            subTotalKamar(dataNo)            
+            subTotalKamar(dataNo)  
+            totalKamar()          
         })
         $(".tipe-kamar").change(function(){
             var dataNo = $(this).closest('.loop-kamar').attr('data-no')
-            subTotalKamar(dataNo)            
+            subTotalKamar(dataNo)   
+            totalKamar()         
         })
 
         function getHarga(thisParam){
@@ -218,13 +266,15 @@
                     $(".getHarga").change(function(){
                         getHarga($(this))
                     })
-                    $(".qty").keyup(function(){
+                    $(".loop-kamar .qty").keyup(function(){
                         var dataNo = $(this).closest('.loop-kamar').attr('data-no')
-                        subTotalKamar(dataNo)            
+                        subTotalKamar(dataNo)    
+                        totalKamar()        
                     })
                     $(".tipe-kamar").change(function(){
                         var dataNo = $(this).closest('.loop-kamar').attr('data-no')
-                        subTotalKamar(dataNo)            
+                        subTotalKamar(dataNo)     
+                        totalKamar()       
                     })
 
                     $(".remove-kamar").click(function(e){
@@ -248,11 +298,13 @@
 
         $(".qty_biaya").keyup(function(){
             var dataNo = $(this).closest('.loop-biaya').attr('data-no')
-            subTotalBiaya(dataNo)            
+            subTotalBiaya(dataNo)  
+            totalBiaya()           
         })
         $(".tipe-biaya").change(function(){
             var dataNo = $(this).closest('.loop-biaya').attr('data-no')
-            subTotalBiaya(dataNo)            
+            subTotalBiaya(dataNo)     
+            totalBiaya()            
         })
 
         function getBiaya(thisParam){
@@ -265,10 +317,6 @@
             getBiaya($(this))
         })
 
-        function grandTotal(){
-            var x = subTotalBiaya(dataNo)+subTotalBiaya(dataNo)
-            console.log(x);
-        }
 
         $("#addItemBiaya").click(function(e){
             e.preventDefault();
@@ -285,11 +333,13 @@
                     })
                     $(".qty_biaya").keyup(function(){
                         var dataNo = $(this).closest('.loop-biaya').attr('data-no')
-                        subTotalBiaya(dataNo)            
+                        subTotalBiaya(dataNo)      
+                        totalBiaya()           
                     })
                     $(".tipe-biaya").change(function(){
                         var dataNo = $(this).closest('.loop-biaya').attr('data-no')
-                        subTotalBiaya(dataNo)            
+                        subTotalBiaya(dataNo)   
+                        totalBiaya()              
                     })
                     $(".remove-biaya").click(function(e){
                         e.preventDefault();
@@ -315,13 +365,15 @@
                     $(".selectObat").change(function(){
                         selectObat($(this))            
                     })
-                    $(".qty").change(function(){
+                    $(".loop-obat .qty").change(function(){
                         var dataNo = $(this).closest('.loop-obat').attr('data-no')
-                        subTotalObat(dataNo)            
+                        subTotalObat(dataNo)  
+                        totalObat()          
                     })
                     $(".obat").change(function(){
                         var dataNo = $(this).closest('.loop-obat').attr('data-no')
-                        subTotalObat(dataNo)            
+                        subTotalObat(dataNo)  
+                        totalObat()          
                     })
                     $(".remove-obat").click(function(e){
                         e.preventDefault();
@@ -348,13 +400,15 @@
                     $(".selectAlkes").change(function(){
                         selectAlkes($(this))
                     })
-                    $(".qty").change(function(){
+                    $(".loop-alkes .qty").change(function(){
                         var dataNo = $(this).closest('.loop-alkes').attr('data-no')
-                        subTotalAlkes(dataNo)            
+                        subTotalAlkes(dataNo) 
+                        totalAlkes()            
                     })
                     $(".alkes").change(function(){
                         var dataNo = $(this).closest('.loop-alkes').attr('data-no')
-                        subTotalAlkes(dataNo)            
+                        subTotalAlkes(dataNo)    
+                        totalAlkes()         
                     })
                     $(".remove-alkes").click(function(e){
                         e.preventDefault();
@@ -367,5 +421,70 @@
                 }
             })
         })
+
+        function totalKamar(){
+            var totalKamar = 0
+            $(".loop-kamar .total").each(function(i,v){
+                var subTotal = parseInt(v.value)
+                totalKamar+=subTotal
+            })
+            $("#totalKamar").val(totalKamar)
+            grandTotal()
+        }
+
+        function totalBiaya(){
+            var totalBiaya = 0
+            $(".total_biaya").each(function(i,v){
+                var subTotal = parseInt(v.value)
+                totalBiaya+=subTotal
+            })
+            $("#totalBiaya").val(totalBiaya)
+            grandTotal()
+        }
+
+        function totalObat() {
+            var totalObat = 0
+            $(".loop-obat .total").each(function(i,v){
+                var subTotal = parseInt(v.value)
+                totalObat+=subTotal
+            })
+            $("#totalObat").val(totalObat)
+            grandTotal()
+        }
+
+        $(".tindakan").change(function(){
+            var totalTindakan = 0
+            var valTindakan = $(this).val()
+            if(valTindakan!=null){
+                $.each(valTindakan, function(i,v){
+                    var harga = parseInt($(".tindakan option[value='"+v+"']").attr('data-harga'))
+                    totalTindakan+=harga
+                })
+            }
+            $("#totalTindakan").val(totalTindakan)
+            grandTotal()
+        })
+
+        function totalAlkes(){
+            var totalAlkes = 0
+            $(".loop-alkes .total").each(function(i,v){
+                var subtotal = parseInt(v.value)
+                totalAlkes+=subtotal
+            })
+            $("#totalAlkes").val(totalAlkes)
+            grandTotal()
+        }
+
+        function grandTotal() {
+            var totalKamar = parseInt($("#totalKamar").val())
+            var totalBiaya = parseInt($("#totalBiaya").val())
+            var totalObat = parseInt($("#totalObat").val())
+            var totalAlkes = parseInt($("#totalAlkes").val())
+            var totalTindakan = parseInt($("#totalTindakan").val())
+
+            var grandTotal = totalObat + totalAlkes + totalTindakan + totalKamar + totalBiaya
+            $("#grandTotal").val(grandTotal)
+        }
+
     })
 </script>
