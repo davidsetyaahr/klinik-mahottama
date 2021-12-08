@@ -139,12 +139,12 @@
         })
 
         function subTotalObat(dataNo){
-            var qty = parseInt($(".loop-obat[data-no='"+dataNo+"'] .qty").val())
+            var qty = parseInt($(".loop-obat[data-no='"+dataNo+"'] .qty-obat").val())
             var harga = parseInt($(".loop-obat[data-no='"+dataNo+"'] .harga").val())
             var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
             $(".loop-obat[data-no='"+dataNo+"'] .total").val(subtotal)
         }
-        $(".qty").keyup(function(){
+        $(".qty-obat").change(function(){
             var dataNo = $(this).closest('.loop-obat').attr('data-no')
             subTotalObat(dataNo)            
         })
@@ -154,12 +154,12 @@
         })
 
         function subTotalAlkes(dataNo){
-            var qty = parseInt($(".loop-alkes[data-no='"+dataNo+"'] .qty").val())
+            var qty = parseInt($(".loop-alkes[data-no='"+dataNo+"'] .qty-alkes").val())
             var harga = parseInt($(".loop-alkes[data-no='"+dataNo+"'] .harga").val())
             var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
             $(".loop-alkes[data-no='"+dataNo+"'] .total").val(subtotal)
         }
-        $(".qty").keyup(function(){
+        $(".qty-alkes").change(function(){
             var dataNo = $(this).closest('.loop-alkes').attr('data-no')
             subTotalAlkes(dataNo)            
         })
@@ -204,6 +204,14 @@
                     $(".selectObat").change(function(){
                         selectObat($(this))
                     })
+                    $(".qty-obat").change(function(){
+                        var dataNo = $(this).closest('.loop-obat').attr('data-no')
+                        subTotalObat(dataNo)            
+                    })
+                    $(".obat").change(function(){
+                        var dataNo = $(this).closest('.loop-obat').attr('data-no')
+                        subTotalObat(dataNo)            
+                    })
                     $(".remove-obat").click(function(e){
                         e.preventDefault();
                         var dataNo = $(this).attr('data-no')
@@ -230,7 +238,14 @@
                     $(".selectAlkes").change(function(){
                         selectAlkes($(this))
                     })
-
+                    $(".qty-alkes").change(function(){
+                        var dataNo = $(this).closest('.loop-alkes').attr('data-no')
+                        subTotalAlkes(dataNo)            
+                    })
+                    $(".alkes").change(function(){
+                        var dataNo = $(this).closest('.loop-alkes').attr('data-no')
+                        subTotalAlkes(dataNo)            
+                    })
                     $(".remove-alkes").click(function(e){
                         e.preventDefault();
                         var dataNo = $(this).attr('data-no')

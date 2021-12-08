@@ -16,12 +16,12 @@
             <div class="col-xs-12">
                 <div class="box box-warning box-solid">
                     <div class="box-header">
-                        <h3 class="box-title">KELOLA DATA TIPE PERIKSA LAB</h3>
+                        <h3 class="box-title">KELOLA DATA KATEGORI PERIKSA LAB RADIOLOGI</h3>
                     </div>
                     <div class="box-body">
                         <div class="row" style="margin-bottom: 10px">
                             <div class="col-md-4">
-                                <?php echo anchor(site_url('tipe_lab/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
+                                <?php echo anchor(site_url('tipe_kategori_periksa_lab_radiologi/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
                             </div>
                             <div class="col-md-4 text-center">
                                 <div style="margin-top: 8px" id="message">
@@ -39,10 +39,6 @@
                                 <tr>
                                     <th width="30px">No</th>
                             		<th>Item</th>
-                            		<th>Harga</th>
-                            		<th>Nilai Normal</th>
-                            		<th>Diet</th>
-                            		<th>Kategori</th>
                             		<th width="100px">Action</th>
                                 </tr>
                             </thead>
@@ -88,12 +84,12 @@
             },
             processing: true,
             serverSide: true,
-            ajax: {"url": "tipe_lab/json", "type": "POST"},
+            ajax: {"url": "tipe_kategori_periksa_lab_radiologi/json", "type": "POST"},
             columns: [
                 {
-                    "data": "id_tipe",
+                    "data": "id_kategori",
                     "orderable": false
-                },{"data": "item"},{"data": "harga"},{"data": "nilai_normal"},{"data": "diet"},{"data": "nama_kategori"},
+                },{"data": "nama_kategori"},
                 {
                     "data" : "action",
                     "orderable": false,

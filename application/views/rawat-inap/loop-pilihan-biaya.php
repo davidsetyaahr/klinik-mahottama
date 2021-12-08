@@ -1,7 +1,7 @@
 <div class="row loop-biaya" data-no="<?= $no ?>">
 <br>
     <div class="col-md-5">
-        <select name="biaya[]" class="form-control select2 getBiaya tipe-biaya" style="width:100%" onkeyup="subTotalBiaya()">
+        <select name="biaya[]" class="form-control select2 getBiaya tipe-biaya" style="width:100%">
         <option value="">---Pilih Biaya---</option>
         <?php 
             foreach ($biaya as $key => $value) {
@@ -12,7 +12,8 @@
     </div>
     <div class='col-md-2'">
         <!-- <br> -->
-        <?php echo form_input(array('id'=>'qty_biaya','name'=>'qty[]','type'=>'text','value'=>'','class'=>'form-control qty_biaya','placeholder'=>'Kuantitas','style'=>'text-align:left;'));?>
+        <input id="qty" name="qty[]" type="text" class="form-control qty_biaya" placeholder="Kuantitas">
+        <!-- <?php echo form_input(array('id'=>'qty_biaya','name'=>'qty[]','type'=>'text','value'=>'','class'=>'form-control qty_biaya','placeholder'=>'Kuantitas','style'=>'text-align:left;'));?> -->
     </div>
     <div class="col-md-2">
     <?php echo form_input(array('id'=>'biaya','name'=>'biaya[]','type'=>'text','value'=>'','class'=>'form-control biaya', 'readonly'=>'readonly','placeholder'=>'Harga Biaya','style'=>'text-align:left;'));?>    

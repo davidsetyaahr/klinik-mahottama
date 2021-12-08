@@ -1,7 +1,7 @@
 <div class="row loop-kamar" id="<?= $no ?>" data-no="<?= $no ?>">
 <br>
     <div class="col-md-5">
-        <select name="kamar[]" class="form-control select2 getHarga kamar" style="width:100%" onchange="subTotalKamar()">
+        <select name="kamar[]" class="form-control select2 getHarga tipe-kamar" style="width:100%" >
         <option value="">---Pilih Kamar---</option>
         <?php 
             foreach ($kamar as $key => $value) {
@@ -34,37 +34,3 @@
     <?php } ?>
     
 </div>
-<script>
-    // function totalKamar(){
-    //     var kamar_length = $('[name^=kamar]').length;
-    //     var kamar_count = document.getElementsByClassName("loop-kamar");
-    //     var total_harga = 0;
-    //     console.log(kamar_count);
-
-    //     for(x=0; x<kamar_length; x++){
-    //         var a = parseInt($("#qty[]").val());
-    //                     var b = parseInt($("#harga_kamar[]").val());
-    //                     var c = a*b;
-    //                     $("#total_harga[]").val(c);
-    //     }
-    // }
-    // $ (document).ready(function(){
-    //   $('#harga_kamar').change(function(){
-    //     total_kamar();
-    //   });
-    //  });
-    // function total_kamar(){
-    //     $("#qty").keyup(function(){
-    //         var a = parseInt($("#qty").val());
-    //         var b = parseInt($("#harga_kamar").val());
-    //         var c = a*b;
-    //         $("#total_harga").val(c);
-    //     })
-    //     $("#harga_kamar").keyup(function(){
-    //         var a = parseInt($("#qty").val());
-    //         var b = parseInt($("#harga_kamar").val());
-    //         var c = a*b;
-    //         $("#total_harga").val(c);
-    //     })
-    // }
-</script>
