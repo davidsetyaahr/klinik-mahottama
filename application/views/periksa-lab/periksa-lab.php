@@ -65,31 +65,31 @@
                             <div class="form-group row">
                                 <div class="col-sm-2">Total Biaya Periksa Lab</div>
                                 <div class="col-sm-10">
-                                    <input type="text" id="totalLab" class="form-control" value='0' readonly>
+                                    <input type="text" id="totalLab" name="totalLab" class="form-control" value='0' readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-2">Total Biaya Obat</div>
                                 <div class="col-sm-10">
-                                    <input type="text" id="totalObat" class="form-control" value='0' readonly>
+                                    <input type="text" id="totalObat" name="totalObat" class="form-control" value='0' readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-2">Total Biaya BMHP</div>
                                 <div class="col-sm-10">
-                                    <input type="text" id="totalAlkes" class="form-control" value='0' readonly>
+                                    <input type="text" id="totalAlkes" name="totalAlkes" class="form-control" value='0' readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-2">Total Biaya Tindakan</div>
                                 <div class="col-sm-10">
-                                    <input type="text" id="totalTindakan" class="form-control" value='0' readonly>
+                                    <input type="text" id="totalTindakan" name="totalTindakan" class="form-control" value='0' readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-2">Grand Total</div>
                                 <div class="col-sm-10">
-                                    <input type="text" id="grandTotal" class="form-control" value='0' readonly>
+                                    <input type="text" id="grandTotal" name="grandTotal" class="form-control" value='0' readonly>
                                 </div>
                             </div>
                             <hr>
@@ -98,12 +98,11 @@
 							<div class="col-sm-10">
                                 <select name="pemeriksaan_selanjutnya" id="" style="width:100%" class="select2 form-control">
                                         <option value="0">Tidak Ada</option>
-                                        <option value="1">Rawat Inap</option>
-                                        <option value="2">Laboratorium</option>
-                                        <option value="3">Radiologi</option>
+                                        <option value="2">Rawat Inap</option>
+                                        <option value="5">Radiologi</option>
                                 </select>
 							</div>
-						</div>
+						    </div>
                             <div class="form-group row">
                             <br>
                                 <div class="col-md-12">
@@ -113,7 +112,7 @@
                                     </div>
                                 </div>
                             </div>
-                            </form>
+                         </form>
                         </div>
                     </div>
                 </div>

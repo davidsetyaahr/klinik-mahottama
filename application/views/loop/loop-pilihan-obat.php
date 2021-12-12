@@ -16,10 +16,10 @@
         <!-- <input type="text" name="hasil[]" class="form-control" placeholder="Hasil" id="" style="<?php echo ($no!=0) ? 'margin-right:10px' : '' ?>"> -->
     </div>
     <div class="col-md-2">
-        <input type="text" class="form-control harga" placeholder="Harga Obat" readonly>
+        <input type="text" class="form-control harga" name="harga_obat[]" placeholder="Harga Obat" readonly>
     </div>
     <div class="<?= $no!=0 ? 'col-md-2' : 'col-md-3' ?>">
-    <input type="text" class="form-control total" placeholder="Sub Total" readonly>
+    <input type="text" class="form-control total" name="subtotal_obat[]" placeholder="Sub Total" readonly>
     </div>
     <?php 
         if($no!=0){

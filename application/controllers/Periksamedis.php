@@ -36,6 +36,7 @@ class Periksamedis extends CI_Controller
         $this->load->model('Tbl_diagnosa_icd10_model');
         $this->load->model('Tbl_periksa_diagnosa_model');
         $this->load->model('Tbl_imunisasi_model');
+        date_default_timezone_set('Asia/Jakarta');
 
 
         $this->id_dokter = $this->session->userdata('id_dokter');
@@ -56,7 +57,7 @@ class Periksamedis extends CI_Controller
             redirect(site_url('periksamedis/antrian'));
         }
 
-        $periksaLanjutan = $this->db->get_where('tbl_periksa_lanjutan', ['no_pendaftaran' => $this->no_pendaftaran])->row();
+        $periksaLanjutan = $this->db->get_where('tbl_periksa_lanjutan', ['no_pendaftaran' => $this->no_pendaftaran,'is_periksa' => '1'])->row();
         if ($periksaLanjutan->tipe_periksa == '1') {
             //rawat inap
             redirect(base_url() . "periksamedis/poli");
@@ -68,7 +69,7 @@ class Periksamedis extends CI_Controller
             redirect(base_url() . "periksamedis/operasi");
         } else if ($periksaLanjutan->tipe_periksa == '4') {
             //lab
-            redirect(site_url('periksamedis/periksa_jasa/'));
+            redirect(site_url('periksamedis/periksa_lab/'));
         } else if ($periksaLanjutan->tipe_periksa == '6') {
             //radiologi
             redirect(site_url('periksamedis/periksa_radiologi/'));
@@ -139,8 +140,11 @@ class Periksamedis extends CI_Controller
                         $total_jual_alkes += $_POST['harga_alkes'][$i];
                         $data_periksa_d_alkes[] = array(
                             'no_periksa' => $this->input->post('no_periksa'),
+                            'no_pendaftaran' => $data_pendaftaran->no_pendaftaran,
                             'kode_barang' => $post_alkes[$i],
                             'jumlah' => $post_alkes_jml[$i],
+                            'harga_satuan' => $_POST['harga_alkes'][$i] / $post_alkes_jml[$i],
+                            'tipe_periksa' => '1'
                         );
 
                         $detailInv = array(
@@ -184,6 +188,8 @@ class Periksamedis extends CI_Controller
             $post_obat_penggunaan = $this->input->post('kegunaan_obat');
             $total_jual = 0;
             $total_jual_obat = 0;
+
+            $data_periksa_d_obat = array();
             for ($i = 0; $i < count($post_obat); $i++) {
                 $kode_barang = $post_obat[$i];
                 // for ($j=0; $j < count($dataobat); $j++) { 
@@ -193,6 +199,18 @@ class Periksamedis extends CI_Controller
                 //         $tgl_exp=$dataobat[$j]['tgl_exp'];
                 //     }
                 // }
+                $data_periksa_d_obat[] = array(
+                    'no_pendaftaran' => $data_pendaftaran->no_pendaftaran,
+                    'no_periksa' => $this->input->post('no_periksa'),
+                    'kode_barang' => $post_obat[$i],
+                    'jumlah' => $post_obat_jml[$i],
+                    'harga_satuan' => $_POST['harga_obat'][$i] / $post_obat_jml[$i],
+                    'anjuran' => $post_obat_anjuran[$i],
+                    'keterangan' => $post_obat_ket[$i],
+                    'penggunaan_obat' => $post_obat_penggunaan[$i],
+                    'tipe_periksa' =>'1'
+                );
+
                 $data_detail = array(
                     'id_inventory' => $kode_receipt,
                     'kode_barang' => $kode_barang,
@@ -217,19 +235,6 @@ class Periksamedis extends CI_Controller
             // $this->jurnal_otomatis_pemeriksaan($biaya_tindakan, $biaya_pemeriksaan, $no_periksa);//jurnal otomatis akuntansi untuk pendapatan pemeriksaan
             // $this->jurnal_otomatis(39, $total_jual);
 
-            $data_periksa_d_obat = array();
-            for ($i = 0; $i < count($post_obat); $i++) {
-                if ($post_obat[$i] != null || $post_obat[$i] != '') {
-                    $data_periksa_d_obat[] = array(
-                        'no_periksa' => $this->input->post('no_periksa'),
-                        'kode_barang' => $post_obat[$i],
-                        'jumlah' => $post_obat_jml[$i],
-                        'anjuran' => $post_obat_anjuran[$i],
-                        'keterangan' => $post_obat_ket[$i],
-                        'penggunaan_obat' => $post_obat_penggunaan[$i]
-                    );
-                }
-            }
 
             $post_cek_fisik = $this->input->post('cek_fisik');
             $post_cek_fisik_value = $this->input->post('cek_fisik_value');
@@ -265,8 +270,24 @@ class Periksamedis extends CI_Controller
                 }
             }
 
+            $biayaTindakan = 0;
+            $data_periksa_d_tindakan = [];
+            foreach ($_POST['name_tindakan'] as $key => $value) {
+                $this->db->select('biaya');
+                $tindakan = $this->db->get_where('tbl_tindakan',['kode_tindakan' => $value])->row();
+                $biayaTindakan += $tindakan->biaya;
+
+                $data_periksa_d_tindakan[] = array(
+                    'no_pendaftaran' => $data_pendaftaran->no_pendaftaran,
+                    'no_periksa' => $this->input->post('no_periksa'),
+                    'kode_tindakan' => $value,
+                    'biaya' => $tindakan->biaya,
+                    'tipe_periksa' =>'1'
+                );
+            }
+
             //Insert into tbl_periksa
-            $this->Periksa_model->insert($data_periksa, $data_periksa_d_alkes, $data_periksa_d_obat, $data_periksa_d_fisik);
+            $this->Periksa_model->insert($data_periksa, $data_periksa_d_alkes, $data_periksa_d_obat, $data_periksa_d_fisik,$data_periksa_d_tindakan);
 
             //TRANSAKSI
             $date_now_trx = date('Y-m-d', time());
@@ -277,10 +298,6 @@ class Periksamedis extends CI_Controller
                 'tgl_transaksi' => $date_now_trx,
                 'status_transaksi' => 0,
             );
-            $biayaTindakan = 0;
-            foreach ($_POST['biaya_tindakan'] as $key => $value) {
-                $biayaTindakan += $value;
-            }
             $data_transaksi_d = array(
                 array(
                     'no_transaksi' => $this->input->post('no_periksa'),
@@ -416,7 +433,6 @@ class Periksamedis extends CI_Controller
             } else {
                 $updatePendaftaran['is_closed'] = '1';
             }
-            //Set status pendaftaran is_periksa = 1
             $this->Pendaftaran_model->update($this->no_pendaftaran, $updatePendaftaran);
 
             // //Set session sukses
@@ -588,16 +604,18 @@ class Periksamedis extends CI_Controller
                 'tipe'          => 'KREDIT',
                 'keterangan'    => 'akun',
             );
-            //diskon untuk penjualan obat
-            $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
-            $data = array(
-                'id_trx_akun'   => $id_last->id_trx_akun,
-                'id_akun'       => 64,
-                'jumlah'        => $subsidi_obat,
-                'tipe'          => 'DEBIT',
-                'keterangan'    => 'akun',
-            );
-            $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
+            if($subsidi_obat!=0){
+                //diskon untuk penjualan obat
+                $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
+                $data = array(
+                    'id_trx_akun'   => $id_last->id_trx_akun,
+                    'id_akun'       => 64,
+                    'jumlah'        => $subsidi_obat,
+                    'tipe'          => 'DEBIT',
+                    'keterangan'    => 'akun',
+                );
+                $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
+            }
         }
     }
     private function jurnal_otomatis_pemeriksaan($biaya_tindakan, $biaya_pemeriksaan, $no_periksa)
@@ -901,49 +919,20 @@ class Periksamedis extends CI_Controller
         );
 
         $data_transaksi_d = array();
-        $tindakan = "";
+
+        //insert periksa lab
         foreach ($this->input->post('periksa_lab') as $key => $value) {
             $this->db->select('item,harga');
             $lab = $this->db->get_where('tbl_tipe_periksa_lab', ['id_tipe' => $value])->row();
-            $arr = array(
-                'no_transaksi' => $data_transaksi['no_transaksi'],
-                'deskripsi' => 'Biaya Tindakan ' . $lab->item,
-                'amount_transaksi' => $lab->harga,
-                'dc' => 'd'
-            );
-            array_push($data_transaksi_d, $arr);
-            $tindakan .= $lab->item . ";";
-
             $periksaLab = array(
+                'no_pendaftaran' => $this->no_pendaftaran,
                 'no_periksa' => $data_transaksi['no_transaksi'],
                 'id_tipe' => $value,
+                'biaya' => $lab->harga,
                 'hasil' => $_POST['hasil'][$key],
             );
-
             $this->db->insert('tbl_periksa_lab', $periksaLab);
         }
-
-        $periksa = array(
-            'no_periksa' => $this->input->post('no_periksa'),
-            'no_pendaftaran' => $this->no_pendaftaran,
-            'no_rekam_medis' => $data_pendaftaran->no_rekam_medis,
-            'tindakan' => $tindakan,
-            'is_surat_ket_sakit' => 0,
-            'id_dokter' => $this->id_dokter,
-            'is_ambil_obat' => 0,
-        );
-        $this->db->insert('tbl_periksa', $periksa);
-
-        $this->Transaksi_model->insert($data_transaksi, $data_transaksi_d);
-
-
-        //Get Next Antrian
-        $data_antrian = $this->Pendaftaran_model->get_next_antrian($this->id_dokter);
-        $next_antrian = $data_antrian != null ? $data_antrian->no_pendaftaran : null;
-        $this->Tbl_dokter_model->update($this->id_dokter, array(
-            "no_pendaftaran" => $next_antrian,
-            "dtm_upd" => date("Y-m-d H:i:s",  time())
-        ));
 
         // input inventory barang
         $kode_receipt1 = 'RCP' . time();
@@ -954,74 +943,125 @@ class Periksamedis extends CI_Controller
         );
         $this->Transaksi_obat_model->insert('tbl_inventory', $tb_inv1);
 
-        $totalBiayaObat = 0;
-        foreach ($_POST['kode_barang'] as $key => $value) {
-            $getObat1 = $this->Tbl_obat_alkes_bhp_model->get_detail_obat($value);
+        //periksa_d_obat
+        foreach ($_POST['kode_obat'] as $key => $value) {
             $det_inv1 = array(
                 'id_inventory' => $kode_receipt1,
                 'kode_barang' => $value,
-                'jumlah' => $_POST['jml_barang'][$key],
-                'harga' => $getObat1->harga,
-                'diskon' => $getObat1->diskon,
-                'tgl_exp' => $getObat1->tgl_exp,
+                'jumlah' => $_POST['jml_obat'][$key],
+                'harga' => $_POST['harga_obat'][$key],
             );
             $this->Transaksi_obat_model->insert('tbl_inventory_detail', $det_inv1);
-            $this->db->insert('alkes_periksa_lab', ['no_sampel' => $this->input->post('no_periksa'), 'kode_barang' => $value, 'jml_barang' => $det_inv1['jumlah']]);
-            $totalBiayaObat += ($getObat1->harga * $_POST['jml_barang'][$key]) - $getObat1->diskon;
+            
+            $periksa_d_obat = array(
+                'no_pendaftaran' => $this->no_pendaftaran,
+                'no_periksa' => $data_transaksi['no_transaksi'],
+                'kode_barang' => $value,
+                'jumlah' => $_POST['jml_obat'][$key],
+                'harga_satuan' => $_POST['harga_obat'][$key],
+                'tipe_periksa' => '4',
+            );
+            $this->db->insert('tbl_periksa_d_obat',$periksa_d_obat);
         }
-        //insert akuntansi
-        //insert detail akuntansi
-        $trAkuntansi = array(
-            'deskripsi' => 'Biaya Pemeriksaan ' . $this->input->post('no_periksa'),
-            'tanggal' => date('Y-m-d'),
+
+        //periksa_d_alkes
+        foreach ($_POST['kode_alkes'] as $key => $value) {
+            $det_inv1 = array(
+                'id_inventory' => $kode_receipt1,
+                'kode_barang' => $value,
+                'jumlah' => $_POST['jml_alkes'][$key],
+                'harga' => $_POST['harga_alkes'][$key],
+            );
+            $this->Transaksi_obat_model->insert('tbl_inventory_detail', $det_inv1);
+            
+            $periksa_d_alkes = array(
+                'no_pendaftaran' => $this->no_pendaftaran,
+                'no_periksa' => $data_transaksi['no_transaksi'],
+                'kode_barang' => $value,
+                'jumlah' => $_POST['jml_alkes'][$key],
+                'harga_satuan' => $_POST['harga_alkes'][$key],
+                'tipe_periksa' => '4',
+            );
+            $this->db->insert('tbl_periksa_d_alkes',$periksa_d_alkes);
+        }
+
+        //d_periksa_tindakan
+        foreach ($_POST['tindakan'] as $key => $value) {
+            $this->db->select('biaya');
+            $tindakan = $this->db->get_where('tbl_tindakan',['kode_tindakan' => $value])->row();
+            $periksa_d_tindakan = array(
+                'no_pendaftaran' => $this->no_pendaftaran,
+                'no_periksa' => $data_transaksi['no_transaksi'],
+                'kode_tindakan' => $value,
+                'biaya' => $tindakan->biaya,
+                'tipe_periksa' => '4',
+            );
+            $this->db->insert('tbl_periksa_d_tindakan',$periksa_d_tindakan);
+        }
+
+        $data_transaksi_d[] = array(
+            'no_transaksi' => $data_transaksi['no_transaksi'],
+            'deskripsi' => 'Biaya Periksa Lab',
+            'amount_transaksi' => $_POST['totalLab'],
+            'dc' => 'd'
         );
 
-        $trAkuntansiDetail = array(
-            [ //kas bertambah
-                'id_akun'       => 20,
-                'jumlah'        => $totalBiayaObat,
-                'tipe'          => 'DEBIT',
-                'keterangan'    => 'lawan',
-            ],
-            [ //hpp
-                'id_akun'       => 65,
-                'jumlah'        => $totalBiayaObat,
-                'tipe'          => 'DEBIT',
-                'keterangan'    => 'lawan',
-            ],
-            [ //persediaan obat berkurang
-                'id_akun'       => 59,
-                'jumlah'        => $totalBiayaObat,
-                'tipe'          => 'KREDIT',
-                'keterangan'    => 'akun',
-            ],
-            [ //pendapatan dari penjualan obat
-                'id_akun'       => 41,
-                'jumlah'        => $totalBiayaObat,
-                'tipe'          => 'KREDIT',
-                'keterangan'    => 'akun',
-            ]
+        $data_transaksi_d[] = array(
+            'no_transaksi' => $data_transaksi['no_transaksi'],
+            'deskripsi' => 'Biaya Obat',
+            'amount_transaksi' => $_POST['totalObat'],
+            'dc' => 'd'
         );
-        $this->Transaksi_akuntansi_model->insertWithDetail($trAkuntansi, $trAkuntansiDetail);
+
+        $data_transaksi_d[] = array(
+            'no_transaksi' => $data_transaksi['no_transaksi'],
+            'deskripsi' => 'Biaya BMHP',
+            'amount_transaksi' => $_POST['totalAlkes'],
+            'dc' => 'd'
+        );
+
+        $data_transaksi_d[] = array(
+            'no_transaksi' => $data_transaksi['no_transaksi'],
+            'deskripsi' => 'Biaya Tindakan',
+            'amount_transaksi' => $_POST['totalTindakan'],
+            'dc' => 'd'
+        );
+
+        $this->Transaksi_model->insert($data_transaksi, $data_transaksi_d);
+
+
+        //insert akuntansi
+        $this->jurnal_otomatis_obat($_POST['totalObat'],0,$_POST['totalObat'],$data_transaksi['no_transaksi'],$_POST['totalObat']);
+        
+        $this->jurnal_otomatis_alkes($_POST['totalAlkes'],$data_transaksi['no_transaksi']);
+
+        $updatePendaftaran = array(
+            'dtm_upd' => date("Y-m-d H:i:s",  time())
+        );
 
         if ($_POST['pemeriksaan_selanjutnya'] != '0') {
-            $data_pendaftaran = array(
-                'no_pendaftaran' => $data_pendaftaran->no_pendaftaran,
-                'no_rekam_medis' => $data_pendaftaran->no_rekam_medis,
-                'id_dokter' => $data_pendaftaran->id_dokter,
-                'id_klinik' => $this->id_klinik,
-                'tipe_periksa' => $data_pendaftaran->tipe_periksa,
-                'periksa_lanjutan' => $_POST['pemeriksaan_selanjutnya'],
+            $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '0'], ['no_pendaftaran' => $this->no_pendaftaran]);
+            $periksaLanjutan = array(
+                'no_pendaftaran' => $this->no_pendaftaran,
+                'tipe_periksa' => $_POST['pemeriksaan_selanjutnya'],
+                'tanggal' => date('Y-m-d H:i:s'),
+                'is_periksa' => '1',
             );
-
-            $this->db->insert('tbl_pendaftaran', $data_pendaftaran);
+            $this->db->insert('tbl_periksa_lanjutan', $periksaLanjutan);
         } else {
-            //Set status pendaftaran is_periksa = 1
-            $this->Pendaftaran_model->update($this->no_pendaftaran, array(
-                'is_periksa' => 1,
-                'dtm_upd' => date("Y-m-d H:i:s",  time())
-            ));
+            $updatePendaftaran['is_closed'] = '1';
         }
+        
+        $this->Pendaftaran_model->update($this->no_pendaftaran, $updatePendaftaran);
+
+        //Get Next Antrian
+        $data_antrian = $this->Pendaftaran_model->get_next_antrian($this->id_dokter);
+        $next_antrian = $data_antrian != null ? $data_antrian->no_pendaftaran : null;
+        $this->Tbl_dokter_model->update($this->id_dokter, array(
+            "no_pendaftaran" => $next_antrian,
+            "dtm_upd" => date("Y-m-d H:i:s",  time())
+        ));
+
 
         //Set session sukses
         $this->session->set_flashdata('message', 'Data pemeriksaan berhasil disimpan, No Pendaftaran ' . $this->no_pendaftaran);

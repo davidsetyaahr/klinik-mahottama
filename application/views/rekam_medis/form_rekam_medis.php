@@ -551,12 +551,12 @@
 							<div class="col-sm-4">
 								<div class="input-group">
                                     <span class="input-group-addon" style="background-color: #fcffc4;">Tindakan</span>
-                                    <input type="hidden" name="tindakan" id="nameTindakan">
-                                    <select name="biaya_tindakan" id="biaya_tindakan" style="width:100%" class="select2 form-control" onchange="hitung_biaya()" multiple='multiple'>
+                                    <!-- <input type="hidden" name="name_tindakan[]" id="nameTindakan"> -->
+                                    <select name="name_tindakan" id="name_tindakan" style="width:100%" class="select2 form-control" onchange="hitung_biaya()" multiple='multiple'>
                                         <option value="0">---Pilih Tindakan---</option>
                                         <?php 
                                             foreach ($master_tindakan as $key => $value) {
-                                                echo "<option data-tindakan='".$value->tindakan."' value='".$value->biaya."'>".$value->kode_tindakan." - ".$value->tindakan." ".number_format($value->biaya,0,',','.')."</option>";
+                                                echo "<option data-biaya='".$value->biaya."' value='".$value->kode_tindakan."'>".$value->kode_tindakan." - ".$value->tindakan." ".number_format($value->biaya,0,',','.')."</option>";
                                             }
                                         ?>
                                     </select>
@@ -676,10 +676,10 @@
                 }
             })
         })
-        $("#biaya_tindakan").change(function(){
-            var tindakan = $(this).find(":selected").data('tindakan')
-            $("#nameTindakan").val(tindakan)
-        })
+        // $("#biaya_tindakan").change(function(){
+        //     var tindakan = $(this).find(":selected").data('tindakan')
+        //     $("#nameTindakan").val(tindakan)
+        // })
         $.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings)
         {
             return {
@@ -1196,7 +1196,7 @@ $(document).ready(function() {
     function hitung_biaya(){
         
         $('#ket_pemeriksaan:checked').val() == 0 ? $('#biaya_pemeriksaan').val() : $('#biaya_pemeriksaan').val(0);
-        $('#ket_tindakan:checked').val() == 0 ? $('#biaya_tindakan').val() : $('#biaya_tindakan').val(0);
+        $('#ket_tindakan:checked').val() == 0 ? $('#name_tindakan').val() : $('#name_tindakan').val(0);
         $('#ket_obat_obatan:checked').val() == 0 ? $('#biaya_obat_obatan').val($('#grandtotal_harga').val()) : $('#biaya_obat_obatan').val(0);
         //  $('#ket_administrasi:checked').val() == 0 ? $('#biaya_administrasi').val() : $('#biaya_administrasi').val(0);
         
@@ -1205,9 +1205,10 @@ $(document).ready(function() {
         //Get Biaya
         var pemeriksaan = $('#biaya_pemeriksaan').val() != '' ? $('#biaya_pemeriksaan').val() : 0;
         var tindakan = 0;
-        if($('#biaya_tindakan').val()!=null ){
-            $.each($('#biaya_tindakan').val(), function(key,val){
-                tindakan+=parseInt(val)
+        if($('#name_tindakan').val()!=null ){
+            $.each($('#name_tindakan').val(), function(key,val){
+                tindakan+=parseInt($("#name_tindakan option[value='"+val+"']").attr('data-biaya'))
+                // tindakan+=parseInt(val.attr('data-biaya'))
             })
         }
         var obat_obatan = $('#biaya_obat_obatan').val() != '' ? $('#biaya_obat_obatan').val() : 0;
