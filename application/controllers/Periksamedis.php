@@ -1015,40 +1015,50 @@ class Periksamedis extends CI_Controller
             $this->db->insert('tbl_periksa_d_biaya',$periksa_d_biaya);
         }
 
-        $data_transaksi_d[] = array(
-            'no_transaksi' => $data_transaksi['no_transaksi'],
-            'deskripsi' => 'Biaya Periksa Lab',
-            'amount_transaksi' => $_POST['totalLab'],
-            'dc' => 'd'
-        );
+        if($_POST['totalLab']!=0){
+            $data_transaksi_d[] = array(
+                'no_transaksi' => $data_transaksi['no_transaksi'],
+                'deskripsi' => 'Biaya Periksa Lab',
+                'amount_transaksi' => $_POST['totalLab'],
+                'dc' => 'd'
+            );
+        }
+        
+        if($_POST['totalObat']!=0){
+            $data_transaksi_d[] = array(
+                'no_transaksi' => $data_transaksi['no_transaksi'],
+                'deskripsi' => 'Biaya Obat',
+                'amount_transaksi' => $_POST['totalObat'],
+                'dc' => 'd'
+            );
+        }
+        
+        if($_POST['totalAlkes']!=0){
+            $data_transaksi_d[] = array(
+                'no_transaksi' => $data_transaksi['no_transaksi'],
+                'deskripsi' => 'Biaya BMHP',
+                'amount_transaksi' => $_POST['totalAlkes'],
+                'dc' => 'd'
+            );
+        }
 
-        $data_transaksi_d[] = array(
-            'no_transaksi' => $data_transaksi['no_transaksi'],
-            'deskripsi' => 'Biaya Obat',
-            'amount_transaksi' => $_POST['totalObat'],
-            'dc' => 'd'
-        );
-
-        $data_transaksi_d[] = array(
-            'no_transaksi' => $data_transaksi['no_transaksi'],
-            'deskripsi' => 'Biaya BMHP',
-            'amount_transaksi' => $_POST['totalAlkes'],
-            'dc' => 'd'
-        );
-
-        $data_transaksi_d[] = array(
-            'no_transaksi' => $data_transaksi['no_transaksi'],
-            'deskripsi' => 'Biaya Tindakan',
-            'amount_transaksi' => $_POST['totalTindakan'],
-            'dc' => 'd'
-        );
-
-        $data_transaksi_d[] = array(
-            'no_transaksi' => $data_transaksi['no_transaksi'],
-            'deskripsi' => 'Biaya Lainnya',
-            'amount_transaksi' => $_POST['totalBiaya'],
-            'dc' => 'd'
-        );
+        if($_POST['totalTindakan']!=0){
+            $data_transaksi_d[] = array(
+                'no_transaksi' => $data_transaksi['no_transaksi'],
+                'deskripsi' => 'Biaya Tindakan',
+                'amount_transaksi' => $_POST['totalTindakan'],
+                'dc' => 'd'
+            );
+        }
+        
+        if($_POST['totalBiaya']!=0){
+            $data_transaksi_d[] = array(
+                'no_transaksi' => $data_transaksi['no_transaksi'],
+                'deskripsi' => 'Biaya Lainnya',
+                'amount_transaksi' => $_POST['totalBiaya'],
+                'dc' => 'd'
+            );
+        }
 
         $this->Transaksi_model->insert($data_transaksi, $data_transaksi_d);
 
@@ -1157,7 +1167,7 @@ class Periksamedis extends CI_Controller
         $this->data['no_periksa'] = $data_pendaftaran->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran->no_rekam_medis;
         $this->data['tindakan'] = $this->db->get('tbl_tindakan')->result();
         $this->data['obat'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 1);
-        $this->data['biaya'] = $this->db->get('tbl_biaya')->result();
+        $this->data['biaya'] = $this->Tbl_biaya_model->getBiaya();
         $this->data['alkes'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 2);
         $this->template->load('template', 'operasi/operasi', $this->data);
     }
@@ -1175,7 +1185,7 @@ class Periksamedis extends CI_Controller
 
         $this->data['no_periksa'] = $data_pendaftaran->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran->no_rekam_medis;
 
-        $this->data['biaya'] = $this->db->get('tbl_biaya')->result();
+        $this->data['biaya'] = $this->Tbl_biaya_model->getBiaya();
         $this->data['kamar'] = $this->Tbl_kamar_model->get_kamar();
         $this->data['obat'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 1);
         $this->data['alkes'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 2);
