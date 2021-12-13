@@ -1062,8 +1062,8 @@ class Periksamedis extends CI_Controller
             'dtm_upd' => date("Y-m-d H:i:s",  time())
         );
 
+        $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '0'], ['no_pendaftaran' => $this->no_pendaftaran]);
         if ($_POST['pemeriksaan_selanjutnya'] != '0') {
-            $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '0'], ['no_pendaftaran' => $this->no_pendaftaran]);
             $periksaLanjutan = array(
                 'no_pendaftaran' => $this->no_pendaftaran,
                 'tipe_periksa' => $_POST['pemeriksaan_selanjutnya'],
@@ -1121,7 +1121,7 @@ class Periksamedis extends CI_Controller
         $this->data['no'] = $_GET['no'];
         $this->load->view('periksa-radiologi/loop-pilihan-radiologi', $this->data);
     }
-
+    
     public function newItemLoopObat()
     {
         $this->data['obat'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 1);
