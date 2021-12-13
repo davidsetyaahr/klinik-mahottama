@@ -1367,6 +1367,10 @@ class Periksamedis extends CI_Controller
         $this->template->load('template', 'operasi/operasi', $this->data);
     }
 
+    public function save_operasi(){
+        
+    }
+
     public function rawat_inap()
     {
         $data_pendaftaran = $this->Pendaftaran_model->get_by_id($this->no_pendaftaran);
