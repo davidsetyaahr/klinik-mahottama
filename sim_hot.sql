@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 08, 2021 at 11:31 AM
--- Server version: 10.4.20-MariaDB
--- PHP Version: 7.4.22
+-- Generation Time: Dec 13, 2021 at 03:59 AM
+-- Server version: 10.4.19-MariaDB
+-- PHP Version: 7.4.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -359,7 +359,7 @@ INSERT INTO `tbl_apoteker` (`id_apoteker`, `nama_apoteker`, `alamat`, `telp`, `e
 --
 
 CREATE TABLE `tbl_biaya` (
-  `id_biaya` int(3) NOT NULL,
+  `id_biaya` int(6) NOT NULL,
   `id_kategori_biaya` int(3) NOT NULL,
   `nama_biaya` varchar(255) NOT NULL,
   `biaya` int(10) NOT NULL,
@@ -373,11 +373,8 @@ CREATE TABLE `tbl_biaya` (
 --
 
 INSERT INTO `tbl_biaya` (`id_biaya`, `id_kategori_biaya`, `nama_biaya`, `biaya`, `tipe_biaya`, `presentase`, `id_biaya_presentase`) VALUES
-(1, 1, 'Tes', 200000, NULL, 2.9, NULL),
-(2, 1, 'Tes1', 10000, NULL, NULL, NULL),
-(4, 2, 'Tes2', 200000, NULL, NULL, NULL),
-(5, 3, 'Tes3', 200000, NULL, NULL, NULL),
-(6, 3, 'Pembayuaran', 200000, NULL, NULL, NULL);
+(1, 1, 'Tes', 200000, '1', NULL, NULL),
+(2, 1, 'Biaya A', 0, '2', 50, 1);
 
 -- --------------------------------------------------------
 
@@ -2472,9 +2469,9 @@ CREATE TABLE `tbl_dokter` (
 --
 
 INSERT INTO `tbl_dokter` (`id_dokter`, `nama_dokter`, `jenis_kelamin`, `tempat_lahir`, `tanggal_lahir`, `id_agama`, `alamat_tinggal`, `no_hp`, `id_status_menikah`, `id_spesialis`, `no_izin_praktek`, `golongan_darah`, `alumni`, `is_jaga`, `no_pendaftaran`, `komisi_biaya_pemeriksaan`, `komisi_biaya_tindakan`, `komisi_biaya_obat`, `id_poli`, `dtm_crt`, `dtm_upd`) VALUES
-(3, 'dr. NYOMAN WIRA SWASTIKA, Sp.B', 'L', 'lombok barat', '1978-04-05', 3, 'GENTENG', '0987654321', 1, 11, 'spo 987654', 'A', 'unair udayana', 1, '000919', 15, 15, 15, 1, '2021-11-29 04:21:10', '2021-12-07 13:02:38'),
-(4, 'drg. INDAH DWI ERNAWATI Mkes', 'P', 'Banyuwangi', '1972-08-21', 1, 'Sempu', '000987654321', 1, 6, 'sip09999', 'A', 'Unair', 1, NULL, 10, 10, 10, 2, '2021-11-29 04:23:47', '2021-11-29 07:00:36'),
-(5, 'dr. ROBBY ADITYA, S.Ked', 'L', 'Banyuwangi', '1997-02-21', 1, 'SRONO', '000987654321', 2, 4, 'sip09997', 'A', 'Unair', 1, NULL, 15, 15, 15, 1, '2021-11-29 04:25:37', '2021-11-29 06:59:10');
+(3, 'dr. NYOMAN WIRA SWASTIKA, Sp.B', 'L', 'lombok barat', '1978-04-05', 3, 'GENTENG', '0987654321', 1, 11, 'spo 987654', 'A', 'unair udayana', 1, '000919', 15, 15, 15, 4, '2021-11-29 04:21:10', '2021-12-13 09:08:55'),
+(4, 'drg. INDAH DWI ERNAWATI M. Kes', 'P', 'Banyuwangi', '1973-05-04', 1, 'Dusun Krajan Wetan RT 001 RW 003 Desa Temuguruh Kecamatan Sempu', '0811370398', 1, 6, 'sip09999', 'B', 'Unair', 1, NULL, 10, 10, 10, 2, '2021-11-29 04:23:47', '2021-12-02 08:27:50'),
+(5, 'dr. ROBBY ADITYA, S.Ked', 'L', 'Banyuwangi', '1997-02-21', 1, 'SRONO', '000987654321', 2, 4, 'sip09997', 'A', 'Unair', 1, '000918', 15, 15, 15, 1, '2021-11-29 04:25:37', '2021-12-02 08:29:41');
 
 -- --------------------------------------------------------
 
@@ -2502,8 +2499,8 @@ INSERT INTO `tbl_golongan_barang` (`id_golongan_barang`, `nama_golongan_barang`,
 (5, 'Multi vitamin', 'Suplemen vitamin & mineral', '2021-10-27 11:14:03', '2021-10-27 11:14:03'),
 (6, 'Obat bebas', 'Tanpa resep dokter', '2021-10-27 11:14:23', '2021-10-27 11:14:23'),
 (7, 'Obat luar', 'Pemakaian luar', '2021-10-27 11:14:44', '2021-10-27 11:14:44'),
-(8, 'Generik', '', '2021-12-03 11:06:32', '2021-12-03 11:06:32'),
-(9, 'Paten', '', '2021-12-03 11:06:32', '2021-12-03 11:06:32');
+(8, 'Generik', '-', '2021-12-03 09:57:21', '2021-12-03 09:57:21'),
+(9, 'Paten', '-', '2021-12-03 09:57:26', '2021-12-03 09:57:26');
 
 -- --------------------------------------------------------
 
@@ -2734,14 +2731,13 @@ INSERT INTO `tbl_hak_akses` (`id`, `id_user_level`, `id_menu`, `dtm_crt`, `dtm_u
 (295, 1, 138, '2021-11-26 15:21:34', '2021-11-26 15:21:34'),
 (296, 10, 49, '2021-11-28 12:42:23', '2021-11-28 12:42:23'),
 (297, 10, 44, '2021-11-28 12:43:48', '2021-11-28 12:43:48'),
-(298, 1, 140, '2021-11-30 16:35:36', '2021-11-30 16:35:36'),
-(299, 1, 141, '2021-11-30 16:35:37', '2021-11-30 16:35:37'),
-(300, 1, 142, '2021-11-30 16:35:37', '2021-11-30 16:35:37'),
-(301, 1, 144, '2021-12-01 13:16:13', '2021-12-01 13:16:13'),
-(302, 1, 145, '2021-12-01 13:16:14', '2021-12-01 13:16:14'),
-(303, 1, 143, '2021-12-01 13:16:14', '2021-12-01 13:16:14'),
-(304, 1, 146, '2021-12-01 13:30:14', '2021-12-01 13:30:14'),
-(305, 1, 149, '2021-12-08 14:08:38', '2021-12-08 14:08:38');
+(298, 1, 140, '2021-12-01 21:48:36', '2021-12-01 21:48:36'),
+(299, 1, 141, '2021-12-01 21:48:36', '2021-12-01 21:48:36'),
+(300, 1, 142, '2021-12-01 21:48:38', '2021-12-01 21:48:38'),
+(301, 1, 143, '2021-12-01 21:48:43', '2021-12-01 21:48:43'),
+(302, 1, 144, '2021-12-01 21:48:44', '2021-12-01 21:48:44'),
+(303, 1, 145, '2021-12-01 21:48:44', '2021-12-01 21:48:44'),
+(304, 1, 146, '2021-12-01 21:48:45', '2021-12-01 21:48:45');
 
 -- --------------------------------------------------------
 
@@ -2809,9 +2805,10 @@ INSERT INTO `tbl_inventory` (`id_inventory`, `kode_purchase`, `inv_type`, `id_kl
 ('RCP1638087624', 'PO1638087590', 'RECEIPT_ORDER', 1, '2021-11-28 15:20:24', '2021-11-28 15:20:24'),
 ('RCP1638087760', NULL, 'TRX_STUFF', 1, '2021-11-28 15:22:40', '2021-11-28 15:22:40'),
 ('RCP1638088051', NULL, 'TRX_STUFF', 1, '2021-11-28 15:27:31', '2021-11-28 15:27:31'),
-('RCP1638331834', 'PO1638331746', 'RECEIPT_ORDER', 1, '2021-12-01 11:10:34', '2021-12-01 11:10:34'),
-('RCP1638352062', NULL, 'TRX_STUFF', 1, '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-('RCP1638352422', NULL, 'TRX_STUFF', 1, '2021-12-01 16:53:42', '2021-12-01 16:53:42');
+('RCP1638272589', 'PO1638272515', 'RECEIPT_ORDER', 1, '2021-11-30 11:43:09', '2021-11-30 11:43:09'),
+('RCP1638940467', 'PO1638940242', 'RECEIPT_ORDER', 1, '2021-12-08 12:14:27', '2021-12-08 12:14:27'),
+('RCP1639298706', NULL, 'TRX_STUFF', 1, '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+('RCP1639323626', NULL, 'TRX_STUFF', 1, '2021-12-12 22:40:26', '2021-12-12 22:40:26');
 
 -- --------------------------------------------------------
 
@@ -2839,14 +2836,17 @@ CREATE TABLE `tbl_inventory_detail` (
 --
 
 INSERT INTO `tbl_inventory_detail` (`id_inventory_detail`, `id_inventory`, `kode_barang`, `kode_gudang`, `id_lokasi_barang`, `jumlah`, `harga`, `diskon`, `tgl_exp`, `notes`, `dtm_crt`, `dtm_upd`) VALUES
-(1, 'RCP1638087624', 'AKMCA', 'GUD1574152872', 2, 20, 15600, 0, '2022-12-28', NULL, '2021-11-28 15:20:24', '2021-11-28 15:20:24'),
-(2, 'RCP1638087760', 'BRG1638086758AK', '', 0, 1, 15600, 0, '2022-12-28', NULL, '2021-11-28 15:22:40', '2021-11-28 15:22:40'),
+(1, 'RCP1638087624', 'BRG1638086758', 'GUD1574152872', 2, 20, 15600, 0, '2022-12-28', NULL, '2021-11-28 15:20:24', '2021-11-28 15:20:24'),
+(2, 'RCP1638087760', 'BRG1638086758', '', 0, 1, 15600, 0, '2022-12-28', NULL, '2021-11-28 15:22:40', '2021-11-28 15:22:40'),
 (3, 'RCP1638088051', 'BRG1638086758', '', 0, 1, 15600, 0, '2022-12-28', NULL, '2021-11-28 15:27:31', '2021-11-28 15:27:31'),
-(4, 'RCP1638331834', 'BRG1638331698', 'GUD1574152872', 2, 20, 8000, 0, '2021-12-31', NULL, '2021-12-01 11:10:34', '2021-12-01 11:10:34'),
-(5, 'RCP1638352062', 'BRG1638331698', '', 0, 1, 8000, 0, '0000-00-00', NULL, '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(6, 'RCP1638352062', 'AKMCA', '', 0, 1, 36400, 0, '0000-00-00', NULL, '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(7, 'RCP1638352422', 'BRG1638331698', '', 0, 1, 8000, 0, '0000-00-00', NULL, '2021-12-01 16:53:42', '2021-12-01 16:53:42'),
-(8, 'RCP1638352422', 'AKMCA', '', 0, 1, 36400, 0, '0000-00-00', NULL, '2021-12-01 16:53:42', '2021-12-01 16:53:42');
+(4, 'RCP1638272589', 'BRG1638272332', 'GUD1574152872', 2, 12, 2000000, 500000, '2021-12-30', NULL, '2021-11-30 11:43:09', '2021-11-30 11:43:09'),
+(5, 'RCP1638940467', 'BRG1638090777', 'GUD1574152872', 2, 100, 1000, 0, '2021-12-08', NULL, '2021-12-08 12:14:27', '2021-12-08 12:14:27'),
+(6, 'RCP1638940467', 'AIDXB', 'GUD1574152872', 2, 150, 3000, 0, '2021-12-08', NULL, '2021-12-08 12:14:27', '2021-12-08 12:14:27'),
+(7, 'RCP1639298706', 'AIDXB', '', 0, 1, 11700, 0, '0000-00-00', NULL, '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(8, 'RCP1639298706', 'BRG1638272332', '', 0, 1, 1500000, 0, '0000-00-00', NULL, '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(9, 'RCP1639323626', 'BRG1638272332', '', 0, 1, 2000000, 0, '0000-00-00', NULL, '2021-12-12 22:40:26', '2021-12-12 22:40:26'),
+(10, 'RCP1639323626', 'AIDXB', '', 0, 9, 11700, 0, '0000-00-00', NULL, '2021-12-12 22:40:26', '2021-12-12 22:40:26'),
+(11, 'RCP1639323626', 'BRG1638090777', '', 0, 10, 1000, 0, '0000-00-00', NULL, '2021-12-12 22:40:26', '2021-12-12 22:40:26');
 
 -- --------------------------------------------------------
 
@@ -2873,8 +2873,12 @@ INSERT INTO `tbl_jabatan` (`id_jabatan`, `nama_jabatan`, `dtm_crt`, `dtm_upd`) V
 (5, 'OB', '2019-12-02 15:49:21', '2019-12-02 15:49:21'),
 (6, 'Perawat', '2021-09-23 11:17:32', '2021-09-23 11:17:32'),
 (7, 'Bidan', '2021-09-23 11:17:41', '2021-09-23 11:17:41'),
-(8, 'Leader', '2021-09-23 11:17:49', '2021-09-23 11:17:49'),
-(9, 'Manager', '2021-09-23 11:27:27', '2021-09-23 11:27:27');
+(8, 'Laundry', '2021-09-23 11:17:49', '2021-12-01 03:53:54'),
+(9, 'Sopir Ambulance', '2021-09-23 11:27:27', '2021-12-01 03:53:20'),
+(10, 'Sekuriti', '2021-12-01 03:54:35', '2021-12-01 03:54:35'),
+(11, 'Kebersihan', '2021-12-01 03:55:15', '2021-12-01 03:55:15'),
+(12, 'penunjang non medis', '2021-12-01 03:55:41', '2021-12-01 03:55:41'),
+(13, 'Gizi', '2021-12-01 03:56:08', '2021-12-01 03:56:08');
 
 -- --------------------------------------------------------
 
@@ -2952,21 +2956,7 @@ INSERT INTO `tbl_kamar` (`id_kamar`, `id_kategori_kamar`, `no_kamar`, `status`) 
 (2, 1, '123', '1'),
 (3, 1, '1234', NULL),
 (4, 0, '321', '1'),
-(5, 0, '321', '0'),
-(6, 0, '12', '0'),
-(7, 2, '12', '1'),
-(8, 3, '11', '0'),
-(9, 3, '1', '0'),
-(10, 2, '09', '0'),
-(11, 3, '08', '1'),
-(12, 4, '32', '0'),
-(13, 5, '07', '1'),
-(14, 6, '01', '1'),
-(15, 6, '02', '0'),
-(16, 6, '03', '0'),
-(17, 6, '04', '0'),
-(18, 4, '212', NULL),
-(19, 1, '0009', NULL);
+(5, 0, '321', '0');
 
 -- --------------------------------------------------------
 
@@ -2982,6 +2972,13 @@ CREATE TABLE `tbl_kartu_hutang` (
   `tipe` enum('0','1') NOT NULL COMMENT '0 = Hutang, 1 = Bayar',
   `tanggal` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_kartu_hutang`
+--
+
+INSERT INTO `tbl_kartu_hutang` (`id`, `kode_supplier`, `kode_purchase`, `nominal`, `tipe`, `tanggal`) VALUES
+(1, 'SUP1638087407', 'PO1638272515', 18000000, '0', '2021-11-30 11:43:09');
 
 -- --------------------------------------------------------
 
@@ -3006,7 +3003,7 @@ INSERT INTO `tbl_kategori_barang` (`id_kategori_barang`, `nama_kategori`, `dtm_c
 (3, 'Perawatan', '2018-03-04 21:44:29', '2018-03-04 21:44:29'),
 (4, 'Obat luar', '2021-10-11 12:33:19', '2021-10-11 12:33:19'),
 (5, 'BMHP', '2021-11-09 10:45:35', '2021-11-29 08:03:09'),
-(6, 'Injeksi dan Cairan', '2021-12-03 09:50:10', '2021-12-03 09:50:10');
+(6, 'Injeksi dan Cairan', '2021-12-03 09:35:36', '2021-12-03 09:35:36');
 
 -- --------------------------------------------------------
 
@@ -3024,9 +3021,7 @@ CREATE TABLE `tbl_kategori_biaya` (
 --
 
 INSERT INTO `tbl_kategori_biaya` (`id_kategori_biaya`, `item`) VALUES
-(1, 'Pembelian'),
-(2, 'Pembayaran'),
-(3, 'Pembayaran Rawat Inap');
+(1, 'Pembelian');
 
 -- --------------------------------------------------------
 
@@ -3045,12 +3040,7 @@ CREATE TABLE `tbl_kategori_kamar` (
 --
 
 INSERT INTO `tbl_kategori_kamar` (`id_kategori_kamar`, `nama`, `harga`) VALUES
-(1, 'VVIP', 250000),
-(2, 'VIP', 200000),
-(3, 'Kelas 1', 150000),
-(4, 'Kelas 2', 100000),
-(5, 'Kelas 3', 50000),
-(6, 'VVVIP', 300000);
+(1, 'VVVIP', 250000);
 
 -- --------------------------------------------------------
 
@@ -3060,16 +3050,8 @@ INSERT INTO `tbl_kategori_kamar` (`id_kategori_kamar`, `nama`, `harga`) VALUES
 
 CREATE TABLE `tbl_kategori_periksa_lab_radiologi` (
   `id_kategori` int(3) NOT NULL,
-  `nama_kategori` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `tbl_kategori_periksa_lab_radiologi`
---
-
-INSERT INTO `tbl_kategori_periksa_lab_radiologi` (`id_kategori`, `nama_kategori`) VALUES
-(3, 'Tes'),
-(4, 'Ongsky');
+  `nama_kategori` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -3088,8 +3070,7 @@ CREATE TABLE `tbl_kategori_tindakan` (
 
 INSERT INTO `tbl_kategori_tindakan` (`id_kategori`, `item`) VALUES
 (1, 'Umum'),
-(3, 'Gigi'),
-(4, 'Posyandu');
+(3, 'Gigi');
 
 -- --------------------------------------------------------
 
@@ -3856,8 +3837,7 @@ INSERT INTO `tbl_master_reference` (`id`, `master_ref_code`, `master_ref_value`,
 (623, 'ANAMNESI', 'nyeridikaki', 'nyeri di kaki', '2021-11-15 11:02:33', '2021-11-15 11:02:33'),
 (624, 'ANAMNESI', 'gatal-gataldileher', 'gatal-gatal di leher', '2021-11-15 11:09:37', '2021-11-15 11:09:37'),
 (625, 'TINDAKAN', 'perawatan', 'Perawatan', '2021-11-28 15:22:40', '2021-11-28 15:22:40'),
-(626, 'TINDAKAN', 'vaksein', 'Vaksein', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(627, 'TINDAKAN', 'tindakan', 'tindakan', '2021-12-01 16:53:42', '2021-12-01 16:53:42');
+(626, 'TINDAKAN', 'pendaftaranpasienbaru', 'PENDAFTARAN PASIEN BARU', '2021-12-12 15:45:06', '2021-12-12 15:45:06');
 
 -- --------------------------------------------------------
 
@@ -3881,8 +3861,8 @@ CREATE TABLE `tbl_master_sequence` (
 
 INSERT INTO `tbl_master_sequence` (`id_master_sequence`, `master_seq_code`, `seq_name`, `seq_no`, `length_no`, `dtm_crt`, `dtm_upd`) VALUES
 (1, 'NOPERIKSA', 'No Periksa', 0, 6, '2018-02-28 22:01:47', '2018-02-28 22:01:47'),
-(2, 'NOREKAMMEDIS', 'No Rekam Medis', 729, 6, '2018-02-28 22:04:56', '2021-12-01 16:52:37'),
-(3, 'NOPENDAFTARAN', 'No Pendaftaran', 920, 6, '2018-03-03 01:32:21', '2021-12-01 16:52:37'),
+(2, 'NOREKAMMEDIS', 'No Rekam Medis', 728, 6, '2018-02-28 22:04:56', '2021-11-30 11:10:39'),
+(3, 'NOPENDAFTARAN', 'No Pendaftaran', 919, 6, '2018-03-03 01:32:21', '2021-11-30 11:10:39'),
 (4, 'NOTRANSAKSIOBAT', 'No Transaksi Obat', 119, 6, '2018-05-11 16:49:33', '2021-11-15 09:01:55');
 
 -- --------------------------------------------------------
@@ -4000,14 +3980,13 @@ INSERT INTO `tbl_menu` (`id_menu`, `title`, `url`, `icon`, `is_main_menu`, `is_a
 (137, 'Hutang PO Obat', 'supplier/hutang', 'fa fa-money', 77, 'y', '2021-11-04 11:06:10', '2021-11-04 11:06:10'),
 (138, 'Obat Hampir Habis', 'obat_hampir_habis', 'fa fa-medkit', 0, 'y', '2021-11-06 14:14:45', '2021-11-06 14:14:45'),
 (139, 'Penyesuaian Stok', 'dataobat/stok_adjustment', 'fa fa-pencil-square', 77, 'y', '2021-11-26 15:21:15', '2021-11-26 15:21:15'),
-(140, 'Kategori Tindakan', 'tipe_kategori_tindakan', 'fa fa-code-fork', 78, 'y', '2021-11-30 16:34:22', '2021-11-30 16:34:22'),
-(141, 'Kategori Kamar', 'kategori_kamar', 'fa fa-bed', 78, 'y', '2021-11-30 16:35:13', '2021-11-30 16:35:13'),
-(142, 'Kamar', 'kamar', 'fa fa-bed', 78, 'y', '2021-11-30 16:34:39', '2021-11-30 16:34:39'),
-(143, 'Poli', 'poli', 'fa fa-stethoscope', 78, 'y', '2021-12-01 13:15:00', '2021-12-01 13:15:00'),
-(144, 'Kategori Biaya', 'kategori_biaya', 'fa fa-money', 78, 'y', '2021-12-01 13:15:50', '2021-12-01 13:15:50'),
-(145, 'Biaya', 'biaya', 'fa fa-money', 78, 'y', '2021-12-01 13:15:26', '2021-12-01 13:15:26'),
-(146, 'Master Radiologi', 'tipe_radiologi', 'fa fa-stethoscope', 78, 'y', '2021-12-01 13:30:05', '2021-12-01 13:30:05'),
-(149, 'Kategori Periksa Lab Radiologi', 'tipe_kategori_periksa_lab_radiologi', 'fa fa-stethoscope', 78, 'y', '2021-12-08 14:08:16', '2021-12-08 14:08:16');
+(140, 'Poli', 'poli', 'fa fa-stethoscope', 78, 'y', '2021-12-01 21:44:34', '2021-12-01 21:44:34'),
+(141, 'Master Kategori Tindakan', 'tipe_kategori_tindakan', 'fa fa-code-fork', 78, 'y', '2021-12-01 21:45:04', '2021-12-01 21:45:04'),
+(142, 'Master Pemeriksaan Radiologi', 'tipe_radiologi', 'fa fa-stethoscope', 78, 'y', '2021-12-01 21:46:37', '2021-12-01 21:46:37'),
+(143, 'Kategori Kamar', 'kategori_kamar', 'fa fa-bed', 78, 'y', '2021-12-01 21:47:05', '2021-12-01 21:47:05'),
+(144, 'Kamar', 'kamar', 'fa fa-bed', 78, 'y', '2021-12-01 21:47:19', '2021-12-01 21:47:19'),
+(145, 'Kategori Biaya', 'kategori_biaya', 'fa fa-money', 78, 'y', '2021-12-01 21:47:43', '2021-12-01 21:47:43'),
+(146, 'Biaya', 'biaya', 'fa fa-money', 78, 'y', '2021-12-01 21:48:00', '2021-12-01 21:48:00');
 
 -- --------------------------------------------------------
 
@@ -4020,7 +3999,7 @@ CREATE TABLE `tbl_obat_alkes_bhp` (
   `nama_barang` varchar(100) NOT NULL,
   `id_kategori_barang` int(11) DEFAULT NULL,
   `id_satuan_barang` int(11) DEFAULT NULL,
-  `jenis_barang` int(2) DEFAULT NULL COMMENT '1 = obat , 2 = alat kesehatan, 3 = emergensi , 4 = anastesi , 5 = perawatan',
+  `jenis_barang` int(2) DEFAULT NULL COMMENT '1 = obat , 2 = alat kesehatan',
   `harga` int(11) NOT NULL,
   `id_klinik` int(11) NOT NULL,
   `dtm_crt` datetime DEFAULT current_timestamp(),
@@ -4045,17 +4024,16 @@ CREATE TABLE `tbl_obat_alkes_bhp` (
 --
 
 INSERT INTO `tbl_obat_alkes_bhp` (`kode_barang`, `nama_barang`, `id_kategori_barang`, `id_satuan_barang`, `jenis_barang`, `harga`, `id_klinik`, `dtm_crt`, `dtm_upd`, `kode_pabrik`, `id_golongan_barang`, `minimal_stok`, `deskripsi`, `indikasi`, `kandungan`, `dosis`, `kemasan`, `efek_samping`, `zat_aktif`, `etiket`, `foto_barang`, `barcode`) VALUES
-('AIDXB', 'INDUXIN 10 IU AMPUL 1 ML/10', NULL, NULL, 1, 11700, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('AKMCA', 'KALMECO 500 MCG AMP 1 ML/ 1X5', NULL, NULL, 1, 36400, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('AKNXA', 'KALNEX 250 MG AMPUL 5ML / 10', NULL, NULL, NULL, 14950, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('AKNXB', 'KALNEX 500 MG AMPUL 5ML/10', NULL, NULL, NULL, 19500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('APPGA', 'POSPARGIN 0,2 MG AMP 1ML / 10', NULL, NULL, NULL, 7800, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('ARANA', 'RANTIN 50 MG AMPUL/ 2 ML', NULL, NULL, NULL, 65000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('AVCRA', 'VOMCERAN 8 MG AMPUL 4 ML/5', NULL, NULL, NULL, 74100, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL, NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('AVCRC', 'VOMCERAN 4 MG AMPUL 2 ML/5', NULL, NULL, NULL, 40300, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('AIDXB', 'INDUXIN 10 IU AMPUL 1 ML/10', 5, 8, 2, 11700, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('AKMCA', 'KALMECO 500 MCG AMP 1 ML/ 1X5', 5, 8, 2, 36400, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('AKNXA', 'KALNEX 250 MG AMPUL 5ML / 10', 5, 8, 2, 14950, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('AKNXB', 'KALNEX 500 MG AMPUL 5ML/10', 5, 8, 2, 19500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('APPGA', 'POSPARGIN 0,2 MG AMP 1ML / 10', 5, 8, 2, 7800, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('ARANA', 'RANTIN 50 MG AMPUL/ 2 ML', 5, 8, 2, 65000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('AVCRA', 'VOMCERAN 8 MG AMPUL 4 ML/5', 5, 8, 2, 74100, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('AVCRC', 'VOMCERAN 4 MG AMPUL 2 ML/5', 5, 8, 2, 40300, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 ('BRG1638090777', 'Jarum Suntik', 5, 8, 2, 12000, 1, '2021-11-28 16:12:57', '2021-11-28 16:12:57', 'PAB1624001874', 3, 5, '', '', '', '', '', '', '', '', NULL, ''),
-('BRG1638331698', 'Coba', 1, 1, 2, 8000, 1, '2021-12-01 11:08:18', '2021-12-01 11:08:18', 'PAB1573711347', 3, 5, '', '', '', '', '', '', '', '', NULL, ''),
-('BRG1638504876', 'tes', 1, 1, 1, 8000, 1, '2021-12-03 11:14:36', '2021-12-03 11:14:36', 'PAB1638500215', 2, 5, '-', '-', '-', '-', '-', '-', '-', '-', NULL, '-'),
+('BRG1638272332', 'ALBAPURE 200ml', 5, 1, 1, 1500000, 1, '2021-11-30 11:38:52', '2021-11-30 11:38:52', 'PAB1638269278', 3, 5, '', '', 'Human Albumin 20%', '', 'Box, 1 Botol', '', '', '', NULL, ''),
 ('BRG1638505328', 'AMINOPHYLLINE INJ', 6, 2, 3, 0, 1, '2021-12-01 11:14:00', '2021-12-01 11:14:00', 'PAB1638500170', 8, 5, '-', '-', 'AMINOPHYLLINE INJ', '24mg/ml', 'box', '-', '-', '-', '-', '-'),
 ('BRG1638505329', 'AMINOPHYLLINE INJ', 6, 2, 3, 0, 1, '2021-12-02 11:14:00', '2021-12-02 11:14:00', 'PAB1638500193', 8, 5, '-', '-', 'AMINOPHYLLINE INJ', '24mg/ml', 'box', '-', '-', '-', '-', '-'),
 ('BRG1638505330', 'ATROPIN SULFAT', 6, 2, 3, 0, 1, '2021-12-03 11:14:00', '2021-12-03 11:14:00', 'null', 8, 5, '-', '-', 'ATROPIN SULFAT', '', '', '-', '-', '-', '-', '-'),
@@ -4077,6 +4055,7 @@ INSERT INTO `tbl_obat_alkes_bhp` (`kode_barang`, `nama_barang`, `id_kategori_bar
 ('BRG1638505346', 'MIDAZOLAM/MILOS', 6, 2, 4, 0, 1, '2021-12-19 11:14:00', '2021-12-19 11:14:00', 'null', 0, 5, '-', '-', 'MIDAZOLAM HCl', '1mg/ml', 'box', '-', '-', '-', '-', '-'),
 ('BRG1638505347', 'FORTANEST INJ', 6, 2, 4, 0, 1, '2021-12-20 11:14:00', '2021-12-20 11:14:00', 'PAB1638500549', 9, 5, '-', '-', 'MIDAZOLAM HCl', '1mg/ml', 'box', '-', '-', '-', '-', '-'),
 ('BRG1638505348', 'N20', 6, 8, 4, 0, 1, '2021-12-21 11:14:00', '2021-12-21 11:14:00', 'null', 0, 0, '-', '-', 'null', 'null', 'null', '-', '-', '-', '-', '-'),
+('BRG1638505349', 'NEOSTIGMINE METILSULFAT INJ/PROSTIGMIN', 6, 2, 4, 0, 1, '2021-12-22 11:14:00', '2021-12-22 11:14:00', 'null', 0, 0, '-', '-', 'null', 'null', 'null', '-', '-', '-', '-', '-'),
 ('BRG1638505350', 'NOKUBA', 6, 8, 4, 0, 1, '2021-12-23 11:14:00', '2021-12-23 11:14:00', 'null', 0, 0, '-', '-', 'null', 'null', 'null', '-', '-', '-', '-', '-'),
 ('BRG1638505351', 'NOVERON/ROCULAX', 6, 8, 4, 0, 1, '2021-12-24 11:14:00', '2021-12-24 11:14:00', 'PAB1638500557', 9, 10, '-', '-', 'ROCURONIUM BROMIDE', '10mg/ml', 'box', '-', '-', '-', '-', '-'),
 ('BRG1638505352', 'PETHIDINA INJ', 6, 2, 4, 0, 1, '2021-12-25 11:14:00', '2021-12-25 11:14:00', 'PAB1638500570', 9, 5, '-', '-', 'PETHIDINE HCl', '50mg/ml', 'box', '-', '-', '-', '-', '-'),
@@ -4116,8 +4095,8 @@ INSERT INTO `tbl_obat_alkes_bhp` (`kode_barang`, `nama_barang`, `id_kategori_bar
 ('BRG1638505386', 'TAXEGRAM 1 INJ', 6, 12, 5, 0, 1, '2022-01-28 11:14:00', '2022-01-28 11:14:00', 'PAB1638500243', 9, 5, '-', '-', 'CEFOTAXIME SODIUM', '1g', 'box', '-', '-', '-', '-', '-'),
 ('BRG1638505387', 'VENTOLIN NEBULE', 6, 2, 5, 0, 1, '2022-01-29 11:14:00', '2022-01-29 11:14:00', 'PAB1638501029', 9, 5, '-', '-', 'SALBUTAMOL', '2,5mg', 'box', '-', '-', '-', '-', '-'),
 ('BRG1638505388', 'ANTRAIN INJ', 6, 2, 5, 0, 1, '2022-01-30 11:14:00', '2022-01-30 11:14:00', 'PAB1638501042', 9, 10, '-', '-', 'METAMIZOLE SODIUM', '500mg/ml', 'box', '-', '-', '-', '-', '-'),
-('BRG1638505389', 'BROADCED 1 INJ (CEFTRIAXON)', 6, 12, 5, 0, 1, '2022-01-31 11:14:00', '2022-01-31 11:14:00', 'PAB1638269381', 9, 5, '-', '-', 'CEFTRIAXONE DISODIUM', '1g', 'box', '-', '-', '-', '-', '-'),
-('BRG1638505390', 'TETAGAM P', 6, 12, 5, 0, 1, '2022-02-01 11:14:00', '2022-02-01 11:14:00', 'PAB1638269278', 9, 3, '-', '-', 'HUMAN TETANUS IM', '1ml (250 IU)', 'box', '-', '-', '-', '-', '-'),
+('BRG1638505389', 'BROADCED 1 INJ (CEFTRIAXON)', 6, 12, 5, 0, 1, '2022-01-31 11:14:00', '2022-01-31 11:14:00', 'PAB1638500549', 9, 5, '-', '-', 'CEFTRIAXONE DISODIUM', '1g', 'box', '-', '-', '-', '-', '-'),
+('BRG1638505390', 'TETAGAM P', 6, 12, 5, 0, 1, '2022-02-01 11:14:00', '2022-02-01 11:14:00', 'PAB1638501050', 9, 3, '-', '-', 'HUMAN TETANUS IM', '1ml (250 IU)', 'box', '-', '-', '-', '-', '-'),
 ('BRG1638505391', 'ALKOHOL 70% 1 L', 6, 12, 5, 0, 1, '2022-02-02 11:14:00', '2022-02-02 11:14:00', 'null', 0, 0, 'null', '-', 'null', 'null', 'null', '-', '-', '-', '-', '-'),
 ('BRG1638505392', 'AMINOFLUID', 6, 8, 5, 0, 1, '2022-02-03 11:14:00', '2022-02-03 11:14:00', 'null', 0, 0, 'null', '-', 'null', 'null', 'null', '-', '-', '-', '-', '-'),
 ('BRG1638505393', 'AQUA 1 L', 6, 8, 5, 0, 1, '2022-02-04 11:14:00', '2022-02-04 11:14:00', 'null', 0, 0, 'null', '-', 'null', 'null', 'null', '-', '-', '-', '-', '-'),
@@ -4134,184 +4113,182 @@ INSERT INTO `tbl_obat_alkes_bhp` (`kode_barang`, `nama_barang`, `id_kategori_bar
 ('BRG1638505404', 'OTSUTRAN-40', 6, 8, 5, 0, 1, '2022-02-15 11:14:00', '2022-02-15 11:14:00', 'null', 0, 0, 'null', '-', 'null', 'null', 'null', '-', '-', '-', '-', '-'),
 ('BRG1638505405', 'ASERING', 6, 8, 5, 0, 1, '2022-02-16 11:14:00', '2022-02-16 11:14:00', 'null', 0, 0, 'null', '-', 'null', 'null', 'null', '-', '-', '-', '-', '-'),
 ('BRG1638505406', 'OTSU-D5', 6, 8, 5, 0, 1, '2022-02-17 11:14:00', '2022-02-17 11:14:00', 'null', 0, 0, 'null', '-', 'null', 'null', 'null', '-', '-', '-', '-', '-'),
-('CKTFA', 'KALTROFEN 100 MG SUPPO/2x5', NULL, NULL, NULL, 16900, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('CNGAA', 'NEO GYNOXA OVULA / 2 x 5', NULL, NULL, NULL, 19500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('COVIVR', 'COVIVOR', NULL, NULL, NULL, 780000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('CVNMA', 'VENOSMIL GEL / 60 G', NULL, NULL, NULL, 221000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('DCEFA', 'CEFSPAN DRY SYRUP/30 ML', NULL, NULL, NULL, 130000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('DCOXA', 'CLAVAMOX DRY SYRUP/60ML', NULL, NULL, NULL, 97500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('DSTRA', 'STAFORIN 250 MG DRY SYRUP/60ML', NULL, NULL, NULL, 97500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('DSTRB', 'STAFORIN 125 MG/5 ML DS /60 ML', NULL, NULL, NULL, 65000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('DVLPI', 'DIVALPI', NULL, NULL, NULL, 728000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('DVTIA', 'VESTEIN DRY SYRUP / 60 ML', NULL, NULL, NULL, 52000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('FLVIR', 'FLUVIR 1 x 10tab', NULL, NULL, NULL, 16900, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('FVLOW10', 'FAVILOW tab 10x10', NULL, NULL, NULL, 20800, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('GBATA', 'BRAINACT 1000 MG SACHET / 5', NULL, NULL, NULL, 32500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('GLRCA', 'LIPROLAC VANILLA POWDER / 30', NULL, NULL, NULL, 8667, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('GTRTA', 'TROLIT SACHET 4 G / 6', NULL, NULL, NULL, 14083, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('IBATB', 'BRAINACT 250 MG/2 ML INJ/5\'S', NULL, NULL, NULL, 55900, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('IBATC', 'BRAINACT 500 MG/4 ML INJ AMP/5', NULL, NULL, NULL, 91000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('IBATD', 'BRAINACT 1000MG/8 ML INJ AMP/5', NULL, NULL, NULL, 140400, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('ICFZE', 'CEFAZOL 1 GR INJ+AQUA PI/1', NULL, NULL, NULL, 169000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('IFLTB', 'FLUTIAS 125 MCG INHALER / 1', NULL, NULL, NULL, 182000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('IHXLA', 'HEXILON INJEKSI 125 MG 2ML/1', NULL, NULL, NULL, 130000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('IMIKA', 'MIKASIN 250 MG/2 ML INJ VL/1', NULL, NULL, NULL, 130000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('IMIKB', 'MIKASIN 500 MG/2 ML INJ VL/1', NULL, NULL, NULL, 230100, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('IMRFA', 'MEROFEN 500 MG IV VIAL / 1', NULL, NULL, NULL, 351000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('IMRFC', 'MEROFEN 1000 MG IV VIAL / 1', NULL, NULL, NULL, 663000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('INRTB', 'NEUROTAM 3 GR INJ AMP / 4', NULL, NULL, NULL, 71500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('INRTC', 'NEUROTAM INFUS 60 ML VIAL / 1', NULL, NULL, NULL, 273000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('IOTBD', 'OCTALBIN 20% 100 ML INFUS/1', NULL, NULL, NULL, 1950000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('IOTBE', 'OCTALBIN 25% 50 ML INFUS/1', NULL, NULL, NULL, 1274000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('IOTBF', 'OCTALBIN 25% 100 ML INFUS/1', NULL, NULL, NULL, 2535000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('ITRSB', 'TORASIC 30 MG INJ AMP 1 ML/1x6', NULL, NULL, NULL, 46583, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('IVDNA', 'VITADION 2 MG INJ AMP 1 ML/5', NULL, NULL, NULL, 15600, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('IVPMA', 'VIPIME 1 G+AQUA PI AMP 10ML/1', NULL, NULL, NULL, 390000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KCEFB', 'CEFSPAN 100MG KAPSUL/3X10', NULL, NULL, NULL, 29900, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KFCHB', 'FUCOHELIX 100 MG KAPSUL/2X10', NULL, NULL, NULL, 14950, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KFCLB', 'FLUCORAL 150 MG KAPSUL/1 X 10', NULL, NULL, NULL, 91000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KFNRA', 'FORNEURO 5 X 6 KAPSUL', NULL, NULL, NULL, 7367, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KGSDA', 'GLISODIN KAPSUL / 30', NULL, NULL, NULL, 8017, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KHPXB', 'HEPAMAX KAPSUL / 3X10', NULL, NULL, NULL, 11917, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KKMCK', 'KALMECO 500 MCG KAPSUL/10X10', NULL, NULL, NULL, 3640, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KKNXE', 'KALNEX 250MG KAPSUL/10X10', NULL, NULL, NULL, 2535, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KKXTA', 'KALXETIN 20 MG 30 KAPSUL', NULL, NULL, NULL, 8667, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KKXTB', 'KALXETIN 10 MG 30 KAPSUL', NULL, NULL, NULL, 5200, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KLCDA', 'LANCID 30 MG KAPSUL / 2X10', NULL, NULL, NULL, 19500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KNPTA', 'NEPATIC 300 MG KAPSUL /5X10', NULL, NULL, NULL, 12740, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('kode_barang', 'nama_barang', 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'pabrik', 0, 0, 'deskripsi', 'indikasi', 'kandungan', 'dosis', 'kemasan', 'efek_samping', 'zat_aktif', 'etiket', 'foto_barang', 'barcode'),
-('KOFDA', 'OSFIT DHA KAPSUL / 3 x 10', NULL, NULL, NULL, 5850, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KPVLA', 'PROVELYN 75 MG KAPSUL / 14\'S', NULL, NULL, NULL, 13492, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KPVLB', 'PROVELYN 150 MG KAPSUL / 14\'S', NULL, NULL, NULL, 20893, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KSBOB', 'SYNBIO KAPSUL / 3X10', NULL, NULL, NULL, 5850, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KSTRK', 'STAFORIN 500 MG KAPSUL/3X10', NULL, NULL, NULL, 12783, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KUDHA', 'URDAHEX KAPSUL / 3X10', NULL, NULL, NULL, 12567, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KVNMB', 'VENOSMIL KAPSUL / 2X10', NULL, NULL, NULL, 13000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('KVTIA', 'VESTEIN 300 MG KAPSUL / 2X10', NULL, NULL, NULL, 5980, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LBENA', 'BENACOL EXPECTORANT SYR/60ML', NULL, NULL, NULL, 13000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LBENB', 'BENACOL EXPECTORANT SYR/100ML', NULL, NULL, NULL, 18200, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LBNDA', 'BENACOL DTM SYRUP / 60 ML', NULL, NULL, NULL, 15600, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LCTNA', 'CETINAL SYRUP / 60 ML', NULL, NULL, NULL, 78000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LENSA', 'ENYSTIN DROPS / 12 ML', NULL, NULL, NULL, 46800, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LFCHA', 'FUCOHELIX SYRUP / 90 ML', NULL, NULL, NULL, 117000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LLKMA', 'LIKURMIN SYRUP / 100 ML', NULL, NULL, NULL, 58500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LNCBA', 'NECIBLOK SUSPENSI / 200 ML', NULL, NULL, NULL, 114400, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LNCBB', 'NECIBLOK SUSPENSI / 100 ML', NULL, NULL, NULL, 71500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LNRTA', 'NEUROTAM SYRUP / 100 ML', NULL, NULL, NULL, 78000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LNZ100', 'LANZOX 100 IU', NULL, NULL, NULL, 3744000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LNZ50', 'LANZOX 50 IU', NULL, NULL, NULL, 2314000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LPCRLCBD', 'LIPROLAC BABY DROP', NULL, NULL, NULL, 260000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LPFLA', 'PROFILAS SYRUP / 60ML', NULL, NULL, NULL, 91000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LSTMB', 'STARMUNO KIDS SYRUP / 60 ML', NULL, NULL, NULL, 91000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LTBRB', 'TRANSBRONCHO 15MG/5MLLIQ/100ML', NULL, NULL, NULL, 26000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LVAPA', 'VALPI 250 MG/5 ML SYRUP / 60 ML', NULL, NULL, NULL, 52000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LVCRA', 'VOMCERAN 4 MG/5 ML SYRUP/60 ML', NULL, NULL, NULL, 97500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('LVMTA', 'VOMITAS SYRUP / 60 ML', NULL, NULL, NULL, 58500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('PAB1638269381', 'NEOSTIGMINE METILSULFAT INJ/PROSTIGMIN', 6, 2, 4, 0, 1, '2021-12-22 11:14:00', '2021-12-22 11:14:00', 'null', 0, 0, '-', '-', 'null', 'null', 'null', '-', '-', '-', '-', '-'),
-('PROVC', 'PROVE C inj 5 Ampul', NULL, NULL, NULL, 39000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('PROVD', 'PROVE D tab 30 tab', NULL, NULL, NULL, 3250, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('PROVDDROP', 'PROVE D DROP', NULL, NULL, NULL, 260000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('PROVE', 'PROVE C inj 5 Ampul', NULL, NULL, NULL, 0, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TAGNA', 'ANGIOTEN TABLET / 3X10', NULL, NULL, NULL, 16250, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TBATA', 'BRAINACT 500 MG TAB/3X10', NULL, NULL, NULL, 16250, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TBATB', 'BRAINACT 1000 MG TAB/3X10', NULL, NULL, NULL, 26650, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TBATC', 'BRAINACT O-DIS TABLET/30\'S', NULL, NULL, NULL, 16683, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TBTOA', 'BETA ONE 2.5 MG TABLET / 5X10', NULL, NULL, NULL, 3250, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TBTOB', 'BETA ONE 5 MG TABLET / 3X10', NULL, NULL, NULL, 6890, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TBTSK', 'BACTESYN 375 MG KAPLET / 3X10', NULL, NULL, NULL, 28167, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TCEFE', 'CEFSPAN 200 MG TABLET / 1x10', NULL, NULL, NULL, 47450, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TCLTA', 'CHOLESTAT 10 MG TABLET/3X10', NULL, NULL, NULL, 6240, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TCLTE', 'CHOLESTAT 20 MG TABLET/3X10', NULL, NULL, NULL, 10833, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TCOXK', 'CLAVAMOX 500 MG TABLET / 3X10', NULL, NULL, NULL, 16683, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TCPGB', 'CPG 75 MG TABLET BLISTER/ 3X10', NULL, NULL, NULL, 22100, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TCRQB', 'CAR Q 100 MG KAPLET / 3X10', NULL, NULL, NULL, 14300, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TCRVE', 'CRAVIT 250 MG TABLET / 1X10', NULL, NULL, NULL, 35100, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TCRVK', 'CRAVIT 500MG TABLET / 1X10', NULL, NULL, NULL, 53950, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TCRVN', 'CRAVIT 750 MG FILCO KAPLET/1X10', NULL, NULL, NULL, 60450, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TCTNA', 'CETINAL 10 MG CHEW TABLET/3X10', NULL, NULL, NULL, 5333, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TCTZA', 'CITAZ 50 MG TABLET/5X10', NULL, NULL, NULL, 5070, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TCTZB', 'CITAZ 100 MG TABLET/5X10', NULL, NULL, NULL, 14248, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TDVKA', 'DIVASK 5 MG TABLET / 3X10', NULL, NULL, NULL, 8450, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TDVKB', 'DIVASK 10 MG TABLET / 3X10', NULL, NULL, NULL, 14300, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TENTA', 'EMINETON TABLET/10X10', NULL, NULL, NULL, 2210, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TFDSA', 'FORDESIA 5 MG TABLET/3X10', NULL, NULL, NULL, 28516, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TFGOA', 'FREGO 5 MG TABLET/5 X 10', NULL, NULL, NULL, 7800, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TFGOB', 'FREGO 10 MG TABLET/5 X 10', NULL, NULL, NULL, 9620, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TFROE', 'FEROFORT FC TABLET/10 X 10', NULL, NULL, NULL, 2080, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TFRSA', 'FORRES 50 MG TABLET/5 X 10', NULL, NULL, NULL, 6500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('THXLA', 'HEXILON 4 MG KAPLET/5X10', NULL, NULL, NULL, 3900, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('THXLB', 'HEXILON 8 MG KAPLET/3X10', NULL, NULL, NULL, 5850, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('THXLC', 'HEXILON 16 MG KAPLET/3X10', NULL, NULL, NULL, 9317, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TIVKA', 'IRVASK 150 MG KAPLET / 3X10', NULL, NULL, NULL, 13000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TIVKB', 'IRVASK 300 MG KAPLET / 3X10', NULL, NULL, NULL, 18200, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TIVTA', 'INVITEC 200 MCG TABLET/3x10', NULL, NULL, NULL, 14733, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TKMYK', 'KALMOXILIN 500MG KAPLET/10X10', NULL, NULL, NULL, 3380, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TKNXK', 'KALNEX 500MG TABLET/10X10', NULL, NULL, NULL, 4355, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TKOZA', 'KOMBIGLYZE 28 TAB', NULL, NULL, NULL, 17550, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TKTFA', 'KALTROFEN 50 MG TABLET/3 X 10', NULL, NULL, NULL, 2383, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TKTFB', 'KALTROFEN 100 MG TABLET/3 X 10', NULL, NULL, NULL, 5850, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TLINA', 'LIXIANA 15 MG FILCO TABLET/2X14', NULL, NULL, NULL, 31339, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TLINB', 'LIXIANA 30 MG FILCO TABLET/2X14', NULL, NULL, NULL, 31339, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TLINC', 'LIXIANA 60 MG FILCO TABLET/2X14', NULL, NULL, NULL, 31339, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TLTMA', 'LACTAMOR KAPLET/6X10', NULL, NULL, NULL, 2925, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TMTXA', 'METRIX 1 MG TABLET/2 X 15', NULL, NULL, NULL, 3683, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TMTXB', 'METRIX 2 MG TABLET/2 X 15', NULL, NULL, NULL, 6717, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TMTXC', 'METRIX 3 MG TABLET/2 X 15', NULL, NULL, NULL, 7800, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TMTXD', 'METRIX 4 MG TABLET/2 X 15', NULL, NULL, NULL, 9230, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TNRTA', 'NEUROTAM 800 MG KAPLET/5X10', NULL, NULL, NULL, 3380, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TNRTB', 'NEUROTAM 1200 MG KAPLET/5X10', NULL, NULL, NULL, 6890, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TNVRK', 'NEVOX XR 500 MG TABLET/3X10', NULL, NULL, NULL, 2860, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TONZA', 'ONGLYZA 5 MG 28 TAB', NULL, NULL, NULL, 3750, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TONZB', 'ONGLYZA 2.5 MG', NULL, NULL, NULL, 364000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TPFLA', 'PROFILAS TABLET /5X10', NULL, NULL, NULL, 4940, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TPFTA', 'PROFERTIL 50MG TABLET/1X10', NULL, NULL, NULL, 21450, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TPIMA', 'PIONIX M 15/500 MG KAPLET/30\'S', NULL, NULL, NULL, 9750, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TPIMB', 'PIONIX M 15/850 MG KAPLET/30\'S', NULL, NULL, NULL, 9750, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TPMTA', 'PREMASTON 5 MG TABLET/3X10', NULL, NULL, NULL, 5200, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TPNXA', 'PIONIX 15 MG TABLET / 30\'S', NULL, NULL, NULL, 8450, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TPNXB', 'PIONIX 30 MG TABLET / 30\'S', NULL, NULL, NULL, 13000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TRANA', 'RANTIN 150 MG TABLET/10X10', NULL, NULL, NULL, 5850, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TRLSC', 'RILLUS TABLET/5X6', NULL, NULL, NULL, 9317, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TSCNA', 'SINCRONIK KAPLET SS / 3X10', NULL, NULL, NULL, 10400, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TSLNA', 'SEROLIN 10 MG TABLET/5 X 21', NULL, NULL, NULL, 8419, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TSLNB', 'SEROLIN 30 MG TABLET/2 X 21', NULL, NULL, NULL, 16714, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TSPOA', 'SPIROLA 25 MG TABLET / 5X10', NULL, NULL, NULL, 2340, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TSPOB', 'SPIROLA 100 MG TABLET / 5X10', NULL, NULL, NULL, 6370, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TSTMA', 'STARMUNO KAPLET /3X10', NULL, NULL, NULL, 10617, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TTBRA', 'TRANSBRONCHO 30 MG TAB / 10X10', NULL, NULL, NULL, 975, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TTIVE', 'TARIVID 200 MG TABLET / 3X10', NULL, NULL, NULL, 12133, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TTIVK', 'TARIVID 400 MG TABLET / 3X10', NULL, NULL, NULL, 20367, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TTKVA', 'TKV 0.5 MG FILCO TABLET/3X10', NULL, NULL, NULL, 34667, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TTRSA', 'TORASIC 10 MG TABLET / 2X10', NULL, NULL, NULL, 6825, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TTRVD', 'TRUVAZ 10 MG TABLET/3X10', NULL, NULL, NULL, 19067, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TTRVE', 'TRUVAZ 20 MG TABLET/3X10', NULL, NULL, NULL, 20800, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TTRVF', 'TRUVAZ 40 MG TABLET/3X10', NULL, NULL, NULL, 22533, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TVBCA', 'V-BLOC 25 MG TABLET/3 X 10', NULL, NULL, NULL, 9230, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TVBCC', 'V-BLOC 6.25 MG TABLET/3 X 10', NULL, NULL, NULL, 3467, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TVCRA', 'VOMCERAN 8 MG TABLET/1 X 10', NULL, NULL, NULL, 27300, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TVCRB', 'VOMCERAN 4 MG TABLET/1 X 10', NULL, NULL, NULL, 20800, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TVMTB', 'VOMITAS FDT /5 X 10', NULL, NULL, NULL, 5330, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TZEGA', 'ZEGAVIT KAPLET / 5X10', NULL, NULL, NULL, 4160, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('TZTXA', 'ZITHRAX 500 MG KAPLET/1X6', NULL, NULL, NULL, 56333, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('VBRHA', 'BROADCED HOSPITAL PACK 1G VL/1', NULL, NULL, NULL, 292500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('VBROK', 'BROADCED 1 G.I.V VIAL /1', NULL, NULL, NULL, 266500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('VBTSA', 'BACTESYN 0.75 G VIAL/1', NULL, NULL, NULL, 91000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('VBTSB', 'BACTESYN 1,5 G VIAL/1', NULL, NULL, NULL, 171500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('VCNEB', 'CERNEVIT INJEKSI / 10', NULL, NULL, NULL, 253500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('VCRVD', 'CRAVIT 750 MG FLEXYBAG 150ML/1', NULL, NULL, NULL, 481000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('VCRVE', 'CRAVIT 500 MG FLEXYBAG 100 ML / 1', NULL, NULL, NULL, 403000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('VEDNA', 'ENDROLIN PACK 3.75 MG VIAL / 1', NULL, NULL, NULL, 1592500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('VEZLA', 'EZELIN 300 IU INJEKSI 3 ML/1', NULL, NULL, NULL, 162500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('VEZMA', 'EZOMEB 40 MG INJEKSI VIAL 10 ML/1', NULL, NULL, NULL, 175500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('VKFXK', 'KALFOXIM 0.5 G VIAL/1', NULL, NULL, NULL, 104000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('VKFXP', 'KALFOXIM 1 G VIAL / 1', NULL, NULL, NULL, 195000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('VOTBA', 'OCTALBIN 5% INFUS 250 ML/1', NULL, NULL, NULL, 1625000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('VPRZA', 'PRANZA 40 MG VIAL / 1', NULL, NULL, NULL, 188500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `tbl_obat_alkes_bhp` (`kode_barang`, `nama_barang`, `id_kategori_barang`, `id_satuan_barang`, `jenis_barang`, `harga`, `id_klinik`, `dtm_crt`, `dtm_upd`, `kode_pabrik`, `id_golongan_barang`, `minimal_stok`, `deskripsi`, `indikasi`, `kandungan`, `dosis`, `kemasan`, `efek_samping`, `zat_aktif`, `etiket`, `foto_barang`, `barcode`) VALUES
-('VRITA', 'RIBACTER 500 MG', NULL, NULL, NULL, 585000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('VTAZA', 'TAZAM 4.5 G INJEKSI VIAL/1', NULL, NULL, NULL, 357500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('VTHDB', 'THIDIM 1 G VIAL / 1', NULL, NULL, NULL, 299000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-('VTIVC', 'TARIVID OTIC SOLUTION / 5 ML', NULL, NULL, NULL, 104000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+('CKTFA', 'KALTROFEN 100 MG SUPPO/2x5', NULL, NULL, 1, 16900, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('CNGAA', 'NEO GYNOXA OVULA / 2 x 5', NULL, NULL, 1, 19500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('COVIVR', 'COVIVOR', NULL, NULL, 1, 780000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('CVNMA', 'VENOSMIL GEL / 60 G', NULL, NULL, 1, 221000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('DCEFA', 'CEFSPAN DRY SYRUP/30 ML', NULL, NULL, 1, 130000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('DCOXA', 'CLAVAMOX DRY SYRUP/60ML', NULL, NULL, 1, 97500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('de_barang', 'nama_barang', 0, 0, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'pabrik', 0, 0, 'deskripsi', 'indikasi', 'kandungan', 'dosis', 'kemasan', 'efek_samping', 'zat_aktif', 'etiket', 'foto_barang', 'barcode'),
+('DSTRA', 'STAFORIN 250 MG DRY SYRUP/60ML', NULL, NULL, 1, 97500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('DSTRB', 'STAFORIN 125 MG/5 ML DS /60 ML', NULL, NULL, 1, 65000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('DVLPI', 'DIVALPI', NULL, NULL, 1, 728000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('DVTIA', 'VESTEIN DRY SYRUP / 60 ML', NULL, NULL, 1, 52000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('FLVIR', 'FLUVIR 1 x 10tab', NULL, NULL, 1, 16900, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('FVLOW10', 'FAVILOW tab 10x10', NULL, NULL, 1, 20800, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('GBATA', 'BRAINACT 1000 MG SACHET / 5', NULL, NULL, 1, 32500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('GLRCA', 'LIPROLAC VANILLA POWDER / 30', NULL, NULL, 1, 8667, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('GTRTA', 'TROLIT SACHET 4 G / 6', NULL, NULL, 1, 14083, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('IBATB', 'BRAINACT 250 MG/2 ML INJ/5\'S', NULL, NULL, 1, 55900, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('IBATC', 'BRAINACT 500 MG/4 ML INJ AMP/5', NULL, NULL, 1, 91000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('IBATD', 'BRAINACT 1000MG/8 ML INJ AMP/5', NULL, NULL, 1, 140400, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('ICFZE', 'CEFAZOL 1 GR INJ+AQUA PI/1', NULL, NULL, 1, 169000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('IFLTB', 'FLUTIAS 125 MCG INHALER / 1', NULL, NULL, 1, 182000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('IHXLA', 'HEXILON INJEKSI 125 MG 2ML/1', NULL, NULL, 1, 130000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('IMIKA', 'MIKASIN 250 MG/2 ML INJ VL/1', NULL, NULL, 1, 130000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('IMIKB', 'MIKASIN 500 MG/2 ML INJ VL/1', NULL, NULL, 1, 230100, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('IMRFA', 'MEROFEN 500 MG IV VIAL / 1', NULL, NULL, 1, 351000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('IMRFC', 'MEROFEN 1000 MG IV VIAL / 1', NULL, NULL, 1, 663000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('INRTB', 'NEUROTAM 3 GR INJ AMP / 4', NULL, NULL, 1, 71500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('INRTC', 'NEUROTAM INFUS 60 ML VIAL / 1', NULL, NULL, 1, 273000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('IOTBD', 'OCTALBIN 20% 100 ML INFUS/1', NULL, NULL, 1, 1950000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('IOTBE', 'OCTALBIN 25% 50 ML INFUS/1', NULL, NULL, 1, 1274000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('IOTBF', 'OCTALBIN 25% 100 ML INFUS/1', NULL, NULL, 1, 2535000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('ITRSB', 'TORASIC 30 MG INJ AMP 1 ML/1x6', NULL, NULL, 1, 46583, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('IVDNA', 'VITADION 2 MG INJ AMP 1 ML/5', NULL, NULL, 1, 15600, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('IVPMA', 'VIPIME 1 G+AQUA PI AMP 10ML/1', NULL, NULL, 1, 390000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KCEFB', 'CEFSPAN 100MG KAPSUL/3X10', NULL, NULL, 1, 29900, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KFCHB', 'FUCOHELIX 100 MG KAPSUL/2X10', NULL, NULL, 1, 14950, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KFCLB', 'FLUCORAL 150 MG KAPSUL/1 X 10', NULL, NULL, 1, 91000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KFNRA', 'FORNEURO 5 X 6 KAPSUL', NULL, NULL, 1, 7367, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KGSDA', 'GLISODIN KAPSUL / 30', NULL, NULL, 1, 8017, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KHPXB', 'HEPAMAX KAPSUL / 3X10', NULL, NULL, 1, 11917, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KKMCK', 'KALMECO 500 MCG KAPSUL/10X10', NULL, NULL, 1, 3640, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KKNXE', 'KALNEX 250MG KAPSUL/10X10', NULL, NULL, 1, 2535, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KKXTA', 'KALXETIN 20 MG 30 KAPSUL', NULL, NULL, 1, 8667, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KKXTB', 'KALXETIN 10 MG 30 KAPSUL', NULL, NULL, 1, 5200, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KLCDA', 'LANCID 30 MG KAPSUL / 2X10', NULL, NULL, 1, 19500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KNPTA', 'NEPATIC 300 MG KAPSUL /5X10', NULL, NULL, 1, 12740, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KOFDA', 'OSFIT DHA KAPSUL / 3 x 10', NULL, NULL, 1, 5850, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KPVLA', 'PROVELYN 75 MG KAPSUL / 14\'S', NULL, NULL, 1, 13492, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KPVLB', 'PROVELYN 150 MG KAPSUL / 14\'S', NULL, NULL, 1, 20893, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KSBOB', 'SYNBIO KAPSUL / 3X10', NULL, NULL, 1, 5850, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KSTRK', 'STAFORIN 500 MG KAPSUL/3X10', NULL, NULL, 1, 12783, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KUDHA', 'URDAHEX KAPSUL / 3X10', NULL, NULL, 1, 12567, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KVNMB', 'VENOSMIL KAPSUL / 2X10', NULL, NULL, 1, 13000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('KVTIA', 'VESTEIN 300 MG KAPSUL / 2X10', NULL, NULL, 1, 5980, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LBENA', 'BENACOL EXPECTORANT SYR/60ML', NULL, NULL, 1, 13000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LBENB', 'BENACOL EXPECTORANT SYR/100ML', NULL, NULL, 1, 18200, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LBNDA', 'BENACOL DTM SYRUP / 60 ML', NULL, NULL, 1, 15600, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LCTNA', 'CETINAL SYRUP / 60 ML', NULL, NULL, 1, 78000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LENSA', 'ENYSTIN DROPS / 12 ML', NULL, NULL, 1, 46800, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LFCHA', 'FUCOHELIX SYRUP / 90 ML', NULL, NULL, 1, 117000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LLKMA', 'LIKURMIN SYRUP / 100 ML', NULL, NULL, 1, 58500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LNCBA', 'NECIBLOK SUSPENSI / 200 ML', NULL, NULL, 1, 114400, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LNCBB', 'NECIBLOK SUSPENSI / 100 ML', NULL, NULL, 1, 71500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LNRTA', 'NEUROTAM SYRUP / 100 ML', NULL, NULL, 1, 78000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LNZ100', 'LANZOX 100 IU', NULL, NULL, 1, 3744000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LNZ50', 'LANZOX 50 IU', NULL, NULL, 1, 2314000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LPCRLCBD', 'LIPROLAC BABY DROP', NULL, NULL, 1, 260000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LPFLA', 'PROFILAS SYRUP / 60ML', NULL, NULL, 1, 91000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LSTMB', 'STARMUNO KIDS SYRUP / 60 ML', NULL, NULL, 1, 91000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LTBRB', 'TRANSBRONCHO 15MG/5MLLIQ/100ML', NULL, NULL, 1, 26000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LVAPA', 'VALPI 250 MG/5 ML SYRUP / 60 ML', NULL, NULL, 1, 52000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LVCRA', 'VOMCERAN 4 MG/5 ML SYRUP/60 ML', NULL, NULL, 1, 97500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('LVMTA', 'VOMITAS SYRUP / 60 ML', NULL, NULL, 1, 58500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('PROVC', 'PROVE C inj 5 Ampul', NULL, NULL, 1, 39000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('PROVD', 'PROVE D tab 30 tab', NULL, NULL, 1, 3250, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('PROVDDROP', 'PROVE D DROP', NULL, NULL, 1, 260000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('PROVE', 'PROVE C inj 5 Ampul', NULL, NULL, 1, 0, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TAGNA', 'ANGIOTEN TABLET / 3X10', NULL, NULL, 1, 16250, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TBATA', 'BRAINACT 500 MG TAB/3X10', NULL, NULL, 1, 16250, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TBATB', 'BRAINACT 1000 MG TAB/3X10', NULL, NULL, 1, 26650, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TBATC', 'BRAINACT O-DIS TABLET/30\'S', NULL, NULL, 1, 16683, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TBTOA', 'BETA ONE 2.5 MG TABLET / 5X10', NULL, NULL, 1, 3250, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TBTOB', 'BETA ONE 5 MG TABLET / 3X10', NULL, NULL, 1, 6890, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TBTSK', 'BACTESYN 375 MG KAPLET / 3X10', NULL, NULL, 1, 28167, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TCEFE', 'CEFSPAN 200 MG TABLET / 1x10', NULL, NULL, 1, 47450, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TCLTA', 'CHOLESTAT 10 MG TABLET/3X10', NULL, NULL, 1, 6240, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TCLTE', 'CHOLESTAT 20 MG TABLET/3X10', NULL, NULL, 1, 10833, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TCOXK', 'CLAVAMOX 500 MG TABLET / 3X10', NULL, NULL, 1, 16683, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TCPGB', 'CPG 75 MG TABLET BLISTER/ 3X10', NULL, NULL, 1, 22100, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TCRQB', 'CAR Q 100 MG KAPLET / 3X10', NULL, NULL, 1, 14300, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TCRVE', 'CRAVIT 250 MG TABLET / 1X10', NULL, NULL, 1, 35100, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TCRVK', 'CRAVIT 500MG TABLET / 1X10', NULL, NULL, 1, 53950, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TCRVN', 'CRAVIT 750 MG FILCO KAPLET/1X10', NULL, NULL, 1, 60450, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TCTNA', 'CETINAL 10 MG CHEW TABLET/3X10', NULL, NULL, 1, 5333, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TCTZA', 'CITAZ 50 MG TABLET/5X10', NULL, NULL, 1, 5070, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TCTZB', 'CITAZ 100 MG TABLET/5X10', NULL, NULL, 1, 14248, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TDVKA', 'DIVASK 5 MG TABLET / 3X10', NULL, NULL, 1, 8450, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TDVKB', 'DIVASK 10 MG TABLET / 3X10', NULL, NULL, 1, 14300, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TENTA', 'EMINETON TABLET/10X10', NULL, NULL, 1, 2210, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TFDSA', 'FORDESIA 5 MG TABLET/3X10', NULL, NULL, 1, 28516, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TFGOA', 'FREGO 5 MG TABLET/5 X 10', NULL, NULL, 1, 7800, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TFGOB', 'FREGO 10 MG TABLET/5 X 10', NULL, NULL, 1, 9620, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TFROE', 'FEROFORT FC TABLET/10 X 10', NULL, NULL, 1, 2080, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TFRSA', 'FORRES 50 MG TABLET/5 X 10', NULL, NULL, 1, 6500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('THXLA', 'HEXILON 4 MG KAPLET/5X10', NULL, NULL, 1, 3900, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('THXLB', 'HEXILON 8 MG KAPLET/3X10', NULL, NULL, 1, 5850, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('THXLC', 'HEXILON 16 MG KAPLET/3X10', NULL, NULL, 1, 9317, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TIVKA', 'IRVASK 150 MG KAPLET / 3X10', NULL, NULL, 1, 13000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TIVKB', 'IRVASK 300 MG KAPLET / 3X10', NULL, NULL, 1, 18200, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TIVTA', 'INVITEC 200 MCG TABLET/3x10', NULL, NULL, 1, 14733, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TKMYK', 'KALMOXILIN 500MG KAPLET/10X10', NULL, NULL, 1, 3380, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TKNXK', 'KALNEX 500MG TABLET/10X10', NULL, NULL, 1, 4355, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TKOZA', 'KOMBIGLYZE 28 TAB', NULL, NULL, 1, 17550, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TKTFA', 'KALTROFEN 50 MG TABLET/3 X 10', NULL, NULL, 1, 2383, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TKTFB', 'KALTROFEN 100 MG TABLET/3 X 10', NULL, NULL, 1, 5850, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TLINA', 'LIXIANA 15 MG FILCO TABLET/2X14', NULL, NULL, 1, 31339, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TLINB', 'LIXIANA 30 MG FILCO TABLET/2X14', NULL, NULL, 1, 31339, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TLINC', 'LIXIANA 60 MG FILCO TABLET/2X14', NULL, NULL, 1, 31339, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TLTMA', 'LACTAMOR KAPLET/6X10', NULL, NULL, 1, 2925, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TMTXA', 'METRIX 1 MG TABLET/2 X 15', NULL, NULL, 1, 3683, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TMTXB', 'METRIX 2 MG TABLET/2 X 15', NULL, NULL, 1, 6717, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TMTXC', 'METRIX 3 MG TABLET/2 X 15', NULL, NULL, 1, 7800, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TMTXD', 'METRIX 4 MG TABLET/2 X 15', NULL, NULL, 1, 9230, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TNRTA', 'NEUROTAM 800 MG KAPLET/5X10', NULL, NULL, 1, 3380, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TNRTB', 'NEUROTAM 1200 MG KAPLET/5X10', NULL, NULL, 1, 6890, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TNVRK', 'NEVOX XR 500 MG TABLET/3X10', NULL, NULL, 1, 2860, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TONZA', 'ONGLYZA 5 MG 28 TAB', NULL, NULL, 1, 3750, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TONZB', 'ONGLYZA 2.5 MG', NULL, NULL, 1, 364000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TPFLA', 'PROFILAS TABLET /5X10', NULL, NULL, 1, 4940, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TPFTA', 'PROFERTIL 50MG TABLET/1X10', NULL, NULL, 1, 21450, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TPIMA', 'PIONIX M 15/500 MG KAPLET/30\'S', NULL, NULL, 1, 9750, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TPIMB', 'PIONIX M 15/850 MG KAPLET/30\'S', NULL, NULL, 1, 9750, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TPMTA', 'PREMASTON 5 MG TABLET/3X10', NULL, NULL, 1, 5200, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TPNXA', 'PIONIX 15 MG TABLET / 30\'S', NULL, NULL, 1, 8450, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TPNXB', 'PIONIX 30 MG TABLET / 30\'S', NULL, NULL, 1, 13000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TRANA', 'RANTIN 150 MG TABLET/10X10', NULL, NULL, 1, 5850, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TRLSC', 'RILLUS TABLET/5X6', NULL, NULL, 1, 9317, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TSCNA', 'SINCRONIK KAPLET SS / 3X10', NULL, NULL, 1, 10400, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TSLNA', 'SEROLIN 10 MG TABLET/5 X 21', NULL, NULL, 1, 8419, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TSLNB', 'SEROLIN 30 MG TABLET/2 X 21', NULL, NULL, 1, 16714, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TSPOA', 'SPIROLA 25 MG TABLET / 5X10', NULL, NULL, 1, 2340, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TSPOB', 'SPIROLA 100 MG TABLET / 5X10', NULL, NULL, 1, 6370, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TSTMA', 'STARMUNO KAPLET /3X10', NULL, NULL, 1, 10617, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TTBRA', 'TRANSBRONCHO 30 MG TAB / 10X10', NULL, NULL, 1, 975, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TTIVE', 'TARIVID 200 MG TABLET / 3X10', NULL, NULL, 1, 12133, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TTIVK', 'TARIVID 400 MG TABLET / 3X10', NULL, NULL, 1, 20367, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TTKVA', 'TKV 0.5 MG FILCO TABLET/3X10', NULL, NULL, 1, 34667, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TTRSA', 'TORASIC 10 MG TABLET / 2X10', NULL, NULL, 1, 6825, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TTRVD', 'TRUVAZ 10 MG TABLET/3X10', NULL, NULL, 1, 19067, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TTRVE', 'TRUVAZ 20 MG TABLET/3X10', NULL, NULL, 1, 20800, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TTRVF', 'TRUVAZ 40 MG TABLET/3X10', NULL, NULL, 1, 22533, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TVBCA', 'V-BLOC 25 MG TABLET/3 X 10', NULL, NULL, 1, 9230, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TVBCC', 'V-BLOC 6.25 MG TABLET/3 X 10', NULL, NULL, 1, 3467, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TVCRA', 'VOMCERAN 8 MG TABLET/1 X 10', NULL, NULL, 1, 27300, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TVCRB', 'VOMCERAN 4 MG TABLET/1 X 10', NULL, NULL, 1, 20800, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TVMTB', 'VOMITAS FDT /5 X 10', NULL, NULL, 1, 5330, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TZEGA', 'ZEGAVIT KAPLET / 5X10', NULL, NULL, 1, 4160, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('TZTXA', 'ZITHRAX 500 MG KAPLET/1X6', NULL, NULL, 1, 56333, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('VBRHA', 'BROADCED HOSPITAL PACK 1G VL/1', NULL, NULL, 1, 292500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('VBROK', 'BROADCED 1 G.I.V VIAL /1', NULL, NULL, 1, 266500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('VBTSA', 'BACTESYN 0.75 G VIAL/1', NULL, NULL, 1, 91000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('VBTSB', 'BACTESYN 1,5 G VIAL/1', NULL, NULL, 1, 171500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('VCNEB', 'CERNEVIT INJEKSI / 10', NULL, NULL, 1, 253500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('VCRVD', 'CRAVIT 750 MG FLEXYBAG 150ML/1', NULL, NULL, 1, 481000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('VCRVE', 'CRAVIT 500 MG FLEXYBAG 100 ML / 1', NULL, NULL, 1, 403000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('VEDNA', 'ENDROLIN PACK 3.75 MG VIAL / 1', NULL, NULL, 1, 1592500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('VEZLA', 'EZELIN 300 IU INJEKSI 3 ML/1', NULL, NULL, 1, 162500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('VEZMA', 'EZOMEB 40 MG INJEKSI VIAL 10 ML/1', NULL, NULL, 1, 175500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('VKFXK', 'KALFOXIM 0.5 G VIAL/1', NULL, NULL, 1, 104000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('VKFXP', 'KALFOXIM 1 G VIAL / 1', NULL, NULL, 1, 195000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('VOTBA', 'OCTALBIN 5% INFUS 250 ML/1', NULL, NULL, 1, 1625000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('VPRZA', 'PRANZA 40 MG VIAL / 1', NULL, NULL, 1, 188500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('VRITA', 'RIBACTER 500 MG', NULL, NULL, 1, 585000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('VTAZA', 'TAZAM 4.5 G INJEKSI VIAL/1', NULL, NULL, 1, 357500, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('VTHDB', 'THIDIM 1 G VIAL / 1', NULL, NULL, 1, 299000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('VTIVC', 'TARIVID OTIC SOLUTION / 5 ML', NULL, NULL, 1, 104000, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', ' NULL ', NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -4379,28 +4356,28 @@ CREATE TABLE `tbl_pabrik` (
 INSERT INTO `tbl_pabrik` (`kode_pabrik`, `nama_pabrik`, `alamat_pabrik`, `kota`, `telp`, `npwp`, `dtm_crt`, `dtm_upd`) VALUES
 ('PAB1573711347', 'PT Obat Sejahtera', 'jl payah kumbuh', 'sulawesi', '08998989898', '09-0909-8849', '2019-11-14 13:02:27', '2019-11-14 07:24:57'),
 ('PAB1624001874', 'PT Selama Bersama', 'Jalan penjaringan sari II F no 46', 'Surabaya', '082264619988', '198672453688', '2021-06-18 14:37:54', '2021-06-18 14:37:54'),
-('PAB1638269278', 'PT. DEXA MEDICA INJEKSI', 'SURABAYA', 'SURABAYA', '085738296745', '67891', '2021-12-03 10:10:50', '2021-12-03 10:10:50'),
-('PAB1638269381', 'PT. KALBE FARMA', 'RUNGKUT', 'SURABAYA', '085738296745', '98754', '2021-12-03 10:02:29', '2021-12-03 10:02:29'),
-('PAB1638500170', 'Phapros', '-', '-', '-', '-', '2021-12-03 09:56:10', '2021-12-03 09:56:10'),
-('PAB1638500193', 'Lucas Djaja', '-', '-', '-', '-', '2021-12-03 09:56:33', '2021-12-03 09:56:33'),
-('PAB1638500206', 'Ethica', '-', '-', '-', '-', '2021-12-03 09:56:46', '2021-12-03 09:56:46'),
-('PAB1638500215', 'Mepro', '-', '-', '-', '-', '2021-12-03 09:56:55', '2021-12-03 09:56:55'),
-('PAB1638500228', 'Bernofarm', '-', '-', '-', '-', '2021-12-03 09:57:08', '2021-12-03 09:57:08'),
-('PAB1638500243', 'Sanbe', '-', '-', '-', '-', '2021-12-03 09:57:23', '2021-12-03 09:57:23'),
-('PAB1638500257', 'Quantum Labs', '-', '-', '-', '-', '2021-12-03 09:57:37', '2021-12-03 09:57:37'),
-('PAB1638500268', 'Fahrenheit', '-', '-', '-', '-', '2021-12-03 09:57:48', '2021-12-03 09:57:48'),
-('PAB1638500290', 'Mahakam Beta Farma', '-', '-', '-', '-', '2021-12-03 09:58:10', '2021-12-03 09:58:10'),
-('PAB1638500527', 'Guardian Pharmatama', '-', '-', '-', '-', '2021-12-03 10:02:07', '2021-12-03 10:02:07'),
-('PAB1638500536', 'Hameln', '-', '-', '-', '-', '2021-12-03 10:02:16', '2021-12-03 10:02:16'),
-('PAB1638500557', 'Novell', '-', '-', '-', '-', '2021-12-03 10:02:37', '2021-12-03 10:02:37'),
-('PAB1638500570', 'Kimia Farma', '-', '-', '-', '-', '2021-12-03 10:02:50', '2021-12-03 10:02:50'),
-('PAB1638500623', 'Hexapharm Jaya', '-', '-', '-', '-', '2021-12-03 10:03:43', '2021-12-03 10:03:43'),
-('PAB1638500640', 'Ogb Dexa', '-', '-', '-', '-', '2021-12-03 10:04:00', '2021-12-03 10:04:00'),
-('PAB1638500650', 'Bernopharm', '-', '-', '-', '-', '2021-12-03 10:04:10', '2021-12-03 10:04:10'),
-('PAB1638500668', 'Etercon Pharma', '-', '-', '-', '-', '2021-12-03 10:04:28', '2021-12-03 10:04:28'),
-('PAB1638501021', 'Merck', '-', '-', '-', '-', '2021-12-03 10:10:21', '2021-12-03 10:10:21'),
-('PAB1638501029', 'Gsk', '-', '-', '-', '-', '2021-12-03 10:10:29', '2021-12-03 10:10:29'),
-('PAB1638501042', 'Interbat', '-', '-', '-', '-', '2021-12-03 10:10:42', '2021-12-03 10:10:42');
+('PAB1638269278', 'PT. DEXA MEDICA INJEKSI', 'SURABAYA', 'SURABAYA', '085738296745', '67891', '2021-11-30 10:47:58', '2021-11-30 10:47:58'),
+('PAB1638269381', 'PT. KALBE FARMA', 'RUNGKUT', 'SURABAYA', '085738296745', '98754', '2021-11-30 10:49:41', '2021-11-30 10:49:41'),
+('PAB1638500170', 'Phapros', '-', '-', '-', '-', '2021-12-03 09:36:54', '2021-12-03 09:38:07'),
+('PAB1638500193', 'Lucas Djaja', '-', '-', '-', '-', '2021-12-03 09:37:06', '2021-12-03 09:38:17'),
+('PAB1638500206', 'Ethica', '-', '-', '-', '-', '2021-12-03 09:37:14', '2021-12-03 09:38:27'),
+('PAB1638500215', 'Mepro', '-', '-', '-', '-', '2021-12-03 09:37:25', '2021-12-03 09:38:34'),
+('PAB1638500228', 'Bernofarm', '-', '-', '-', '-', '2021-12-03 09:38:42', '2021-12-03 09:38:42'),
+('PAB1638500243', 'Sanbe', '-', '-', '-', '-', '2021-12-03 09:38:57', '2021-12-03 09:38:57'),
+('PAB1638500257', 'Quantum Labs', '-', '-', '-', '-', '2021-12-03 16:47:42', '2021-12-03 16:47:42'),
+('PAB1638500268', 'Fahrenheit', '-', '-', '-', '-', '2021-12-03 16:47:42', '2021-12-03 16:47:42'),
+('PAB1638500290', 'Mahakam Beta Farma', '-', '-', '-', '-', '2021-12-03 16:47:42', '2021-12-03 16:47:42'),
+('PAB1638500527', 'Guardian Pharmatama', '-', '-', '-', '-', '2021-12-03 16:47:42', '2021-12-03 16:47:42'),
+('PAB1638500536', 'Hameln', '-', '-', '-', '-', '2021-12-03 16:47:42', '2021-12-03 16:47:42'),
+('PAB1638500557', 'Novell', '-', '-', '-', '-', '2021-12-03 16:47:42', '2021-12-03 16:47:42'),
+('PAB1638500570', 'Kimia Farma', '-', '-', '-', '-', '2021-12-03 16:47:42', '2021-12-03 16:47:42'),
+('PAB1638500623', 'Hexapharm Jaya', '-', '-', '-', '-', '2021-12-03 16:47:42', '2021-12-03 16:47:42'),
+('PAB1638500640', 'Ogb Dexa', '-', '-', '-', '-', '2021-12-03 16:47:42', '2021-12-03 16:47:42'),
+('PAB1638500650', 'Bernopharm', '-', '-', '-', '-', '2021-12-03 16:47:42', '2021-12-03 16:47:42'),
+('PAB1638500668', 'Etercon Pharma', '-', '-', '-', '-', '2021-12-03 16:47:42', '2021-12-03 16:47:42'),
+('PAB1638501021', 'Merck', '-', '-', '-', '-', '2021-12-03 16:47:42', '2021-12-03 16:47:42'),
+('PAB1638501029', 'Gsk', '-', '-', '-', '-', '2021-12-03 16:47:42', '2021-12-03 16:47:42'),
+('PAB1638501042', 'Interbat', '-', '-', '-', '-', '2021-12-03 16:47:42', '2021-12-03 16:47:42');
 
 -- --------------------------------------------------------
 
@@ -4435,10 +4412,9 @@ CREATE TABLE `tbl_pasien` (
 
 INSERT INTO `tbl_pasien` (`no_rekam_medis`, `no_id_pasien`, `nik`, `nama_lengkap`, `tanggal_lahir`, `golongan_darah`, `status_menikah`, `pekerjaan`, `alamat`, `kabupaten`, `rt`, `rw`, `nama_orang_tua_atau_istri`, `nomer_telepon`, `riwayat_alergi_obat`, `note_dokter`, `dtm_crt`, `dtm_upd`) VALUES
 ('1', '1', '123', 'Sri Aminah', '2021-11-28', 'A', 'Menikah', 'SWASTA', 'Jl Kh Ali Sekarputih Bondowoso', 'Banyuwangi', '01', '04', 'Si A', '0821', 'Paracetamol,', NULL, '2021-11-28 12:23:51', '2021-11-28 09:22:40'),
+('000728', '986098', '3510081806560003', 'SUYATNO/TN', '1956-06-18', 'B', 'Menikah', 'WIRASWASTA', 'DUSUN KRAJAN DESA KEBAMAN KECAMATAN SRONO', 'BANYUWANGI', '005', '003', 'TUINAH/NY', '085215046729', 'Paracetamol,', NULL, '2021-11-30 11:10:39', '2021-12-12 09:45:06'),
 ('000727', '94894', '35100', 'ngjfnjgnlf', '1995-06-29', 'AB', 'Menikah', 'swasta', 'jlkggf', 'Bayuwangi', '009', '008', 'dwiono', '098898843', '', NULL, '2021-11-29 11:03:55', '2021-11-29 11:03:55'),
-('000726', '986097', '12872', 'David Setya', '2021-11-28', 'B', 'Menikah', 'SWASTA', 'Bondowoso\r\nBondowoso', 'Bondowoso', '13', '04', 'udin', '02', '', NULL, '2021-11-28 15:51:13', '2021-11-28 15:51:13'),
-('000728', '986098', '351109', 'Galih', '1999-09-11', 'A', 'Belum Menikah', 'Mahasiswa', 'Badung', 'BADUNG', '1', '2', 'tina harapan', '083', 'Paracetamol,', NULL, '2021-12-01 16:42:42', '2021-12-01 10:47:42'),
-('000729', '986099', '351108', 'Adi Pratama', '1999-09-18', 'A', 'Menikah', 'Mahasiswa', 'Badung', 'BADUNG', '1', '2', 'Agus', '083', '-,', NULL, '2021-12-01 16:52:37', '2021-12-01 10:53:42');
+('000726', '986097', '12872', 'David Setya', '2021-11-28', 'B', 'Menikah', 'SWASTA', 'Bondowoso\r\nBondowoso', 'Bondowoso', '13', '04', 'udin', '02', '', NULL, '2021-11-28 15:51:13', '2021-11-28 15:51:13');
 
 -- --------------------------------------------------------
 
@@ -4464,6 +4440,23 @@ CREATE TABLE `tbl_pegawai` (
   `dtm_crt` datetime NOT NULL DEFAULT current_timestamp(),
   `dtm_upd` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_pegawai`
+--
+
+INSERT INTO `tbl_pegawai` (`id_pegawai`, `nama_pegawai`, `nik`, `tanggal_lahir`, `email`, `no_hp`, `alamat_tinggal`, `id_jabatan`, `pendidikan_terakhir`, `pelatihan`, `nilai_index`, `tanggal_mulai_tugas`, `id_shift`, `id_klinik`, `dtm_crt`, `dtm_upd`) VALUES
+(1, 'TITIK PUSPITASARI', '3510064302860001', '1986-02-03', 'titikpuspitasari474@gmail.com', '081332682806', 'Dsn.Trembelang RT.01 RW.04 Desa Cluring Kec.Cluring', 2, 'D3', 'APN , MU', 1, '2021-10-01', NULL, 1, '2021-12-01 04:02:50', '2021-12-01 04:02:50'),
+(2, 'SULIS RISMAWATI', '3510074205890002', '1989-05-02', 'altanalkareem@gmail.com', '083111725897', 'Dsn.krajan rt.07 rw.02,Ds.jajag,Kec.Gambiran,Kab.banyuwangi', 2, 'S1', 'Asuhan Persalinan Normal,PEKERTI,Midwifery Update', 1, '2021-10-01', NULL, 1, '2021-12-01 07:09:03', '2021-12-01 07:17:48'),
+(4, 'DIAN LATRI DEWI KARTIKA SARI', '3510095809940001', '1994-09-18', 'dianlatri99@gmail.com', '082331141529', 'DUSUN TEMUREJO RT 001 RW 007 DESA KEMBIRITAN KECAMATAN GENTENG KABUPATEN BANYUWANGI', 6, 'D3', 'APN', 1, '2021-10-01', NULL, 1, '2021-12-01 07:12:21', '2021-12-01 07:12:21'),
+(5, 'Mohammad nur rizal usnanda', '3510093103950001', '1995-03-31', 'arizalnandadika@gmail.com', '081393283914, 083119', 'Dusun kaliputih rt 03 rw 06 desa kembiritan kecamatan genteng kabupaten banyuwangi', 11, 'SMA', '', 1, '2021-10-01', NULL, 1, '2021-12-01 07:16:24', '2021-12-01 07:16:24'),
+(6, 'HARI STIYAWAN', '3510090205820015', '1982-05-02', 'HER@gmail.com', '082335969354', 'dusun pandan rt 001 rw 001 desa kembiritan kecamatan genteng kabupaten banyuwangi', 9, 'SMA', '', 1, '2021-10-01', NULL, 1, '2021-12-01 07:22:32', '2021-12-01 07:22:32'),
+(7, 'Bayu setiawan', '3502050103000001', '2000-03-01', 'bayukawok9@gmail.com', '083114307795', 'Kembiritan genteng banyuwangi', 10, 'SMA', '', 1, '2021-10-01', NULL, 1, '2021-12-01 10:14:17', '2021-12-01 10:14:17'),
+(8, 'Fiona Febrianti', '3510084402970002', '1997-02-04', 'febriantifiona@gmail.com', '087781305878', 'Dsn. Umbulrejo 003/007 ds. Bagorejo kec. Srono kab. Banyuwangi', 6, 'D3', 'Btcls', 1, '2021-10-01', NULL, 1, '2021-12-02 09:01:23', '2021-12-02 09:01:23'),
+(9, 'Gunawan wibisono', '3509152807680001', '1968-07-28', 'Gunawanwibisono@gmail.com', '082230299417', 'Dsn. Jatisari 003/001 ds.bmo kec.blimbingsari kab.banyuwangi', 8, 'SMA', '', 1, '2021-10-01', NULL, 1, '2021-12-02 09:04:12', '2021-12-02 09:04:12'),
+(10, 'Rizki hidayat', '3510112803920002', '1992-03-26', 'rizkineanculspeed012@gmail.com', '087857857057', 'Dsn. Krajan rt 03 rw 09 desa kalibaru kulon, kec. Kalibaru, kab. banyuwangi', 6, 'S1', 'BTCLS', 1, '2021-10-01', NULL, 1, '2021-12-02 11:49:44', '2021-12-02 11:49:44'),
+(11, 'Ongky ramadhan', '3510111703920002', '1992-03-17', 'Ongkyramadhan121@gmail.com', '082325632686', 'Dusun Krajan rt 01 re 08 desa kalibaru kulon kecamatan kalibaru kabupaten banyuwangi', 6, 'S1', 'Vaksinator, btcls', 1, '2021-10-01', NULL, 1, '2021-12-04 02:16:53', '2021-12-04 02:17:14'),
+(12, 'Laila Nur Afni', '3510054104000005', '1999-09-02', 'lailanurafni232@gmail.com', '082338587609', 'Dsn. Krajan 001/020 Ds. Tembokrejo Kec. Muncar Kab. Banyuwangi', 7, 'D3', 'BTCLS', 1, '2021-10-01', NULL, 1, '2021-12-04 02:19:30', '2021-12-04 02:19:30');
 
 -- --------------------------------------------------------
 
@@ -4495,9 +4488,8 @@ INSERT INTO `tbl_pendaftaran` (`id_pendaftaran`, `no_pendaftaran`, `no_rekam_med
 (4, '2', '000723', 1, 2, 1, 2, '0', '2021-11-28 15:27:31', '2021-11-29 03:57:43'),
 (5, '000916', '000725', 1, 1, 1, 0, '0', '2021-11-28 15:46:05', '2021-11-28 15:46:05'),
 (6, '000917', '000726', 1, 1, 1, 3, '0', '2021-11-28 15:51:13', '2021-11-29 03:57:35'),
-(7, '000918', '000727', 1, 5, 1, 0, '0', '2021-11-29 11:03:55', '2021-11-29 11:03:55'),
-(8, '000919', '000728', 1, 3, 1, 1, '0', '2021-12-01 16:42:42', '2021-12-01 10:47:42'),
-(9, '000920', '000729', 1, 3, 1, 1, '0', '2021-12-01 16:52:37', '2021-12-01 10:53:42');
+(7, '000918', '000727', 1, 5, 1, 0, '0', '2021-11-29 11:03:55', '2021-11-30 09:57:15'),
+(8, '000919', '000728', 1, 3, 4, 1, '0', '2021-11-30 11:10:39', '2021-12-12 16:40:26');
 
 -- --------------------------------------------------------
 
@@ -4533,8 +4525,7 @@ CREATE TABLE `tbl_periksa` (
 INSERT INTO `tbl_periksa` (`no_periksa`, `no_pendaftaran`, `no_rekam_medis`, `anamnesi`, `diagnosa`, `tindakan`, `is_surat_ket_sakit`, `nomor_skt`, `tujuan_surat`, `tanggal_mulai`, `lama_istirahat_surat`, `id_dokter`, `note_dokter`, `note_apoteker`, `is_ambil_obat`, `obat_detail`, `dtm_crt`, `dtm_upd`) VALUES
 ('1/20211128/1', '1', '1', 'Batuk 3 Kali', 'sakit kepala', 'Perawatan', 0, '0001/11/KR/SK/21', '', NULL, 0, 1, 'Catatan', '', 0, 'BENACOL DTM SYRUP / 60 ML', '2021-11-28 15:22:40', '2021-11-28 15:22:40'),
 ('2/20211128/000723', '2', '000723', 'Batuk 3 Kali', 'sakit kepala', 'Perawatan', 0, '0002/11/KR/SK/21', '', NULL, 0, 2, 'catatan', '', 0, 'BENACOL DTM SYRUP / 60 ML', '2021-11-28 15:27:31', '2021-11-28 15:27:31'),
-('000919/20211201/000728', '000919', '000728', 'Pusing', 'sakit kepala', 'Vaksein', 0, '0003/12/KR/SK/21', '', NULL, 0, 3, '--', '-', 0, 'KALMECO 500 MCG AMP 1 ML/ 1X5', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-('000920/20211201/000729', '000920', '000729', 'Batuk 3 Kali', 'sakit kepala', 'tindakan', 0, '0004/12/KR/SK/21', '', NULL, 0, 3, '-', '-', 0, 'KALMECO 500 MCG AMP 1 ML/ 1X5', '2021-12-01 16:53:42', '2021-12-01 16:53:42');
+('000919/20211212/000728', '000919', '000728', 'Batuk 3 Kali', 'sakit kepala', 'PENDAFTARAN PASIEN BARU', 0, '0003/12/KR/SK/21', '', NULL, 0, 3, 'a', 'a', 0, 'ALBAPURE 200ml', '2021-12-12 15:45:06', '2021-12-12 15:45:06');
 
 -- --------------------------------------------------------
 
@@ -4555,8 +4546,7 @@ CREATE TABLE `tbl_periksa_diagnosa` (
 INSERT INTO `tbl_periksa_diagnosa` (`id_periksa_diagnosa`, `no_periksa`, `id_diagnosa`) VALUES
 (1, '1/20211128/1', 1839),
 (2, '2/20211128/000723', 1839),
-(3, '000919/20211201/000728', 1839),
-(4, '000920/20211201/000729', 1885);
+(3, '000919/20211212/000728', 1859);
 
 -- --------------------------------------------------------
 
@@ -4566,9 +4556,12 @@ INSERT INTO `tbl_periksa_diagnosa` (`id_periksa_diagnosa`, `no_periksa`, `id_dia
 
 CREATE TABLE `tbl_periksa_d_alkes` (
   `id_periksa_d_alkes` int(11) NOT NULL,
+  `no_pendaftaran` varchar(30) NOT NULL,
   `no_periksa` varchar(30) NOT NULL,
   `kode_barang` varchar(6) NOT NULL,
   `jumlah` int(11) NOT NULL,
+  `harga_satuan` int(11) NOT NULL,
+  `tipe_periksa` enum('1','2','3','4','5') NOT NULL COMMENT '1= Poli, 2 = Rawat Inap, 3 = Operasi, 4 = Laboratorium, 5 = Radiologi',
   `dtm_crt` datetime NOT NULL DEFAULT current_timestamp(),
   `dtm_upd` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -4577,9 +4570,28 @@ CREATE TABLE `tbl_periksa_d_alkes` (
 -- Dumping data for table `tbl_periksa_d_alkes`
 --
 
-INSERT INTO `tbl_periksa_d_alkes` (`id_periksa_d_alkes`, `no_periksa`, `kode_barang`, `jumlah`, `dtm_crt`, `dtm_upd`) VALUES
-(1, '000919/20211201/000728', 'BRG163', 1, '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(2, '000920/20211201/000729', 'BRG163', 1, '2021-12-01 16:53:42', '2021-12-01 16:53:42');
+INSERT INTO `tbl_periksa_d_alkes` (`id_periksa_d_alkes`, `no_pendaftaran`, `no_periksa`, `kode_barang`, `jumlah`, `harga_satuan`, `tipe_periksa`, `dtm_crt`, `dtm_upd`) VALUES
+(1, '', '000919/20211212/000728', 'AIDXB', 1, 0, '1', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(2, '000919', '000919/20211212/000728', 'AIDXB', 9, 11700, '4', '2021-12-12 22:40:26', '2021-12-12 22:40:26'),
+(3, '000919', '000919/20211212/000728', 'BRG163', 10, 1000, '4', '2021-12-12 22:40:26', '2021-12-12 22:40:26');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_periksa_d_biaya`
+--
+
+CREATE TABLE `tbl_periksa_d_biaya` (
+  `id_periksa_d_biaya` int(11) NOT NULL,
+  `no_pendaftaran` varchar(30) NOT NULL,
+  `no_periksa` varchar(30) NOT NULL,
+  `id_biaya` int(6) NOT NULL,
+  `jumlah` int(5) NOT NULL,
+  `biaya` int(11) NOT NULL,
+  `tipe_periksa` enum('1','2','3','4','5') NOT NULL COMMENT '	1= Poli, 2 = Rawat Inap, 3 = Operasi, 4 = Laboratorium, 5 = Radiologi',
+  `dtm_crt` datetime NOT NULL,
+  `dtm_upd` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -4609,14 +4621,10 @@ INSERT INTO `tbl_periksa_d_fisik` (`id_periksa_d_fisik`, `no_periksa`, `nama_per
 (6, '2/20211128/000723', 'Tinggi Badan', '180', '2021-11-28 15:27:31', '2021-11-28 15:27:31'),
 (7, '2/20211128/000723', 'Tekanan Darah', '110', '2021-11-28 15:27:31', '2021-11-28 15:27:31'),
 (8, '2/20211128/000723', 'Suhu Tubuh', '36', '2021-11-28 15:27:31', '2021-11-28 15:27:31'),
-(9, '000919/20211201/000728', 'Berat Badan', '98', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(10, '000919/20211201/000728', 'Tinggi Badan', '173', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(11, '000919/20211201/000728', 'Tekanan Darah', '130', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(12, '000919/20211201/000728', 'Suhu Tubuh', '36', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(13, '000920/20211201/000729', 'Berat Badan', '98', '2021-12-01 16:53:42', '2021-12-01 16:53:42'),
-(14, '000920/20211201/000729', 'Tinggi Badan', '173', '2021-12-01 16:53:42', '2021-12-01 16:53:42'),
-(15, '000920/20211201/000729', 'Tekanan Darah', '130', '2021-12-01 16:53:42', '2021-12-01 16:53:42'),
-(16, '000920/20211201/000729', 'Suhu Tubuh', '36', '2021-12-01 16:53:42', '2021-12-01 16:53:42');
+(9, '000919/20211212/000728', 'Berat Badan', '65', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(10, '000919/20211212/000728', 'Tinggi Badan', '180', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(11, '000919/20211212/000728', 'Tekanan Darah', '110', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(12, '000919/20211212/000728', 'Suhu Tubuh', '36', '2021-12-12 15:45:06', '2021-12-12 15:45:06');
 
 -- --------------------------------------------------------
 
@@ -4626,13 +4634,16 @@ INSERT INTO `tbl_periksa_d_fisik` (`id_periksa_d_fisik`, `no_periksa`, `nama_per
 
 CREATE TABLE `tbl_periksa_d_obat` (
   `id_periksa_d_obat` int(11) NOT NULL,
+  `no_pendaftaran` varchar(30) NOT NULL,
   `no_periksa` varchar(30) NOT NULL,
   `kode_barang` varchar(30) NOT NULL,
   `jumlah` double NOT NULL,
+  `harga_satuan` int(11) NOT NULL,
   `anjuran` varchar(60) NOT NULL,
   `keterangan` varchar(60) NOT NULL,
   `penggunaan_obat` varchar(240) DEFAULT NULL,
   `is_tebus` int(1) NOT NULL,
+  `tipe_periksa` enum('1','2','3','4','5') NOT NULL COMMENT '1= Poli, 2 = Rawat Inap, 3 = Operasi, 4 = Laboratorium, 5 = Radiologi',
   `dtm_crt` datetime NOT NULL DEFAULT current_timestamp(),
   `dtm_upd` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -4641,11 +4652,36 @@ CREATE TABLE `tbl_periksa_d_obat` (
 -- Dumping data for table `tbl_periksa_d_obat`
 --
 
-INSERT INTO `tbl_periksa_d_obat` (`id_periksa_d_obat`, `no_periksa`, `kode_barang`, `jumlah`, `anjuran`, `keterangan`, `penggunaan_obat`, `is_tebus`, `dtm_crt`, `dtm_upd`) VALUES
-(1, '1/20211128/1', 'BRG1638086758', 1, 'setelah makan', '0', '3 kali sehari', 0, '2021-11-28 15:22:40', '2021-11-28 15:22:40'),
-(2, '2/20211128/000723', 'BRG1638086758', 1, 'anjuran', '0', '3 kali sehari', 0, '2021-11-28 15:27:31', '2021-11-28 15:27:31'),
-(3, '000919/20211201/000728', 'AKMCA', 1, '1', '0', '1', 0, '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(4, '000920/20211201/000729', 'AKMCA', 1, '1', '0', '1', 0, '2021-12-01 16:53:42', '2021-12-01 16:53:42');
+INSERT INTO `tbl_periksa_d_obat` (`id_periksa_d_obat`, `no_pendaftaran`, `no_periksa`, `kode_barang`, `jumlah`, `harga_satuan`, `anjuran`, `keterangan`, `penggunaan_obat`, `is_tebus`, `tipe_periksa`, `dtm_crt`, `dtm_upd`) VALUES
+(1, '', '1/20211128/1', 'BRG1638086758', 1, 0, 'setelah makan', '0', '3 kali sehari', 0, '1', '2021-11-28 15:22:40', '2021-11-28 15:22:40'),
+(2, '', '2/20211128/000723', 'BRG1638086758', 1, 0, 'anjuran', '0', '3 kali sehari', 0, '1', '2021-11-28 15:27:31', '2021-11-28 15:27:31'),
+(3, '', '000919/20211212/000728', 'BRG1638272332', 1, 0, 'anjuran', '0', '3 kali sehari', 0, '1', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(4, '000919', '000919/20211212/000728', 'BRG1638272332', 1, 2000000, '', '', NULL, 0, '4', '2021-12-12 22:40:26', '2021-12-12 22:40:26');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_periksa_d_tindakan`
+--
+
+CREATE TABLE `tbl_periksa_d_tindakan` (
+  `id_periksa_d_tindakan` int(11) NOT NULL,
+  `no_pendaftaran` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `no_periksa` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `kode_tindakan` varchar(8) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `biaya` int(11) NOT NULL,
+  `tipe_periksa` enum('1','2','3','4','5') COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '1= Poli, 2 = Rawat Inap, 3 = Operasi, 4 = Laboratorium, 5 = Radiologi',
+  `dtm_crt` datetime NOT NULL DEFAULT current_timestamp(),
+  `dtm_upd` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_periksa_d_tindakan`
+--
+
+INSERT INTO `tbl_periksa_d_tindakan` (`id_periksa_d_tindakan`, `no_pendaftaran`, `no_periksa`, `kode_tindakan`, `biaya`, `tipe_periksa`, `dtm_crt`, `dtm_upd`) VALUES
+(1, '000919', '000919/20211212/000728', '1', 45000, '4', '2021-12-12 22:40:26', '2021-12-12 22:40:26'),
+(2, '000919', '000919/20211212/000728', '870', 100000, '4', '2021-12-12 22:40:26', '2021-12-12 22:40:26');
 
 -- --------------------------------------------------------
 
@@ -4655,10 +4691,19 @@ INSERT INTO `tbl_periksa_d_obat` (`id_periksa_d_obat`, `no_periksa`, `kode_baran
 
 CREATE TABLE `tbl_periksa_lab` (
   `id_periksa_lab` int(5) NOT NULL,
+  `no_pendaftaran` varchar(30) NOT NULL,
   `no_periksa` varchar(30) NOT NULL,
   `id_tipe` int(3) NOT NULL,
+  `biaya` int(11) NOT NULL,
   `hasil` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_periksa_lab`
+--
+
+INSERT INTO `tbl_periksa_lab` (`id_periksa_lab`, `no_pendaftaran`, `no_periksa`, `id_tipe`, `biaya`, `hasil`) VALUES
+(1, '000919', '000919/20211212/000728', 1, 100000, 'bagus');
 
 -- --------------------------------------------------------
 
@@ -4692,10 +4737,9 @@ CREATE TABLE `tbl_periksa_lanjutan` (
 --
 
 INSERT INTO `tbl_periksa_lanjutan` (`id_periksa`, `no_pendaftaran`, `tipe_periksa`, `tanggal`, `is_periksa`) VALUES
-(1, '000919', '1', '2021-12-01 10:42:42', '0'),
-(2, '000919', '2', '2021-12-01 10:47:42', '1'),
-(3, '000920', '1', '2021-12-01 10:52:37', '0'),
-(4, '000920', '4', '2021-12-01 10:53:42', '1');
+(1, '000919', '1', '2021-11-30 11:10:39', '0'),
+(2, '000919', '4', '2021-12-12 09:45:06', '0'),
+(3, '000919', '2', '2021-12-12 16:40:26', '1');
 
 -- --------------------------------------------------------
 
@@ -4720,7 +4764,7 @@ INSERT INTO `tbl_poli` (`id_poli`, `item`) VALUES
 (5, 'Poli Spesialis Orthopedi'),
 (6, 'Poli Rawat Luka'),
 (7, 'UGD'),
-(8, 'Operasi');
+(8, 'Rawat Inap');
 
 -- --------------------------------------------------------
 
@@ -4792,8 +4836,8 @@ CREATE TABLE `tbl_purchases` (
 
 INSERT INTO `tbl_purchases` (`kode_purchase`, `kode_supplier`, `id_apoteker`, `id_klinik`, `jenis_pembayaran`, `is_closed`, `is_receive`, `keterangan`, `total_harga`, `tanggal_po`, `pengirim`, `dtm_crt`, `dtm_upd`) VALUES
 ('PO1638087590', 'SUP1638087407', 1, 1, '0', 1, 1, 'Pembelian Obat', 312000, '2021-11-28', 'Driver A', '2021-11-28 15:19:50', '2021-11-28 15:19:50'),
-('PO1638331583', 'SUP1638087407', 1, 1, '0', 0, 0, '1132', 240000, '2021-12-01', NULL, '2021-12-01 11:06:23', '2021-12-01 11:06:23'),
-('PO1638331746', 'SUP1638087407', 1, 1, '0', 1, 1, 'Beli ALKES', 160000, '2021-12-01', 'Driver B', '2021-12-01 11:09:06', '2021-12-01 11:09:06');
+('PO1638272515', 'SUP1638087407', 2, 1, '1', 0, 1, 'YHUHFUDHUD', 18000000, '2021-11-30', 'YONO', '2021-11-30 11:41:55', '2021-11-30 11:41:55'),
+('PO1638940242', 'SUP1638087407', 2, 1, '0', 1, 1, 'ket', 550000, '2021-12-08', 'david', '2021-12-08 12:10:42', '2021-12-08 12:10:42');
 
 -- --------------------------------------------------------
 
@@ -4818,8 +4862,9 @@ CREATE TABLE `tbl_purchase_d` (
 
 INSERT INTO `tbl_purchase_d` (`id_purchase_d`, `kode_purchase`, `kode_barang`, `jumlah`, `harga`, `diskon`, `dtm_crt`, `dtm_upd`) VALUES
 (1, 'PO1638087590', 'BRG1638086758', 20, 15600, 0, '2021-11-28 15:19:50', '2021-11-28 15:19:50'),
-(2, 'PO1638331583', 'BRG1638090777', 20, 12000, 0, '2021-12-01 11:06:23', '2021-12-01 11:06:23'),
-(3, 'PO1638331746', 'BRG1638331698', 20, 8000, 0, '2021-12-01 11:09:06', '2021-12-01 11:09:06');
+(2, 'PO1638272515', 'BRG1638272332', 12, 2000000, 500000, '2021-11-30 11:41:55', '2021-11-30 11:41:55'),
+(3, 'PO1638940242', 'BRG1638090777', 100, 1000, 0, '2021-12-08 12:10:42', '2021-12-08 12:10:42'),
+(4, 'PO1638940242', 'AIDXB', 150, 3000, 0, '2021-12-08 12:10:42', '2021-12-08 12:10:42');
 
 -- --------------------------------------------------------
 
@@ -4885,12 +4930,13 @@ CREATE TABLE `tbl_ref_gaji` (
 INSERT INTO `tbl_ref_gaji` (`id_ref_gaji`, `id_jabatan`, `gaji_pokok`, `uang_kehadiran`, `uang_makan`, `uang_transport`, `uang_lembur`, `dtm_crt`, `dtm_upd`) VALUES
 (1, 5, 0, 28800, 0, 0, 0, '2019-11-21 15:55:47', '2021-09-23 04:26:06'),
 (2, 4, 0, 10000, 7500, 2500, 0, '2019-11-21 16:13:40', '2021-09-23 04:25:50'),
-(3, 3, 900000, 8000, 9000, 9000, 0, '2019-11-22 15:44:21', '2019-11-22 15:44:21'),
-(4, 1, 1500000, 0, 0, 0, 0, '2019-11-25 17:58:55', '2021-09-23 04:26:32'),
-(5, 2, 1500000, 0, 0, 0, 0, '2019-11-27 19:16:13', '2021-09-23 04:26:59'),
-(6, 9, 2000000, 0, 0, 0, 0, '2021-09-23 11:29:14', '2021-09-23 11:29:14'),
-(7, 7, 1850000, 0, 0, 0, 0, '2021-09-23 11:29:48', '2021-09-23 11:29:48'),
-(8, 6, 1650000, 0, 0, 0, 0, '2021-09-23 11:30:06', '2021-09-23 11:30:06');
+(3, 3, 4000000, 250000, 500000, 500000, 0, '2019-11-22 15:44:21', '2021-12-01 07:30:29'),
+(4, 1, 1000000, 125000, 250000, 250000, 0, '2019-11-25 17:58:55', '2021-12-01 07:31:32'),
+(5, 2, 1000000, 125000, 250000, 250000, 0, '2019-11-27 19:16:13', '2021-12-01 07:29:40'),
+(6, 9, 2000000, 0, 250000, 0, 0, '2021-09-23 11:29:14', '2021-12-01 07:31:08'),
+(7, 7, 1850000, 125000, 250000, 0, 0, '2021-09-23 11:29:48', '2021-12-01 07:32:16'),
+(8, 6, 1650000, 0, 0, 0, 0, '2021-09-23 11:30:06', '2021-09-23 11:30:06'),
+(9, 12, 1000000, 125000, 250000, 250000, 0, '2021-12-01 07:29:06', '2021-12-01 07:29:06');
 
 -- --------------------------------------------------------
 
@@ -4951,9 +4997,9 @@ INSERT INTO `tbl_satuan_barang` (`id_satuan`, `nama_satuan`, `keterangan`, `dtm_
 (9, 'Strip', '1 Pepel isi 10 pcs', '2021-10-04 09:48:20', '2021-10-05 01:56:01'),
 (10, 'ml', 'mililitre', '2021-10-04 09:48:42', '2021-10-04 09:48:42'),
 (11, 'Pkt', 'paket perawatan', '2021-10-04 16:08:09', '2021-10-05 01:55:50'),
-(12, 'fls', '', '2021-12-03 09:51:33', '2021-12-03 09:51:33'),
-(13, 'vial', '', '2021-12-03 09:51:33', '2021-12-03 09:51:33'),
-(14, 'infus', '', '2021-12-03 09:51:47', '2021-12-03 09:51:47');
+(12, 'Infus', '', '2021-12-03 09:36:18', '2021-12-03 09:36:18'),
+(13, 'Vial', '', '2021-12-03 09:36:23', '2021-12-03 09:36:23'),
+(14, 'Fls', '', '2021-12-03 09:36:27', '2021-12-03 09:36:27');
 
 -- --------------------------------------------------------
 
@@ -5064,17 +5110,11 @@ CREATE TABLE `tbl_spesialis` (
 --
 
 INSERT INTO `tbl_spesialis` (`id_spesialis`, `spesialis`, `dtm_crt`, `dtm_upd`) VALUES
-(1, 'THT', '2018-03-27 10:47:49', '2018-03-27 10:47:49'),
-(2, 'Kulit', '2018-03-27 10:47:49', '2018-03-27 10:47:49'),
-(3, 'Perkembangan Anak', '2018-03-27 10:47:49', '2018-03-27 10:47:49'),
 (4, 'Umum', '2018-03-27 10:47:49', '2018-03-27 10:47:49'),
 (5, 'Penyakit Dalam', '2018-03-27 10:47:49', '2018-03-27 10:47:49'),
 (6, 'Gigi', '2021-09-23 09:20:20', '2021-09-23 02:20:31'),
-(7, 'Kandungan', '2021-09-23 09:20:48', '2021-09-23 09:20:48'),
-(8, 'Bidan', '2021-09-23 09:20:58', '2021-09-23 09:20:58'),
-(9, 'Perawat', '2021-09-23 09:21:08', '2021-09-23 09:21:08'),
-(10, 'Fisiotherapist', '2021-10-04 16:06:54', '2021-10-14 04:06:55'),
-(11, 'Spesialis Bedah', '2021-11-28 11:30:04', '2021-11-28 14:29:44');
+(11, 'Spesialis Bedah', '2021-11-28 11:30:04', '2021-11-28 14:29:44'),
+(12, 'Perawat', '2021-12-02 08:30:38', '2021-12-02 08:30:54');
 
 -- --------------------------------------------------------
 
@@ -5156,7 +5196,7 @@ INSERT INTO `tbl_supplier` (`kode_supplier`, `nama_supplier`, `alamat_supplier`,
 --
 
 CREATE TABLE `tbl_tindakan` (
-  `kode_tindakan` varchar(3) NOT NULL,
+  `kode_tindakan` varchar(8) NOT NULL,
   `tindakan` varchar(150) NOT NULL,
   `biaya` int(11) NOT NULL,
   `id_kategori` int(3) NOT NULL
@@ -5167,9 +5207,10 @@ CREATE TABLE `tbl_tindakan` (
 --
 
 INSERT INTO `tbl_tindakan` (`kode_tindakan`, `tindakan`, `biaya`, `id_kategori`) VALUES
-('1', 'Perawatan', 10000, 1),
-('123', 'tindakan', 10000, 1),
-('21', 'Vaksein', 150000, 4);
+('1', 'PENDAFTARAN PASIEN BARU', 45000, 0),
+('123', 'PENDAFTARAN PASIEN BARU', 45000, 1),
+('870', 'Tindakan A', 100000, 1),
+('T', 'PENDAFTARAN PASIEN BARU', 45000, 0);
 
 -- --------------------------------------------------------
 
@@ -5183,6 +5224,16 @@ CREATE TABLE `tbl_tipe_periksa_jasa` (
   `harga` int(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `tbl_tipe_periksa_jasa`
+--
+
+INSERT INTO `tbl_tipe_periksa_jasa` (`id_tipe`, `item`, `harga`) VALUES
+(1, 'JASA OPERATOR OP. RINGAN', 2500000),
+(2, 'JASA OPERATOR OP. SEDANG', 3000000),
+(3, 'JASA OPERATOR OP. BERAT', 4000000),
+(4, 'JASA OPERATOR OP. KHUSUS', 5000000);
+
 -- --------------------------------------------------------
 
 --
@@ -5192,29 +5243,18 @@ CREATE TABLE `tbl_tipe_periksa_jasa` (
 CREATE TABLE `tbl_tipe_periksa_lab` (
   `id_tipe` int(3) NOT NULL,
   `item` varchar(200) NOT NULL,
+  `id_kategori` int(3) NOT NULL,
   `harga` int(9) NOT NULL,
   `nilai_normal` text NOT NULL,
-  `diet` text NOT NULL,
-  `id_kategori` int(3) NOT NULL
+  `diet` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_tipe_periksa_lab`
 --
 
-INSERT INTO `tbl_tipe_periksa_lab` (`id_tipe`, `item`, `harga`, `nilai_normal`, `diet`, `id_kategori`) VALUES
-(1, 'Hemoglobin', 100000, 'L:13, 4-17,7,P:11,4-15,1 g/dl', '', 3),
-(2, 'Umum', 8000, '2', '-', 0),
-(3, 'Umum', 8000, '2', '-', 0),
-(4, 'Umum', 8000, '2', '-', 0),
-(5, 'Posyandu', 8000, '2', '', 0),
-(6, 'Umum', 8000, '2', '', 0),
-(7, 'Umum', 8000, '2', 'w', 0),
-(8, 'Umum', 8000, '2', 'w', 0),
-(9, 'Umum', 8000, '2', '', 0),
-(10, 'Umum', 8000, '2', '12', 0),
-(11, 'Umum', 8000, '2', '', 3),
-(12, 'Umum', 8000, '2', '3223', 4);
+INSERT INTO `tbl_tipe_periksa_lab` (`id_tipe`, `item`, `id_kategori`, `harga`, `nilai_normal`, `diet`) VALUES
+(1, 'Hemoglobin', 0, 100000, 'L:13, 4-17,7,P:11,4-15,1 g/dl', '');
 
 -- --------------------------------------------------------
 
@@ -5225,20 +5265,17 @@ INSERT INTO `tbl_tipe_periksa_lab` (`id_tipe`, `item`, `harga`, `nilai_normal`, 
 CREATE TABLE `tbl_tipe_periksa_radiologi` (
   `id_tipe` int(3) NOT NULL,
   `item` varchar(200) NOT NULL,
+  `id_kategori` int(3) NOT NULL,
   `harga` int(9) NOT NULL,
-  `nilai_normal` text NOT NULL,
-  `id_kategori` int(3) NOT NULL
+  `nilai_normal` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tbl_tipe_periksa_radiologi`
 --
 
-INSERT INTO `tbl_tipe_periksa_radiologi` (`id_tipe`, `item`, `harga`, `nilai_normal`, `id_kategori`) VALUES
-(1, 'Radiologi', 100000, '2', 3),
-(2, 'Foto Rontgen', 250000, 'Tes', 4),
-(3, 'Umum', 8000, '2', 4),
-(4, 'Umum', 8000, 'Tes', 3);
+INSERT INTO `tbl_tipe_periksa_radiologi` (`id_tipe`, `item`, `id_kategori`, `harga`, `nilai_normal`) VALUES
+(1, 'Radiologi', 0, 100000, '2');
 
 -- --------------------------------------------------------
 
@@ -5266,8 +5303,8 @@ CREATE TABLE `tbl_transaksi` (
 INSERT INTO `tbl_transaksi` (`id_transaksi`, `kode_transaksi`, `id_klinik`, `no_transaksi`, `tgl_transaksi`, `status_transaksi`, `atas_nama`, `cara_pembayaran`, `dtm_crt`, `dtm_upd`) VALUES
 (1, 'PRKS', 1, '1/20211128/1', '2021-11-28', 0, NULL, '1', '2021-11-28 15:22:40', '2021-11-28 15:22:40'),
 (2, 'PRKS', 1, '2/20211128/000723', '2021-11-28', 0, NULL, '1', '2021-11-28 15:27:31', '2021-11-28 15:27:31'),
-(3, 'PRKS', 1, '000919/20211201/000728', '2021-12-01', 0, NULL, '1', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(4, 'PRKS', 1, '000920/20211201/000729', '2021-12-01', 0, NULL, '1', '2021-12-01 16:53:42', '2021-12-01 16:53:42');
+(3, 'PRKS', 1, '000919/20211212/000728', '2021-12-12', 0, NULL, '1', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(4, 'PRKSLAB', 1, '000919/20211212/000728', '2021-12-12', 0, NULL, '1', '2021-12-12 22:40:26', '2021-12-12 22:40:26');
 
 -- --------------------------------------------------------
 
@@ -5298,16 +5335,15 @@ INSERT INTO `tbl_transaksi_d` (`id_transaksi_d`, `no_transaksi`, `deskripsi`, `a
 (6, '2/20211128/000723', 'Subsidi Obat-obatan', 0, 'c', '2021-11-28 15:27:31', '2021-11-28 15:27:31'),
 (7, '2/20211128/000723', 'Biaya Pemeriksaan', 10000, 'd', '2021-11-28 15:27:31', '2021-11-28 15:27:31'),
 (8, '2/20211128/000723', 'Biaya Tindakan Perawatan', 10000, 'd', '2021-11-28 15:27:31', '2021-11-28 15:27:31'),
-(9, '000919/20211201/000728', 'Total Obat-obatan', 36400, 'd', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(10, '000919/20211201/000728', 'Total BMHP', 8000, 'd', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(11, '000919/20211201/000728', 'Subsidi Obat-obatan', 0, 'c', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(12, '000919/20211201/000728', 'Biaya Pemeriksaan', 200000, 'd', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(13, '000919/20211201/000728', 'Biaya Tindakan ', 0, 'd', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(14, '000920/20211201/000729', 'Total Obat-obatan', 36400, 'd', '2021-12-01 16:53:42', '2021-12-01 16:53:42'),
-(15, '000920/20211201/000729', 'Total BMHP', 8000, 'd', '2021-12-01 16:53:42', '2021-12-01 16:53:42'),
-(16, '000920/20211201/000729', 'Subsidi Obat-obatan', 0, 'c', '2021-12-01 16:53:42', '2021-12-01 16:53:42'),
-(17, '000920/20211201/000729', 'Biaya Pemeriksaan', 150000, 'd', '2021-12-01 16:53:42', '2021-12-01 16:53:42'),
-(18, '000920/20211201/000729', 'Biaya Tindakan ', 0, 'd', '2021-12-01 16:53:42', '2021-12-01 16:53:42');
+(9, '000919/20211212/000728', 'Total Obat-obatan', 1500000, 'd', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(10, '000919/20211212/000728', 'Total BMHP', 11700, 'd', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(11, '000919/20211212/000728', 'Subsidi Obat-obatan', 0, 'c', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(12, '000919/20211212/000728', 'Biaya Pemeriksaan', 10000, 'd', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(13, '000919/20211212/000728', 'Biaya Tindakan ', 0, 'd', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(14, '000919/20211212/000728', 'Biaya Periksa Lab', 100000, 'd', '2021-12-12 22:40:26', '2021-12-12 22:40:26'),
+(15, '000919/20211212/000728', 'Biaya Obat', 2000000, 'd', '2021-12-12 22:40:26', '2021-12-12 22:40:26'),
+(16, '000919/20211212/000728', 'Biaya BMHP', 115300, 'd', '2021-12-12 22:40:26', '2021-12-12 22:40:26'),
+(17, '000919/20211212/000728', 'Biaya Tindakan', 145000, 'd', '2021-12-12 22:40:26', '2021-12-12 22:40:26');
 
 -- --------------------------------------------------------
 
@@ -5347,11 +5383,12 @@ INSERT INTO `tbl_trx_akuntansi` (`id_trx_akun`, `deskripsi`, `tanggal`, `dtm_crt
 (1, 'Pembelian Barang dengan Kode PO1638087590', '2021-11-28', '2021-11-28 15:20:24', '2021-11-28 15:20:24'),
 (2, 'Penjualan Obat dari Nomor Pemeriksaan 1/20211128/1', '2021-11-28', '2021-11-28 15:22:40', '2021-11-28 15:22:40'),
 (3, 'Penjualan Obat dari Nomor Pemeriksaan 2/20211128/000723', '2021-11-28', '2021-11-28 15:27:31', '2021-11-28 15:27:31'),
-(4, 'Pembelian Barang dengan Kode PO1638331746', '2021-12-01', '2021-12-01 11:10:34', '2021-12-01 11:10:34'),
-(5, 'Penjualan BMHP dari Nomor Pemeriksaan 000919/20211201/000728', '2021-12-01', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(6, 'Penjualan Obat dari Nomor Pemeriksaan 000919/20211201/000728', '2021-12-01', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(7, 'Penjualan BMHP dari Nomor Pemeriksaan 000920/20211201/000729', '2021-12-01', '2021-12-01 16:53:42', '2021-12-01 16:53:42'),
-(8, 'Penjualan Obat dari Nomor Pemeriksaan 000920/20211201/000729', '2021-12-01', '2021-12-01 16:53:42', '2021-12-01 16:53:42');
+(4, 'Pembelian Barang dengan Kode PO1638272515', '2021-11-30', '2021-11-30 11:43:09', '2021-11-30 11:43:09'),
+(5, 'Pembelian Barang dengan Kode PO1638940242', '2021-12-08', '2021-12-08 12:14:27', '2021-12-08 12:14:27'),
+(6, 'Penjualan BMHP dari Nomor Pemeriksaan 000919/20211212/000728', '2021-12-12', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(7, 'Penjualan Obat dari Nomor Pemeriksaan 000919/20211212/000728', '2021-12-12', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(8, 'Penjualan Obat dari Nomor Pemeriksaan 000919/20211212/000728', '2021-12-12', '2021-12-12 22:40:26', '2021-12-12 22:40:26'),
+(9, 'Penjualan BMHP dari Nomor Pemeriksaan 000919/20211212/000728', '2021-12-12', '2021-12-12 22:40:26', '2021-12-12 22:40:26');
 
 -- --------------------------------------------------------
 
@@ -5388,27 +5425,29 @@ INSERT INTO `tbl_trx_akuntansi_detail` (`id_trx_akun_detail`, `id_trx_akun`, `id
 (11, 3, 58, 15600, 'KREDIT', 'akun', '2021-11-28 15:27:31', '2021-11-28 15:27:31'),
 (12, 3, 39, 15600, 'KREDIT', 'akun', '2021-11-28 15:27:31', '2021-11-28 15:27:31'),
 (13, 3, 64, 0, 'DEBIT', 'akun', '2021-11-28 15:27:31', '2021-11-28 15:27:31'),
-(14, 4, 59, 160000, 'DEBIT', 'akun', '2021-12-01 11:10:34', '2021-12-01 11:10:34'),
-(15, 4, 65, 160000, 'DEBIT', 'lawan', '2021-12-01 11:10:34', '2021-12-01 11:10:34'),
-(16, 4, 20, 160000, 'KREDIT', 'lawan', '2021-12-01 11:10:34', '2021-12-01 11:10:34'),
-(17, 5, 20, 8000, 'DEBIT', 'lawan', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(18, 5, 65, 8000, 'DEBIT', 'lawan', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(19, 5, 59, 8000, 'KREDIT', 'akun', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(20, 5, 41, 8000, 'KREDIT', 'akun', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(21, 6, 20, 36400, 'DEBIT', 'lawan', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(22, 6, 65, 36400, 'DEBIT', 'lawan', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(23, 6, 58, 36400, 'KREDIT', 'akun', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(24, 6, 39, 36400, 'KREDIT', 'akun', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(25, 6, 64, 0, 'DEBIT', 'akun', '2021-12-01 16:47:42', '2021-12-01 16:47:42'),
-(26, 7, 20, 8000, 'DEBIT', 'lawan', '2021-12-01 16:53:42', '2021-12-01 16:53:42'),
-(27, 7, 65, 8000, 'DEBIT', 'lawan', '2021-12-01 16:53:42', '2021-12-01 16:53:42'),
-(28, 7, 59, 8000, 'KREDIT', 'akun', '2021-12-01 16:53:42', '2021-12-01 16:53:42'),
-(29, 7, 41, 8000, 'KREDIT', 'akun', '2021-12-01 16:53:42', '2021-12-01 16:53:42'),
-(30, 8, 20, 36400, 'DEBIT', 'lawan', '2021-12-01 16:53:42', '2021-12-01 16:53:42'),
-(31, 8, 65, 36400, 'DEBIT', 'lawan', '2021-12-01 16:53:42', '2021-12-01 16:53:42'),
-(32, 8, 58, 36400, 'KREDIT', 'akun', '2021-12-01 16:53:42', '2021-12-01 16:53:42'),
-(33, 8, 39, 36400, 'KREDIT', 'akun', '2021-12-01 16:53:42', '2021-12-01 16:53:42'),
-(34, 8, 64, 0, 'DEBIT', 'akun', '2021-12-01 16:53:42', '2021-12-01 16:53:42');
+(14, 4, 58, 24000000, 'DEBIT', 'akun', '2021-11-30 11:43:09', '2021-11-30 11:43:09'),
+(15, 4, 45, 6000000, 'KREDIT', 'akun', '2021-11-30 11:43:09', '2021-11-30 11:43:09'),
+(16, 4, 65, 18000000, 'DEBIT', 'lawan', '2021-11-30 11:43:09', '2021-11-30 11:43:09'),
+(17, 4, 109, 18000000, 'KREDIT', 'lawan', '2021-11-30 11:43:09', '2021-11-30 11:43:09'),
+(18, 5, 59, 550000, 'DEBIT', 'akun', '2021-12-08 12:14:27', '2021-12-08 12:14:27'),
+(19, 5, 65, 550000, 'DEBIT', 'lawan', '2021-12-08 12:14:27', '2021-12-08 12:14:27'),
+(20, 5, 20, 550000, 'KREDIT', 'lawan', '2021-12-08 12:14:27', '2021-12-08 12:14:27'),
+(21, 6, 20, 11700, 'DEBIT', 'lawan', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(22, 6, 65, 11700, 'DEBIT', 'lawan', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(23, 6, 59, 11700, 'KREDIT', 'akun', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(24, 6, 41, 11700, 'KREDIT', 'akun', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(25, 7, 20, 1500000, 'DEBIT', 'lawan', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(26, 7, 65, 1500000, 'DEBIT', 'lawan', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(27, 7, 58, 1500000, 'KREDIT', 'akun', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(28, 7, 39, 1500000, 'KREDIT', 'akun', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(29, 7, 64, 0, 'DEBIT', 'akun', '2021-12-12 15:45:06', '2021-12-12 15:45:06'),
+(30, 8, 20, 2000000, 'DEBIT', 'lawan', '2021-12-12 22:40:26', '2021-12-12 22:40:26'),
+(31, 8, 65, 2000000, 'DEBIT', 'lawan', '2021-12-12 22:40:26', '2021-12-12 22:40:26'),
+(32, 8, 58, 2000000, 'KREDIT', 'akun', '2021-12-12 22:40:26', '2021-12-12 22:40:26'),
+(33, 9, 20, 115300, 'DEBIT', 'lawan', '2021-12-12 22:40:26', '2021-12-12 22:40:26'),
+(34, 9, 65, 115300, 'DEBIT', 'lawan', '2021-12-12 22:40:26', '2021-12-12 22:40:26'),
+(35, 9, 59, 115300, 'KREDIT', 'akun', '2021-12-12 22:40:26', '2021-12-12 22:40:26'),
+(36, 9, 41, 115300, 'KREDIT', 'akun', '2021-12-12 22:40:26', '2021-12-12 22:40:26');
 
 -- --------------------------------------------------------
 
@@ -5813,6 +5852,12 @@ ALTER TABLE `tbl_periksa_d_alkes`
   ADD PRIMARY KEY (`id_periksa_d_alkes`);
 
 --
+-- Indexes for table `tbl_periksa_d_biaya`
+--
+ALTER TABLE `tbl_periksa_d_biaya`
+  ADD PRIMARY KEY (`id_periksa_d_biaya`);
+
+--
 -- Indexes for table `tbl_periksa_d_fisik`
 --
 ALTER TABLE `tbl_periksa_d_fisik`
@@ -5823,6 +5868,12 @@ ALTER TABLE `tbl_periksa_d_fisik`
 --
 ALTER TABLE `tbl_periksa_d_obat`
   ADD PRIMARY KEY (`id_periksa_d_obat`);
+
+--
+-- Indexes for table `tbl_periksa_d_tindakan`
+--
+ALTER TABLE `tbl_periksa_d_tindakan`
+  ADD PRIMARY KEY (`id_periksa_d_tindakan`);
 
 --
 -- Indexes for table `tbl_periksa_lab`
@@ -6088,7 +6139,7 @@ ALTER TABLE `tbl_apoteker`
 -- AUTO_INCREMENT for table `tbl_biaya`
 --
 ALTER TABLE `tbl_biaya`
-  MODIFY `id_biaya` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_biaya` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_bidang`
@@ -6130,19 +6181,19 @@ ALTER TABLE `tbl_golongan_barang`
 -- AUTO_INCREMENT for table `tbl_hak_akses`
 --
 ALTER TABLE `tbl_hak_akses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=306;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=305;
 
 --
 -- AUTO_INCREMENT for table `tbl_inventory_detail`
 --
 ALTER TABLE `tbl_inventory_detail`
-  MODIFY `id_inventory_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_inventory_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tbl_jabatan`
 --
 ALTER TABLE `tbl_jabatan`
-  MODIFY `id_jabatan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_jabatan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `tbl_jenjang_pendidikan`
@@ -6154,13 +6205,13 @@ ALTER TABLE `tbl_jenjang_pendidikan`
 -- AUTO_INCREMENT for table `tbl_kamar`
 --
 ALTER TABLE `tbl_kamar`
-  MODIFY `id_kamar` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id_kamar` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tbl_kartu_hutang`
 --
 ALTER TABLE `tbl_kartu_hutang`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_kategori_barang`
@@ -6172,19 +6223,19 @@ ALTER TABLE `tbl_kategori_barang`
 -- AUTO_INCREMENT for table `tbl_kategori_biaya`
 --
 ALTER TABLE `tbl_kategori_biaya`
-  MODIFY `id_kategori_biaya` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_kategori_biaya` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_kategori_kamar`
 --
 ALTER TABLE `tbl_kategori_kamar`
-  MODIFY `id_kategori_kamar` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_kategori_kamar` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_kategori_periksa_lab_radiologi`
 --
 ALTER TABLE `tbl_kategori_periksa_lab_radiologi`
-  MODIFY `id_kategori` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_kategori` int(3) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_kategori_tindakan`
@@ -6226,7 +6277,7 @@ ALTER TABLE `tbl_manufaktur_detail`
 -- AUTO_INCREMENT for table `tbl_master_reference`
 --
 ALTER TABLE `tbl_master_reference`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=628;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=627;
 
 --
 -- AUTO_INCREMENT for table `tbl_master_sequence`
@@ -6238,7 +6289,7 @@ ALTER TABLE `tbl_master_sequence`
 -- AUTO_INCREMENT for table `tbl_menu`
 --
 ALTER TABLE `tbl_menu`
-  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=150;
+  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
 
 --
 -- AUTO_INCREMENT for table `tbl_obat_racikan_child_jasa`
@@ -6256,31 +6307,37 @@ ALTER TABLE `tbl_obat_racikan_child_obat`
 -- AUTO_INCREMENT for table `tbl_pegawai`
 --
 ALTER TABLE `tbl_pegawai`
-  MODIFY `id_pegawai` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pegawai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tbl_pendaftaran`
 --
 ALTER TABLE `tbl_pendaftaran`
-  MODIFY `id_pendaftaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_pendaftaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tbl_periksa_diagnosa`
 --
 ALTER TABLE `tbl_periksa_diagnosa`
-  MODIFY `id_periksa_diagnosa` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_periksa_diagnosa` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_periksa_d_alkes`
 --
 ALTER TABLE `tbl_periksa_d_alkes`
-  MODIFY `id_periksa_d_alkes` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_periksa_d_alkes` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tbl_periksa_d_biaya`
+--
+ALTER TABLE `tbl_periksa_d_biaya`
+  MODIFY `id_periksa_d_biaya` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_periksa_d_fisik`
 --
 ALTER TABLE `tbl_periksa_d_fisik`
-  MODIFY `id_periksa_d_fisik` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_periksa_d_fisik` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tbl_periksa_d_obat`
@@ -6289,10 +6346,16 @@ ALTER TABLE `tbl_periksa_d_obat`
   MODIFY `id_periksa_d_obat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `tbl_periksa_d_tindakan`
+--
+ALTER TABLE `tbl_periksa_d_tindakan`
+  MODIFY `id_periksa_d_tindakan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `tbl_periksa_lab`
 --
 ALTER TABLE `tbl_periksa_lab`
-  MODIFY `id_periksa_lab` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_periksa_lab` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_periksa_lab_detail`
@@ -6304,7 +6367,7 @@ ALTER TABLE `tbl_periksa_lab_detail`
 -- AUTO_INCREMENT for table `tbl_periksa_lanjutan`
 --
 ALTER TABLE `tbl_periksa_lanjutan`
-  MODIFY `id_periksa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_periksa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_poli`
@@ -6322,7 +6385,7 @@ ALTER TABLE `tbl_potongan_gaji`
 -- AUTO_INCREMENT for table `tbl_purchase_d`
 --
 ALTER TABLE `tbl_purchase_d`
-  MODIFY `id_purchase_d` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_purchase_d` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_rapid_antigen`
@@ -6334,7 +6397,7 @@ ALTER TABLE `tbl_rapid_antigen`
 -- AUTO_INCREMENT for table `tbl_ref_gaji`
 --
 ALTER TABLE `tbl_ref_gaji`
-  MODIFY `id_ref_gaji` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_ref_gaji` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tbl_rekap_asuransi`
@@ -6376,7 +6439,7 @@ ALTER TABLE `tbl_shift`
 -- AUTO_INCREMENT for table `tbl_spesialis`
 --
 ALTER TABLE `tbl_spesialis`
-  MODIFY `id_spesialis` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_spesialis` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tbl_status_menikah`
@@ -6394,19 +6457,19 @@ ALTER TABLE `tbl_stok_adjustment_detail`
 -- AUTO_INCREMENT for table `tbl_tipe_periksa_jasa`
 --
 ALTER TABLE `tbl_tipe_periksa_jasa`
-  MODIFY `id_tipe` int(3) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_tipe` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_tipe_periksa_lab`
 --
 ALTER TABLE `tbl_tipe_periksa_lab`
-  MODIFY `id_tipe` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_tipe` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_tipe_periksa_radiologi`
 --
 ALTER TABLE `tbl_tipe_periksa_radiologi`
-  MODIFY `id_tipe` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_tipe` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_transaksi`
@@ -6418,7 +6481,7 @@ ALTER TABLE `tbl_transaksi`
 -- AUTO_INCREMENT for table `tbl_transaksi_d`
 --
 ALTER TABLE `tbl_transaksi_d`
-  MODIFY `id_transaksi_d` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_transaksi_d` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `tbl_transaksi_d_obat`
@@ -6430,13 +6493,13 @@ ALTER TABLE `tbl_transaksi_d_obat`
 -- AUTO_INCREMENT for table `tbl_trx_akuntansi`
 --
 ALTER TABLE `tbl_trx_akuntansi`
-  MODIFY `id_trx_akun` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_trx_akun` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tbl_trx_akuntansi_detail`
 --
 ALTER TABLE `tbl_trx_akuntansi_detail`
-  MODIFY `id_trx_akun_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id_trx_akun_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `tbl_user`
