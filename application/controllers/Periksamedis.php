@@ -1062,8 +1062,8 @@ class Periksamedis extends CI_Controller
             'dtm_upd' => date("Y-m-d H:i:s",  time())
         );
 
+        $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '0'], ['no_pendaftaran' => $this->no_pendaftaran]);
         if ($_POST['pemeriksaan_selanjutnya'] != '0') {
-            $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '0'], ['no_pendaftaran' => $this->no_pendaftaran]);
             $periksaLanjutan = array(
                 'no_pendaftaran' => $this->no_pendaftaran,
                 'tipe_periksa' => $_POST['pemeriksaan_selanjutnya'],
