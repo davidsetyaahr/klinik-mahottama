@@ -20,7 +20,7 @@ class Biaya extends CI_Controller
     }
     public function json() {
         header('Content-Type: application/json');
-        echo $this->Tbl_biaya_model->json();
+        echo $this->Tbl_biaya_model->getBiaya('json');
     }
     public function _rules() 
     {

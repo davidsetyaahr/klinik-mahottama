@@ -57,6 +57,16 @@
                                     <a href="" class="btn btn-info btn-sm" id="addItemAlkes"><span class="fa fa-plus"></span> Tambah Item</a>
                                 </div>
                             </div>
+                            <div class="form-group" id="row-biaya" data-row='0'>
+                                    <?php
+                                    $this->load->view('rawat-inap/loop-pilihan-biaya', ['no' => 0])
+                                    ?>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <a href="" class="btn btn-info btn-sm" id="addItemBiaya"><span class="fa fa-plus"></span> Tambah Item</a>
+                                </div>
+                            </div>
                             <div class="form-group" id="row-tindakan" data-row='0'>
                                 <?php 
                                     $this->load->view('loop/loop-pilihan-tindakan',['no' => 0])
@@ -86,6 +96,12 @@
                                     <input type="text" id="totalTindakan" name="totalTindakan" class="form-control" value='0' readonly>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                    <div class="col-sm-2">Total Biaya Lainnya</div>
+                                    <div class="col-sm-10">
+                                        <input type="text" id="totalBiaya" name="totalBiaya" class="form-control" value='0' readonly>
+                                    </div>
+                                </div>
                             <div class="form-group row">
                                 <div class="col-sm-2">Grand Total</div>
                                 <div class="col-sm-10">
@@ -123,6 +139,82 @@
 <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
 <script>
     $(document).ready(function(){
+        function getBiaya(thisParam) {
+            var biaya = thisParam.find(":selected").attr('data-biaya')
+            var getNo = thisParam.closest('.loop-biaya').attr('data-no')
+            $(".loop-biaya[data-no='" + getNo + "'] .biaya").val(biaya)
+        }
+        function subTotalBiaya(dataNo) {
+            var qty_biaya = parseInt($(".loop-biaya[data-no='" + dataNo + "'] .qty_biaya").val())
+            var biaya = parseInt($(".loop-biaya[data-no='" + dataNo + "'] .biaya").val())
+            var subtotal = isNaN(qty_biaya * biaya) ? 0 : qty_biaya * biaya
+            $(".loop-biaya[data-no='" + dataNo + "'] .total_biaya").val(subtotal)
+        }
+        function totalBiaya() {
+            var totalBiaya = 0
+            $(".total_biaya").each(function(i, v) {
+                var subTotal = parseInt(v.value)
+                totalBiaya += subTotal
+            })
+            $("#totalBiaya").val(totalBiaya)
+            grandTotal()
+        }
+
+        $(".qty_biaya").keyup(function() {
+            var dataNo = $(this).closest('.loop-biaya').attr('data-no')
+            subTotalBiaya(dataNo)
+            totalBiaya()
+        })
+
+
+        $(".getBiaya").change(function() {
+            getBiaya($(this))
+        })
+
+        $(".tipe-biaya").change(function() {
+            var dataNo = $(this).closest('.loop-biaya').attr('data-no')
+            subTotalBiaya(dataNo)
+            totalBiaya()
+        })
+
+        $("#addItemBiaya").click(function(e) {
+            e.preventDefault();
+            var dataRow = parseInt($('#row-biaya').attr('data-row'))
+            $.ajax({
+                type: 'get',
+                url: '<?= base_url() . 'periksamedis/newItemBiaya' ?>',
+                data: {
+                    no: dataRow + 1
+                },
+                success: function(data) {
+                    $('#row-biaya').append(data)
+                    $('#row-biaya').attr('data-row', dataRow + 1)
+                    $(".getBiaya").change(function() {
+                        getBiaya($(this))
+                    })
+                    $(".qty_biaya").keyup(function() {
+                        var dataNo = $(this).closest('.loop-biaya').attr('data-no')
+                        subTotalBiaya(dataNo)
+                        totalBiaya()
+                    })
+                    $(".tipe-biaya").change(function() {
+                        var dataNo = $(this).closest('.loop-biaya').attr('data-no')
+                        subTotalBiaya(dataNo)
+                        totalBiaya()
+                    })
+                    $(".remove-biaya").click(function(e) {
+                        e.preventDefault();
+                        var dataNo = $(this).attr('data-no')
+                        var dataRow = parseInt($('#row-biaya').attr('data-row'))
+                        $('.loop-biaya[data-no="' + dataNo + '"]').remove()
+                        $('#row-biaya').attr('data-row', dataRow - 1)
+                    })
+                    $(".select2").select2()
+                }
+            })
+        })
+
+
         function selectAlkes(thisAttr){
             var stok = thisAttr.find(':selected').data('stok')
             var harga = thisAttr.find(':selected').data('harga')
@@ -201,8 +293,9 @@
             var totalAlkes = parseInt($("#totalAlkes").val())
             var totalTindakan = parseInt($("#totalTindakan").val())
             var totalLab = parseInt($("#totalLab").val())
+            var totalBiaya = parseInt($("#totalBiaya").val())
 
-            var grandTotal = totalObat + totalAlkes + totalTindakan + totalLab
+            var grandTotal = totalObat + totalAlkes + totalTindakan + totalLab + totalBiaya
             $("#grandTotal").val(grandTotal)
         }
 

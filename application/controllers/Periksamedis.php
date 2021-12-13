@@ -36,6 +36,8 @@ class Periksamedis extends CI_Controller
         $this->load->model('Tbl_diagnosa_icd10_model');
         $this->load->model('Tbl_periksa_diagnosa_model');
         $this->load->model('Tbl_imunisasi_model');
+        $this->load->model('Tbl_biaya_model');
+
         date_default_timezone_set('Asia/Jakarta');
 
 
@@ -896,6 +898,7 @@ class Periksamedis extends CI_Controller
         $this->data['obat'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 1);
         $this->data['tindakan'] = $this->db->get('tbl_tindakan')->result();
         $this->data['alkes'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 2);
+        $this->data['biaya'] = $this->Tbl_biaya_model->getBiaya();        
         $this->template->load('template', 'periksa-lab/periksa-lab', $this->data);
     }
     public function newItemLab()
@@ -999,6 +1002,19 @@ class Periksamedis extends CI_Controller
             $this->db->insert('tbl_periksa_d_tindakan',$periksa_d_tindakan);
         }
 
+        //d_periksa_biaya
+        foreach ($_POST['id_biaya'] as $key => $value) {
+            $periksa_d_biaya = array(
+                'no_pendaftaran' => $this->no_pendaftaran,
+                'no_periksa' => $data_transaksi['no_transaksi'],
+                'id_biaya' => $value,
+                'jumlah' => $_POST['qty_biaya'][$key],
+                'biaya' => $_POST['biaya'][$key],
+                'tipe_periksa' => '4',
+            );
+            $this->db->insert('tbl_periksa_d_biaya',$periksa_d_biaya);
+        }
+
         $data_transaksi_d[] = array(
             'no_transaksi' => $data_transaksi['no_transaksi'],
             'deskripsi' => 'Biaya Periksa Lab',
@@ -1024,6 +1040,13 @@ class Periksamedis extends CI_Controller
             'no_transaksi' => $data_transaksi['no_transaksi'],
             'deskripsi' => 'Biaya Tindakan',
             'amount_transaksi' => $_POST['totalTindakan'],
+            'dc' => 'd'
+        );
+
+        $data_transaksi_d[] = array(
+            'no_transaksi' => $data_transaksi['no_transaksi'],
+            'deskripsi' => 'Biaya Lainnya',
+            'amount_transaksi' => $_POST['totalBiaya'],
             'dc' => 'd'
         );
 
@@ -1169,7 +1192,7 @@ class Periksamedis extends CI_Controller
 
     public function newItemBiaya()
     {
-        $this->data['biaya'] = $this->db->get('tbl_biaya')->result();
+        $this->data['biaya'] = $this->Tbl_biaya_model->getBiaya();
         $this->data['no'] = $_GET['no'];
         $this->load->view('rawat-inap/loop-pilihan-biaya', $this->data);
     }
