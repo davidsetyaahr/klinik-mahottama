@@ -64,7 +64,6 @@ class Jenis_operasi extends CI_Controller
                 'nama_jenis_operasi' => set_value('nama_jenis_operasi',$row->nama_jenis_operasi),
             );
             $this->template->load('template','master_data/jenis_operasi/tbl_jenis_operasi_form', $data);
-            var_dump($data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('jenis_operasi'));
@@ -79,14 +78,11 @@ class Jenis_operasi extends CI_Controller
             $this->edit($this->input->post('id_jenis_operasi', TRUE));
         } else {
             $data = array(
-                'id_jenis_operasi' => $this->input->post('id_jenis_operasi', TRUE),
                 'nama_jenis_operasi' => $this->input->post('nama_jenis_operasi', TRUE),
             );
-            // var_dump($data);
-            var_dump($_POST);
             $this->Tbl_jenis_operasi_model->update($this->input->post('id_jenis_operasi', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
-            // redirect(site_url('jenis_operasi'));
+            redirect(site_url('jenis_operasi'));
         }
     }
 

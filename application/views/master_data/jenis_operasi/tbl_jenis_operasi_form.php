@@ -6,7 +6,7 @@
                 <h3 class="box-title">INPUT JENIS OPERASI</h3>
             </div>
             <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="id_jenis_operasi " value="<?= $id_jenis_operasi  ?>">
+            <input type="hidden" name="id_jenis_operasi" value="<?= $id_jenis_operasi  ?>">
                 <table class='table table-bordered'>       
                         <tr><td width='200'>Jenis Operasi <?php echo form_error('nama_jenis_operasi') ?></td><td><input type="text" class="form-control" name="nama_jenis_operasi" id="nama_jenis_operasi" placeholder="Jenis Operasi" value="<?php echo $nama_jenis_operasi; ?>" /></td></tr>
                         
