@@ -27,6 +27,19 @@
                                         <textarea name="alamat" class="form-control" rows="6" readonly><?= isset($alamat) ? $alamat : '' ?></textarea>
                                     </div>
                                 </div>
+                                <div class="form-group row">
+                                    <div class="col-md-2">Pilih Jenis Operasi</div>
+                                    <div class="col-md-10">
+                                        <select name="periksa_lab[]" class="form-control select2 periksaLab" style="width:100%">
+                                            <option value="">---Pilih Jenis Operasi---</option>
+                                            <?php 
+                                                foreach ($jenis as $key => $value) {
+                                                    echo "<option value='".$value->id_jenis_operasi."'>".$value->nama_jenis_operasi."</option>";
+                                                }
+                                                ?>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="form-group" id="row-tindakan" data-row='0'>
                                     <?php
                                     $this->load->view('loop/loop-pilihan-tindakan', ['no' => 0])

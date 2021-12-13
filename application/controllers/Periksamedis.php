@@ -1361,6 +1361,7 @@ class Periksamedis extends CI_Controller
 
         $this->data['no_periksa'] = $data_pendaftaran->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran->no_rekam_medis;
         $this->data['tindakan'] = $this->db->get('tbl_tindakan')->result();
+        $this->data['jenis'] = $this->db->get('tbl_jenis_operasi')->result();
         $this->data['obat'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 1);
         $this->data['biaya'] = $this->Tbl_biaya_model->getBiaya();
         $this->data['alkes'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 2);
@@ -1368,7 +1369,7 @@ class Periksamedis extends CI_Controller
     }
 
     public function save_operasi(){
-        
+
     }
 
     public function rawat_inap()
