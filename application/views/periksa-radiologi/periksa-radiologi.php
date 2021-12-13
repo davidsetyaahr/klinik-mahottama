@@ -57,6 +57,11 @@
                                     <a href="" class="btn btn-info btn-sm" id="addItemAlkes"><span class="fa fa-plus"></span> Tambah Item</a>
                                 </div>
                             </div>
+                            <div class="form-group" id="row-biaya" data-row='0'>
+                                    <?php
+                                    $this->load->view('rawat-inap/loop-pilihan-biaya', ['no' => 0])
+                                    ?>
+                            </div>
                             <div class="form-group" id="row-tindakan" data-row='0'>
                                 <?php 
                                     $this->load->view('loop/loop-pilihan-tindakan',['no' => 0])
@@ -65,31 +70,37 @@
                             <div class="form-group row">
                                 <div class="col-sm-2">Total Biaya Periksa Radiologi</div>
                                 <div class="col-sm-10">
-                                    <input type="text" id="totalRadiologi" class="form-control" value='0' readonly>
+                                    <input type="text" name="totalRadiologi" id="totalRadiologi" class="form-control" value='0' readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-2">Total Biaya Obat</div>
                                 <div class="col-sm-10">
-                                    <input type="text" id="totalObat" class="form-control" value='0' readonly>
+                                    <input type="text" name="totalObat" id="totalObat" class="form-control" value='0' readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-2">Total Biaya BMHP</div>
                                 <div class="col-sm-10">
-                                    <input type="text" id="totalAlkes" class="form-control" value='0' readonly>
+                                    <input type="text" name="totalAlkes" id="totalAlkes" class="form-control" value='0' readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-2">Total Biaya Tindakan</div>
                                 <div class="col-sm-10">
-                                    <input type="text" id="totalTindakan" class="form-control" value='0' readonly>
+                                    <input type="text" name="totalTindakan" id="totalTindakan" class="form-control" value='0' readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-2">Total Biaya Lainnya</div>
+                                <div class="col-sm-10">
+                                    <input type="text" name="totalBiaya" id="totalBiaya" class="form-control" value='0' readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-2">Grand Total</div>
                                 <div class="col-sm-10">
-                                    <input type="text" id="grandTotal" class="form-control" value='0' readonly>
+                                    <input type="text" name="grandTotal" id="grandTotal" class="form-control" value='0' readonly>
                                 </div>
                             </div>
                             <hr>
@@ -98,9 +109,8 @@
 							<div class="col-sm-10">
                                 <select name="pemeriksaan_selanjutnya" id="" style="width:100%" class="select2 form-control">
                                         <option value="0">Tidak Ada</option>
-                                        <option value="1">Rawat Inap</option>
-                                        <option value="2">Laboratorium</option>
-                                        <option value="3">Radiologi</option>
+                                        <option value="2">Rawat Inap</option>
+                                        <option value="4">Laboratorium</option>
                                 </select>
 							</div>
 						</div>
@@ -124,28 +134,6 @@
 <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
 <script>
     $(document).ready(function(){
-        function selectAlkes(thisAttr){
-            var stok = thisAttr.find(':selected').data('stok')
-            var harga = thisAttr.find(':selected').data('harga')
-            var dataId = thisAttr.closest('.loop-alkes').attr('data-no')
-            $(".loop-alkes[data-no='"+dataId+"'] .stokAlkes option").remove();
-            var option = "";
-            if(stok==0){
-                option = "<option value=''>Habis</option>";
-            }
-            else{
-                for (let s = 1; s <= stok; s++) {
-                    option+="<option>"+s+"</option>";
-                }
-            }
-            $(".loop-alkes[data-no='"+dataId+"'] .stokAlkes").append(option);
-            $(".loop-alkes[data-no='"+dataId+"'] .harga").val(harga)
-        }
-
-        $(".selectAlkes").change(function(){
-            selectAlkes($(this))            
-        })
-
         function getHargaRadiologi(thisAttr){
             var getHarga = thisAttr.find(':selected').data('harga')
             var dataId = thisAttr.closest('.loop-radiologi').attr('data-no')
@@ -154,62 +142,6 @@
         $(".periksaRadiologi").change(function(){
             getHargaRadiologi($(this))
             totalPeriksaRadiologi()
-        })
-
-        function selectObat(thisAttr){
-            var stok = thisAttr.find(':selected').data('stok')
-            var harga = thisAttr.find(':selected').data('harga')
-            var dataId = thisAttr.closest('.loop-obat').attr('data-no')
-            $(".loop-obat[data-no='"+dataId+"'] .stokObat option").remove();
-            var option = "";
-            if(stok==0){
-                option = "<option value=''>Habis</option>";
-            }
-            else{
-                for (let s = 1; s <= stok; s++) {
-                    option+="<option>"+s+"</option>";
-                }
-            }
-            $(".loop-obat[data-no='"+dataId+"'] .stokObat").append(option);
-            $(".loop-obat[data-no='"+dataId+"'] .harga").val(harga);
-        }
-
-        $(".selectObat").change(function(){
-            selectObat($(this))            
-        })
-
-        function subTotalObat(dataNo){
-            var qty = parseInt($(".loop-obat[data-no='"+dataNo+"'] .qty").val())
-            var harga = parseInt($(".loop-obat[data-no='"+dataNo+"'] .harga").val())
-            var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
-            $(".loop-obat[data-no='"+dataNo+"'] .total").val(subtotal)
-        }
-        $(".loop-obat .qty").change(function(){
-            var dataNo = $(this).closest('.loop-obat').attr('data-no')
-            subTotalObat(dataNo)    
-            totalObat()        
-        })
-        $(".loop-obat .obat").change(function(){
-            var dataNo = $(this).closest('.loop-obat').attr('data-no')
-            subTotalObat(dataNo)   
-            totalObat()         
-        })
-
-        function subTotalAlkes(dataNo){
-            var qty = parseInt($(".loop-alkes[data-no='"+dataNo+"'] .qty").val())
-            var harga = parseInt($(".loop-alkes[data-no='"+dataNo+"'] .harga").val())
-            var subtotal = isNaN(qty*harga) ? 0 : qty*harga 
-            $(".loop-alkes[data-no='"+dataNo+"'] .total").val(subtotal)
-        }
-        $(".loop-alkes .qty").change(function(){
-            var dataNo = $(this).closest('.loop-alkes').attr('data-no')
-            subTotalAlkes(dataNo)     
-            totalAlkes()       
-        })
-        $(".alkes").change(function(){
-            var dataNo = $(this).closest('.loop-alkes').attr('data-no')
-            subTotalAlkes(dataNo)    
-            totalAlkes()          
         })
 
         $("#addItemRadiologi").click(function(e){
@@ -238,100 +170,6 @@
             })
         })
 
-        $("#addItemObat").click(function(e){
-            e.preventDefault();
-            var dataRow = parseInt($('#row-obat').attr('data-row'))
-            $.ajax({
-                type : 'get',
-                url : '<?= base_url().'periksamedis/newItemLoopObat' ?>',
-                data : {no : dataRow+1},
-                success : function(data){
-                    $('#row-obat').append(data)
-                    $('#row-obat').attr('data-row',dataRow + 1)
-                    $(".selectObat").change(function(){
-                        selectObat($(this))
-                    })
-                    $(".loop-obat .qty").change(function(){
-                        var dataNo = $(this).closest('.loop-obat').attr('data-no')
-                        subTotalObat(dataNo)    
-                        totalObat()        
-                    })
-                    $(".loop-obat .obat").change(function(){
-                        var dataNo = $(this).closest('.loop-obat').attr('data-no')
-                        subTotalObat(dataNo)   
-                        totalObat()         
-                    })
-                    $(".remove-obat").click(function(e){
-                        e.preventDefault();
-                        var dataNo = $(this).attr('data-no')
-                        var dataRow = parseInt($('#row-obat').attr('data-row'))
-                        $('.loop-obat[data-no="'+dataNo+'"]').remove()
-                        $('#row-obat').attr('data-row',dataRow-1)
-                    })
-                    $(".select2").select2()
-                }
-            })
-        })
-
-        $("#addItemAlkes").click(function(e){
-            e.preventDefault();
-            var dataRow = parseInt($('#row-alkes').attr('data-row'))
-            $.ajax({
-                type : 'get',
-                url : '<?= base_url().'periksamedis/newItemLoopAlkes' ?>',
-                data : {no : dataRow+1},
-                success : function(data){
-                    $('#row-alkes').append(data)
-                    $('#row-alkes').attr('data-row',dataRow + 1)
-                    $(".selectAlkes").change(function(){
-                        selectAlkes($(this))
-                    })
-                    $(".loop-alkes .qty").change(function(){
-                        var dataNo = $(this).closest('.loop-alkes').attr('data-no')
-                        subTotalAlkes(dataNo) 
-                        totalAlkes()             
-                    })
-                    $(".alkes").change(function(){
-                        var dataNo = $(this).closest('.loop-alkes').attr('data-no')
-                        subTotalAlkes(dataNo)  
-                        totalAlkes()            
-                    })
-                    $(".remove-alkes").click(function(e){
-                        e.preventDefault();
-                        var dataNo = $(this).attr('data-no')
-                        var dataRow = parseInt($('#row-alkes').attr('data-row'))
-                        $('.loop-alkes[data-no="'+dataNo+'"]').remove()
-                        $('#row-alkes').attr('data-row',dataRow-1)
-                    })
-                    $(".select2").select2()
-                }
-            })
-        })
-        
-        $("#addItemTindakan").click(function(e){
-            e.preventDefault();
-            var dataRow = parseInt($('#row-tindakan').attr('data-row'))
-            $.ajax({
-                type : 'get',
-                url : '<?= base_url().'periksamedis/newItemLoopTindakan' ?>',
-                data : {no : dataRow+1},
-                success : function(data){
-                    $('#row-tindakan').append(data)
-                    $('#row-tindakan').attr('data-row',dataRow + 1)
-
-
-                    $(".remove-tindakan").click(function(e){
-                        e.preventDefault();
-                        var dataNo = $(this).attr('data-no')
-                        var dataRow = parseInt($('#row-tindakan').attr('data-row'))
-                        $('.loop-tindakan[data-no="'+dataNo+'"]').remove()
-                        $('#row-tindakan').attr('data-row',dataRow-1)
-                    })
-                    $(".select2").select2()
-                }
-            })
-        })
-
         function totalPeriksaRadiologi(){
             var totalRadiologi = 0
             $(".loop-radiologi .total").each(function(i,v){
@@ -339,39 +177,6 @@
                 totalRadiologi+=subtotal
             })
             $("#totalRadiologi").val(totalRadiologi)
-            grandTotal()
-        }
-
-        function totalObat() {
-            var totalObat = 0
-            $(".loop-obat .total").each(function(i,v){
-                var subTotal = parseInt(v.value)
-                totalObat+=subTotal
-            })
-            $("#totalObat").val(totalObat)
-            grandTotal()
-        }
-
-        $(".tindakan").change(function(){
-            var totalTindakan = 0
-            var valTindakan = $(this).val()
-            if(valTindakan!=null){
-                $.each(valTindakan, function(i,v){
-                    var harga = parseInt($(".tindakan option[value='"+v+"']").attr('data-harga'))
-                    totalTindakan+=harga
-                })
-            }
-            $("#totalTindakan").val(totalTindakan)
-            grandTotal()
-        })
-
-        function totalAlkes(){
-            var totalAlkes = 0
-            $(".loop-alkes .total").each(function(i,v){
-                var subtotal = parseInt(v.value)
-                totalAlkes+=subtotal
-            })
-            $("#totalAlkes").val(totalAlkes)
             grandTotal()
         }
 
@@ -384,5 +189,8 @@
             var grandTotal = totalObat + totalAlkes + totalTindakan + totalRadiologi
             $("#grandTotal").val(grandTotal)
         }
+        <?php 
+            $this->load->view('template/periksaJS');
+        ?>
     })
 </script>
