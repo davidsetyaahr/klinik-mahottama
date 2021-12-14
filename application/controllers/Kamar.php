@@ -1,4 +1,4 @@
-    <?php
+<?php
 
     if (!defined('BASEPATH'))
         exit('No direct script access allowed');
@@ -112,5 +112,11 @@
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('kamar'));
         }
+    }
+    public function getKamarByKategori()
+    {
+        $status=isset($_GET['status']) ? $_GET['status'] : 0;
+        $kategori = $_GET['id_kategori'];
+        echo json_encode($this->Tbl_kamar_model->getKamarByKategori($status,$kategori));
     }
 }

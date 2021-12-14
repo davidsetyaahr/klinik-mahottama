@@ -108,7 +108,8 @@
 							<div class="col-sm-2">Pemeriksaan Selanjutnya</div>
 							<div class="col-sm-10">
                                 <select name="pemeriksaan_selanjutnya" id="" style="width:100%" class="select2 form-control">
-                                        <option value="0">Tidak Ada</option>
+                                        <option value="0">Pemeriksaan Selesai</option>
+                                        <option value="5">Tetap Di Radiologi</option>
                                         <option value="2">Rawat Inap</option>
                                         <option value="4">Laboratorium</option>
                                 </select>

@@ -53,5 +53,8 @@ class Tbl_kamar_model extends CI_Model
         return $this->db->get()->result();
         // return $this->db->result();
     }
-
+    function getKamarByKategori($status,$kategori){
+        $this->db->select('id_kamar,no_kamar');
+        return $this->db->get_where('tbl_kamar',['id_kategori_kamar' => "$kategori",'status' => "$status"])->result();
+    }
 }

@@ -179,6 +179,7 @@
                         var dataRow = parseInt($('#row-biaya').attr('data-row'))
                         $('.loop-biaya[data-no="' + dataNo + '"]').remove()
                         $('#row-biaya').attr('data-row', dataRow - 1)
+                        totalBiaya()
                     })
                     $(".select2").select2()
                 }
