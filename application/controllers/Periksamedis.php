@@ -1083,13 +1083,24 @@ class Periksamedis extends CI_Controller
 
         $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '0'], ['no_pendaftaran' => $this->no_pendaftaran]);
         if ($_POST['pemeriksaan_selanjutnya'] != '0') {
-            $periksaLanjutan = array(
-                'no_pendaftaran' => $this->no_pendaftaran,
-                'tipe_periksa' => $_POST['pemeriksaan_selanjutnya'],
-                'tanggal' => date('Y-m-d H:i:s'),
-                'is_periksa' => '1',
-            );
-            $this->db->insert('tbl_periksa_lanjutan', $periksaLanjutan);
+            if($_POST['pemeriksaan_selanjutnya']=='4'){ // jika tetap di laboratorium
+                $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '1'], ['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $_POST['pemeriksaan_selanjutnya']]);
+            }
+            else{
+                $cek = $this->db->get_where('tbl_periksa_lanjutan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $_POST['pemeriksaan_selanjutnya']])->num_rows();
+                if($cek==1){
+                    $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '1'], ['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $_POST['pemeriksaan_selanjutnya']]);
+                }
+                else{
+                    $periksaLanjutan = array(
+                        'no_pendaftaran' => $this->no_pendaftaran,
+                        'tipe_periksa' => $_POST['pemeriksaan_selanjutnya'],
+                        'tanggal' => date('Y-m-d H:i:s'),
+                        'is_periksa' => '1',
+                    );
+                    $this->db->insert('tbl_periksa_lanjutan', $periksaLanjutan);
+                }
+            }
         } else {
             $updatePendaftaran['is_closed'] = '1';
         }
@@ -1767,13 +1778,24 @@ class Periksamedis extends CI_Controller
 
         $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '0'], ['no_pendaftaran' => $this->no_pendaftaran]);
         if ($_POST['pemeriksaan_selanjutnya'] != '0') {
-            $periksaLanjutan = array(
-                'no_pendaftaran' => $this->no_pendaftaran,
-                'tipe_periksa' => $_POST['pemeriksaan_selanjutnya'],
-                'tanggal' => date('Y-m-d H:i:s'),
-                'is_periksa' => '1',
-            );
-            $this->db->insert('tbl_periksa_lanjutan', $periksaLanjutan);
+            if($_POST['pemeriksaan_selanjutnya']=='2'){ // jika tetap di rawat inap
+                $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '1'], ['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $_POST['pemeriksaan_selanjutnya']]);
+            }
+            else{
+                $cek = $this->db->get_where('tbl_periksa_lanjutan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $_POST['pemeriksaan_selanjutnya']])->num_rows();
+                if($cek==1){
+                    $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '1'], ['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $_POST['pemeriksaan_selanjutnya']]);
+                }
+                else{
+                    $periksaLanjutan = array(
+                        'no_pendaftaran' => $this->no_pendaftaran,
+                        'tipe_periksa' => $_POST['pemeriksaan_selanjutnya'],
+                        'tanggal' => date('Y-m-d H:i:s'),
+                        'is_periksa' => '1',
+                    );
+                    $this->db->insert('tbl_periksa_lanjutan', $periksaLanjutan);
+                }
+            }
         } else {
             $updatePendaftaran['is_closed'] = '1';
         }
