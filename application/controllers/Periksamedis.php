@@ -925,17 +925,25 @@ class Periksamedis extends CI_Controller
         $data_transaksi_d = array();
 
         //insert periksa lab
+        $periksaLab = array(
+            'no_pendaftaran' => $this->no_pendaftaran,
+            'no_periksa' => $data_transaksi['no_transaksi'],
+        );
+        $this->db->insert('tbl_periksa_lab', $periksaLab);
         foreach ($this->input->post('periksa_lab') as $key => $value) {
             $this->db->select('item,harga');
             $lab = $this->db->get_where('tbl_tipe_periksa_lab', ['id_tipe' => $value])->row();
-            $periksaLab = array(
-                'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $data_transaksi['no_transaksi'],
+
+            $this->db->select('max(id_periksa_lab) lastId');
+            $lastId = $this->db->get('tbl_periksa_lab')->row();
+
+            $periksaLabDetail = array(
+                'id_periksa_lab' => $lastId->lastId,
                 'id_tipe' => $value,
                 'biaya' => $lab->harga,
                 'hasil' => $_POST['hasil'][$key],
             );
-            $this->db->insert('tbl_periksa_lab', $periksaLab);
+            $this->db->insert('tbl_periksa_lab_detail', $periksaLab);
         }
 
         // input inventory barang
@@ -1370,6 +1378,12 @@ class Periksamedis extends CI_Controller
     public function save_operasi(){
         
     }
+    public function getKamarByKategori()
+    {
+        $status=isset($_GET['status']) ? $_GET['status'] : 0;
+        $kategori = $_GET['id_kategori'];
+        echo json_encode($this->Tbl_kamar_model->getKamarByKategori($status,$kategori));
+    }
 
     public function rawat_inap()
     {
@@ -1390,6 +1404,23 @@ class Periksamedis extends CI_Controller
         $this->data['alkes'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 2);
         $this->data['tindakan'] = $this->db->get('tbl_tindakan')->result();
         $this->template->load('template', 'rawat-inap/rawat-inap', $this->data);
+    }
+    public function save_rawat_inap()
+    {
+        $data_pendaftaran = $this->Pendaftaran_model->get_by_id($this->no_pendaftaran);
+
+        $data_transaksi = array(
+            'kode_transaksi' => 'PRKSLAB',
+            'id_klinik' => $this->id_klinik,
+            'no_transaksi' => $this->input->post('no_periksa'),
+            'tgl_transaksi' => date('Y-m-d', time()),
+            'status_transaksi' => 0,
+        );
+
+        $data_transaksi_d = array();
+
+
+
     }
 
     public function newItemRawatInap()
