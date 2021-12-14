@@ -1156,17 +1156,26 @@ class Periksamedis extends CI_Controller
         $data_transaksi_d = array();
 
         // insert periksa radiologi
+        $periksaRadiologi = array(
+            'no_pendaftaran' => $this->no_pendaftaran,
+            'no_periksa' => $data_transaksi['no_transaksi'],
+        );
+        $this->db->insert('tbl_periksa_radiologi', $periksaRadiologi);
+        
+        // insert periksa radiologi detail
         foreach ($this->input->post('periksa_radiologi') as $key => $value) {
             $this->db->select('item,harga');
             $radiologi = $this->db->get_where('tbl_tipe_periksa_radiologi', ['id_tipe' => $value])->row();
+
+            $this->db->select('max(id_periksa_radiologi) lastId');
+            $lastId = $this->db->get('tbl_periksa_radiologi')->row();
             $periksaRadiologi = array(
-                'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $data_transaksi['no_transaksi'],
+                'id_periksa_radiologi' => $lastId->lastId,
                 'id_tipe' => $value,
                 'biaya' => $radiologi->harga,
                 'hasil' => $_POST['hasil'][$key],
             );
-            $this->db->insert('tbl_periksa_radiologi', $periksaRadiologi);
+            $this->db->insert('tbl_periksa_radiologi_detail', $periksaRadiologi);
         }
 
         // insert inventory barang
