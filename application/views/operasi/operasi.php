@@ -8,7 +8,7 @@
                     </div>
                     <div class="box-body">
                         <div class="row col-md-12">
-                            <form action="<?= base_url() . "periksamedis/save_periksa_radiologi" ?>" method="post">
+                            <form action="<?= base_url() . "periksamedis/save_periksa_operasi" ?>" method="post">
                                 <div class="form-group row">
                                     <div class="col-md-2">No Periksa </div>
                                     <div class="col-md-10">
@@ -25,6 +25,19 @@
                                     <div class="col-md-2">Alamat</div>
                                     <div class="col-md-10">
                                         <textarea name="alamat" class="form-control" rows="6" readonly><?= isset($alamat) ? $alamat : '' ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-2">Pilih Jenis Operasi</div>
+                                    <div class="col-md-10">
+                                        <select name="periksa_operasi[]" class="form-control select2 periksaLab" style="width:100%">
+                                            <option value="">---Pilih Jenis Operasi---</option>
+                                            <?php 
+                                                foreach ($jenis as $key => $value) {
+                                                    echo "<option value='".$value->id_jenis_operasi."'>".$value->nama_jenis_operasi."</option>";
+                                                }
+                                                ?>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group" id="row-tindakan" data-row='0'>
@@ -65,31 +78,31 @@
                                 <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya Tindakan</div>
                                     <div class="col-sm-10">
-                                        <input type="text" id="totalTindakan" class="form-control" value='0' readonly>
+                                        <input type="text" name="totalTindakan" id="totalTindakan" class="form-control" value='0' readonly>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya</div>
                                     <div class="col-sm-10">
-                                        <input type="text" id="totalBiaya" class="form-control" value='0' readonly>
+                                        <input type="text" name="totalBiaya" id="totalBiaya" class="form-control" value='0' readonly>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya Obat</div>
                                     <div class="col-sm-10">
-                                        <input type="text" id="totalObat" class="form-control" value='0' readonly>
+                                        <input type="text" name="totalObat" id="totalObat" class="form-control" value='0' readonly>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya BMHP</div>
                                     <div class="col-sm-10">
-                                        <input type="text" id="totalAlkes" class="form-control" value='0' readonly>
+                                        <input type="text" name="totalAlkes" id="totalAlkes" class="form-control" value='0' readonly>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-2">Grand Total</div>
                                     <div class="col-sm-10">
-                                        <input type="text" id="grandTotal" class="form-control" value='0' readonly>
+                                        <input type="text" name="grandTotal" id="grandTotal" class="form-control" value='0' readonly>
                                     </div>
                                 </div>
                                 <hr>
