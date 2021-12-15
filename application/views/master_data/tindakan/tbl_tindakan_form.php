@@ -16,7 +16,8 @@
                                 <option value="0">Pilih kategori</option>
                                 <?php 
                                     foreach ($item as $key => $value) {
-                                        echo "<option  value='".$value->id_kategori."'>".$value->item."</option>";
+                                        $t = $value->id_kategori == $id_kategori ? 'selected' : '';
+                                        echo "<option  value='".$value->id_kategori."' $t>".$value->item."</option>";
                                     }
                                 ?>
                             </select>

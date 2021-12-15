@@ -65,7 +65,7 @@ class Poli extends CI_Controller
             $data = array(
                 'button' => 'Create',
                 'action' => site_url('poli/create_action'),
-	            'item' => set_value('item'),
+                'item' => set_value('item',$row->item),
             );
             $this->template->load('template','master_data/poli/tbl_poli_form', $data);
         } else {

@@ -21,7 +21,8 @@
                                     <option value="0">---Pilih Kategori Pemeriksaan Radiologi---</option>
                                     <?php
                                         foreach ($kategori as $key => $value) {
-                                            echo "<option value='".$value->id_kategori."'>".$value->nama_kategori."</option>";
+                                            $r = $value->id_kategori == $id_kategori ? 'selected' : '';
+                                            echo "<option value='".$value->id_kategori."' $r>".$value->nama_kategori."</option>";
                                         }
                                     ?>
                                 </select>

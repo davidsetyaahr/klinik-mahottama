@@ -26,7 +26,8 @@
                                     <option value="0">---Pilih Kategori Pemeriksaan Lab---</option>
                                     <?php 
                                             foreach ($kategori as $key => $value) {
-                                                echo "<option value='".$value->id_kategori."'>".$value->nama_kategori."</option>";
+                                                $l = $value->id_kategori == $id_kategori ? 'selected' : '';
+                                                echo "<option value='".$value->id_kategori."' $l>".$value->nama_kategori."</option>";
                                             }
                                             ?>
                                 </select>

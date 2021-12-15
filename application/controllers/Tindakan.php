@@ -77,6 +77,7 @@ class Tindakan extends CI_Controller
                 'tindakan' => set_value('tindakan',$row->tindakan),
                 'biaya' => set_value('biaya',$row->biaya),
                 'id_kategori' => set_value('kategori',$row->id_kategori),
+                'item' => $this->Tbl_tipe_kategori_tindakan_model->get_all()
             );
             $this->template->load('template','master_data/tindakan/tbl_tindakan_form', $data);
         } else {
