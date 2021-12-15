@@ -53,30 +53,29 @@ class Periksamedis extends CI_Controller
 
     public function index()
     {
-        redirect(site_url('periksamedis/antrian'));
-        // if ($this->no_pendaftaran == null) {
-        //     $this->session->set_flashdata('message', 'Tidak ada pemeriksaan, silahkan pilih di Daftar Antrian');
-        //     $this->session->set_flashdata('message_type', 'danger');
-        //     redirect(site_url('periksamedis/antrian'));
-        // }
+        if ($this->no_pendaftaran == null) {
+            $this->session->set_flashdata('message', 'Tidak ada pemeriksaan, silahkan pilih di Daftar Antrian');
+            $this->session->set_flashdata('message_type', 'danger');
+            redirect(site_url('periksamedis/antrian'));
+        }
 
-        // $periksaLanjutan = $this->db->get_where('tbl_periksa_lanjutan', ['no_pendaftaran' => $this->no_pendaftaran,'is_periksa' => '1'])->row();
-        // if ($periksaLanjutan->tipe_periksa == '1') {
-        //     //poli
-        //     redirect(base_url() . "periksamedis/poli");
-        // } else if ($periksaLanjutan->tipe_periksa == '2') {
-        //     //rawat inap
-        //     redirect(base_url() . "periksamedis/rawat_inap");
-        // } else if ($periksaLanjutan->tipe_periksa == '3') {
-        //     //operasi
-        //     redirect(base_url() . "periksamedis/operasi");
-        // } else if ($periksaLanjutan->tipe_periksa == '4') {
-        //     //lab
-        //     redirect(site_url('periksamedis/periksa_lab/'));
-        // } else if ($periksaLanjutan->tipe_periksa == '5') {
-        //     //radiologi
-        //     redirect(site_url('periksamedis/periksa_radiologi/'));
-        // }
+        $periksaLanjutan = $this->db->get_where('tbl_periksa_lanjutan', ['no_pendaftaran' => $this->no_pendaftaran,'is_periksa' => '1'])->row();
+        if ($periksaLanjutan->tipe_periksa == '1') {
+            //poli
+            redirect(base_url() . "periksamedis/poli");
+        } else if ($periksaLanjutan->tipe_periksa == '2') {
+            //rawat inap
+            redirect(base_url() . "periksamedis/rawat_inap");
+        } else if ($periksaLanjutan->tipe_periksa == '3') {
+            //operasi
+            redirect(base_url() . "periksamedis/operasi");
+        } else if ($periksaLanjutan->tipe_periksa == '4') {
+            //lab
+            redirect(site_url('periksamedis/periksa_lab/'));
+        } else if ($periksaLanjutan->tipe_periksa == '5') {
+            //radiologi
+            redirect(site_url('periksamedis/periksa_radiologi/'));
+        }
     }
 
     function poli()
@@ -1620,6 +1619,31 @@ class Periksamedis extends CI_Controller
         if (isset($data_pasien)) {
             $this->data['nama_lengkap'] = $data_pasien->nama_lengkap;
             $this->data['alamat'] = $data_pasien->alamat . ' ' . $data_pasien->kabupaten . ' ' . 'RT ' . $data_pasien->rt . ' ' . 'RW ' . $data_pasien->rw;
+        }
+
+        $cekRawatInap = $this->db->get_where('tbl_periksa_rawat_inap',['no_pendaftaran' => $this->no_pendaftaran])->num_rows();
+        if($cekRawatInap==1){
+            $this->data['getKamar'] = $this->Periksa_model->kamarRawatInap($this->no_pendaftaran);
+            
+            $this->db->select('id_biaya,jumlah,biaya');
+            $this->data['getBiaya'] = $this->db->get_where('tbl_periksa_d_biaya',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2'])->result();
+            
+            $this->db->select('kode_barang,jumlah,harga_satuan');
+            $this->data['getObat'] = $this->db->get_where('tbl_periksa_d_obat',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2'])->result();
+
+            $this->db->select('kode_barang,jumlah,harga_satuan');
+            $this->data['getAlkes'] = $this->db->get_where('tbl_periksa_d_alkes',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2'])->result();
+
+            $this->db->select('kode_tindakan,biaya');
+            $this->data['getTindakan'] = $this->db->get_where('tbl_periksa_d_tindakan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2'])->result();
+            
+            $this->data['edit'] = true;
+            echo "<pre>";
+            print_r($this->data['getTindakan']);
+            echo "</pre>";
+        }
+        else{
+            $this->data['edit'] = false;
         }
 
         $this->data['no_periksa'] = $data_pendaftaran->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran->no_rekam_medis;
