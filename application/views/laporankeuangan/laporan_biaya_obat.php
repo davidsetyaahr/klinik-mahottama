@@ -135,7 +135,7 @@ if($id_klinik != ''){
                 {
                     "data": "id_transaksi",
                     "orderable": false
-                },{"data": "tgl_transaksi"},{"data": "klinik"},{"data": "no_transaksi"},{"data": "deskripsi"},{"data": "amount_transaksi","className":"text-right"},{"data": "debit","className":"text-right"},
+                },{"data": "tgl_transaksi"},{"data": "klinik"},{"data": "no_transaksi"},{"data": "deskripsi"},{"data": "amount_transaksi","className":"text-right",  render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp. ' )},{"data": "debit","className":"text-right", render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp. ' )},
                 {
                     "data" : "credit","className":"text-right"
                 }
