@@ -528,9 +528,33 @@
 								<?php echo form_textarea(array('id'=>'note_dokter','name'=>'note_dokter','type'=>'textarea','value'=>'','rows'=>'4','class'=>'form-control'));?>
 							</div>
 						</div>
+                        <div class="form-group" id="row-biaya" data-row='0'>
+                                    <?php
+                                    $this->load->view('rekam_medis/loop-pilihan-biaya', ['no' => 0])
+                                    ?>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <a href="" class="btn btn-info btn-sm" id="addItemBiaya"><span class="fa fa-plus"></span> Tambah Item</a>
+                                </div>
+                            </div>
 						<hr />
+                        <div class="form-group">
+							<div class="col-sm-2"></div>
+							<div class="col-sm-4">
+								<div class="input-group">
+                                    <span class="input-group-addon" style="background-color: #fcffc4;">Total Biaya Lainnya</span>
+                                    <!-- <?php echo form_input(array('id'=>'biaya_total','name'=>'biaya_total','type'=>'number','value'=>'','class'=>'form-control','readonly'=>'readonly','style'=>'text-align:right;','placeholder'=>'0'));?> -->
+                                    <input type="text" id="totalBiaya" name="totalBiaya" class="form-control" value='0' readonly>
+                                </div>
+							</div>
+						</div>
 						<div class="form-group">
-							<div class="col-sm-2">Biaya</div>
+                            <!-- <div class="col-sm-2">Total Biaya Lainnya</div>
+                                <div class="col-sm-4">
+                                    <input type="text" id="totalBiaya" name="totalBiaya" class="form-control" value='0' readonly>
+                                </div> -->
+							<!-- <div class="col-sm-2">Biaya</div>
 							<div class="col-sm-4">
 								<div class="input-group">
                                     <span class="input-group-addon" style="background-color: #fcffc4;">Pemeriksaan</span>
@@ -544,7 +568,7 @@
                                   &nbsp
                                   <input type="radio" name="ket_pemeriksaan" id="ket_pemeriksaan" value="0" checked onchange="hitung_biaya();">
                                   Non Subsidi
-							</div>
+							</div> -->
 						</div>
 						<div class="form-group">
 							<div class="col-sm-2"></div>
@@ -652,6 +676,83 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+        function getBiaya(thisParam) {
+            var biaya = thisParam.find(":selected").attr('data-biaya')
+            var getNo = thisParam.closest('.loop-biaya').attr('data-no')
+            $(".loop-biaya[data-no='" + getNo + "'] .biaya").val(biaya)
+        }
+        function subTotalBiaya(dataNo) {
+            var qty_biaya = parseInt($(".loop-biaya[data-no='" + dataNo + "'] .qty_biaya").val())
+            var biaya = parseInt($(".loop-biaya[data-no='" + dataNo + "'] .biaya").val())
+            var subtotal = isNaN(qty_biaya * biaya) ? 0 : qty_biaya * biaya
+            $(".loop-biaya[data-no='" + dataNo + "'] .total_biaya").val(subtotal)
+        }
+        function totalBiaya() {
+            var totalBiaya = 0
+            $(".total_biaya").each(function(i, v) {
+                var subTotal = parseInt(v.value)
+                totalBiaya += subTotal
+            })
+            $("#totalBiaya").val(totalBiaya)
+            // grandTotal()
+            hitung_biaya()
+        }
+
+        $(".qty_biaya").keyup(function() {
+            var dataNo = $(this).closest('.loop-biaya').attr('data-no')
+            subTotalBiaya(dataNo)
+            totalBiaya()
+        })
+
+
+        $(".getBiaya").change(function() {
+            getBiaya($(this))
+        })
+
+        $(".tipe-biaya").change(function() {
+            var dataNo = $(this).closest('.loop-biaya').attr('data-no')
+            subTotalBiaya(dataNo)
+            totalBiaya()
+        })
+
+        $("#addItemBiaya").click(function(e) {
+            e.preventDefault();
+            var dataRow = parseInt($('#row-biaya').attr('data-row'))
+            $.ajax({
+                type: 'get',
+                url: '<?= base_url() . 'periksamedis/addItemBiaya' ?>',
+                data: {
+                    no: dataRow + 1
+                },
+                success: function(data) {
+                    $('#row-biaya').append(data)
+                    $('#row-biaya').attr('data-row', dataRow + 1)
+                    $(".getBiaya").change(function() {
+                        getBiaya($(this))
+                    })
+                    $(".qty_biaya").keyup(function() {
+                        var dataNo = $(this).closest('.loop-biaya').attr('data-no')
+                        subTotalBiaya(dataNo)
+                        totalBiaya()
+                    })
+                    $(".tipe-biaya").change(function() {
+                        var dataNo = $(this).closest('.loop-biaya').attr('data-no')
+                        subTotalBiaya(dataNo)
+                        totalBiaya()
+                    })
+                    $(".remove-biaya").click(function(e) {
+                        e.preventDefault();
+                        var dataNo = $(this).attr('data-no')
+                        var dataRow = parseInt($('#row-biaya').attr('data-row'))
+                        $('.loop-biaya[data-no="' + dataNo + '"]').remove()
+                        $('#row-biaya').attr('data-row', dataRow - 1)
+                        totalBiaya()
+                    })
+                    $(".select2").select2()
+                }
+            })
+        })
+
         $("#addICD").click(function(e){
             e.preventDefault()
             var code = $("#codeICD10").val()
@@ -985,6 +1086,8 @@ $(document).ready(function() {
     hitung_biaya();
 });
 
+        
+
 	function riwayat_alergi(){
         $('#riwayat_alergi_obat2').val($('#riwayat_alergi_obat').val());
         // alert($('#riwayat_alergi_obat').val());
@@ -1078,7 +1181,7 @@ $(document).ready(function() {
                     // var option_anjuran = '';
                     var option_ket = '';
                     var harga = 0;
-                    console.log(obat[i].stok_barang);
+                    // console.log(obat[i].stok_barang);
 
                     if(obat[i].stok_barang > 0){
                         //Set Jumlah Option
@@ -1204,6 +1307,7 @@ $(document).ready(function() {
         
         //Get Biaya
         var pemeriksaan = $('#biaya_pemeriksaan').val() != '' ? $('#biaya_pemeriksaan').val() : 0;
+        var biaya = parseInt($("#totalBiaya").val());
         var tindakan = 0;
         if($('#name_tindakan').val()!=null ){
             $.each($('#name_tindakan').val(), function(key,val){
@@ -1213,7 +1317,7 @@ $(document).ready(function() {
         }
         var obat_obatan = $('#biaya_obat_obatan').val() != '' ? $('#biaya_obat_obatan').val() : 0;
         // var administrasi = $('#biaya_administrasi').val() != '' ? $('#biaya_administrasi').val() : 0;
-        $('#biaya_total').val(parseInt(pemeriksaan) + parseInt(tindakan) + parseInt(obat_obatan)/* + parseInt(administrasi)*/);
+        $('#biaya_total').val(parseInt(biaya) + parseInt(tindakan) + parseInt(obat_obatan)/* + parseInt(administrasi)*/);
     }
     
     $(document).on("change","input[type=radio]",function(){
