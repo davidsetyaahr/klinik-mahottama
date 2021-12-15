@@ -161,5 +161,14 @@ class Periksa_model extends CI_Model
             $this->datatables->where('p.id_dokter',$id_dokter);
         return $this->datatables->generate();
     }
-    
+
+    public function kamarRawatInap($noPendaftaran)
+    {
+        $this->db->select('k.id_kategori_kamar,rid.id_kamar,rid.biaya_per_hari,rid.jml_hari');
+        $this->db->from('tbl_periksa_rawat_inap_detail rid');
+        $this->db->join('tbl_periksa_rawat_inap ri','rid.id_periksa_rawat_inap = ri.id_periksa_rawat_inap');
+        $this->db->join('tbl_kamar k','rid.id_kamar = k.id_kamar');
+        $this->db->where('ri.no_pendaftaran',$noPendaftaran);
+        return $this->db->get()->result();
+    }
 }

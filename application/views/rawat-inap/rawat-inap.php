@@ -8,7 +8,7 @@
                     </div>
                     <div class="box-body">
                         <div class="row col-md-12">
-                            <form action="<?= base_url() . "periksamedis/save_periksa_radiologi" ?>" method="post">
+                            <form action="<?= base_url() . "periksamedis/save_rawat_inap" ?>" method="post">
                                 <div class="form-group row">
                                     <div class="col-md-2">No Periksa </div>
                                     <div class="col-md-10">
