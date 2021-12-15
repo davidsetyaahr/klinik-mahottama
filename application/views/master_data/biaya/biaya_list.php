@@ -91,7 +91,7 @@
                 {
                     "data": "id_biaya",
                     "orderable": false
-                },{"data": "item"},{"data": "nama_biaya"},{"data": "biaya"},
+                },{"data": "item"},{"data": "nama_biaya"},{"data": "biaya",  render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp. ' )},
                 {
                     "data" : "action",
                     "orderable": false,

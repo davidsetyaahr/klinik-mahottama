@@ -93,7 +93,7 @@
                 {
                     "data": "id_tipe",
                     "orderable": false
-                },{"data": "item"},{"data": "harga"},{"data": "nilai_normal"},{"data": "diet"},{"data": "nama_kategori"},
+                },{"data": "item"},{"data": "harga",  render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp. ' )},{"data": "nilai_normal"},{"data": "diet"},{"data": "nama_kategori"},
                 {
                     "data" : "action",
                     "orderable": false,

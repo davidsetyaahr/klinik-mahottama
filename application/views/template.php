@@ -6,6 +6,7 @@
         <title>SIM <?php echo getInfoRS('nama_rumah_sakit') ?></title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <link rel="shortcut icon" href="<?php echo base_url() ?>assets/images/logo.png">
         <!-- Bootstrap 3.3.7 -->
         <link rel="stylesheet" href="<?php echo base_url() ?>assets/jquery-ui/themes/base/minified/jquery-ui.min.css" type="text/css" />
         <link rel="stylesheet" href="<?php echo base_url() ?>assets/adminlte/bower_components/bootstrap/dist/css/bootstrap.min.css">

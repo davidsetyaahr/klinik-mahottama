@@ -87,7 +87,7 @@
                     "data": "item"
                 },
                 {
-                    "data": "harga"
+                    "data": "harga", render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp. ' )
                 },
                 {
                     "data" : "action",

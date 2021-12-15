@@ -90,7 +90,7 @@
                 {
                     "data": "id_kategori_kamar",
                     "orderable": false
-                },{"data": "nama"},{"data": "harga"},
+                },{"data": "nama"},{"data": "harga",  render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp. ' )},
                 {
                     "data" : "action",
                     "orderable": false,

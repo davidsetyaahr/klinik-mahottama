@@ -92,7 +92,7 @@
                 {
                     "data": "id_kamar",
                     "orderable": false
-                },{"data": "nama"},{"data": "harga"},{"data": "no_kamar"},{"data": "status"},
+                },{"data": "nama"},{"data": "harga",  render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp. ' )},{"data": "no_kamar"},{"data": "status"},
                 {
                     "data" : "action",
                     "orderable": false,
