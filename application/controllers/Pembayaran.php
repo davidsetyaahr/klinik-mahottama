@@ -566,6 +566,7 @@ class Pembayaran extends CI_Controller
 
         $this->data['tgl_cetak'] = date("d M Y",  time());
         $this->data['nama_pegawai'] = 'Kasir';
+        $this->data['atas_nama'] = $data_transaksi->atas_nama;
         $view = isset($_GET['view']) ? $_GET['view'] : 'cetak_surat';
         $this->load->view('pembayaran/'.$view, $this->data);
     }

@@ -162,7 +162,7 @@
       <td width="45%">
         <table width="100%">
           <tr>
-            <td><span style="margin-left:50px"></span> Denpasar, <?php echo $tgl_cetak;?></td>
+            <td><span style="margin-left:50px"></span> Banyuwangi, <?php echo $tgl_cetak;?></td>
           </tr>
         </table>
       </td>
@@ -170,9 +170,9 @@
   </table>
   <br>
 </center>
-<div style="width:55%;margin-left:auto">
-  <span>(Guest Signature)</span>
-  <span style="margin-left:70px">(Attending Physician)</span>
+<div style="width:40%;margin-left:auto">
+  <span>(<?= $this->session->userdata('full_name'); ?>)</span>
+  <span style="margin-left:100px">(<?= $atas_nama ?>)</span>
 </div>
 </div>
   </section>

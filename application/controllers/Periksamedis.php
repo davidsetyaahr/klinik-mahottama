@@ -289,6 +289,19 @@ class Periksamedis extends CI_Controller
                 );
             }
 
+            //d_periksa_biaya
+            foreach ($_POST['id_biaya'] as $key => $value) {
+                $periksa_d_biaya = array(
+                    'no_pendaftaran' => $this->no_pendaftaran,
+                    'no_periksa' => $this->input->post('no_periksa'),
+                    'id_biaya' => $value,
+                    'jumlah' => $_POST['qty_biaya'][$key],
+                    'biaya' => $_POST['biaya'][$key],
+                    'tipe_periksa' => '1',
+                );
+                $this->db->insert('tbl_periksa_d_biaya',$periksa_d_biaya);
+        }
+
             //Insert into tbl_periksa
             $this->Periksa_model->insert($data_periksa, $data_periksa_d_alkes, $data_periksa_d_obat, $data_periksa_d_fisik,$data_periksa_d_tindakan);
 
@@ -320,16 +333,22 @@ class Periksamedis extends CI_Controller
                     'amount_transaksi' => $this->input->post('ket_obat_obatan') == 0 ? ($this->input->post('subsidi_harga') != '' ? $this->input->post('subsidi_harga') : 0) : $this->input->post('total_harga'),
                     'dc' => 'c'
                 ),
-                array(
-                    'no_transaksi' => $this->input->post('no_periksa'),
-                    'deskripsi' => 'Biaya Pemeriksaan',
-                    'amount_transaksi' => $this->input->post('biaya_pemeriksaan') != '' ? $this->input->post('biaya_pemeriksaan') : 0,
-                    'dc' => 'd'
-                ),
+                // array(
+                //     'no_transaksi' => $this->input->post('no_periksa'),
+                //     'deskripsi' => 'Biaya Pemeriksaan',
+                //     'amount_transaksi' => $this->input->post('biaya_pemeriksaan') != '' ? $this->input->post('biaya_pemeriksaan') : 0,
+                //     'dc' => 'd'
+                // ),
                 array(
                     'no_transaksi' => $this->input->post('no_periksa'),
                     'deskripsi' => 'Biaya Tindakan ',
                     'amount_transaksi' => $biayaTindakan != '' || $biayaTindakan != 0 ? $biayaTindakan : 0,
+                    'dc' => 'd'
+                ),
+                array(
+                    'no_transaksi' => $this->input->post('no_periksa'),
+                    'deskripsi' => 'Biaya Lainnya',
+                    'amount_transaksi' => $_POST['totalBiaya'],
                     'dc' => 'd'
                 ),
                 // array(
@@ -438,7 +457,7 @@ class Periksamedis extends CI_Controller
             }
             $this->Pendaftaran_model->update($this->no_pendaftaran, $updatePendaftaran);
 
-            // //Set session sukses
+            //Set session sukses
             $this->session->set_flashdata('message', 'Data pemeriksaan berhasil disimpan, No Pendaftaran ' . $this->no_pendaftaran);
             $this->session->set_flashdata('message_type', 'success');
 
@@ -466,7 +485,7 @@ class Periksamedis extends CI_Controller
                 );
             }
             $this->data['alkes_option_js'] = json_encode($alkes_opt_js);
-
+            $this->data['biaya'] = $this->Tbl_biaya_model->getBiaya();
             $this->data['obat_option'] = array();
             $this->data['obat_option'][''] = 'Pilih Obat';
             $obat_opt_js = array();
@@ -510,6 +529,14 @@ class Periksamedis extends CI_Controller
 
         $this->template->load('template', 'rekam_medis/form_rekam_medis', $this->data);
     }
+
+    public function addItemBiaya()
+    {
+        $this->data['biaya'] = $this->Tbl_biaya_model->getBiaya();
+        $this->data['no'] = $_GET['no'];
+        $this->load->view('rekam_medis/loop-pilihan-biaya', $this->data);
+    }
+
     public function addICD()
     {
         $this->db->insert('tbl_diagnosa_icd10', ['code' => $_POST['code'], 'diagnosa' => $_POST['diagnosa']]);
