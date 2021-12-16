@@ -5,25 +5,33 @@
         <option value="">---Kategori Kamar---</option>
         <?php 
             foreach ($kamar as $key => $value) {
-                echo "<option data-harga='".$value->harga."' value='".$value->id_kamar."'>".$value->nama."</option>";
+                $s = isset($selected) && $selected['value']->id_kategori_kamar == $value->id_kategori_kamar ? 'selected' : ''; 
+                echo "<option data-harga='".$value->harga."' value='".$value->id_kategori_kamar."' $s>".$value->nama."</option>";
             }
             ?>
         </select>
     </div>
     <div class="col-md-3">
         <select name="id_kamar[]" class="form-control select2 idKamar" style="width:100%" >
-            <option value="">---Pilih Kamar---</option>
+            <?php 
+                if(isset($selected)){
+                    echo "<option value='".$selected['value']->id_kamar."'>".$selected['value']->no_kamar."</option>";
+                    foreach ($selected['getKamarByKategori'] as $key => $value) {
+                        echo "<option value='".$value->id_kamar."'>".$value->no_kamar."</option>";
+                    }                    
+                }
+            ?>
         </select>
     </div>
     <div class='col-md-2'">
         <!-- <br> -->
-        <input type="number" name="hari[]" placeholder="Jumlah Hari" class="form-control hari" id="">
+        <input type="number" value="<?= isset($selected) ? $selected['value']->jml_hari : ''; ?>" name="hari[]" placeholder="Jumlah Hari" class="form-control hari" id="">
     </div>
     <div class="col-md-2">
-        <?php echo form_input(array('id'=>'harga_kamar','name'=>'harga_kamar[]','type'=>'text','value'=>'','class'=>'form-control harga', 'readonly'=>'readonly','placeholder'=>'Harga Kamar','style'=>'text-align:left;'));?>
+        <?php echo form_input(array('id'=>'harga_kamar','name'=>'harga_kamar[]','type'=>'text','value'=>isset($selected) ? $selected['value']->biaya_per_hari : '','class'=>'form-control harga', 'readonly'=>'readonly','placeholder'=>'Harga Kamar','style'=>'text-align:left;'));?>
     </div>
     <div class="<?= $no!=0 ? 'col-md-2' : 'col-md-3' ?>">  
-        <?php echo form_input(array('id'=>'total_harga','name'=>'subtotal_kamar[]','type'=>'text','value'=>'','class'=>'form-control subtotal', 'readonly'=>'readonly','placeholder'=>'Sub Total','style'=>'text-align:left;'));?>
+        <?php echo form_input(array('id'=>'total_harga','name'=>'subtotal_kamar[]','type'=>'text','value'=>isset($selected) ? $selected['value']->jml_hari * $selected['value']->biaya_per_hari  :'','class'=>'form-control subtotal', 'readonly'=>'readonly','placeholder'=>'Sub Total','style'=>'text-align:left;'));?>
     <!--  -->
     </div>
     <?php 

@@ -31,7 +31,16 @@
                                 <div id="input_fields_wrap_kamar">
                                     <div class="form-group" id="row-kamar" data-row='0'>
                                         <?php
-                                        $this->load->view('rawat-inap/loop-pilihan-kamar', ['no' => 0])
+                                            if($edit){
+                                                foreach ($getKamar as $key => $value) {
+                                                    $data['value'] = $value;
+                                                    $data['getKamarByKategori'] = $this->db->get_where('tbl_kamar',['id_kategori_kamar' => $value->id_kategori_kamar,'status' => '0'])->result();
+                                                    $this->load->view('rawat-inap/loop-pilihan-kamar', ['no' => $key,'selected' => $data]);
+                                                }
+                                            }
+                                            else{
+                                                $this->load->view('rawat-inap/loop-pilihan-kamar', ['no' => 0]);
+                                            }
                                         ?>
                                     </div>
                                 </div>
@@ -44,7 +53,14 @@
                                 <!-- END: input kamar -->
                                 <div class="form-group" id="row-biaya" data-row='0'>
                                     <?php
-                                    $this->load->view('rawat-inap/loop-pilihan-biaya', ['no' => 0])
+                                        if($edit){
+                                            foreach ($getBiaya as $key => $value) {
+                                                $this->load->view('rawat-inap/loop-pilihan-biaya', ['no' => $key,'selected' => $value]);
+                                            }
+                                        }
+                                        else{
+                                            $this->load->view('rawat-inap/loop-pilihan-biaya', ['no' => 0]);
+                                        }
                                     ?>
                                 </div>
                                 <div class="form-group row">
@@ -54,7 +70,15 @@
                                 </div>
                                 <div class="form-group" id="row-obat" data-row='0'>
                                     <?php
-                                    $this->load->view('loop/loop-pilihan-obat', ['no' => 0])
+                                        if($edit){
+                                            foreach ($getObat as $key => $value) {
+                                                $data['value'] = $value;
+                                                $this->load->view('loop/loop-pilihan-obat', ['no' => $key,'selected' => $data]);
+                                            }
+                                        }
+                                        else{
+                                            $this->load->view('loop/loop-pilihan-obat', ['no' => 0]);
+                                        }
                                     ?>
                                 </div>
                                 <div class="form-group row">
@@ -64,7 +88,15 @@
                                 </div>
                                 <div class="form-group" id="row-alkes" data-row='0'>
                                     <?php
-                                    $this->load->view('loop/loop-pilihan-alkes', ['no' => 0])
+                                        if($edit){
+                                            foreach ($getAlkes as $key => $value) {
+                                                $data['value'] = $value;
+                                                $this->load->view('loop/loop-pilihan-alkes', ['no' => $key,'selected' => $data]);
+                                            }
+                                        }
+                                        else{
+                                            $this->load->view('loop/loop-pilihan-alkes', ['no' => 0]);
+                                        }
                                     ?>
                                 </div>
                                 <div class="form-group row">
@@ -73,8 +105,20 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="row-tindakan" data-row='0'>
+                                    
                                     <?php
-                                    $this->load->view('loop/loop-pilihan-tindakan', ['no' => 0])
+                                        $totalBiayaTindakan = 0;
+                                        if($edit){
+                                            // print_r($getTindakan);
+                                            $totalBiayaTindakan = array_sum(array_column($getTindakan, 'biaya'));
+                                            // echo $totalBiayaTindakan;
+                                            // echo "a";                                            foreach ($getTindakan as $key => $value) {
+                                                $data['value'] = $getTindakan;
+                                                $this->load->view('loop/loop-pilihan-tindakan', ['no' => $key,'selected' => $data]);
+                                        }
+                                        else{
+                                            $this->load->view('loop/loop-pilihan-tindakan', ['no' => 0]);
+                                        }
                                     ?>
                                 </div>
                                 <div class="form-group row">
@@ -104,7 +148,7 @@
                                 <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya Tindakan</div>
                                     <div class="col-sm-10">
-                                        <input type="text" id="totalTindakan" name="totalTindakan" class="form-control" value='0' readonly>
+                                        <input type="text" id="totalTindakan" name="totalTindakan" class="form-control" value='<?= $totalBiayaTindakan ?>' readonly>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -147,6 +191,16 @@
 <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
 <script>
     $(document).ready(function() {
+        <?php 
+            if($edit){    
+        ?>
+            totalKamar()
+            totalBiaya()
+            totalObat()
+            totalAlkes()
+            // totalTindakan()
+        <?php } ?>
+
         function subTotalKamar(dataNo) {
             var qty = parseInt($(".loop-kamar[data-no='" + dataNo + "'] .hari").val())
             var harga = parseInt($(".loop-kamar[data-no='" + dataNo + "'] .harga").val())

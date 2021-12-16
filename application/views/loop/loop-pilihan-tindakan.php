@@ -4,8 +4,11 @@
 <div class="col-md-10">
         <select name="tindakan[]" multiple="multiple" style="width:100%" class="select2 form-control tindakan">
             <?php 
+            // print_r($selected);
                 foreach ($tindakan as $key => $value) {
-                        echo "<option value='".$value->kode_tindakan."' data-harga='".$value->biaya."'>".$value->tindakan."</option>";
+                    $s = in_array($value->kode_tindakan, array_column($selected['value'], 'kode_tindakan')) ? 'selected' : '';
+                    // $s = isset($selected) && $selected['value']->kode_tindakan == $value->kode_tindakan ? 'selected' : ''; 
+                    echo "<option value='".$value->kode_tindakan."' data-harga='".$value->biaya."' $s>".$value->tindakan."</option>";
                 }
             ?>
         </select>

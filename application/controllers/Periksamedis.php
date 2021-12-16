@@ -1638,9 +1638,6 @@ class Periksamedis extends CI_Controller
             $this->data['getTindakan'] = $this->db->get_where('tbl_periksa_d_tindakan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2'])->result();
             
             $this->data['edit'] = true;
-            echo "<pre>";
-            print_r($this->data['getTindakan']);
-            echo "</pre>";
         }
         else{
             $this->data['edit'] = false;
@@ -1649,7 +1646,7 @@ class Periksamedis extends CI_Controller
         $this->data['no_periksa'] = $data_pendaftaran->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran->no_rekam_medis;
 
         $this->data['biaya'] = $this->Tbl_biaya_model->getBiaya();
-        $this->data['kamar'] = $this->Tbl_kamar_model->get_kamar();
+        $this->data['kamar'] = $this->db->get('tbl_kategori_kamar')->result();
         $this->data['obat'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 1);
         $this->data['alkes'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 2);
         $this->data['tindakan'] = $this->db->get('tbl_tindakan')->result();
@@ -1873,7 +1870,7 @@ class Periksamedis extends CI_Controller
     public function newItemRawatInap()
     {
         $this->data['no'] = $_GET['no'];
-        $this->data['kamar'] = $this->Tbl_kamar_model->get_kamar();
+        $this->data['kamar'] = $this->db->get('tbl_kategori_kamar')->result();
         $this->load->view('rawat-inap/loop-pilihan-kamar', $this->data);
     }
 
