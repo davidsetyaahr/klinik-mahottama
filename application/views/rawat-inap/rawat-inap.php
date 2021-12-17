@@ -29,7 +29,7 @@
                                 </div>
                                 <!-- START: input kamar -->
                                 <div id="input_fields_wrap_kamar">
-                                    <div class="form-group" id="row-kamar" data-row='0'>
+                                    <div class="form-group" id="row-kamar" data-row='<?= $edit ?  count((array)$getKamar) : 0 ?>'>
                                         <?php
                                             if($edit){
                                                 foreach ($getKamar as $key => $value) {
@@ -51,7 +51,7 @@
                                     </div>
                                 </div>
                                 <!-- END: input kamar -->
-                                <div class="form-group" id="row-biaya" data-row='0'>
+                                <div class="form-group" id="row-biaya" data-row='<?= $edit ? count((array)$getBiaya) : 0 ?>'>
                                     <?php
                                         if($edit){
                                             foreach ($getBiaya as $key => $value) {
@@ -68,7 +68,7 @@
                                         <a href="" class="btn btn-info btn-sm" id="addItemBiaya"><span class="fa fa-plus"></span> Tambah Item</a>
                                     </div>
                                 </div>
-                                <div class="form-group" id="row-obat" data-row='0'>
+                                <div class="form-group" id="row-obat" data-row='<?= $edit ? count((array)$getObat) : 0 ?>'>
                                     <?php
                                         if($edit){
                                             foreach ($getObat as $key => $value) {
@@ -86,7 +86,7 @@
                                         <a href="" class="btn btn-info btn-sm" id="addItemObat"><span class="fa fa-plus"></span> Tambah Item</a>
                                     </div>
                                 </div>
-                                <div class="form-group" id="row-alkes" data-row='0'>
+                                <div class="form-group" id="row-alkes" data-row='<?= $edit ? count((array)$getAlkes) : 0 ?>'>
                                     <?php
                                         if($edit){
                                             foreach ($getAlkes as $key => $value) {
@@ -105,14 +105,11 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="row-tindakan" data-row='0'>
-                                    
                                     <?php
                                         $totalBiayaTindakan = 0;
                                         if($edit){
-                                            // print_r($getTindakan);
                                             $totalBiayaTindakan = array_sum(array_column($getTindakan, 'biaya'));
-                                            // echo $totalBiayaTindakan;
-                                            // echo "a";                                            foreach ($getTindakan as $key => $value) {
+                                            // foreach ($getTindakan as $key => $value) {
                                                 $data['value'] = $getTindakan;
                                                 $this->load->view('loop/loop-pilihan-tindakan', ['no' => $key,'selected' => $data]);
                                         }
@@ -155,6 +152,8 @@
                                     <div class="col-sm-2">Grand Total</div>
                                     <div class="col-sm-10">
                                         <input type="text" id="grandTotal" name="grandTotal" class="form-control" value='0' readonly>
+                                        <!-- <input type="text" id="member" onkeyup="addFields()" class="form-control" name="member" value="">Number of members: (max. 10)<br /> -->
+                                        <!-- <div id="container"/> -->
                                     </div>
                                 </div>
                                 <hr>
@@ -190,6 +189,27 @@
 </div>
 <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
 <script>
+        function editFieldsQtyBiaya(){
+            // var number = document.getElementById("qty").value;
+            var container = document.getElementById("container_biaya");
+            var input = document.createElement("input");
+            input.type = "number";
+            input.name = "edit_id_biaya";
+            input.value = "123";
+            container.appendChild(input);
+        }
+
+        function editFieldsQtyObat(){
+            // var number = document.getElementById("qty_obat").value;
+            var container = document.getElementById("container_obat");
+            var input = document.createElement("input");
+            input.type = "number";
+            input.name = "edit_id_obat";
+            input.value = "123";
+            container.append(input);
+        }
+</script>
+<script>
     $(document).ready(function() {
         <?php 
             if($edit){    
@@ -199,7 +219,67 @@
             totalObat()
             totalAlkes()
             // totalTindakan()
+            
+            $(".oldChangeQtyHari").keyup(function(){
+                var dataNo = $(this).closest('.loop-kamar').attr('data-no')
+                var defaultHari = $(".loop-kamar[data-no='"+dataNo+"'] .hari").attr('data-hari')
+                var newVal = $(this).val()
+                if($(".upd_jml_hari[value='"+dataNo+"']").length==0 && defaultHari!=newVal && (newVal!='' && newVal!=0)){
+                    $(".loop-kamar[data-no='"+dataNo+"']").append(`
+                        <input type="hidden" name='upd_jml_hari[]' value='${dataNo}' class='upd_jml_hari'>
+                    `)
+                }
+                
+                if($(".upd_jml_hari[value='"+dataNo+"']").length==1 && defaultHari==newVal){
+                    $(".upd_jml_hari[value='"+dataNo+"']").remove()
+                }
+            })
+
+            $(".oldRemoveKamar").click(function(e){
+                e.preventDefault()
+                var dataNo = $(this).attr('data-no')
+                var idDetail = $(this).attr('data-iddetail')
+                
+                $("#row-kamar").append(`
+                    <input type="hidden" name='del_id_detail_rawat_inap[]' value='${idDetail}' class='del_id_detail_rawat_inap'>
+                `)
+            })
+
+            $(".oldChangeQtyBiaya").keyup(function(){
+                var dataNo = $(this).closest('.loop-biaya').attr('data-no')
+                var defaultBiaya = $(".loop-biaya[data-no='"+dataNo+"'] .qty_biaya").attr('data-qty')
+                var newVal = $(this).val()
+                
+                if($(".upd_qty_biaya[value='"+dataNo+"']").length==0 && defaultBiaya!=newVal && (newVal!='' && newVal!=0)){
+                    $(".loop-biaya[data-no='"+dataNo+"']").append(`
+                        <input type="hidden" name='upd_qty_biaya[]' value='${dataNo}' class='upd_qty_biaya'>
+                    `)
+                }
+                
+                if($(".upd_qty_biaya[value='"+dataNo+"']").length==1 && defaultBiaya==newVal){
+                    $(".upd_qty_biaya[value='"+dataNo+"']").remove()
+                }
+            })
+
+            $(".oldRemoveBiaya").click(function(e){
+                e.preventDefault()
+                var dataNo = $(this).attr('data-no')
+                var idDetail = $(this).attr('data-iddetail')
+                
+                $("#row-biaya").append(`
+                    <input type="hidden" name='del_id_detail_biaya[]' value='${idDetail}' class='del_id_detail_biaya'>
+                `)
+            })
         <?php } ?>
+
+        function addIdKamar(){
+            // for (i=0)
+            var addNew = document.createElement("input")
+            // input.type="text"
+            createEle.innerHTML = "sd"
+        }
+
+        
 
         function subTotalKamar(dataNo) {
             var qty = parseInt($(".loop-kamar[data-no='" + dataNo + "'] .hari").val())
@@ -217,6 +297,7 @@
         $(".idKamar").change(function(){
             var dataNo = $(this).closest('.loop-kamar').attr('data-no')
             var thisVal = $(this).val()
+            
 
             if(thisVal!=''){
                 $(".loop-kamar[data-no='" + dataNo + "'] .hari").val(1)
@@ -302,23 +383,29 @@
                         }
                     })
 
-
-
-
                     $(".remove-kamar").click(function(e) {
                         e.preventDefault();
-                        var dataNo = $(this).attr('data-no')
-                        var dataRow = parseInt($('#row-kamar').attr('data-row'))
-                        $('.loop-kamar[data-no="' + dataNo + '"]').remove()
-                        $('#row-kamar').attr('data-row', dataRow - 1)
-                        subTotalKamar(dataNo)
-                        totalKamar()
-
+                        removeKamar($(this))
                     })
+                    
                     $(".select2").select2()
                 }
             })
         })
+        $(".remove-kamar").click(function(e) {
+            e.preventDefault();
+            removeKamar($(this))
+        })
+
+        function removeKamar(params){
+            var dataNo = params.attr('data-no')
+            var dataRow = parseInt($('#row-kamar').attr('data-row'))
+            $('.loop-kamar[data-no="' + dataNo + '"]').remove()
+            $('#row-kamar').attr('data-row', dataRow - 1)
+            subTotalKamar(dataNo)
+            totalKamar()
+
+        }
 
         function totalKamar() {
             var totalKamar = 0

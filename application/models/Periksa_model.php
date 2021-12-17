@@ -166,13 +166,20 @@ class Periksa_model extends CI_Model
         return $this->datatables->generate();
     }
 
-    public function kamarRawatInap($noPendaftaran)
+    public function oldKamarRawatInap($noPendaftaran)
     {
-        $this->db->select('k.id_kategori_kamar,rid.id_kamar,k.no_kamar,rid.biaya_per_hari,rid.jml_hari');
+        $this->db->select('rid.id_detail,k.id_kategori_kamar,rid.id_kamar,k.no_kamar,rid.biaya_per_hari,rid.jml_hari,kk.nama nama_kategori');
         $this->db->from('tbl_periksa_rawat_inap_detail rid');
         $this->db->join('tbl_periksa_rawat_inap ri','rid.id_periksa_rawat_inap = ri.id_periksa_rawat_inap');
         $this->db->join('tbl_kamar k','rid.id_kamar = k.id_kamar');
+        $this->db->join('tbl_kategori_kamar kk','k.id_kategori_kamar = kk.id_kategori_kamar');
         $this->db->where('ri.no_pendaftaran',$noPendaftaran);
         return $this->db->get()->result();
     }
+    function oldBiaya($noPendaftaran,$tipePeriksa){
+        $this->db->select('pb.id_biaya,pb.jumlah,pb.biaya,b.nama_biaya,pb.id_periksa_d_biaya');
+        $this->db->join('tbl_biaya b','pb.id_biaya = b.id_biaya');
+        return $this->db->get_where('tbl_periksa_d_biaya pb',['pb.no_pendaftaran' => $noPendaftaran,'tipe_periksa' => $tipePeriksa])->result();
+    }
+
 }
