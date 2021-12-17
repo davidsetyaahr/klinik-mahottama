@@ -106,7 +106,7 @@ class Pembayaran extends CI_Controller
                 'dtm_upd' => date("Y-m-d H:i:s",  time())
             );
             $biaya_tindakan=$biaya_pemeriksaan=$biaya_obat=0;
-            foreach ($this->Transaksi_model->get_detail_by_h_id($data_transaksi->no_transaksi) as $key => $value) {
+            foreach ($this->Transaksi_model->get_detail_by_h_id($data_transaksi->id_transaksi) as $key => $value) {
                 if (strpos($value->deskripsi,'Biaya Pemeriksaan')!==false) {
                     $biaya_pemeriksaan=$value->amount_transaksi;
                 }
@@ -121,7 +121,7 @@ class Pembayaran extends CI_Controller
             if($this->input->post('subsidi_transaksi') != ''){
                 $data_trans_d[] = array(
                     // 'id_transaksi' => $id_transaksi,
-                    'no_transaksi' => $data_transaksi->no_transaksi,
+                    'id_transaksi' => $data_transaksi->id_transaksi,
                     'deskripsi' => 'Subsidi dari Kasir' ,
                     'amount_transaksi' => $subsidi_transaksi != '' ? $subsidi_transaksi : 0,
                     'dc' => 'c'
@@ -129,16 +129,18 @@ class Pembayaran extends CI_Controller
             }
             $data_trans_d[] = array(
                 // 'id_transaksi' => $id_transaksi,
-                'no_transaksi' => $data_transaksi->no_transaksi,
+                'id_transaksi' => $data_transaksi->id_transaksi,
                 'deskripsi' => 'Pembayaran Biaya Medis' . ($this->input->post('atas_nama') != '' ? ' a/n ' . $this->input->post('atas_nama') : '' ),
                 'amount_transaksi' => $total_pembayaran,
                 'dc' => 'c'
             );
             
             //Biaya administrasi
+            $lastId = $this->db->select_max('id_transaksi')->from('tbl_transaksi')->get()->row();
             $data_trans_d[] = array(
                 // 'id_transaksi' => $id_transaksi,
-                'no_transaksi' => $data_transaksi->no_transaksi,
+                // 'id_transaksi' => $lastId->id_transaksi,
+                'id_transaksi' => $data_transaksi->id_transaksi,
                 'deskripsi' => 'Biaya Administrasi',
                 'amount_transaksi' => $biaya_administrasi != '' ? $biaya_administrasi : 0,
                 'dc' => 'd'
@@ -445,8 +447,10 @@ class Pembayaran extends CI_Controller
                     'dc' => 'c'
                 );
             }
+            $lastId = $this->db->select_max('id_transaksi')->from('tbl_transaksi')->get()->row();
             $data_trans_d[] = array(
                 // 'id_transaksi' => $id_transaksi,
+                // 'id_transaksi' => $lastId->id_transaksi,
                 'no_transaksi' => $data_transaksi->no_transaksi,
                 'deskripsi' => 'Pembayaran Biaya Medis',
                 'amount_transaksi' => $this->input->post('total_pembayaran'),

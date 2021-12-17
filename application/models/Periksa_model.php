@@ -66,7 +66,7 @@ class Periksa_model extends CI_Model
         return $this->db->get()->result();
     }
 
-    function insert($data, $data_d_alkes, $data_d_obat, $data_d_fisik,$data_d_tindakan)
+    function insert($data, $data_d_alkes, $data_d_obat, $data_d_fisik,$data_d_tindakan,$data_d_biaya)
     {
         $this->db->insert($this->table, $data);
         
@@ -84,6 +84,10 @@ class Periksa_model extends CI_Model
 
         for($i = 0; $i < count($data_d_tindakan); $i++){
             $this->db->insert('tbl_periksa_d_tindakan',$data_d_tindakan[$i]);
+        }
+
+        for($i = 0; $i < count($data_d_biaya); $i++){
+            $this->db->insert('tbl_periksa_d_biaya',$data_d_biaya[$i]);
         }
     }
     public function getLastNomor()
