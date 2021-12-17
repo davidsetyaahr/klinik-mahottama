@@ -1650,10 +1650,9 @@ class Periksamedis extends CI_Controller
 
         $cekRawatInap = $this->db->get_where('tbl_periksa_rawat_inap',['no_pendaftaran' => $this->no_pendaftaran])->num_rows();
         if($cekRawatInap==1){
-            $this->data['getKamar'] = $this->Periksa_model->kamarRawatInap($this->no_pendaftaran);
+            $this->data['getKamar'] = $this->Periksa_model->oldKamarRawatInap($this->no_pendaftaran);
             
-            $this->db->select('id_biaya,jumlah,biaya');
-            $this->data['getBiaya'] = $this->db->get_where('tbl_periksa_d_biaya',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2'])->result();
+            $this->data['getBiaya'] = $this->Periksa_model->oldBiaya($this->no_pendaftaran,'2');
             
             $this->db->select('kode_barang,jumlah,harga_satuan');
             $this->data['getObat'] = $this->db->get_where('tbl_periksa_d_obat',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2'])->result();

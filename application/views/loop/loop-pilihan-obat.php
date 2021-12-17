@@ -1,6 +1,7 @@
 <div class="row loop-obat" data-no="<?= $no ?>">
 <br>
 <div class="col-md-5">
+<div id="container_biaya"></div>
         <select name="kode_obat[]" class="form-control select2 selectObat obat">
             <option value="">---Pilih Obat---</option>
             <?php 
@@ -12,7 +13,7 @@
         </select>
     </div>
     <div class="col-md-2">
-        <select name="jml_obat[]" class="form-control stokObat qty">
+        <select name="jml_obat[]" onchange="editFieldsQtyObat()" id="qty_obat" class="form-control stokObat qty">
             <?php 
                 if(isset($selected)){
                     echo "<option>".$selected['value']->jumlah."</option>";

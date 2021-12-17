@@ -175,16 +175,24 @@
                     })
                     $(".remove-biaya").click(function(e) {
                         e.preventDefault();
-                        var dataNo = $(this).attr('data-no')
-                        var dataRow = parseInt($('#row-biaya').attr('data-row'))
-                        $('.loop-biaya[data-no="' + dataNo + '"]').remove()
-                        $('#row-biaya').attr('data-row', dataRow - 1)
-                        totalBiaya()
+                        removeBiaya($(this))
                     })
                     $(".select2").select2()
                 }
             })
         })
+        $(".remove-biaya").click(function(e) {
+            e.preventDefault();
+            removeBiaya($(this))
+        })
+
+        function removeBiaya(params){
+            var dataNo = params.attr('data-no')
+            var dataRow = parseInt($('#row-biaya').attr('data-row'))
+            $('.loop-biaya[data-no="' + dataNo + '"]').remove()
+            $('#row-biaya').attr('data-row', dataRow - 1)
+            totalBiaya()
+        }
 
         $("#addItemObat").click(function(e){
             e.preventDefault();
