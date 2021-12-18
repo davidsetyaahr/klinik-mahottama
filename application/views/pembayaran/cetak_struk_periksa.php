@@ -92,7 +92,7 @@
             $total_transaksi = 0;
             $i = 1;
             $tipe = "";
-            $caption = ['','<td>Poli</td><br>','Rawat Inap','Operasi','Laboratorium','<td>Radiologi</td><br>'];
+            $caption = ['','<td align="left">Poli :</p></td>','<td align="left">Rawat Inap :</p></td>','<td align="left">Operasi :</p></td>','<td align="left">Laboratorium :</p></td>','<td align="left"><p>Radiologi :</td>'];
             foreach($transaksi_d as $data){
               if(strpos($data->deskripsi, 'Pembayaran Biaya Medis') === false){
                 if($data->amount_transaksi > 0){
@@ -102,7 +102,8 @@
                 $tipe = $caption[$data->tipe_periksa];
     ?>
                     <tr style="border-bottom:1px solid black; border-bottom:1px solid black">
-                        <td align="left"><?php echo $data->deskripsi;?></td>
+                      <td align="left"><?php echo $data->deskripsi;?></td>
+                      <!-- <br> -->
                         <td align="right">Rp.<?php echo $data->dc == 'd' ? number_format($data->amount_transaksi,2,',','.') : ($data->amount_transaksi != 0 ? '-'.number_format($data->amount_transaksi,2,',','.') : number_format(0,2,',','.'));?></td>
                     </tr>
                 <?php 

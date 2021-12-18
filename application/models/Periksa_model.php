@@ -22,6 +22,11 @@ class Periksa_model extends CI_Model
         return $this->db->get($this->table)->result();
     }
 
+    function getId($nop){
+        $this->db->where('no_pendaftaran', $nop);
+        return $this->db->get($this->table)->row();
+    }
+
     // get data by id
     function get_by_id($id,$select="")
     {
