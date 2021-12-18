@@ -1654,11 +1654,9 @@ class Periksamedis extends CI_Controller
             
             $this->data['getBiaya'] = $this->Periksa_model->oldBiaya($this->no_pendaftaran,'2');
             
-            $this->db->select('kode_barang,jumlah,harga_satuan');
-            $this->data['getObat'] = $this->db->get_where('tbl_periksa_d_obat',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2'])->result();
+            $this->data['getObat'] = $this->Periksa_model->oldObat($this->no_pendaftaran,'2');
 
-            $this->db->select('kode_barang,jumlah,harga_satuan');
-            $this->data['getAlkes'] = $this->db->get_where('tbl_periksa_d_alkes',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2'])->result();
+            $this->data['getAlkes'] = $this->Periksa_model->oldAlkes($this->no_pendaftaran,'2');
 
             $this->db->select('kode_tindakan,biaya');
             $this->data['getTindakan'] = $this->db->get_where('tbl_periksa_d_tindakan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2'])->result();
