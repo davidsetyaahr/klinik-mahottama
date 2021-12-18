@@ -56,20 +56,14 @@
 							<div class="col-sm-3"><label>Nominal Transaksi</label></div>
 						</div>
                     <?php
+                    $tipe = "";
+                    $caption = ['','<h4>Poli</h4>','Rawat Inap','Operasi','Laboratorium','Radiologi'];
                         foreach($transaksi_d as $data){
                     ?>
-                    <?php if($data->tipe_periksa == 1){
-                        echo "Poli";
+                    <?php if($caption[$data->tipe_periksa]!=$tipe){
+                        echo $caption[$data->tipe_periksa];
                     }
-                        elseif($data->tipe_periksa == 2){
-                            echo "Rawat Inap";
-                        }
-                        elseif($data->tipe_periksa == 3)
-                            echo "Operasi";
-                        elseif($data->tipe_periksa == 4)
-                            echo "Laboratorium";
-                        else
-                            echo "Radiologi";
+                    $tipe = $caption[$data->tipe_periksa];
                     ?>
                         <div class="form-group">
                             <div class="col-sm-3"><?php echo $data->deskripsi;?></div>
