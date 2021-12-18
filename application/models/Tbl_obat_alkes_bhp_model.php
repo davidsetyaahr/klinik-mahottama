@@ -68,7 +68,7 @@ class Tbl_obat_alkes_bhp_model extends CI_Model
         return $getStok;
     }
 
-	function get_all_obat($id_klinik = null,$json=false,$jenis_barang=1)
+	function get_all_obat($id_klinik = null,$json=false,$jenis_barang=1,$kode_barang=null)
     {
         // $this->db->where('jenis_barang', '1'); //Get jenis barang = obat
         // if($id_klinik != null)
@@ -91,13 +91,15 @@ class Tbl_obat_alkes_bhp_model extends CI_Model
         $tipeGetData->join('tbl_inventory ti','tid1.id_inventory=ti.id_inventory');
         $tipeGetData->join('tbl_obat_alkes_bhp toa','tid1.kode_barang=toa.kode_barang');
         // $tipeGetData->where("ti.inv_type='RECEIPT_ORDER' OR ti.inv_type='RETURN_STUFF' AND ti.id_klinik=1 AND toa.jenis_barang=1");
+        $tipeGetData->where("ti.id_klinik",'1');
         if($jenis_barang!=null){
-            $whereJenis = "and  toa.jenis_barang='$jenis_barang'";
+            $tipeGetData->where("toa.jenis_barang",$jenis_barang);
         }
-        else{
-            $whereJenis = "";
+        
+        if($kode_barang!=null){
+            $tipeGetData->where("toa.kode_barang",$kode_barang);
         }
-        $tipeGetData->where("ti.id_klinik=1 $whereJenis");
+
         $tipeGetData->group_by("tid1.kode_barang");
 
         if($json){

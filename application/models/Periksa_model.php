@@ -181,5 +181,15 @@ class Periksa_model extends CI_Model
         $this->db->join('tbl_biaya b','pb.id_biaya = b.id_biaya');
         return $this->db->get_where('tbl_periksa_d_biaya pb',['pb.no_pendaftaran' => $noPendaftaran,'tipe_periksa' => $tipePeriksa])->result();
     }
+    function oldObat($noPendaftaran,$tipePeriksa){
+        $this->db->select('pdo.kode_barang,pdo.jumlah,pdo.harga_satuan,o.nama_barang,pdo.id_periksa_d_obat');
+        $this->db->join('tbl_obat_alkes_bhp o','pdo.kode_barang = o.kode_barang');
+        return $this->db->get_where('tbl_periksa_d_obat pdo',['pdo.no_pendaftaran' => $noPendaftaran,'pdo.tipe_periksa' => $tipePeriksa])->result();
+    }
+    function oldAlkes($noPendaftaran,$tipePeriksa){
+        $this->db->select('pda.kode_barang,pda.jumlah,pda.harga_satuan,o.nama_barang,pda.id_periksa_d_alkes');
+        $this->db->join('tbl_obat_alkes_bhp o','pda.kode_barang = o.kode_barang');
+        return $this->db->get_where('tbl_periksa_d_alkes pda',['pda.no_pendaftaran' => $noPendaftaran,'pda.tipe_periksa' => $tipePeriksa])->result();
+    }
 
 }

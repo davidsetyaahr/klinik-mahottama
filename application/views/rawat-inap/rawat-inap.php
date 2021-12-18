@@ -72,8 +72,8 @@
                                     <?php
                                         if($edit){
                                             foreach ($getObat as $key => $value) {
-                                                $data['value'] = $value;
-                                                $this->load->view('loop/loop-pilihan-obat', ['no' => $key,'selected' => $data]);
+                                                $getStok = $this->Tbl_obat_alkes_bhp_model->get_all_obat(null,false,1,$value->kode_barang);
+                                                $this->load->view('loop/loop-pilihan-obat', ['no' => $key,'selected' => $value,'stok' => $getStok]);
                                             }
                                         }
                                         else{
@@ -90,8 +90,8 @@
                                     <?php
                                         if($edit){
                                             foreach ($getAlkes as $key => $value) {
-                                                $data['value'] = $value;
-                                                $this->load->view('loop/loop-pilihan-alkes', ['no' => $key,'selected' => $data]);
+                                                $getStok = $this->Tbl_obat_alkes_bhp_model->get_all_obat(null,false,2,$value->kode_barang);
+                                                $this->load->view('loop/loop-pilihan-alkes', ['no' => $key,'selected' => $value,'stok' => $getStok]);
                                             }
                                         }
                                         else{
@@ -189,27 +189,6 @@
 </div>
 <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
 <script>
-        function editFieldsQtyBiaya(){
-            // var number = document.getElementById("qty").value;
-            var container = document.getElementById("container_biaya");
-            var input = document.createElement("input");
-            input.type = "number";
-            input.name = "edit_id_biaya";
-            input.value = "123";
-            container.appendChild(input);
-        }
-
-        function editFieldsQtyObat(){
-            // var number = document.getElementById("qty_obat").value;
-            var container = document.getElementById("container_obat");
-            var input = document.createElement("input");
-            input.type = "number";
-            input.name = "edit_id_obat";
-            input.value = "123";
-            container.append(input);
-        }
-</script>
-<script>
     $(document).ready(function() {
         <?php 
             if($edit){    
@@ -269,6 +248,66 @@
                 $("#row-biaya").append(`
                     <input type="hidden" name='del_id_detail_biaya[]' value='${idDetail}' class='del_id_detail_biaya'>
                 `)
+            })
+
+            $(".oldChangeQtyObat").change(function(){
+                var dataNo = $(this).closest('.loop-obat').attr('data-no')
+                var defaultObat = $(".loop-obat[data-no='"+dataNo+"'] .qty").attr('data-qty')
+                var newVal = $(this).val()
+                
+                if($(".upd_qty_obat[value='"+dataNo+"']").length==0 && defaultObat!=newVal && (newVal!='' && newVal!=0)){
+                    $(".loop-obat[data-no='"+dataNo+"']").append(`
+                        <input type="hidden" name='upd_qty_obat[]' value='${dataNo}' class='upd_qty_obat'>
+                    `)
+                }
+                
+                if($(".upd_qty_obat[value='"+dataNo+"']").length==1 && defaultObat==newVal){
+                    $(".upd_qty_obat[value='"+dataNo+"']").remove()
+                }
+            })
+
+            $(".oldRemoveObat").click(function(e){
+                e.preventDefault()
+                var dataNo = $(this).attr('data-no')
+                var idDetail = $(this).attr('data-iddetail')
+                
+                $("#row-obat").append(`
+                    <input type="hidden" name='del_id_detail_obat[]' value='${idDetail}' class='del_id_detail_obat'>
+                `)
+            })
+
+            $(".oldChangeQtyAlkes").change(function(){
+                var dataNo = $(this).closest('.loop-alkes').attr('data-no')
+                var defaultAlkes = $(".loop-alkes[data-no='"+dataNo+"'] .qty").attr('data-qty')
+                var newVal = $(this).val()
+                
+                if($(".upd_qty_alkes[value='"+dataNo+"']").length==0 && defaultAlkes!=newVal && (newVal!='' && newVal!=0)){
+                    $(".loop-alkes[data-no='"+dataNo+"']").append(`
+                        <input type="hidden" name='upd_qty_alkes[]' value='${dataNo}' class='upd_qty_alkes'>
+                    `)
+                }
+                
+                if($(".upd_qty_alkes[value='"+dataNo+"']").length==1 && defaultAlkes==newVal){
+                    $(".upd_qty_alkes[value='"+dataNo+"']").remove()
+                }
+            })
+
+            $(".oldRemoveAlkes").click(function(e){
+                e.preventDefault()
+                var dataNo = $(this).attr('data-no')
+                var idDetail = $(this).attr('data-iddetail')
+                
+                $("#row-alkes").append(`
+                    <input type="hidden" name='del_id_detail_alkes[]' value='${idDetail}' class='del_id_detail_alkes'>
+                    `)
+                })
+                
+            $(".oldChangeTindakan").change(function(){
+                if($('.is_tindakan_update').length==0){
+                    $("#row-tindakan").append(`
+                    <input type="hidden" name='is_tindakan_update' class='is_tindakan_update' value='true'>
+                    `)
+                }
             })
         <?php } ?>
 

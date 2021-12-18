@@ -219,16 +219,23 @@
                     })
                     $(".remove-obat").click(function(e){
                         e.preventDefault();
-                        var dataNo = $(this).attr('data-no')
-                        var dataRow = parseInt($('#row-obat').attr('data-row'))
-                        $('.loop-obat[data-no="'+dataNo+'"]').remove()
-                        $('#row-obat').attr('data-row',dataRow-1)
-                        totalObat()
-
+                        removeObat($(this))
                     })
                     $(".select2").select2()
                 }
             })
+        })
+        function removeObat(params){
+            var dataNo = params.attr('data-no')
+            var dataRow = parseInt($('#row-obat').attr('data-row'))
+            $('.loop-obat[data-no="'+dataNo+'"]').remove()
+            $('#row-obat').attr('data-row',dataRow-1)
+            totalObat()
+        }
+
+        $(".remove-obat").click(function(e){
+            e.preventDefault();
+            removeObat($(this))
         })
 
         $("#addItemAlkes").click(function(e){
@@ -257,18 +264,23 @@
                     })
                     $(".remove-alkes").click(function(e){
                         e.preventDefault();
-                        var dataNo = $(this).attr('data-no')
-                        var dataRow = parseInt($('#row-alkes').attr('data-row'))
-                        $('.loop-alkes[data-no="'+dataNo+'"]').remove()
-                        $('#row-alkes').attr('data-row',dataRow-1)
-                        totalAlkes()
-
+                        removeAlkes($(this))
                     })
                     $(".select2").select2()
                 }
             })
         })
-        
+        function removeAlkes(params){
+            var dataNo = params.attr('data-no')
+            var dataRow = parseInt($('#row-alkes').attr('data-row'))
+            $('.loop-alkes[data-no="'+dataNo+'"]').remove()
+            $('#row-alkes').attr('data-row',dataRow-1)
+            totalAlkes()
+        }        
+        $(".remove-alkes").click(function(e){
+            e.preventDefault();
+            removeAlkes($(this))
+        })
         $("#addItemTindakan").click(function(e){
             e.preventDefault();
             var dataRow = parseInt($('#row-tindakan').attr('data-row'))

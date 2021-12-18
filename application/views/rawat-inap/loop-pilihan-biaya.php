@@ -4,7 +4,7 @@
         <div id="container_biaya"></div>
         <select name="<?= isset($selected) ? 'old_' : '' ?>id_biaya[]" class="form-control <?= !isset($selected) ? 'select2' : '' ?> getBiaya tipe-biaya" style="width:100%" <?= isset($selected) ? 'readonly' : '' ?>>
         <?php 
-            if(!isset($selected)){00
+            if(!isset($selected)){
         ?>
         <option value="">---Pilih Biaya---</option>
         <?php
