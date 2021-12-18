@@ -129,9 +129,15 @@
             <?php
             $total_transaksi = 0;
             $i = 1;
+            $tipe = "";
+            $caption = ['','<td>Poli</p></td>','Rawat Inap','Operasi','Laboratorium','<td><p>Radiologi</td>'];
             foreach($transaksi_d as $data){
               if(strpos($data->deskripsi, 'Pembayaran Biaya Medis') === false){
                 if($data->amount_transaksi > 0){
+                  if($caption[$data->tipe_periksa]!=$tipe){
+                    echo $caption[$data->tipe_periksa];
+                }
+                $tipe = $caption[$data->tipe_periksa];
                   ?>
             <tr>
             <td><?php echo $data->deskripsi;?></td>
