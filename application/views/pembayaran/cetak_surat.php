@@ -130,7 +130,7 @@
             $total_transaksi = 0;
             $i = 1;
             $tipe = "";
-            $caption = ['','<td>Poli</p></td>','Rawat Inap','Operasi','Laboratorium','<td><p>Radiologi</td>'];
+            $caption = ['','<td>Poli : </p></td>','<td><p>Rawat Inap : </td>','<td><p>Operasi : </td>','<td><p>Laboratorium : </td>','<td><p>Radiologi : </td>'];
             foreach($transaksi_d as $data){
               if(strpos($data->deskripsi, 'Pembayaran Biaya Medis') === false){
                 if($data->amount_transaksi > 0){

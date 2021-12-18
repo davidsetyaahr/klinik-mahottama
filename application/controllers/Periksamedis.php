@@ -928,6 +928,8 @@ class Periksamedis extends CI_Controller
     }
     public function periksa_lab()
     {
+        // $lastIdLab = $this->db->get('tbl_periksa_lab')->row();
+        // var_dump($lastIdLab);
         $data_pendaftaran = $this->Pendaftaran_model->get_by_id($this->no_pendaftaran);
         $data_pasien = $this->Tbl_pasien_model->get_by_id($data_pendaftaran->no_rekam_medis);
         $date_now = date('Ymd', time());
@@ -1250,7 +1252,6 @@ class Periksamedis extends CI_Controller
         $nop = $this->Periksa_model->getId($data_pendaftaran_radiologi->no_pendaftaran);
         // $no_rm = $this->data['no_periksa'] = $data_pendaftaran_radiologi->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran_radiologi->no_rekam_medis;
         $no_rm = $nop->no_periksa;
-        print_r($no_rm);
         $lastId = $this->db->select_max('id_transaksi')->from('tbl_transaksi')->get()->row();
 
         // insert periksa radiologi
@@ -1529,13 +1530,15 @@ class Periksamedis extends CI_Controller
         $data_pendaftaran = $this->Pendaftaran_model->get_by_id($this->no_pendaftaran);
         $data_pasien = $this->Tbl_pasien_model->get_by_id($data_pendaftaran->no_rekam_medis);
         $date_now = date('Ymd', time());
+        $nop = $this->Periksa_model->getId($data_pendaftaran->no_pendaftaran);
 
         if (isset($data_pasien)) {
             $this->data['nama_lengkap'] = $data_pasien->nama_lengkap;
             $this->data['alamat'] = $data_pasien->alamat . ' ' . $data_pasien->kabupaten . ' ' . 'RT ' . $data_pasien->rt . ' ' . 'RW ' . $data_pasien->rw;
         }
 
-        $this->data['no_periksa'] = $data_pendaftaran->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran->no_rekam_medis;
+        // $this->data['no_periksa'] = $data_pendaftaran->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran->no_rekam_medis;
+        $this->data['no_periksa'] = $nop->no_periksa;
         $this->data['tindakan'] = $this->db->get('tbl_tindakan')->result();
         $this->data['jenis'] = $this->db->get('tbl_jenis_operasi')->result();
         $this->data['obat'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 1);
@@ -1548,7 +1551,9 @@ class Periksamedis extends CI_Controller
     {
         $data_pendaftaran_operasi = $this->Pendaftaran_model->get_by_id($this->no_pendaftaran);
         $date_now = date('Ymd', time());
-        $no_rm = $this->data['no_periksa'] = $data_pendaftaran_operasi->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran_operasi->no_rekam_medis;
+        // $no_rm = $this->data['no_periksa'] = $data_pendaftaran_operasi->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran_operasi->no_rekam_medis;
+        $nop = $this->Periksa_model->getId($data_pendaftaran_operasi->no_pendaftaran);
+        $no_rm = $nop->no_periksa;
         $data_transaksi = array(
             'kode_transaksi' => 'PRKSOPR',
             'id_klinik' => $this->id_klinik,
