@@ -32,6 +32,9 @@
                                     <div class="form-group" id="row-kamar" data-row='<?= $edit ?  count((array)$getKamar) : 0 ?>'>
                                         <?php
                                             if($edit){
+                                        ?>
+                                            <input type="hidden" name="isEdit" value="true">
+                                        <?php
                                                 foreach ($getKamar as $key => $value) {
                                                     $data['value'] = $value;
                                                     $data['getKamarByKategori'] = $this->db->get_where('tbl_kamar',['id_kategori_kamar' => $value->id_kategori_kamar,'status' => '0'])->result();
@@ -203,14 +206,36 @@
                 var dataNo = $(this).closest('.loop-kamar').attr('data-no')
                 var defaultHari = $(".loop-kamar[data-no='"+dataNo+"'] .hari").attr('data-hari')
                 var newVal = $(this).val()
-                if($(".upd_jml_hari[value='"+dataNo+"']").length==0 && defaultHari!=newVal && (newVal!='' && newVal!=0)){
+                var idDetail = $(".loop-kamar[data-no='"+dataNo+"']").attr('data-iddetail')
+                if($(".upd_jml_hari_id[value='"+idDetail+"']").length==0 && defaultHari!=newVal && (newVal!='' && newVal!=0)){
                     $(".loop-kamar[data-no='"+dataNo+"']").append(`
-                        <input type="hidden" name='upd_jml_hari[]' value='${dataNo}' class='upd_jml_hari'>
+                        <input type="hidden" name='upd_jml_hari_id[]' value='${idDetail}' class='upd_jml_hari_id'>
+                        <input type="hidden" name='upd_jml_hari_val[]' value='${newVal}' class='upd_jml_hari_val'>
                     `)
                 }
                 
-                if($(".upd_jml_hari[value='"+dataNo+"']").length==1 && defaultHari==newVal){
-                    $(".upd_jml_hari[value='"+dataNo+"']").remove()
+                if($(".upd_jml_hari_id[value='"+idDetail+"']").length==1 && defaultHari==newVal){
+                    $(".upd_jml_hari_id[value='"+dataNo+"']").remove()
+                    $(".upd_jml_hari_val[value='"+dataNo+"']").remove()
+                }
+            })
+            
+            $(".oldChangeKamar").change(function(){
+                var dataNo = $(this).closest('.loop-kamar').attr('data-no')
+                var defaultIdKamar = $(".loop-kamar[data-no='"+dataNo+"'] .idKamar").attr('data-idkamar')
+                var newVal = $(this).val()
+                var idDetail = $(".loop-kamar[data-no='"+dataNo+"']").attr('data-iddetail')
+
+                if($(".upd_id_kamar_id[value='"+idDetail+"']").length==0 && defaultIdKamar!=newVal && (newVal!='' && newVal!=0)){
+                    $(".loop-kamar[data-no='"+dataNo+"']").append(`
+                        <input type="hidden" name='upd_id_kamar_id[]' value='${idDetail}' class='upd_id_kamar_id'>
+                        <input type="hidden" name='upd_id_kamar_val[]' value='${newVal}' class='upd_id_kamar_val'>
+                    `)
+                }
+                
+                if($(".upd_id_kamar_id[value='"+idDetail+"']").length==1 && defaultIdKamar==newVal){
+                    $(".upd_id_kamar_id[value='"+dataNo+"']").remove()
+                    $(".upd_id_kamar_val[value='"+dataNo+"']").remove()
                 }
             })
 

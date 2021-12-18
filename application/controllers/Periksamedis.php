@@ -1780,7 +1780,7 @@ class Periksamedis extends CI_Controller
         $date_now = date('Ymd', time());
         $no_rm = $this->data['no_periksa'] = $data_pendaftaran->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran->no_rekam_medis;
         $data_transaksi = array(
-            'kode_transaksi' => 'PRKSLAB',
+            'kode_transaksi' => 'PRKSRAI',
             'id_klinik' => $this->id_klinik,
             'no_transaksi' => $no_rm,
             'tgl_transaksi' => date('Y-m-d', time()),
@@ -1789,37 +1789,74 @@ class Periksamedis extends CI_Controller
 
         $data_transaksi_d = array();
 
-        //insert periksa lab
-        $periksaRawatInap = array(
-            'no_pendaftaran' => $this->no_pendaftaran,
-            'no_periksa' => $no_rm,
-        );
-        $this->db->insert('tbl_periksa_rawat_inap', $periksaRawatInap);
-
-        foreach ($this->input->post('id_kamar') as $key => $value) {
-            $this->db->select('item,harga');
-            $lab = $this->db->get_where('tbl_tipe_periksa_lab', ['id_tipe' => $value])->row();
+        if(empty($_POST['isEdit'])){
+            //insert periksa lab
+            $periksaRawatInap = array(
+                'no_pendaftaran' => $this->no_pendaftaran,
+                'no_periksa' => $no_rm,
+            );
+            $this->db->insert('tbl_periksa_rawat_inap', $periksaRawatInap);
 
             $this->db->select('max(id_periksa_rawat_inap) lastId');
-            $lastId = $this->db->get('tbl_periksa_rawat_inap')->row();
+            $getLastId = $this->db->get('tbl_periksa_rawat_inap')->row();
 
-            $periksaRawatInapDetail = array(
-                'id_periksa_rawat_inap' => $lastId->lastId,
-                'id_kamar' => $value,
-                'biaya_per_hari' => $_POST['harga_kamar'][$key],
-                'jml_hari' => $_POST['hari'][$key],
-            );
-            $this->db->insert('tbl_periksa_rawat_inap_detail', $periksaRawatInapDetail);
+            $lastIdRawatInap = $getLastId->lastId;
+        }
+        else{
+            $this->db->select('id_periksa_rawat_inap');
+            $getIdPeriksaRawatInap = $this->db->get_where('tbl_periksa_rawat_inap',['no_pendaftaran' => $this->no_pendaftaran])->row();
+            $lastIdRawatInap = $getIdPeriksaRawatInap->id_periksa_rawat_inap;
         }
 
-        // input inventory barang
-        $kode_receipt1 = 'RCP' . time();
-        $tb_inv1 = array(
-            'id_inventory'  => $kode_receipt1,
-            'inv_type'      => 'TRX_STUFF',
-            'id_klinik'     => $this->id_klinik,
-        );
-        $this->Transaksi_obat_model->insert('tbl_inventory', $tb_inv1);
+        //insert rwawat inap detail  (old and new)
+        if(isset($_POST['id_kamar'])){
+            foreach ($this->input->post('id_kamar') as $key => $value) {
+                $periksaRawatInapDetail = array(
+                    'id_periksa_rawat_inap' => $lastIdRawatInap,
+                    'id_kamar' => $value,
+                    'biaya_per_hari' => $_POST['harga_kamar'][$key],
+                    'jml_hari' => $_POST['hari'][$key],
+                );
+                $this->db->insert('tbl_periksa_rawat_inap_detail', $periksaRawatInapDetail);
+
+                $this->db->update('tbl_kamar',['status' => '1'],['id_kamar' => $value]);
+            }
+        }
+
+        //update id_kamar (old only)
+        if(isset($_POST['upd_id_kamar_id'])){
+            foreach ($_POST['upd_id_kamar_id'] as $key => $value) {
+                $this->db->update('tbl_periksa_rawat_inap_detail',['id_kamar' => $_POST['upd_id_kamar_val'][$key]],['id_detail' => $value]);
+            }
+        }
+
+        //update jml hari (old only)
+        if(isset($_POST['upd_jml_hari_id'])){
+            foreach ($_POST['upd_jml_hari_id'] as $key => $value) {
+                $this->db->update('tbl_periksa_rawat_inap_detail',['biaya_per_hari' => $_POST['old_harga_kamar'][$key],'jml_hari' => $_POST['upd_jml_hari_val'][$key]],['id_detail' => $value]);
+            }
+        }
+        
+        //delete rawat inap detail  (old only)
+        if(isset($_POST['del_id_detail_rawat_inap'])){
+            foreach ($_POST['del_id_detail_rawat_inap'] as $key => $value) {
+                $this->db->delete('tbl_periksa_rawat_inap_detail',['id_detail' => $value]);
+            }
+        }
+
+        if(empty($_POST['isEdit'])){
+            // input inventory barang
+            $kode_receipt1 = 'RCP' . time();
+            $tb_inv1 = array(
+                'id_inventory'  => $kode_receipt1,
+                'inv_type'      => 'TRX_STUFF',
+                'id_klinik'     => $this->id_klinik,
+            );
+            $this->Transaksi_obat_model->insert('tbl_inventory', $tb_inv1);
+        }
+        else{
+            
+        }
 
         //periksa_d_obat
         foreach ($_POST['kode_obat'] as $key => $value) {

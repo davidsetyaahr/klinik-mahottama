@@ -1,4 +1,4 @@
-<div class="row loop-kamar" id="<?= $no ?>" data-no="<?= $no ?>">
+<div class="row loop-kamar" id="<?= $no ?>" data-no="<?= $no ?>" <?= isset($selected) ? "data-idDetail='".$selected['value']->id_detail."'" : '' ?>>
 <br>
     <div class="col-md-2">
         <!-- <input type="text" name="edit_id_kamar" id="edit_id_kamar"> -->
@@ -22,7 +22,7 @@
         </select>
     </div>
     <div class="col-md-3">
-        <select name="<?= isset($selected) ? 'old_' : '' ?>id_kamar[]" class="form-control select2 idKamar" style="width:100%" >
+        <select name="<?= isset($selected) ? 'old_' : '' ?>id_kamar[]" class="form-control select2 idKamar <?= isset($selected) ? 'oldChangeKamar' : '' ?>" style="width:100%" <?= isset($selected) ? "data-idkamar='".$selected['value']->id_kamar."'" : ''  ?> >
             <?php 
                 if(isset($selected)){
                     echo "<option value='".$selected['value']->id_kamar."'>".$selected['value']->no_kamar."</option>";
