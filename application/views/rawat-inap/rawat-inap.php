@@ -207,16 +207,19 @@
                 var defaultHari = $(".loop-kamar[data-no='"+dataNo+"'] .hari").attr('data-hari')
                 var newVal = $(this).val()
                 var idDetail = $(".loop-kamar[data-no='"+dataNo+"']").attr('data-iddetail')
+
                 if($(".upd_jml_hari_id[value='"+idDetail+"']").length==0 && defaultHari!=newVal && (newVal!='' && newVal!=0)){
                     $(".loop-kamar[data-no='"+dataNo+"']").append(`
                         <input type="hidden" name='upd_jml_hari_id[]' value='${idDetail}' class='upd_jml_hari_id'>
-                        <input type="hidden" name='upd_jml_hari_val[]' value='${newVal}' class='upd_jml_hari_val'>
+                        <input type="hidden" name='upd_jml_hari_val[]' value='${newVal}' data-id='${idDetail}' class='upd_jml_hari_val'>
                     `)
                 }
-                
-                if($(".upd_jml_hari_id[value='"+idDetail+"']").length==1 && defaultHari==newVal){
-                    $(".upd_jml_hari_id[value='"+dataNo+"']").remove()
-                    $(".upd_jml_hari_val[value='"+dataNo+"']").remove()
+                else if($(".upd_jml_hari_id[value='"+idDetail+"']").length==1 && defaultHari==newVal){
+                    $(".upd_jml_hari_id[value='"+idDetail+"']").remove()
+                    $(".upd_jml_hari_val[data-id='"+idDetail+"']").remove()
+                }
+                else if($(".upd_jml_hari_id[value='"+idDetail+"']").length==1 && newVal!=$(".upd_jml_hari_val[data-id='"+idDetail+"']").val()){
+                    $(".upd_jml_hari_val[data-id='"+idDetail+"']").val(newVal)
                 }
             })
             
@@ -229,13 +232,15 @@
                 if($(".upd_id_kamar_id[value='"+idDetail+"']").length==0 && defaultIdKamar!=newVal && (newVal!='' && newVal!=0)){
                     $(".loop-kamar[data-no='"+dataNo+"']").append(`
                         <input type="hidden" name='upd_id_kamar_id[]' value='${idDetail}' class='upd_id_kamar_id'>
-                        <input type="hidden" name='upd_id_kamar_val[]' value='${newVal}' class='upd_id_kamar_val'>
+                        <input type="hidden" name='upd_id_kamar_val[]' value='${newVal}' data-id='${idDetail}' class='upd_id_kamar_val'>
                     `)
                 }
-                
-                if($(".upd_id_kamar_id[value='"+idDetail+"']").length==1 && defaultIdKamar==newVal){
-                    $(".upd_id_kamar_id[value='"+dataNo+"']").remove()
-                    $(".upd_id_kamar_val[value='"+dataNo+"']").remove()
+                else if($(".upd_id_kamar_id[value='"+idDetail+"']").length==1 && defaultIdKamar==newVal){
+                    $(".upd_id_kamar_id[value='"+idDetail+"']").remove()
+                    $(".upd_id_kamar_val[data-id='"+idDetail+"']").remove()
+                }
+                else if($(".upd_id_kamar_id[value='"+idDetail+"']").length==1 && newVal!=$(".upd_id_kamar_val[data-id='"+idDetail+"']").val()){
+                    $(".upd_id_kamar_val[data-id='"+idDetail+"']").val(newVal)
                 }
             })
 
@@ -253,15 +258,20 @@
                 var dataNo = $(this).closest('.loop-biaya').attr('data-no')
                 var defaultBiaya = $(".loop-biaya[data-no='"+dataNo+"'] .qty_biaya").attr('data-qty')
                 var newVal = $(this).val()
+                var idDetail = $(".loop-biaya[data-no='"+dataNo+"']").attr('data-iddetail')
                 
-                if($(".upd_qty_biaya[value='"+dataNo+"']").length==0 && defaultBiaya!=newVal && (newVal!='' && newVal!=0)){
+                if($(".upd_qty_biaya_id[value='"+idDetail+"']").length==0 && defaultBiaya!=newVal && (newVal!='' && newVal!=0)){
                     $(".loop-biaya[data-no='"+dataNo+"']").append(`
-                        <input type="hidden" name='upd_qty_biaya[]' value='${dataNo}' class='upd_qty_biaya'>
+                        <input type="hidden" name='upd_qty_biaya_id[]' value='${idDetail}' class='upd_qty_biaya_id'>
+                        <input type="hidden" name='upd_qty_biaya_val[]' value='${newVal}' data-id='${idDetail}' class='upd_qty_biaya_val'>
                     `)
                 }
-                
-                if($(".upd_qty_biaya[value='"+dataNo+"']").length==1 && defaultBiaya==newVal){
-                    $(".upd_qty_biaya[value='"+dataNo+"']").remove()
+                else if($(".upd_qty_biaya_id[value='"+idDetail+"']").length==1 && defaultBiaya==newVal){
+                    $(".upd_qty_biaya_id[value='"+idDetail+"']").remove()
+                    $(".upd_qty_biaya_val[data-id='"+idDetail+"']").remove()
+                }
+                else if($(".upd_qty_biaya_id[value='"+idDetail+"']").length==1 && newVal!=$(".upd_qty_biaya_val[data-id='"+idDetail+"']").val()){
+                    $(".upd_qty_biaya_val[data-id='"+idDetail+"']").val(newVal)
                 }
             })
 
@@ -279,15 +289,23 @@
                 var dataNo = $(this).closest('.loop-obat').attr('data-no')
                 var defaultObat = $(".loop-obat[data-no='"+dataNo+"'] .qty").attr('data-qty')
                 var newVal = $(this).val()
+                var idDetail = $(".loop-obat[data-no='"+dataNo+"']").attr('data-iddetail')
+                var kodeObat = $(".loop-obat[data-no='"+dataNo+"'] .obat").val()
                 
-                if($(".upd_qty_obat[value='"+dataNo+"']").length==0 && defaultObat!=newVal && (newVal!='' && newVal!=0)){
+                if($(".upd_qty_obat_id[value='"+idDetail+"']").length==0 && defaultObat!=newVal && (newVal!='' && newVal!=0)){
                     $(".loop-obat[data-no='"+dataNo+"']").append(`
-                        <input type="hidden" name='upd_qty_obat[]' value='${dataNo}' class='upd_qty_obat'>
+                        <input type="hidden" name='upd_qty_obat_id[]' value='${idDetail}' class='upd_qty_obat_id'>
+                        <input type="hidden" name='upd_qty_obat_val[]' data-id='${idDetail}' value='${newVal}' class='upd_qty_obat_val'>
+                        <input type="hidden" name='upd_qty_obat_kode[]' value='${kodeObat}' class='upd_qty_obat_kode'>
                     `)
                 }
-                
-                if($(".upd_qty_obat[value='"+dataNo+"']").length==1 && defaultObat==newVal){
-                    $(".upd_qty_obat[value='"+dataNo+"']").remove()
+                else if($(".upd_qty_obat_id[value='"+idDetail+"']").length==1 && defaultObat==newVal){
+                    $(".upd_qty_obat_id[value='"+idDetail+"']").remove()
+                    $(".upd_qty_obat_val[data-id='"+idDetail+"']").remove()
+                    $(".upd_qty_obat_kode[value='"+kodeObat+"']").remove()
+                }
+                else if($(".upd_qty_obat_id[value='"+idDetail+"']").length==1 && newVal!=$(".upd_qty_obat_val[data-id='"+idDetail+"']").val()){
+                    $(".upd_qty_obat_val[data-id='"+idDetail+"']").val(newVal)
                 }
             })
 
@@ -295,9 +313,11 @@
                 e.preventDefault()
                 var dataNo = $(this).attr('data-no')
                 var idDetail = $(this).attr('data-iddetail')
+                var kodeObat = $(".loop-obat[data-no='"+dataNo+"'] .obat").val()
                 
                 $("#row-obat").append(`
                     <input type="hidden" name='del_id_detail_obat[]' value='${idDetail}' class='del_id_detail_obat'>
+                    <input type="hidden" name='del_id_detail_obat_kode[]' value='${kodeObat}' class='del_id_detail_obat_kode'>
                 `)
             })
 
@@ -305,15 +325,23 @@
                 var dataNo = $(this).closest('.loop-alkes').attr('data-no')
                 var defaultAlkes = $(".loop-alkes[data-no='"+dataNo+"'] .qty").attr('data-qty')
                 var newVal = $(this).val()
+                var idDetail = $(".loop-alkes[data-no='"+dataNo+"']").attr('data-iddetail')
+                var kodeAlkes = $(".loop-alkes[data-no='"+dataNo+"'] .alkes").val()
                 
-                if($(".upd_qty_alkes[value='"+dataNo+"']").length==0 && defaultAlkes!=newVal && (newVal!='' && newVal!=0)){
+                if($(".upd_qty_alkes_id[value='"+idDetail+"']").length==0 && defaultAlkes!=newVal && (newVal!='' && newVal!=0)){
                     $(".loop-alkes[data-no='"+dataNo+"']").append(`
-                        <input type="hidden" name='upd_qty_alkes[]' value='${dataNo}' class='upd_qty_alkes'>
+                        <input type="hidden" name='upd_qty_alkes_id[]' value='${idDetail}' class='upd_qty_alkes_id'>
+                        <input type="hidden" name='upd_qty_alkes_val[]' value='${newVal}' data-id='${idDetail}' class='upd_qty_alkes_val'>
+                        <input type="hidden" name='upd_qty_alkes_kode[]' value='${kodeAlkes}' class='upd_qty_alkes_kode'>
                     `)
                 }
-                
-                if($(".upd_qty_alkes[value='"+dataNo+"']").length==1 && defaultAlkes==newVal){
-                    $(".upd_qty_alkes[value='"+dataNo+"']").remove()
+                else if($(".upd_qty_alkes_id[value='"+idDetail+"']").length==1 && defaultAlkes==newVal){
+                    $(".upd_qty_alkes_id[value='"+idDetail+"']").remove()
+                    $(".upd_qty_alkes_val[data-id='"+idDetail+"']").remove()
+                    $(".upd_qty_alkes_kode[value='"+kodeAlkes+"']").remove()
+                }
+                else if($(".upd_qty_alkes_id[value='"+idDetail+"']").length==1 && newVal!=$(".upd_qty_alkes_val[data-id='"+idDetail+"']").val()){
+                    $(".upd_qty_alkes_val[data-id='"+idDetail+"']").val(newVal)
                 }
             })
 
@@ -321,9 +349,11 @@
                 e.preventDefault()
                 var dataNo = $(this).attr('data-no')
                 var idDetail = $(this).attr('data-iddetail')
+                var kodeAlkes = $(".loop-alkes[data-no='"+dataNo+"'] .alkes").val()
                 
                 $("#row-alkes").append(`
                     <input type="hidden" name='del_id_detail_alkes[]' value='${idDetail}' class='del_id_detail_alkes'>
+                    <input type="hidden" name='del_id_detail_alkes_kode[]' value='${kodeAlkes}' class='del_id_detail_alkes_kode'>
                     `)
                 })
                 

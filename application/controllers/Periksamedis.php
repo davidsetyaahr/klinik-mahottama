@@ -409,7 +409,7 @@ class Periksamedis extends CI_Controller
             //TRANSAKSI
             $date_now_trx = date('Y-m-d', time());
             $data_transkasi = array(
-                'kode_transaksi' => 'PRKS',
+                'kode_transaksi' => 'PRKSPLI',
                 'id_klinik' => $data_pendaftaran->id_klinik,
                 'no_transaksi' => $this->input->post('no_periksa'),
                 'id_periksa_lanjutan' => $lastId,
@@ -871,7 +871,7 @@ class Periksamedis extends CI_Controller
         $data_pendaftaran = $this->Pendaftaran_model->get_by_id($this->no_pendaftaran);
 
         $data_transaksi = array(
-            'kode_transaksi' => 'PRKSJASA',
+            'kode_transaksi' => 'PRKSJSA',
             'id_klinik' => $this->id_klinik,
             'no_transaksi' => $this->input->post('no_periksa'),
             'tgl_transaksi' => date('Y-m-d', time()),
@@ -1866,136 +1866,242 @@ class Periksamedis extends CI_Controller
             }
         }
 
+        $getIdPeriksaLanjutan = $this->Periksa_model->getIdPeriksaLanjutan($this->no_pendaftaran,'2')->row(); 
+
+        // input inventory barang
         if(empty($_POST['isEdit'])){
-            // input inventory barang
             $kode_receipt1 = 'RCP' . time();
             $tb_inv1 = array(
                 'id_inventory'  => $kode_receipt1,
                 'inv_type'      => 'TRX_STUFF',
+                'id_periksa_lanjutan' => $getIdPeriksaLanjutan->id_periksa,
                 'id_klinik'     => $this->id_klinik,
             );
             $this->Transaksi_obat_model->insert('tbl_inventory', $tb_inv1);
         }
         else{
-            
-        }
-
-        //periksa_d_obat
-        foreach ($_POST['kode_obat'] as $key => $value) {
-            $det_inv1 = array(
-                'id_inventory' => $kode_receipt1,
-                'kode_barang' => $value,
-                'jumlah' => $_POST['jml_obat'][$key],
-                'harga' => $_POST['harga_obat'][$key],
-            );
-            $this->Transaksi_obat_model->insert('tbl_inventory_detail', $det_inv1);
-            
-            $periksa_d_obat = array(
-                'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $data_transaksi['no_transaksi'],
-                'kode_barang' => $value,
-                'jumlah' => $_POST['jml_obat'][$key],
-                'harga_satuan' => $_POST['harga_obat'][$key],
-                'tipe_periksa' => '2',
-            );
-            $this->db->insert('tbl_periksa_d_obat',$periksa_d_obat);
-        }
-
-        //periksa_d_alkes
-        foreach ($_POST['kode_alkes'] as $key => $value) {
-            $det_inv1 = array(
-                'id_inventory' => $kode_receipt1,
-                'kode_barang' => $value,
-                'jumlah' => $_POST['jml_alkes'][$key],
-                'harga' => $_POST['harga_alkes'][$key],
-            );
-            $this->Transaksi_obat_model->insert('tbl_inventory_detail', $det_inv1);
-            
-            $periksa_d_alkes = array(
-                'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $data_transaksi['no_transaksi'],
-                'kode_barang' => $value,
-                'jumlah' => $_POST['jml_alkes'][$key],
-                'harga_satuan' => $_POST['harga_alkes'][$key],
-                'tipe_periksa' => '2',
-            );
-            $this->db->insert('tbl_periksa_d_alkes',$periksa_d_alkes);
-        }
-
-        //d_periksa_tindakan
-        foreach ($_POST['tindakan'] as $key => $value) {
-            $this->db->select('biaya');
-            $tindakan = $this->db->get_where('tbl_tindakan',['kode_tindakan' => $value])->row();
-            $periksa_d_tindakan = array(
-                'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $data_transaksi['no_transaksi'],
-                'kode_tindakan' => $value,
-                'biaya' => $tindakan->biaya,
-                'tipe_periksa' => '2',
-            );
-            $this->db->insert('tbl_periksa_d_tindakan',$periksa_d_tindakan);
-        }
-
-        //d_periksa_biaya
-        foreach ($_POST['id_biaya'] as $key => $value) {
-            $periksa_d_biaya = array(
-                'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $data_transaksi['no_transaksi'],
-                'id_biaya' => $value,
-                'jumlah' => $_POST['qty_biaya'][$key],
-                'biaya' => $_POST['biaya'][$key],
-                'tipe_periksa' => '2',
-            );
-            $this->db->insert('tbl_periksa_d_biaya',$periksa_d_biaya);
-        }
-
-        $lastId = $this->db->select_max('id_transaksi')->from('tbl_transaksi')->get()->row();
-        if($_POST['totalKamar']!=0){
-            $data_transaksi_d[] = array(
-                'id_transaksi' => $lastId->id_transaksi,
-                'deskripsi' => 'Biaya Kamar Rawat Inap',
-                'amount_transaksi' => $_POST['totalKamar'],
-                'dc' => 'd'
-            );
+            $this->db->select('id_inventory');
+            $getKodeReceipt = $this->db->get_where('tbl_inventory',['id_periksa_lanjutan' => $getIdPeriksaLanjutan->id_periksa])->row();
+            $kode_receipt1 = $getKodeReceipt->id_inventory;
         }
         
-        if($_POST['totalObat']!=0){
-            $data_transaksi_d[] = array(
-                'id_transaksi' => $lastId->id_transaksi,
-                'deskripsi' => 'Biaya Obat',
-                'amount_transaksi' => $_POST['totalObat'],
-                'dc' => 'd'
-            );
-        }
-        
-        if($_POST['totalAlkes']!=0){
-            $data_transaksi_d[] = array(
-                'id_transaksi' => $lastId->id_transaksi,
-                'deskripsi' => 'Biaya BMHP',
-                'amount_transaksi' => $_POST['totalAlkes'],
-                'dc' => 'd'
-            );
-        }
-
-        if($_POST['totalTindakan']!=0){
-            $data_transaksi_d[] = array(
-                'id_transaksi' => $lastId->id_transaksi,
-                'deskripsi' => 'Biaya Tindakan',
-                'amount_transaksi' => $_POST['totalTindakan'],
-                'dc' => 'd'
-            );
-        }
-        
-        if($_POST['totalBiaya']!=0){
-            $data_transaksi_d[] = array(
-                'id_transaksi' => $lastId->id_transaksi,
-                'deskripsi' => 'Biaya Lainnya',
-                'amount_transaksi' => $_POST['totalBiaya'],
-                'dc' => 'd'
-            );
+        //insert periksa_d_obat (old and new)
+        if(isset($_POST['kode_obat'])){
+            foreach ($_POST['kode_obat'] as $key => $value) {
+                $det_inv1 = array(
+                    'id_inventory' => $kode_receipt1,
+                    'kode_barang' => $value,
+                    'jumlah' => $_POST['jml_obat'][$key],
+                    'harga' => $_POST['harga_obat'][$key],
+                );
+                $this->Transaksi_obat_model->insert('tbl_inventory_detail', $det_inv1);
+                
+                $periksa_d_obat = array(
+                    'no_pendaftaran' => $this->no_pendaftaran,
+                    'no_periksa' => $data_transaksi['no_transaksi'],
+                    'kode_barang' => $value,
+                    'jumlah' => $_POST['jml_obat'][$key],
+                    'harga_satuan' => $_POST['harga_obat'][$key],
+                    'tipe_periksa' => '2',
+                );
+                $this->db->insert('tbl_periksa_d_obat',$periksa_d_obat);
+            }
         }
 
-        $this->Transaksi_model->insert($data_transaksi, $data_transaksi_d);
+        //update qty periksa obat (old only)
+        if(isset($_POST['upd_qty_obat_id'])){
+            foreach ($_POST['upd_qty_obat_id'] as $key => $value) {
+                $jmlObat = $_POST['upd_qty_obat_val'][$key];
+                $kodeObat = $_POST['upd_qty_obat_kode'][$key];
+                $this->db->update('tbl_inventory_detail',['jumlah' => $jmlObat],['id_inventory' => $kode_receipt1,'kode_barang' => $kodeObat]);
+                $this->db->update('tbl_periksa_d_obat',['jumlah' => $jmlObat],['id_periksa_d_obat' => $value]);
+            }
+        }
+        
+        //delete periksa obat (old only)
+        if(isset($_POST['del_id_detail_obat'])){
+            foreach ($_POST['del_id_detail_obat'] as $key => $value) {
+                $kodeObat = $_POST['del_id_detail_obat_kode'][$key];
+                $this->db->delete('tbl_inventory_detail',['id_inventory' => $kode_receipt1,'kode_barang' => $kodeObat]);
+                $this->db->delete('tbl_periksa_d_obat',['id_periksa_d_obat' => $value]);
+            }       
+        }
+
+        //insert periksa_d_alkes (old and new)
+        if(isset($_POST['kode_alkes'])){
+            foreach ($_POST['kode_alkes'] as $key => $value) {
+                $det_inv1 = array(
+                    'id_inventory' => $kode_receipt1,
+                    'kode_barang' => $value,
+                    'jumlah' => $_POST['jml_alkes'][$key],
+                    'harga' => $_POST['harga_alkes'][$key],
+                );
+                $this->Transaksi_obat_model->insert('tbl_inventory_detail', $det_inv1);
+                
+                $periksa_d_alkes = array(
+                    'no_pendaftaran' => $this->no_pendaftaran,
+                    'no_periksa' => $data_transaksi['no_transaksi'],
+                    'kode_barang' => $value,
+                    'jumlah' => $_POST['jml_alkes'][$key],
+                    'harga_satuan' => $_POST['harga_alkes'][$key],
+                    'tipe_periksa' => '2',
+                );
+                $this->db->insert('tbl_periksa_d_alkes',$periksa_d_alkes);
+            }
+        }
+
+        //update qty periksa obat (old only)
+        if(isset($_POST['upd_qty_alkes_id'])){
+            foreach ($_POST['upd_qty_alkes_id'] as $key => $value) {
+                $jmlAlkes = $_POST['upd_qty_alkes_val'][$key];
+                $kodeAlkes = $_POST['upd_qty_alkes_kode'][$key];
+                $this->db->update('tbl_inventory_detail',['jumlah' => $jmlAlkes],['id_inventory' => $kode_receipt1,'kode_barang' => $kodeAlkes]);
+                $this->db->update('tbl_periksa_d_alkes',['jumlah' => $jmlAlkes],['id_periksa_d_alkes' => $value]);
+            }
+        }
+        
+        //delete periksa Alkes (old only)
+        if(isset($_POST['del_id_detail_alkes'])){
+            foreach ($_POST['del_id_detail_alkes'] as $key => $value) {
+                $kodeAlkes = $_POST['del_id_detail_alkes_kode'][$key];
+                $this->db->delete('tbl_inventory_detail',['id_inventory' => $kode_receipt1,'kode_barang' => $kodeAlkes]);
+                $this->db->delete('tbl_periksa_d_alkes',['id_periksa_d_alkes' => $value]);
+            }       
+        }
+
+        
+        //d_periksa_tindakan (new only)
+        if(empty($_POST['isEdit'])){
+            foreach ($_POST['tindakan'] as $key => $value) {
+                $this->db->select('biaya');
+                $tindakan = $this->db->get_where('tbl_tindakan',['kode_tindakan' => $value])->row();
+                $periksa_d_tindakan = array(
+                    'no_pendaftaran' => $this->no_pendaftaran,
+                    'no_periksa' => $data_transaksi['no_transaksi'],
+                    'kode_tindakan' => $value,
+                    'biaya' => $tindakan->biaya,
+                    'tipe_periksa' => '2',
+                );
+                $this->db->insert('tbl_periksa_d_tindakan',$periksa_d_tindakan);
+            }
+        }
+        else{ //d_periksa_tindakan (old only)
+            if(isset($_POST['is_tindakan_update'])){
+                foreach ($_POST['tindakan'] as $key => $value) {
+                    $cekTindakan = $this->db->get_where('tbl_periksa_d_tindakan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2','kode_tindakan' => $value])->num_rows();
+                    if($cekTindakan==0){
+                        $this->db->select('biaya');
+                        $tindakan = $this->db->get_where('tbl_tindakan',['kode_tindakan' => $value])->row();
+                        $periksa_d_tindakan = array(
+                            'no_pendaftaran' => $this->no_pendaftaran,
+                            'no_periksa' => $data_transaksi['no_transaksi'],
+                            'kode_tindakan' => $value,
+                            'biaya' => $tindakan->biaya,
+                            'tipe_periksa' => '2',
+                        );
+                        $this->db->insert('tbl_periksa_d_tindakan',$periksa_d_tindakan);
+                    }
+                }
+                $this->db->select('kode_tindakan');
+                $getTindakanRawatInap =  $this->db->get_where('tbl_periksa_d_tindakan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2'])->result();
+
+                foreach ($getTindakanRawatInap as $key => $value) {
+                    if(!in_array($value->kode_tindakan,$_POST['tindakan'])){
+                        $this->db->delete('tbl_periksa_d_tindakan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2','kode_tindakan' => $value]);
+                    }
+                }
+            }
+        }
+
+        //insert d_periksa_biaya (old and new)
+        if(isset($_POST['id_biaya'])){
+            foreach ($_POST['id_biaya'] as $key => $value) {
+                $periksa_d_biaya = array(
+                    'no_pendaftaran' => $this->no_pendaftaran,
+                    'no_periksa' => $data_transaksi['no_transaksi'],
+                    'id_biaya' => $value,
+                    'jumlah' => $_POST['qty_biaya'][$key],
+                    'biaya' => $_POST['biaya'][$key],
+                    'tipe_periksa' => '2',
+                );
+                $this->db->insert('tbl_periksa_d_biaya',$periksa_d_biaya);
+            }
+        }
+
+        //update d_periksa_biaya (old only)
+        if(isset($_POST['upd_qty_biaya_id'])){
+            foreach ($_POST['upd_qty_biaya_id'] as $key => $value) {
+                $this->db->update('tbl_periksa_d_biaya',['jumlah' => $_POST['upd_qty_biaya_val'][$key]],['id_periksa_d_biaya' => $value]);
+            }
+        }
+
+        //delete d_periksa_biaya (old only)
+        if(isset($_POST['del_id_detail_biaya'])){
+            foreach ($_POST['del_id_detail_biaya'] as $key => $value) {
+                $this->db->delete('tbl_periksa_d_biaya',['id_periksa_d_biaya' => $value]);
+            }
+        }
+
+        if(empty($_POST['isEdit'])){
+            $lastId = $this->db->select_max('id_transaksi')->from('tbl_transaksi')->get()->row();
+            if($_POST['totalKamar']!=0){
+                $data_transaksi_d[] = array(
+                    'id_transaksi' => $lastId->id_transaksi,
+                    'deskripsi' => 'Biaya Kamar Rawat Inap',
+                    'amount_transaksi' => $_POST['totalKamar'],
+                    'dc' => 'd'
+                );
+            }
+            
+            if($_POST['totalObat']!=0){
+                $data_transaksi_d[] = array(
+                    'id_transaksi' => $lastId->id_transaksi,
+                    'deskripsi' => 'Biaya Obat',
+                    'amount_transaksi' => $_POST['totalObat'],
+                    'dc' => 'd'
+                );
+            }
+            
+            if($_POST['totalAlkes']!=0){
+                $data_transaksi_d[] = array(
+                    'id_transaksi' => $lastId->id_transaksi,
+                    'deskripsi' => 'Biaya BMHP',
+                    'amount_transaksi' => $_POST['totalAlkes'],
+                    'dc' => 'd'
+                );
+            }
+    
+            if($_POST['totalTindakan']!=0){
+                $data_transaksi_d[] = array(
+                    'id_transaksi' => $lastId->id_transaksi,
+                    'deskripsi' => 'Biaya Tindakan',
+                    'amount_transaksi' => $_POST['totalTindakan'],
+                    'dc' => 'd'
+                );
+            }
+            
+            if($_POST['totalBiaya']!=0){
+                $data_transaksi_d[] = array(
+                    'id_transaksi' => $lastId->id_transaksi,
+                    'deskripsi' => 'Biaya Lainnya',
+                    'amount_transaksi' => $_POST['totalBiaya'],
+                    'dc' => 'd'
+                );
+            }
+            $this->Transaksi_model->insert($data_transaksi, $data_transaksi_d);
+        }
+        else{
+            $this->db->query("update tbl_transaksi_d td join tbl_transaksi t on td.id_transaksi = t.id_transaksi set td.amount_transaksi = '".$_POST['totalKamar']."' where t.id_periksa_lanjutan = '".$getIdPeriksaLanjutan->id_periksa."' and deskripsi = 'Biaya Kamar Rawat Inap' ");
+
+            $this->db->query("update tbl_transaksi_d td join tbl_transaksi t on td.id_transaksi = t.id_transaksi set td.amount_transaksi = '".$_POST['totalObat']."' where t.id_periksa_lanjutan = '".$getIdPeriksaLanjutan->id_periksa."' and deskripsi = 'Biaya Obat' ");
+
+            $this->db->query("update tbl_transaksi_d td join tbl_transaksi t on td.id_transaksi = t.id_transaksi set td.amount_transaksi = '".$_POST['totalAlkes']."' where t.id_periksa_lanjutan = '".$getIdPeriksaLanjutan->id_periksa."' and deskripsi = 'Biaya BMHP' ");
+
+            $this->db->query("update tbl_transaksi_d td join tbl_transaksi t on td.id_transaksi = t.id_transaksi set td.amount_transaksi = '".$_POST['totalTindakan']."' where t.id_periksa_lanjutan = '".$getIdPeriksaLanjutan->id_periksa."' and deskripsi = 'Biaya Tindakan' ");
+
+            $this->db->query("update tbl_transaksi_d td join tbl_transaksi t on td.id_transaksi = t.id_transaksi set td.amount_transaksi = '".$_POST['totalBiaya']."' where t.id_periksa_lanjutan = '".$getIdPeriksaLanjutan->id_periksa."' and deskripsi = 'Biaya Lainnya' ");
+        }
+
 
         //insert akuntansi
         $this->jurnal_otomatis_obat($_POST['totalObat'],0,$_POST['totalObat'],$data_transaksi['no_transaksi'],$_POST['totalObat']);

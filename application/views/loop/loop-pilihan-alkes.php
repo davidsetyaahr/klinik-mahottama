@@ -1,4 +1,4 @@
-<div class="row loop-alkes" data-no="<?= $no ?>">
+<div class="row loop-alkes" data-no="<?= $no ?>" <?= isset($selected) ? "data-idDetail='".$selected->id_periksa_d_alkes."'" : '' ?>>
 <br>
 <div class="col-md-5">
         <select name="<?= isset($selected) ? 'old_' : '' ?>kode_alkes[]" class="form-control <?= !isset($selected) ? 'select2' : '' ?> selectAlkes alkes" <?= isset($selected) ? 'readonly' : '' ?>>

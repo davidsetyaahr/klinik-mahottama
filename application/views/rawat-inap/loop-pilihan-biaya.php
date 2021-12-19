@@ -1,4 +1,4 @@
-<div class="row loop-biaya" data-no="<?= $no ?>">
+<div class="row loop-biaya" data-no="<?= $no ?>"  <?= isset($selected) ? "data-idDetail='".$selected->id_periksa_d_biaya."'" : '' ?>>
 <br>
     <div class="col-md-5">
         <div id="container_biaya"></div>
