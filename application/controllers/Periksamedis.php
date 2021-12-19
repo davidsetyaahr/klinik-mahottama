@@ -1570,6 +1570,15 @@ class Periksamedis extends CI_Controller
             );
         $this->db->insert('tbl_periksa_operasi', $periksaOperasi);
         }
+
+        // TRANSAKSI
+        $data_transaksi = array(
+            'kode_transaksi' => 'PRKSOPR',
+            'id_klinik' => $this->id_klinik,
+            'no_transaksi' => $this->input->post('no_periksa'),
+            'tgl_transaksi' => date('Y-m-d', time()),
+            'status_transaksi' => 0,
+        );
         
         $getIdPeriksaLanjutan = $this->Periksa_model->getIdPeriksaLanjutan($this->no_pendaftaran,'3')->row(); 
         // insert inventory barang
@@ -1674,15 +1683,6 @@ class Periksamedis extends CI_Controller
         }
         
         $this->Pendaftaran_model->update($this->no_pendaftaran, $updatePendaftaran);
-
-        // TRANSAKSI
-        $data_transaksi = array(
-            'kode_transaksi' => 'PRKSOPR',
-            'id_klinik' => $this->id_klinik,
-            'no_transaksi' => $this->input->post('no_periksa'),
-            'tgl_transaksi' => date('Y-m-d', time()),
-            'status_transaksi' => 0,
-        );
         
         $data_transaksi_d = array();
 
