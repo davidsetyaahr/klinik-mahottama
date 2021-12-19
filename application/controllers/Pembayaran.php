@@ -15,6 +15,7 @@ class Pembayaran extends CI_Controller
         date_default_timezone_set('Asia/Jakarta');
         $this->load->model('Transaksi_model');
         $this->load->model('Periksa_model');
+        $this->load->model('Pendaftaran_model');
         $this->load->model('Tbl_pasien_model');
         $this->load->model('Tbl_obat_alkes_bhp_model');
         $this->load->model('Tbl_dokter_model');
@@ -74,6 +75,7 @@ class Pembayaran extends CI_Controller
         $this->_rules();
         
         $data_transaksi = $this->Transaksi_model->get_by_id($id_transaksi); //Ini Row
+        $data_pendaftar = $this->Pendaftaran_model->get_by_id($no_pendaftaran);
         
         $tab = array('pemeriksaan','sks','rapid');
         // if(is_null($data_transaksi) || (empty($_GET['tab']) && !in_array($_GET['tab'],$tab))){
@@ -259,6 +261,8 @@ class Pembayaran extends CI_Controller
             $this->data['total_transaksi'] = 0;
             $this->data['bank'] = $this->Tbl_akun_model->get_all_bank();
             $this->data['transaksi_d'] = $this->Transaksi_model->get_detail_by_h_id($data_transaksi->no_transaksi); //Ini array
+            $x = $this->Transaksi_model->get_detail_by_h_id($data_pendaftar->no_pendaftaran);
+            var_dump($x);
             
             if($this->input->post('total_transaksi')){
                 //Set session error
@@ -487,7 +491,7 @@ class Pembayaran extends CI_Controller
             $this->data['total_transaksi'] = 0;
             $this->data['getDiskon']=$this->db->where('bulan', date('Y-m'))->get('tbl_diskon_trx')->row();
             
-            $this->data['transaksi_d'] = $this->Transaksi_model->get_detail_by_h_id($data_transaksi->no_transaksi); //Ini array
+            $this->data['transaksi_d'] = $this->Transaksi_model->get_detail_by_h_id($data_transaksi->no_transaksi);//Ini array
             
             $this->data['transaksi_d_obat'] = $this->Transaksi_model->get_detail_obat_by_h_id($data_transaksi->no_transaksi); //Ini array
             

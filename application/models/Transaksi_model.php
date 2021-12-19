@@ -42,10 +42,11 @@ class Transaksi_model extends CI_Model
     
     function get_detail_by_h_id($h_id)
     {
-        $this->db->select('td.*, l.tipe_periksa');
+        $this->db->select('td.*, l.tipe_periksa, p.no_pendaftaran');
         $this->db->join('tbl_transaksi t','td.id_transaksi = t.id_transaksi');
         $this->db->join('tbl_periksa_lanjutan l','t.id_periksa_lanjutan = l.id_periksa');
-        $this->db->where('t.no_transaksi', $h_id);
+        $this->db->join('tbl_pendaftaran p','l.no_pendaftaran = p.no_pendaftaran');
+        $this->db->where('p.no_pendaftaran', $h_id);
         return $this->db->get('tbl_transaksi_d td')->result();
     }
     

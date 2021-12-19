@@ -199,7 +199,7 @@ class Periksa_model extends CI_Model
     public function getIdPeriksaLanjutan($noPendaftaran,$tipePeriksa)
     {
         $this->db->select('id_periksa');
-        return $this->db->get_where('tbl_periksa_lanjutan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2'])->row(); 
+        return $this->db->get_where('tbl_periksa_lanjutan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $tipePeriksa, 'is_periksa' => '1'])->row(); 
 
     }
 
