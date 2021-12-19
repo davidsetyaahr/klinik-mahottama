@@ -39,8 +39,8 @@
                         <div class="form-group">
 							<div class="col-sm-3"><label>No Transaksi</label></div>
 							<div class="col-sm-3">
-							    <a target="_blank" href="<?php echo site_url('pembayaran/detail?id=').$no_transaksi;?>">
-							        <?php echo $no_transaksi;?>
+							    <a target="_blank" href="<?php echo site_url('pembayaran/detail?id=').$no_pendaftaran;?>">
+							        <?php echo $no_pendaftaran;?>
 							    </a>
 							</div>
 							<div class="col-sm-3"><label>Tanggal Transaksi</label></div>

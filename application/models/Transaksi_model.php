@@ -49,6 +49,15 @@ class Transaksi_model extends CI_Model
         $this->db->where('p.no_pendaftaran', $h_id);
         return $this->db->get('tbl_transaksi_d td')->result();
     }
+
+    function get_detail_no_pendaftaran($no_pendaftaran){
+        $this->db->select('t.*, td.*, l.tipe_periksa, p.no_pendaftaran');
+        $this->db->join('tbl_transaksi_d td','t.id_transaksi = td.id_transaksi');
+        $this->db->join('tbl_periksa_lanjutan l','t.id_periksa_lanjutan = l.id_periksa');
+        $this->db->join('tbl_pendaftaran p','l.no_pendaftaran = p.no_pendaftaran');
+        $this->db->where('p.no_pendaftaran', $no_pendaftaran);
+        return $this->db->get('tbl_transaksi t')->row();
+    }
     
     public function laporanKeuanganStep1($dari,$sampai)
     {
@@ -115,7 +124,7 @@ class Transaksi_model extends CI_Model
     function json($id_klinik = null,$tipe) {
         $this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''));");        
 
-        $this->datatables->select('id_transaksi,kode_transaksi,tbl_klinik.nama as id_klinik,tbl_transaksi.no_transaksi,tbl_periksa.dtm_crt as tgl_periksa,tbl_periksa.dtm_upd as tgl_pengambilan, (CASE status_transaksi WHEN 1 THEN "Lunas" ELSE "Belum Dibayar" END) as status_transaksi, tbl_pasien.nama_lengkap as nama_pasien');
+        $this->datatables->select('id_transaksi,kode_transaksi,tbl_klinik.nama as id_klinik,tbl_transaksi.no_transaksi,tbl_periksa.dtm_crt as tgl_periksa,tbl_periksa.dtm_upd as tgl_pengambilan, (CASE status_transaksi WHEN 1 THEN "Lunas" ELSE "Belum Dibayar" END) as status_transaksi, tbl_pasien.nama_lengkap as nama_pasien, tbl_pendaftaran.no_pendaftaran');
         $this->datatables->from('tbl_periksa');
         $this->datatables->join('tbl_transaksi','tbl_periksa.no_periksa=tbl_transaksi.no_transaksi');
         $this->datatables->join('tbl_pasien','tbl_periksa.no_rekam_medis=tbl_pasien.no_rekam_medis');
@@ -141,14 +150,14 @@ class Transaksi_model extends CI_Model
         $this->db->order_by('tbl_transaksi.no_transaksi','asc');
         $this->db->group_by('tbl_transaksi.no_transaksi');
 
-        $this->datatables->add_column('action',anchor(site_url('pembayaran/bayar/$1?tab=pemeriksaan'),'Bayar','class="btn btn-danger btn-sm"'),'id_transaksi');
+        $this->datatables->add_column('action',anchor(site_url('pembayaran/bayar/$1?tab=pemeriksaan'),'Bayar','class="btn btn-danger btn-sm"'),'no_pendaftaran');
             
         return $this->datatables->generate();
     }
     
     function json2($id_klinik = null,$tipe) {
         $this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''));");        
-        $this->datatables->select('id_transaksi,kode_transaksi,tbl_klinik.nama as id_klinik,tbl_transaksi.no_transaksi,tbl_periksa.is_surat_ket_sakit,tbl_periksa.no_periksa,tbl_periksa.dtm_crt as tgl_periksa,tbl_periksa.dtm_upd as tgl_pengambilan, (CASE status_transaksi WHEN 1 THEN "Lunas" ELSE "Belum Dibayar" END) as status_transaksi, tbl_transaksi.dtm_upd as tgl_pembayaran, tbl_pasien.nama_lengkap as nama_pasien');
+        $this->datatables->select('id_transaksi,kode_transaksi,tbl_klinik.nama as id_klinik,tbl_transaksi.no_transaksi,tbl_periksa.is_surat_ket_sakit,tbl_periksa.no_periksa,tbl_periksa.dtm_crt as tgl_periksa,tbl_periksa.dtm_upd as tgl_pengambilan, (CASE status_transaksi WHEN 1 THEN "Lunas" ELSE "Belum Dibayar" END) as status_transaksi, tbl_transaksi.dtm_upd as tgl_pembayaran, tbl_pasien.nama_lengkap as nama_pasien, tbl_pendaftaran.no_pendaftaran');
         $this->datatables->from('tbl_periksa');
         $this->datatables->join('tbl_transaksi','tbl_periksa.no_periksa=tbl_transaksi.no_transaksi');
         $this->datatables->join('tbl_pasien','tbl_periksa.no_rekam_medis=tbl_pasien.no_rekam_medis');
@@ -158,8 +167,8 @@ class Transaksi_model extends CI_Model
         if($id_klinik != null)
             $this->datatables->where('tbl_transaksi.id_klinik', $id_klinik);
 
-        $this->datatables->add_column('cetak_struk',anchor(site_url('pembayaran/cetak_surat/$1?view=cetak_struk_periksa'),'Cetak Struk',array('class' => 'btn btn-info btn-sm','target'=>'_blank')),'id_transaksi');
-        $this->datatables->add_column('action',anchor(site_url('pembayaran/cetak_surat/$1'),'Cetak Kwitansi',array('class' => 'btn btn-warning btn-sm','target'=>'_blank')),'id_transaksi');
+        $this->datatables->add_column('cetak_struk',anchor(site_url('pembayaran/cetak_surat/$1?view=cetak_struk_periksa'),'Cetak Struk',array('class' => 'btn btn-info btn-sm','target'=>'_blank')),'no_pendaftaran');
+        $this->datatables->add_column('action',anchor(site_url('pembayaran/cetak_surat/$1'),'Cetak Kwitansi',array('class' => 'btn btn-warning btn-sm','target'=>'_blank')),'no_pendaftaran');
 
         // if($tipe==1 || $tipe==4){
         //     $this->datatables->where('tbl_pendaftaran.tipe_periksa', '1');

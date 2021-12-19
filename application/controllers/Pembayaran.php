@@ -71,12 +71,10 @@ class Pembayaran extends CI_Controller
         echo $this->Transaksi_model->json_obat2($this->id_klinik);
     }
     
-    public function bayar($id_transaksi){
+    public function bayar($no_pendaftaran){
         $this->_rules();
         
-        $data_transaksi = $this->Transaksi_model->get_by_id($id_transaksi); //Ini Row
-        $data_pendaftar = $this->Pendaftaran_model->get_by_id($no_pendaftaran);
-        
+        $data_transaksi = $this->Transaksi_model->get_detail_no_pendaftaran($no_pendaftaran); //Ini Row
         $tab = array('pemeriksaan','sks','rapid');
         // if(is_null($data_transaksi) || (empty($_GET['tab']) && !in_array($_GET['tab'],$tab))){
         if(is_null($data_transaksi) || is_null($_GET['tab']) || (isset($_GET['tab']) && !in_array($_GET['tab'],$tab))){
@@ -255,14 +253,13 @@ class Pembayaran extends CI_Controller
             $this->data['id_transaksi'] = $data_transaksi->id_transaksi;
             $this->data['kode_transaksi'] = $data_transaksi->kode_transaksi;
             $this->data['klinik'] = $data_transaksi->id_klinik;
-            $this->data['no_transaksi'] = $data_transaksi->no_transaksi;
+            $this->data['no_pendaftaran'] = $data_transaksi->no_pendaftaran;
             $this->data['tgl_transaksi'] = $data_transaksi->tgl_transaksi;
             $this->data['status_transaksi'] = $data_transaksi->status_transaksi;
             $this->data['total_transaksi'] = 0;
             $this->data['bank'] = $this->Tbl_akun_model->get_all_bank();
-            $this->data['transaksi_d'] = $this->Transaksi_model->get_detail_by_h_id($data_transaksi->no_transaksi); //Ini array
-            $x = $this->Transaksi_model->get_detail_by_h_id($data_pendaftar->no_pendaftaran);
-            var_dump($x);
+            $this->data['transaksi_d'] = $this->Transaksi_model->get_detail_by_h_id($data_transaksi->no_pendaftaran); //Ini array
+
             
             if($this->input->post('total_transaksi')){
                 //Set session error
@@ -270,11 +267,6 @@ class Pembayaran extends CI_Controller
                 $this->session->set_flashdata('message_type', 'danger');
             }
             
-            // $data_periksa = $this->Periksa_model->get_by_id($data_transaksi->no_transaksi);
-            // $data_pasien = $this->Tbl_pasien_model->get_by_id($data_periksa->no_rekam_medis);
-            
-            // $this->data['nama_pasien'] = $data_pasien->nama_lengkap;
-                
         }
         $this->template->load('template','pembayaran/bayar', $this->data);
     }
@@ -517,9 +509,9 @@ class Pembayaran extends CI_Controller
         $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
     
-    public function cetak_surat($id_transaksi){
-        $id_transaksi = $id_transaksi;
-        $data_transaksi = $this->Transaksi_model->get_by_id($id_transaksi);
+    public function cetak_surat($no_pendaftaran){
+        $no_pendaftaran = $no_pendaftaran;
+        $data_transaksi = $this->Transaksi_model->get_detail_no_pendaftaran($no_pendaftaran);
         // if($data_transaksi->status_transaksi == 1){
         //     //Set session error
         //     $this->session->set_flashdata('message', 'Pembayaran sudah dilakukan');
@@ -570,7 +562,7 @@ class Pembayaran extends CI_Controller
         }
         
         $this->data['id_transaksi'] = $data_transaksi->no_transaksi;
-        $this->data['transaksi_d'] = $this->Transaksi_model->get_detail_by_h_id($data_transaksi->no_transaksi);
+        $this->data['transaksi_d'] = $this->Transaksi_model->get_detail_by_h_id($data_transaksi->no_pendaftaran);
 
         $this->data['tgl_cetak'] = date("d M Y",  time());
         $this->data['nama_pegawai'] = 'Kasir';
