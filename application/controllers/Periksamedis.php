@@ -82,6 +82,8 @@ class Periksamedis extends CI_Controller
     {
         $data_pendaftaran = $this->Pendaftaran_model->get_by_id($this->no_pendaftaran);
 
+        $getIdPeriksaLanjutan = $this->Periksa_model->getIdPeriksaLanjutan($this->no_pendaftaran,'1');
+        var_dump($getIdPeriksaLanjutan);
         $data_pasien = $this->Tbl_pasien_model->get_by_id($data_pendaftaran->no_rekam_medis);
         $date_now = date('Ymd', time());
         $data_antrian = $this->Pendaftaran_model->get_next_antrian($this->id_dokter);
@@ -992,6 +994,7 @@ class Periksamedis extends CI_Controller
         $date_now = date('Ymd', time());
         $nop = $this->Periksa_model->getId($data_pendaftaran->no_pendaftaran);
         $xa = explode("/", $nop->no_periksa, 2);
+        var_dump($xa);
         // $no_rm = $this>data['no_periksa'] = $data_pendaftaran->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran->no_rekam_medis;
 
         if (isset($data_pasien)) {
@@ -1074,7 +1077,7 @@ class Periksamedis extends CI_Controller
             
             $periksa_d_obat = array(
                 'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $no_rm,
+                'no_periksa' => $this->input->post('no_periksa'),
                 'kode_barang' => $value,
                 'jumlah' => $_POST['jml_obat'][$key],
                 'harga_satuan' => $_POST['harga_obat'][$key],
@@ -1095,7 +1098,7 @@ class Periksamedis extends CI_Controller
             
             $periksa_d_alkes = array(
                 'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $no_rm,
+                'no_periksa' => $this->input->post('no_periksa'),
                 'kode_barang' => $value,
                 'jumlah' => $_POST['jml_alkes'][$key],
                 'harga_satuan' => $_POST['harga_alkes'][$key],
@@ -1110,7 +1113,7 @@ class Periksamedis extends CI_Controller
             $tindakan = $this->db->get_where('tbl_tindakan',['kode_tindakan' => $value])->row();
             $periksa_d_tindakan = array(
                 'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $no_rm,
+                'no_periksa' => $this->input->post('no_periksa'),
                 'kode_tindakan' => $value,
                 'biaya' => $tindakan->biaya,
                 'tipe_periksa' => '4',
@@ -1122,7 +1125,7 @@ class Periksamedis extends CI_Controller
         foreach ($_POST['id_biaya'] as $key => $value) {
             $periksa_d_biaya = array(
                 'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $no_rm,
+                'no_periksa' => $this->input->post('no_periksa'),
                 'id_biaya' => $value,
                 'jumlah' => $_POST['qty_biaya'][$key],
                 'biaya' => $_POST['biaya'][$key],
@@ -1161,7 +1164,7 @@ class Periksamedis extends CI_Controller
             'id_klinik' => $this->id_klinik,
             // 'id_transaksi' => $lastId->id_transaksi,
             // 'no_transaksi' => $this->input->post('no_periksa'),
-            'no_transaksi' => $no_rm,
+            'no_transaksi' => $this->input->post('no_periksa'),
             'id_periksa_lanjutan' => $getIdPeriksaLanjutan->id_periksa,
             'tgl_transaksi' => date('Y-m-d', time()),
             'status_transaksi' => 0,
@@ -1252,7 +1255,6 @@ class Periksamedis extends CI_Controller
         $nop = $this->Periksa_model->getId($data_pendaftaran->no_pendaftaran);
         $xr = explode("/", $nop->no_periksa, 2);
         $xf = 'PRKSRAD' . '/' . $xr[1];
-        var_dump($xf);
 
         if (isset($data_pasien)) {
             $this->data['nama_lengkap'] = $data_pasien->nama_lengkap;
@@ -1284,16 +1286,13 @@ class Periksamedis extends CI_Controller
         $data_pendaftaran_radiologi = $this->Pendaftaran_model->get_by_id($this->no_pendaftaran);
         $date_now = date('Ymd', time());
         $nop = $this->Periksa_model->getId($data_pendaftaran_radiologi->no_pendaftaran);
-        // $no_rm = $this->data['no_periksa'] = $data_pendaftaran_radiologi->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran_radiologi->no_rekam_medis;
-        $xr = explode("/", $nop->no_periksa, 2);
-        $xf = 'PRKSRAD' . '/' . $xr[1];
-        $no_rm = $xf;
-        $lastId = $this->db->select_max('id_transaksi')->from('tbl_transaksi')->get()->row();
+        // $this->input->post('no_periksa') = $this->data['no_periksa'] = $data_pendaftaran_radiologi->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran_radiologi->no_rekam_medis;
+        
 
         // insert periksa radiologi
         $periksaRadiologi = array(
             'no_pendaftaran' => $this->no_pendaftaran,
-            'no_periksa' => $no_rm,
+            'no_periksa' => $this->input->post('no_periksa'),
         );
         $this->db->insert('tbl_periksa_radiologi', $periksaRadiologi);
         
@@ -1336,7 +1335,7 @@ class Periksamedis extends CI_Controller
 
             $periksa_d_obat = array(
                 'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $no_rm,
+                'no_periksa' => $this->input->post('no_periksa'),
                 'kode_barang' => $value,
                 'jumlah' => $_POST['jml_obat'][$key],
                 'harga_satuan' => $_POST['harga_obat'][$key],
@@ -1357,7 +1356,7 @@ class Periksamedis extends CI_Controller
             
             $periksa_d_alkes = array(
                 'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $no_rm,
+                'no_periksa' => $this->input->post('no_periksa'),
                 'kode_barang' => $value,
                 'jumlah' => $_POST['jml_alkes'][$key],
                 'harga_satuan' => $_POST['harga_alkes'][$key],
@@ -1372,7 +1371,7 @@ class Periksamedis extends CI_Controller
             $tindakan = $this->db->get_where('tbl_tindakan',['kode_tindakan' => $value])->row();
             $periksa_d_tindakan = array(
                 'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $no_rm,
+                'no_periksa' => $this->input->post('no_periksa'),
                 'kode_tindakan' => $value,
                 'biaya' => $tindakan->biaya,
                 'tipe_periksa' => '5',
@@ -1384,7 +1383,7 @@ class Periksamedis extends CI_Controller
         foreach ($_POST['id_biaya'] as $key => $value) {
             $periksa_d_biaya = array(
                 'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $no_rm,
+                'no_periksa' => $this->input->post('no_periksa'),
                 'id_biaya' => $value,
                 'jumlah' => $_POST['qty_biaya'][$key],
                 'biaya' => $_POST['biaya'][$key],
@@ -1421,8 +1420,8 @@ class Periksamedis extends CI_Controller
         $data_transaksi = array(
             'kode_transaksi' => 'PRKSRAD',
             'id_klinik' => $this->id_klinik,
-            'no_transaksi' => $no_rm,
-            'id_periksa_lanjutan' => $lastId,
+            'no_transaksi' => $this->input->post('no_periksa'),
+            'id_periksa_lanjutan' => $getIdPeriksaLanjutan->id_periksa,
             'tgl_transaksi' => date('Y-m-d', time()),
             'status_transaksi' => 0,
         );
@@ -1488,36 +1487,7 @@ class Periksamedis extends CI_Controller
         
         $this->jurnal_otomatis_alkes($_POST['totalAlkes'],$data_transaksi['no_transaksi']);
 
-        // $updatePendaftaran = array(
-        //     'dtm_upd' => date("Y-m-d H:i:s",  time())
-        // );
-
-        // $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '0'], ['no_pendaftaran' => $this->no_pendaftaran]);
-        // if ($_POST['pemeriksaan_selanjutnya'] != '0') {
-        //     if($_POST['pemeriksaan_selanjutnya']=='5'){ // jika tetap di radiologi
-        //         $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '1'], ['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $_POST['pemeriksaan_selanjutnya']]);
-        //     }
-        //     else{
-        //         $cek = $this->db->get_where('tbl_periksa_lanjutan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $_POST['pemeriksaan_selanjutnya']])->num_rows();
-        //         if($cek==1){
-        //             $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '1'], ['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $_POST['pemeriksaan_selanjutnya']]);
-        //         }
-        //         else{
-        //             $periksaLanjutan = array(
-        //                 'no_pendaftaran' => $this->no_pendaftaran,
-        //                 'tipe_periksa' => $_POST['pemeriksaan_selanjutnya'],
-        //                 'tanggal' => date('Y-m-d H:i:s'),
-        //                 'is_periksa' => '1',
-        //             );
-        //             $this->db->insert('tbl_periksa_lanjutan', $periksaLanjutan);
-        //         }
-        //     }
-        // } else {
-        //     $updatePendaftaran['is_closed'] = '1';
-        // }
-        
-        // $this->Pendaftaran_model->update($this->no_pendaftaran, $updatePendaftaran);
-
+        if($_POST['pemeriksaan_selanjutnya']=='0'){
         //Get Next Antrian
         $data_antrian = $this->Pendaftaran_model->get_next_antrian($this->id_dokter);
         $next_antrian = $data_antrian != null ? $data_antrian->no_pendaftaran : null;
@@ -1525,6 +1495,7 @@ class Periksamedis extends CI_Controller
             "no_pendaftaran" => $next_antrian,
             "dtm_upd" => date("Y-m-d H:i:s",  time())
         ));
+    }
 
 
         //Set session sukses
@@ -1561,6 +1532,8 @@ class Periksamedis extends CI_Controller
         $data_pasien = $this->Tbl_pasien_model->get_by_id($data_pendaftaran->no_rekam_medis);
         $date_now = date('Ymd', time());
         $nop = $this->Periksa_model->getId($data_pendaftaran->no_pendaftaran);
+        $xr = explode("/", $nop->no_periksa, 2);
+        $xf = 'PRKSOPR' . '/' . $xr[1];
 
         if (isset($data_pasien)) {
             $this->data['nama_lengkap'] = $data_pasien->nama_lengkap;
@@ -1568,7 +1541,7 @@ class Periksamedis extends CI_Controller
         }
 
         // $this->data['no_periksa'] = $data_pendaftaran->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran->no_rekam_medis;
-        $this->data['no_periksa'] = 'PRKSOPR' . '/' . $nop->no_periksa;
+        $this->data['no_periksa'] = $xf;
         $this->data['tindakan'] = $this->db->get('tbl_tindakan')->result();
         $this->data['jenis'] = $this->db->get('tbl_jenis_operasi')->result();
         $this->data['obat'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 1);
@@ -1586,24 +1559,13 @@ class Periksamedis extends CI_Controller
         $no_rm = 'PRKSOPR' . '/' . $nop->no_periksa;
         
         
-        // TRANSAKSI
-        $data_transaksi = array(
-            'kode_transaksi' => 'PRKSOPR',
-            'id_klinik' => $this->id_klinik,
-            'no_transaksi' => $no_rm,
-            'tgl_transaksi' => date('Y-m-d', time()),
-            'status_transaksi' => 0,
-        );
-        
-        $data_transaksi_d = array();
-        
         // insert periksa operasi
         foreach ($this->input->post('periksa_operasi') as $key => $value) {
             // $this->db->select('id_jenis_operasi,nama_jenis_operasi');
             // $operasi = $this->db->get_where('tbl_periksa_operasi', ['id_jenis_operasi' => $value])->row();
             $periksaOperasi = array(
             'no_pendaftaran' => $this->no_pendaftaran,
-            'no_periksa' => $no_rm,
+            'no_periksa' => $this->input->post('no_periksa'),
             'id_jenis_operasi' => $value,
             );
         $this->db->insert('tbl_periksa_operasi', $periksaOperasi);
@@ -1713,6 +1675,17 @@ class Periksamedis extends CI_Controller
         
         $this->Pendaftaran_model->update($this->no_pendaftaran, $updatePendaftaran);
 
+        // TRANSAKSI
+        $data_transaksi = array(
+            'kode_transaksi' => 'PRKSOPR',
+            'id_klinik' => $this->id_klinik,
+            'no_transaksi' => $this->input->post('no_periksa'),
+            'tgl_transaksi' => date('Y-m-d', time()),
+            'status_transaksi' => 0,
+        );
+        
+        $data_transaksi_d = array();
+
         $lastIdOpr = $this->db->select_max('id_transaksi')->from('tbl_transaksi')->get()->row();
         if ($_POST['totalObat'] != 0) {
             $data_transaksi_d[] = array(
@@ -1759,7 +1732,7 @@ class Periksamedis extends CI_Controller
         $this->jurnal_otomatis_alkes($_POST['totalAlkes'], $data_transaksi['no_transaksi']);
         
         
-        
+        if($_POST['pemeriksaan_selanjutnya']=='0'){
         //Get Next Antrian
         $data_antrian = $this->Pendaftaran_model->get_next_antrian($this->id_dokter);
         $next_antrian = $data_antrian != null ? $data_antrian->no_pendaftaran : null;
@@ -1767,6 +1740,7 @@ class Periksamedis extends CI_Controller
             "no_pendaftaran" => $next_antrian,
             "dtm_upd" => date("Y-m-d H:i:s", time())
         ));
+    }
         
         
         //Set session sukses
