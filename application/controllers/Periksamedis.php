@@ -994,7 +994,6 @@ class Periksamedis extends CI_Controller
         $date_now = date('Ymd', time());
         $nop = $this->Periksa_model->getId($data_pendaftaran->no_pendaftaran);
         $xa = explode("/", $nop->no_periksa, 2);
-        var_dump($xa);
         // $no_rm = $this>data['no_periksa'] = $data_pendaftaran->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran->no_rekam_medis;
 
         if (isset($data_pasien)) {
@@ -1762,7 +1761,7 @@ class Periksamedis extends CI_Controller
         $data_pasien = $this->Tbl_pasien_model->get_by_id($data_pendaftaran->no_rekam_medis);
         $date_now = date('Ymd', time());
         $nop = $this->Periksa_model->getId($data_pendaftaran->no_pendaftaran);
-        $no_rm = 'PRKSRAI' . '/' . $nop->no_periksa;
+        $xa = explode("/", $nop->no_periksa, 2);
 
         if (isset($data_pasien)) {
             $this->data['nama_lengkap'] = $data_pasien->nama_lengkap;
@@ -1789,7 +1788,7 @@ class Periksamedis extends CI_Controller
         }
 
         // $this->data['no_periksa'] = $data_pendaftaran->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran->no_rekam_medis;
-        $this->data['no_periksa'] = $no_rm;
+        $this->data['no_periksa'] = 'PRKSRAI' . '/' . $xa[1];
 
         $this->data['biaya'] = $this->Tbl_biaya_model->getBiaya();
         $this->data['kamar'] = $this->db->get('tbl_kategori_kamar')->result();
@@ -1810,7 +1809,7 @@ class Periksamedis extends CI_Controller
             //insert periksa lab
             $periksaRawatInap = array(
                 'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $no_rm,
+                'no_periksa' => $this->input->post('no_periksa'),
             );
             $this->db->insert('tbl_periksa_rawat_inap', $periksaRawatInap);
 
@@ -1829,7 +1828,7 @@ class Periksamedis extends CI_Controller
         $data_transaksi = array(
             'kode_transaksi' => 'PRKSRAI',
             'id_klinik' => $this->id_klinik,
-            'no_transaksi' => $no_rm,
+            'no_transaksi' => $this->input->post('no_periksa'),
             'id_periksa_lanjutan' => $getIdPeriksaLanjutan->id_periksa,
             'tgl_transaksi' => date('Y-m-d', time()),
             'status_transaksi' => 0,
