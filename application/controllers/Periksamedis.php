@@ -450,7 +450,7 @@ class Periksamedis extends CI_Controller
             $this->data['alkes_option'] = array();
             $this->data['alkes_option'][''] = 'Pilih Alat Kesehatan';
             $alkes_opt_js = array();
-            foreach ($this->Tbl_obat_alkes_bhp_model->get_all_alkes($this->id_klinik) as $alkes) {
+            foreach ($this->Tbl_obat_alkes_bhp_model->get_all_alkes1($this->id_klinik) as $alkes) {
                 $this->data['alkes_option'][$alkes->kode_barang] = $alkes->nama_barang;
                 $alkes_opt_js[] = array(
                     'value' => $alkes->kode_barang,
@@ -470,7 +470,6 @@ class Periksamedis extends CI_Controller
                 );
             }
             $this->data['obat_option_js'] = json_encode($obat_opt_js);
-
             $this->data['anjuran_obat'] = $this->get_master_ref($this->master_ref_code_anjuranobat);
 
             $this->data['alkes'] = $this->get_all_alkes();

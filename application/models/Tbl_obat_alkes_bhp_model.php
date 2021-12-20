@@ -61,6 +61,33 @@ class Tbl_obat_alkes_bhp_model extends CI_Model
         
         return $this->db->get($this->table)->result();
     }
+
+    function get_all_alkes1($id_klinik = null,$json=false,$jenis_barang=2,$kode_barang=null)
+    {
+        $tipeGetData = $json ? $this->datatables : $this->db;
+        $tipeGetData->select($this->queryGetStok('RECEIPT_ORDER')." - ".$this->queryGetStok('RETURN_STUFF')." - ".$this->queryGetStok('RETURN_MONEY')." - ".$this->queryGetStok('TRX_STUFF')." - ".$this->queryGetStok('MANUFAKTUR_OUT')." + ".$this->queryGetStok('MANUFAKTUR_IN')." - ".$this->queryGetStok('STOCK_ADJ')." as stok_barang, MAX(tid1.kode_barang) AS kode_barang, MAX(tid1.harga) AS harga, MAX(toa.harga) AS harga_jual, MAX(tid1.diskon) AS diskon, MAX(tid1.tgl_exp) AS tgl_exp, MAX(toa.nama_barang) AS nama_barang");
+        $tipeGetData->from("tbl_inventory_detail tid1");
+        $tipeGetData->join('tbl_inventory ti','tid1.id_inventory=ti.id_inventory');
+        $tipeGetData->join('tbl_obat_alkes_bhp toa','tid1.kode_barang=toa.kode_barang');
+        $tipeGetData->where("ti.id_klinik",'1');
+        if($jenis_barang!=null){
+            $tipeGetData->where("toa.jenis_barang",$jenis_barang);
+        }
+        
+        if($kode_barang!=null){
+            $tipeGetData->where("toa.kode_barang",$kode_barang);
+        }
+
+        $tipeGetData->group_by("tid1.kode_barang");
+
+        if($json){
+            $this->datatables->generate();
+        }
+        else{
+            $query = $this->db->get();
+            return $query->result();
+        }
+    }
 	
     function queryGetStok($inv_type){
         $getStok = "COALESCE((SELECT SUM(tid2.jumlah) as jumlah_stok FROM `tbl_inventory_detail` tid2 JOIN tbl_inventory ti2 ON tid2.id_inventory=ti2.id_inventory WHERE ti2.inv_type='$inv_type' AND ti2.id_klinik=MAX(ti.id_klinik) AND tid2.kode_barang=tid1.kode_barang), 0) ";
