@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Jakarta');
 
 function getInfoRS($field){
     $ci = get_instance();

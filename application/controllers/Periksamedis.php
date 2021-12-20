@@ -101,7 +101,7 @@ class Periksamedis extends CI_Controller
                     }
                 }
             }
-            $sktNomor = $this->input->post('nomor_skt') . "/" . date('m') . "/KR/SK/" . date('y');;
+            $sktNomor = $_POST['is_cetak_surat']=='1' ? $this->input->post('nomor_skt') . "/" . date('m') . "/KR/SK/" . date('y') : '';
 
             $data_periksa = array(
                 'no_periksa' => $this->input->post('no_periksa'),
@@ -400,12 +400,6 @@ class Periksamedis extends CI_Controller
                 ),
                 array(
                     'id_transaksi' => $lastIdTp->id_transaksi,
-                    'deskripsi' => 'Subsidi Obat-obatan',
-                    'amount_transaksi' => $this->input->post('ket_obat_obatan') == 0 ? ($this->input->post('subsidi_harga') != '' ? $this->input->post('subsidi_harga') : 0) : $this->input->post('total_harga'),
-                    'dc' => 'c'
-                ),
-                array(
-                    'id_transaksi' => $lastIdTp->id_transaksi,
                     'deskripsi' => 'Biaya Tindakan ',
                     'amount_transaksi' => $biayaTindakan != '' || $biayaTindakan != 0 ? $biayaTindakan : 0,
                     'dc' => 'd'
@@ -418,6 +412,17 @@ class Periksamedis extends CI_Controller
                 ),
 
             );
+
+            $amountSubsidi = $this->input->post('ket_obat_obatan') == 0 ? ($this->input->post('subsidi_harga') != '' ? $this->input->post('subsidi_harga') : 0) : $this->input->post('total_harga');
+
+            if($amountSubsidi!=0){
+                $data_transaksi_d[] = array(
+                    'id_transaksi' => $lastIdTp->id_transaksi,
+                    'deskripsi' => 'Subsidi Obat-obatan',
+                    'amount_transaksi' => $amountSubsidi,
+                    'dc' => 'c'
+                );
+            }
 
             //Insert into tbl_transaksi
             for($i = 0; $i < count($data_transaksi_d); $i++){
@@ -508,9 +513,9 @@ class Periksamedis extends CI_Controller
     }
     private function jurnal_otomatis_alkes($total_jual_alkes, $no_periksa,$isEdit=null)
     {
-        if($isEdit!=null){
+        if($isEdit==null){
             $data_trx = array(
-                'deskripsi'     => 'Penjualan BMHP dari Nomor Pemeriksaan ' . $no_periksa,
+                'deskripsi'     => 'Penjualan BMHP dari Nomor Pemeriksaan '.$no_periksa,
                 'tanggal'       => date('Y-m-d'),
             );
             $insert = $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi', $data_trx);
@@ -574,9 +579,9 @@ class Periksamedis extends CI_Controller
     }
     private function jurnal_otomatis_obat($total_jual_obat, $subsidi_obat, $grand, $no_periksa, $total_jual,$isEdit=null)
     {
-        if($isEdit!=null){
+        if($isEdit==null){
             $data_trx = array(
-                'deskripsi'     => 'Penjualan Obat dari Nomor Pemeriksaan ' . $no_periksa,
+                'deskripsi'     => 'Penjualan Obat dari Nomor Pemeriksaan '.$no_periksa,
                 'tanggal'       => date('Y-m-d'),
             );
             $insert = $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi', $data_trx);
@@ -622,9 +627,9 @@ class Periksamedis extends CI_Controller
                     'tipe'          => 'KREDIT',
                     'keterangan'    => 'akun',
                 );
+                $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
                 if($subsidi_obat!=0){
                     //diskon untuk penjualan obat
-                    $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
                     $data = array(
                         'id_trx_akun'   => $id_last->id_trx_akun,
                         'id_akun'       => 64,
@@ -935,7 +940,8 @@ class Periksamedis extends CI_Controller
 
         // $this->data['no_periksa'] = $data_pendaftaran->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran->no_rekam_medis;
         $getPeriksaLab = $this->Periksa_model->countPeriksaLanjutan($this->no_pendaftaran,'4');
-        $kodePrks = $getPeriksaLab==0 ? 'PRKSLAB' : 'PRKSLAB'.$getPeriksaLab+1; 
+        $newPeriksaLab = $getPeriksaLab+1;
+        $kodePrks = $getPeriksaLab==0 ? 'PRKSLAB' : 'PRKSLAB'.$newPeriksaLab; 
         $this->data['no_periksa'] = $kodePrks. '/' . $xa[1];
 
         $this->data['periksa_lab'] = $this->db->get('tbl_tipe_periksa_lab')->result();
@@ -1188,7 +1194,8 @@ class Periksamedis extends CI_Controller
         }
         // $this->data['no_periksa'] = $data_pendaftaran->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran->no_rekam_medis;
         $getPeriksaRad = $this->Periksa_model->countPeriksaLanjutan($this->no_pendaftaran,'5');
-        $kodePrks = $getPeriksaRad==0 ? 'PRKSRAD' : 'PRKSRAD'.$getPeriksaRad+1;
+        $newPeriksaRad = $getPeriksaRad+1;
+        $kodePrks = $getPeriksaRad==0 ? 'PRKSRAD' : 'PRKSRAD'.$newPeriksaRad;
 
         $this->data['no_periksa'] =  $kodePrks.'/'. $xr[1];
         // $this->data['no_periksa'] = $this->Tbl_pasien_model->get_detail_by_h_id($nop->no_pendaftaran);
@@ -1464,7 +1471,8 @@ class Periksamedis extends CI_Controller
 
         // $this->data['no_periksa'] = $data_pendaftaran->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran->no_rekam_medis;
         $getPeriksaOperasi = $this->Periksa_model->countPeriksaLanjutan($this->no_pendaftaran,'3');
-        $kodePrks = $getPeriksaOperasi==0 ? 'PRKSOPR' : 'PRKSOPR'.$getPeriksaOperasi+1;
+        $newPeriksaOpr = $getPeriksaOperasi+1;
+        $kodePrks = $getPeriksaOperasi==0 ? 'PRKSOPR' : 'PRKSOPR'.$newPeriksaOpr;
 
         $this->data['no_periksa'] = $kodePrks. '/' . $xr[1];;
         $this->data['tindakan'] = $this->db->get('tbl_tindakan')->result();

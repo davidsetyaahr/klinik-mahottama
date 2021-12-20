@@ -38,7 +38,7 @@ class Biaya extends CI_Controller
             'id_biaya' => set_value('id_biaya'),
             'id_kategori_biaya' => set_value('id_kategori_biaya'),
             'nama_biaya' => set_value('nama_biaya'),
-            'tipe_biaya' => set_value('tipe_biaya'),
+            'tipe_biaya' => set_value('tipe_biaya')=='' ? 1 : set_value('tipe_biaya'),
             'presentase' => set_value('presentase'),
             'id_biaya_presentase' => set_value('id_biaya_presentase'),
             'biaya' => set_value('biaya'),
