@@ -662,7 +662,7 @@
                                             document.getElementById("tab1").style.display="block";
                                         }
                                     </script>
-                                    <button type="submit" class="btn btn-success"><i class="fa fa-floppy-o"></i> Simpan Pemeriksaan Medis</button> 
+                                    <button type="submit" class="btn btn-success"  onclick="confirm('Yakin Simpan?')"><i class="fa fa-floppy-o"></i> Simpan Pemeriksaan Medis</button> 
 								</div>
 							</div>
 						</div>                            
@@ -1038,11 +1038,12 @@ $(document).ready(function() {
     });
     
     $(wrapper_alkes).on("click",".remove_field_alkes", function(e){ //user click on remove text
-        e.preventDefault(); $(this).closest('.form-group').remove(); z--;
+        e.preventDefault(); 
+        $(this).closest('.form-group').remove(); z--;
+        get_alkes(null);
+    });
         display_total_harga();
         hitung_biaya();
-
-    });
     
     var y = 1; //initlal text box count
     
@@ -1094,7 +1095,6 @@ $(document).ready(function() {
     }
     
     function get_alkes(selectObject = null, isCheckJml = false) {
-        var value = selectObject.value;  
         var alkes_length = $("[id^=alat_kesehatan]").length;
         var alkes = <?php echo $alkes;?>;
         
