@@ -92,7 +92,7 @@
             $total_transaksi = 0;
             $i = 1;
             $tipe = "";
-            $caption = ['','<td align="left">Poli :</p></td>','<td align="left">Rawat Inap :</p></td>','<td align="left">Operasi :</p></td>','<td align="left">Laboratorium :</p></td>','<td align="left"><p>Radiologi :</td>'];
+            $caption = ['','<td align="left"><div style="margin-bottom: 5px"><strong><br>Poli</strong></div></td>','<td align="left"><div style="margin-bottom: 5px"><strong><br>Rawat Inap</strong></div></td>','<td align="left"><div style="margin-bottom: 5px"><strong><br>Operasi</strong></div></td>','<td align="left"><div style="margin-bottom: 5px"><strong><br>Laboratorium</strong></div></td>','<td align="left"><div style="margin-bottom: 5px"><strong><br>Radiologi</strong></div></td>'];
             foreach($transaksi_d as $data){
               if(strpos($data->deskripsi, 'Pembayaran Biaya Medis') === false){
                 if($data->amount_transaksi > 0){
