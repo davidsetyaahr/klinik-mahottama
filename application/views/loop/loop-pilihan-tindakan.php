@@ -13,11 +13,4 @@
             ?>
         </select>
     </div>
-    <?php 
-        if($no!=0){
-    ?>
-        <div class="col-md-1">
-            <a href="" class="btn btn-danger btn-sm remove-tindakan" data-no="<?= $no ?>"><span class="fa fa-trash"></span></a>
-        </div>
-    <?php } ?>
 </div>

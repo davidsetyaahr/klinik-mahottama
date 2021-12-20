@@ -53,7 +53,7 @@
             $data = array(
                 'id_kategori_kamar' => $this->input->post('id_kategori_kamar', TRUE),
                 'no_kamar' => $this->input->post('no_kamar',TRUE),
-                'status' => $this->input->post('0',TRUE),
+                'status' => '0',
             );
             $this->Tbl_kamar_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
@@ -92,7 +92,6 @@
             $data = array(
                 'id_kategori_kamar' => $this->input->post('id_kategori_kamar', TRUE),
                 'no_kamar' => $this->input->post('no_kamar',TRUE),
-                'status' => $this->input->post('status',TRUE),
             );
             $this->Tbl_kamar_model->update($this->input->post('id_kamar', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');

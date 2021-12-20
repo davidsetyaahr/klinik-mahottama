@@ -1509,7 +1509,7 @@ class Periksamedis extends CI_Controller
             'status_transaksi' => 0,
         );
         
-        $getIdPeriksaLanjutan = $this->Periksa_model->getIdPeriksaLanjutan($this->no_pendaftaran,'3')->row(); 
+        $getIdPeriksaLanjutan = $this->Periksa_model->getIdPeriksaLanjutan($this->no_pendaftaran,'3'); 
         // insert inventory barang
         $kode_receipt1 = 'RCP' . time();
         $tb_inv1 = array(
@@ -1615,6 +1615,8 @@ class Periksamedis extends CI_Controller
         
         $data_transaksi_d = array();
 
+        $this->db->insert($data_transaksi);
+        
         $lastIdOpr = $this->db->select_max('id_transaksi')->from('tbl_transaksi')->get()->row();
         if ($_POST['totalObat'] != 0) {
             $data_transaksi_d[] = array(
@@ -1651,8 +1653,10 @@ class Periksamedis extends CI_Controller
                 'dc' => 'd'
             );
         }
-        
-        $this->Transaksi_model->insert($data_transaksi, $data_transaksi_d);
+
+        for($i = 0; $i < count($data_transaksi_d); $i++){
+            $this->db->insert('tbl_transaksi_d',$data_transaksi_d[$i]);
+        }
         
         
         //insert akuntansi
@@ -1797,7 +1801,7 @@ class Periksamedis extends CI_Controller
             }
         }
 
-        $getIdPeriksaLanjutan = $this->Periksa_model->getIdPeriksaLanjutan($this->no_pendaftaran,'2')->row(); 
+        $getIdPeriksaLanjutan = $this->Periksa_model->getIdPeriksaLanjutan($this->no_pendaftaran,'2'); 
 
         // input inventory barang
         if(empty($_POST['isEdit'])){
@@ -1938,7 +1942,7 @@ class Periksamedis extends CI_Controller
 
                 foreach ($getTindakanRawatInap as $key => $value) {
                     if(!in_array($value->kode_tindakan,$_POST['tindakan'])){
-                        $this->db->delete('tbl_periksa_d_tindakan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2','kode_tindakan' => $value]);
+                        $this->db->delete('tbl_periksa_d_tindakan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2','kode_tindakan' => $value->kode_tindakan]);
                     }
                 }
             }
@@ -1974,24 +1978,23 @@ class Periksamedis extends CI_Controller
         }
 
         $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '0'], ['no_pendaftaran' => $this->no_pendaftaran]);
+
+        $updatePendaftaran = array(
+            'dtm_upd' => date("Y-m-d H:i:s",  time())
+        );
+        
         if ($_POST['pemeriksaan_selanjutnya'] != '0') {
             if($_POST['pemeriksaan_selanjutnya']=='2'){ // jika tetap di rawat inap
                 $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '1'], ['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $_POST['pemeriksaan_selanjutnya']]);
             }
             else{
-                $cek = $this->db->get_where('tbl_periksa_lanjutan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $_POST['pemeriksaan_selanjutnya']])->num_rows();
-                if($cek==1){
-                    $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '1'], ['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $_POST['pemeriksaan_selanjutnya']]);
-                }
-                else{
-                    $periksaLanjutan = array(
-                        'no_pendaftaran' => $this->no_pendaftaran,
-                        'tipe_periksa' => $_POST['pemeriksaan_selanjutnya'],
-                        'tanggal' => date('Y-m-d H:i:s'),
-                        'is_periksa' => '1',
-                    );
-                    $this->db->insert('tbl_periksa_lanjutan', $periksaLanjutan);
-                }
+                $periksaLanjutan = array(
+                    'no_pendaftaran' => $this->no_pendaftaran,
+                    'tipe_periksa' => $_POST['pemeriksaan_selanjutnya'],
+                    'tanggal' => date('Y-m-d H:i:s'),
+                    'is_periksa' => '1',
+                );
+                $this->db->insert('tbl_periksa_lanjutan', $periksaLanjutan);
             }
         } else {
             $updatePendaftaran['is_closed'] = '1';
@@ -2002,6 +2005,7 @@ class Periksamedis extends CI_Controller
         $data_transaksi_d = array();
 
         if(empty($_POST['isEdit'])){
+            $this->db->insert('tbl_transaksi',$data_transaksi);
             $lastId = $this->db->select_max('id_transaksi')->from('tbl_transaksi')->get()->row();
             if($_POST['totalKamar']!=0){
                 $data_transaksi_d[] = array(
@@ -2047,7 +2051,10 @@ class Periksamedis extends CI_Controller
                     'dc' => 'd'
                 );
             }
-            $this->Transaksi_model->insert($data_transaksi, $data_transaksi_d);
+
+            for($i = 0; $i < count($data_transaksi_d); $i++){
+                $this->db->insert('tbl_transaksi_d',$data_transaksi_d[$i]);
+            }
         }
         else{
             $this->db->query("update tbl_transaksi_d td join tbl_transaksi t on td.id_transaksi = t.id_transaksi set td.amount_transaksi = '".$_POST['totalKamar']."' where t.id_periksa_lanjutan = '".$getIdPeriksaLanjutan->id_periksa."' and deskripsi = 'Biaya Kamar Rawat Inap' ");
