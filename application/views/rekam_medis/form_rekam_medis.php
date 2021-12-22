@@ -591,11 +591,11 @@
 							</div>
 							<div class="col-sm-6">
 								<?php // echo form_dropdown('ket_tindakan', array('1'=>'Subsidi','0'=>'Non Subsidi'),'0',array('id'=>'ket_tindakan','class'=>'form-control', 'onchange'=>'hitung_biaya()'));?>
-								  <!-- <input type="radio" name="ket_tindakan" id="ket_tindakan" value="1">
+								  <input type="radio" name="ket_tindakan" id="ket_tindakan" value="1">
                                   Subsidi
                                   &nbsp
                                   <input type="radio" name="ket_tindakan" id="ket_tindakan" value="0" checked onchange="hitung_biaya();">
-                                  Non Subsidi -->
+                                  Non Subsidi
 							</div>
 						</div>
 						<div class="form-group">
@@ -608,11 +608,11 @@
 							</div>
 							<div class="col-sm-6">
 								<?php // echo form_dropdown('ket_obat_obatan', array('1'=>'Subsidi','0'=>'Non Subsidi'),'0',array('id'=>'ket_obat_obatan','class'=>'form-control', 'onchange'=>'hitung_biaya()'));?>
-								<!-- <input type="radio" name="ket_obat_obatan" id="ket_obat_obatan" value="1">
+								<input type="radio" name="ket_obat_obatan" id="ket_obat_obatan" value="1">
                                   Subsidi
                                   &nbsp
                                   <input type="radio" name="ket_obat_obatan" id="ket_obat_obatan" value="0" checked onchange="hitung_biaya();">
-                                  Non Subsidi -->
+                                  Non Subsidi
 							</div>
 						</div>
 						<!--<div class="form-group">-->
@@ -1300,9 +1300,9 @@ $(document).ready(function() {
     
     function hitung_biaya(){
         
-        // $('#ket_pemeriksaan:checked').val() == 0 ? $('#biaya_pemeriksaan').val() : $('#biaya_pemeriksaan').val(0);
-        // $('#ket_tindakan:checked').val() == 0 ? $('#name_tindakan').val() : $('#name_tindakan').val(0);
-        // $('#ket_obat_obatan:checked').val() == 0 ? $('#biaya_obat_obatan').val($('#grandtotal_harga').val()) : $('#biaya_obat_obatan').val(0);
+        $('#ket_pemeriksaan:checked').val() == 0 ? $('#biaya_pemeriksaan').val() : $('#biaya_pemeriksaan').val(0);
+        $('#ket_tindakan:checked').val() == 0 ? $('#name_tindakan').val() : $('#name_tindakan').val(0);
+        $('#ket_obat_obatan:checked').val() == 0 ? $('#biaya_obat_obatan').val($('#grandtotal_harga').val()) : $('#biaya_obat_obatan').val(0);
         //  $('#ket_administrasi:checked').val() == 0 ? $('#biaya_administrasi').val() : $('#biaya_administrasi').val(0);
         
         // $('input[name=ket_administrasi]:checked').val() == 0 ? alert('0') : alert('1');
