@@ -51,7 +51,7 @@ class Transaksi_model extends CI_Model
     }
 
     function get_detail_no_pendaftaran($no_pendaftaran){
-        $this->db->select('t.*, td.*, l.tipe_periksa, p.no_pendaftaran');
+        $this->db->select('t.*, td.*, l.tipe_periksa, p.no_pendaftaran,p.is_bayar');
         $this->db->join('tbl_transaksi_d td','t.id_transaksi = td.id_transaksi');
         $this->db->join('tbl_periksa_lanjutan l','t.id_periksa_lanjutan = l.id_periksa');
         $this->db->join('tbl_pendaftaran p','l.no_pendaftaran = p.no_pendaftaran');

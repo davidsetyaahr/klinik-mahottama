@@ -75,6 +75,9 @@ class Pembayaran extends CI_Controller
         $this->_rules();
         
         $data_transaksi = $this->Transaksi_model->get_detail_no_pendaftaran($no_pendaftaran); //Ini Row
+        echo "<pre>";
+        print_r($data_transaksi);
+        echo "</pre>";
         $tab = array('pemeriksaan','sks','rapid');
         // if(is_null($data_transaksi) || (empty($_GET['tab']) && !in_array($_GET['tab'],$tab))){
         if(is_null($data_transaksi) || is_null($_GET['tab']) || (isset($_GET['tab']) && !in_array($_GET['tab'],$tab))){
@@ -84,9 +87,9 @@ class Pembayaran extends CI_Controller
             
             redirect(site_url('pembayaran'));
         } 
-        if($data_transaksi->status_transaksi == 1){
+        if($data_transaksi->is_bayar == 1){
             //Set session error
-            $this->session->set_flashdata('message', 'Data pembayaran sudah dilakukan pembayaran, No Periksa ' . $data_transaksi->no_transaksi);
+            $this->session->set_flashdata('message', 'Data pembayaran sudah dilakukan pembayaran, No Pendaftaran ' . $no_pendaftaran);
             $this->session->set_flashdata('message_type', 'danger');
             
             redirect(site_url('pembayaran'));
@@ -94,29 +97,14 @@ class Pembayaran extends CI_Controller
         
         if ($this->form_validation->run() == TRUE) {
 
-            $biaya_administrasi = str_replace('.','',$this->input->post('biaya_administrasi'));
             $total_transaksi = str_replace('.','',$this->input->post('total_transaksi'));
             $subsidi_transaksi = str_replace('.','',$this->input->post('subsidi_transaksi'));
             $total_pembayaran = str_replace('.','',$this->input->post('total_pembayaran'));
 
             $data_trans = array(
-                'atas_nama' => $this->input->post('atas_nama'),
-                'status_transaksi' => 1,
-                'cara_pembayaran' => $this->input->post('cara_pembayaran'),
                 'dtm_upd' => date("Y-m-d H:i:s",  time())
             );
-            $biaya_tindakan=$biaya_pemeriksaan=$biaya_obat=0;
-            foreach ($this->Transaksi_model->get_detail_by_h_id($data_transaksi->id_transaksi) as $key => $value) {
-                if (strpos($value->deskripsi,'Biaya Pemeriksaan')!==false) {
-                    $biaya_pemeriksaan=$value->amount_transaksi;
-                }
-                if (strpos($value->deskripsi,'Biaya Tindakan')!==false) {
-                    $biaya_tindakan = $biaya_tindakan + $value->amount_transaksi;
-                }
-                if ($value->deskripsi == 'Total Obat-obatan') {
-                    $biaya_obat=$value->amount_transaksi;
-                }
-            }
+
             $data_trans_d = array();
             if($this->input->post('subsidi_transaksi') != ''){
                 $data_trans_d[] = array(
@@ -134,19 +122,6 @@ class Pembayaran extends CI_Controller
                 'amount_transaksi' => $total_pembayaran,
                 'dc' => 'c'
             );
-            
-            //Biaya administrasi
-            $lastId = $this->db->select_max('id_transaksi')->from('tbl_transaksi')->get()->row();
-            $data_trans_d[] = array(
-                // 'id_transaksi' => $id_transaksi,
-                // 'id_transaksi' => $lastId->id_transaksi,
-                'id_transaksi' => $data_transaksi->id_transaksi,
-                'deskripsi' => 'Biaya Administrasi',
-                'amount_transaksi' => $biaya_administrasi != '' ? $biaya_administrasi : 0,
-                'dc' => 'd'
-            );
-            // $subsidi_transaksi=$this->input->post('subsidi_transaksi');
-            // $biaya_administrasi=$this->input->post('biaya_administrasi');
 
             $biaya=array(
                 'biaya_tindakan'    => $biaya_tindakan,

@@ -37,7 +37,7 @@
 						<!--	<div class="col-sm-3"><?php // echo $klinik;?></div>-->
       <!--                  </div>-->
                         <div class="form-group">
-							<div class="col-sm-3"><label>No Transaksi</label></div>
+							<div class="col-sm-3"><label>No Pendaftaran</label></div>
 							<div class="col-sm-3">
 							    <a target="_blank" href="<?php echo site_url('pembayaran/detail?id=').$no_pendaftaran;?>">
 							        <?php echo $no_pendaftaran;?>
@@ -77,12 +77,12 @@
                     }
                     ?>
                         <hr />
-                        <div class="form-group">
+                        <!-- <div class="form-group">
 							<div class="col-sm-3">Biaya Administrasi</div>
     						<div class="col-sm-3">
-    							<?php echo form_input(array('id'=>'biaya_administrasi','name'=>'biaya_administrasi','type'=>'text','value'=>'','class'=>'form-control','style'=>'text-align:right;','placeholder'=>'0','onchange'=>'hitung_total()','onkeyup' => 'formatRupiah(this)'));?>
+    							<?php// echo form_input(array('id'=>'biaya_administrasi','name'=>'biaya_administrasi','type'=>'text','value'=>'','class'=>'form-control','style'=>'text-align:right;','placeholder'=>'0','onchange'=>'hitung_total()','onkeyup' => 'formatRupiah(this)'));?>
     						</div>
-						</div> 
+						</div>  -->
                         <div class="form-group">
 							<div class="col-sm-3">Total Transaksi</div>
     						<div class="col-sm-3">

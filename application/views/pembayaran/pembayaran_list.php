@@ -27,11 +27,10 @@
                                 <thead>
                                     <tr>
                                         <th width="30px">No</th>
-                                        <th>No Transaksi</th>
+                                        <th>No Pembayaran</th>
                                         <th>Nama Pasien</th>
                                         <th>Klinik Periksa</th>
                                         <th>Tgl Periksa</th>
-                                        <th>Tgl Pengambilan Obat</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -54,7 +53,7 @@
                                     <thead>
                                         <tr>
                                             <th width="30px">No</th>
-                                            <th>No Transaksi</th>
+                                            <th>No Pembayaran</th>
                                             <th>Nama Pasien</th>
                                             <th>Klinik Periksa</th>
                                             <th>Tgl Periksa</th>
@@ -111,7 +110,7 @@
                 {
                     "data": "id_transaksi",
                     "orderable": false
-                },{"data": "no_pendaftaran"},{"data": "nama_pasien"},{"data": "id_klinik"},{"data": "tgl_periksa"},{"data": "tgl_pengambilan"},{"data": "status_transaksi"},
+                },{"data": "no_pendaftaran"},{"data": "nama_pasien"},{"data": "id_klinik"},{"data": "tgl_periksa"},{"data": "status_transaksi"},
                 {
                     "data" : "action",
                     "orderable": false,
