@@ -261,7 +261,7 @@ class Pembayaran extends CI_Controller
             }
             
         }
-        // $this->template->load('template','pembayaran/bayar', $this->data);
+        $this->template->load('template','pembayaran/bayar', $this->data);
     }
     private function jurnal_otomatis_pemeriksaan($biaya,$id_akun_bank){
         foreach ($biaya as $key => $value) {
