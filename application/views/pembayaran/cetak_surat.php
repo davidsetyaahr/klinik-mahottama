@@ -143,24 +143,35 @@
             <td><?php echo $data->deskripsi;?></td>
             <td>:</td>
             <td>Rp.<?php echo $data->dc == 'd' ? number_format($data->amount_transaksi,2,',','.') : ($data->amount_transaksi != 0 ? '-'.number_format($data->amount_transaksi,2,',','.') : number_format(0,2,',','.'));?></td>
+            
             </tr>
             <?php 
             $i++;
             }
             if($data->dc == 'd')
-            $total_transaksi += $data->amount_transaksi;
-                else
+              $total_transaksi += $data->amount_transaksi;
+            else
                 $total_transaksi -= $data->amount_transaksi;
             }
             }
             ?>
+              <tr><?php 
+              $subsidi = 0;
+                if($cekSubsidi == 1){
+                  $subsidi = $getSubsidi->amount_transaksi;
+                  echo "<td>Subsidi</td>";
+                  echo "<td>:</td>";
+                  echo "<td>Rp.".number_format($subsidi, 2, '.', '.')."</td>";
+                  // $cekSubsidi->;
+                }                
+              ?></tr>
             <tr>
               <td colspan="3"><hr></td>
             </tr>
             <tr>
                 <td width="85%"><b>Amount</b></td>
                 <td width="10%"><b>Rp</b></td>
-                <td width="35%"><b><?php echo number_format($total_transaksi,2,',','.');?></b></td>
+                <td width="35%"><b><?php echo number_format($total_transaksi-$subsidi,2,',','.');?></b></td>
             </tr>
           </table>
       </td>

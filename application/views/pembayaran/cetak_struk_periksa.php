@@ -110,15 +110,25 @@
                     $i++;
                 }
                     if($data->dc == 'd')
-                        $total_transaksi += $data->amount_transaksi;
+                    $total_transaksi += $data->amount_transaksi;
                     else
-                        $total_transaksi -= $data->amount_transaksi;
+                    $total_transaksi -= $data->amount_transaksi;
                 }
             }
     ?>
+    <tr style="border-bottom:1px solid black; border-bottom:1px solid black">
+      <?php 
+          $subsidi = 0;
+                if($cekSubsidi == 1){
+                  $subsidi = $getSubsidi->amount_transaksi;
+                  echo "<th align='left'>Subsidi</th>";
+                  echo "<th align='right'>Rp. ".number_format($subsidi, 0, '.', '.')."</th>";
+                }                
+              ?>
+    </tr>
 	<tr style="border-bottom:1px solid black; border-bottom:1px solid black">
 		<th align="left">Total</th>
-		<th align="right">Rp. <?=number_format($total_transaksi, 0, '.', '.')?></th>
+		<th align="right">Rp. <?=number_format($total_transaksi-$subsidi, 0, '.', '.')?></th>
 	</tr>
 </table>
 <br>

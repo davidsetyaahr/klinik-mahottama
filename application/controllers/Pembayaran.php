@@ -250,6 +250,8 @@ class Pembayaran extends CI_Controller
             $this->data['total_transaksi'] = 0;
             $this->data['bank'] = $this->Tbl_akun_model->get_all_bank();
             $this->data['transaksi_d'] = $this->Transaksi_model->get_detail_by_h_id($data_transaksi->no_pendaftaran); //Ini array
+            $this->data['getSubsidi'] = $this->Transaksi_model->cekSubsidi($data_transaksi->no_pendaftaran);
+            $this->data['cekSubsidi'] = count((array)$this->data['getSubsidi']);
 
             
             if($this->input->post('total_transaksi')){
@@ -259,7 +261,7 @@ class Pembayaran extends CI_Controller
             }
             
         }
-        $this->template->load('template','pembayaran/bayar', $this->data);
+        // $this->template->load('template','pembayaran/bayar', $this->data);
     }
     private function jurnal_otomatis_pemeriksaan($biaya,$id_akun_bank){
         foreach ($biaya as $key => $value) {
@@ -588,11 +590,15 @@ class Pembayaran extends CI_Controller
         }
         
         $this->data['id_transaksi'] = $data_transaksi->no_pendaftaran;
+        $this->data['cekSubsidi'] = $this->Transaksi_model->cekSubsidi($data_transaksi->no_pendaftaran);
         $this->data['transaksi_d'] = $this->Transaksi_model->get_detail_by_h_id($data_transaksi->no_pendaftaran);
 
         $this->data['tgl_cetak'] = date("d M Y",  time());
         $this->data['nama_pegawai'] = 'Kasir';
         $this->data['atas_nama'] = $data_transaksi->atas_nama;
+        $this->data['getSubsidi'] = $this->Transaksi_model->cekSubsidi($data_transaksi->no_pendaftaran);
+        $this->data['cekSubsidi'] = count((array)$this->data['getSubsidi']);
+
         $view = isset($_GET['view']) ? $_GET['view'] : 'cetak_surat';
         $this->load->view('pembayaran/'.$view, $this->data);
     }

@@ -472,4 +472,10 @@ class Transaksi_model extends CI_Model
     {
         return $this->db->get_where('tbl_transaksi',['kode_transaksi' => 'PAYPRKS','no_transaksi' => $no_pendaftaran,'status_transaksi' => '1'])->num_rows();
     }
+    public function cekSubsidi($no_pendaftaran)
+    {
+        $this->db->select('td.amount_transaksi');
+        $this->db->join('tbl_transaksi t','td.id_transaksi = t.id_transaksi');
+        return $this->db->get_where('tbl_transaksi_d td',['t.no_transaksi' => $no_pendaftaran,'td.deskripsi' => 'Subsidi dari Klinik'])->row();
+    }
 }
