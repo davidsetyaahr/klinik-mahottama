@@ -139,32 +139,30 @@ class Periksamedis extends CI_Controller
             $data_periksa_d_alkes = array();
             $no_periksa = $this->input->post('no_periksa');
 
-            if ($post_alkes != null) {
-                $total_jual_alkes = 0;
-                for ($i = 0; $i < count($post_alkes); $i++) {
-                    if ($post_alkes[$i] != null || $post_alkes[$i] != '') {
-                        $total_jual_alkes += $_POST['harga_alkes'][$i];
-                        $data_periksa_d_alkes[] = array(
-                            'no_periksa' => $this->input->post('no_periksa'),
-                            'no_pendaftaran' => $data_pendaftaran->no_pendaftaran,
-                            'kode_barang' => $post_alkes[$i],
-                            'jumlah' => $post_alkes_jml[$i],
-                            'harga_satuan' => $_POST['harga_alkes'][$i] / $post_alkes_jml[$i],
-                            'tipe_periksa' => '1'
-                        );
+            $total_jual_alkes = 0;
+            for ($i = 0; $i < count($post_alkes); $i++) {
+                if ($post_alkes[$i] != null || $post_alkes[$i] != '') {
+                    $total_jual_alkes += $_POST['harga_alkes'][$i];
+                    $data_periksa_d_alkes[] = array(
+                        'no_periksa' => $this->input->post('no_periksa'),
+                        'no_pendaftaran' => $data_pendaftaran->no_pendaftaran,
+                        'kode_barang' => $post_alkes[$i],
+                        'jumlah' => $post_alkes_jml[$i],
+                        'harga_satuan' => $_POST['harga_alkes'][$i] / $post_alkes_jml[$i],
+                        'tipe_periksa' => '1'
+                    );
 
-                        $detailInv = array(
-                            'id_inventory' => $kode_receipt,
-                            'kode_barang' => $post_alkes[$i],
-                            'jumlah' => $post_alkes_jml[$i],
-                            'harga' => $_POST['harga_alkes'][$i] / $post_alkes_jml[$i],
-                        );
-                        $insert = $this->Transaksi_obat_model->insert('tbl_inventory_detail', $detailInv);
-                    }
+                    $detailInv = array(
+                        'id_inventory' => $kode_receipt,
+                        'kode_barang' => $post_alkes[$i],
+                        'jumlah' => $post_alkes_jml[$i],
+                        'harga' => $_POST['harga_alkes'][$i] / $post_alkes_jml[$i],
+                    );
+                    $insert = $this->Transaksi_obat_model->insert('tbl_inventory_detail', $detailInv);
                 }
-                $this->jurnal_otomatis_alkes($total_jual_alkes, $no_periksa); //jurnal otomatis akuntansi untuk pendapatan
-
             }
+            $this->jurnal_otomatis_alkes($total_jual_alkes, $no_periksa); //jurnal otomatis akuntansi untuk pendapatan
+
 
             $dataobat = array();
 
@@ -204,8 +202,8 @@ class Periksamedis extends CI_Controller
             // $grand_total_obat=$this->input->post('grandtotal_harga');
             $grand_total_obat = $total_jual_obat - $subsidi_obat;
             // $total_jual_obat=$this->input->post('total_harga');
-
-            $this->jurnal_otomatis_obat($total_jual_obat, $subsidi_obat, $grand_total_obat, $no_periksa, $grand_total_obat); //jurnal otomatis akuntansi untuk pendapatan
+            $hpp = $grand_total_obat + $total_jual_alkes;
+            $this->jurnal_otomatis_obat($hpp, $no_periksa, $grand_total_obat); //jurnal otomatis akuntansi untuk pendapatan
 
             $post_cek_fisik = $this->input->post('cek_fisik');
             $post_cek_fisik_value = $this->input->post('cek_fisik_value');
@@ -388,13 +386,13 @@ class Periksamedis extends CI_Controller
             $data_transaksi_d = array(
                 array(
                     'id_transaksi' => $lastIdTp->id_transaksi,
-                    'deskripsi' => 'Total Obat-obatan',
+                    'deskripsi' => 'Biaya Obat',
                     'amount_transaksi' => $total_jual_obat,
                     'dc' => 'd'
                 ),
                 array(
                     'id_transaksi' => $lastIdTp->id_transaksi,
-                    'deskripsi' => 'Total BMHP',
+                    'deskripsi' => 'Biaya BMHP',
                     'amount_transaksi' => $total_jual_alkes,
                     'dc' => 'd'
                 ),
@@ -525,24 +523,17 @@ class Periksamedis extends CI_Controller
         if ($insert) {
             if($isEdit==null){
                 $id_last = $this->db->select_max('id_trx_akun')->from('tbl_trx_akuntansi')->get()->row();
-                //kas bertambah (sudah dipotong diskon)
-                $data = array(
-                    'id_trx_akun'   => $id_last->id_trx_akun,
-                    'id_akun'       => 20,
-                    'jumlah'        => $total_jual_alkes,
-                    'tipe'          => 'DEBIT',
-                    'keterangan'    => 'lawan',
-                );
-                $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
-                //hpp 
-                $data = array(
-                    'id_trx_akun'   => $id_last->id_trx_akun,
-                    'id_akun'       => 65,
-                    'jumlah'        => $total_jual_alkes,
-                    'tipe'          => 'DEBIT',
-                    'keterangan'    => 'lawan',
-                );
-                $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
+
+                // //hpp 
+                // $data = array(
+                //     'id_trx_akun'   => $id_last->id_trx_akun,
+                //     'id_akun'       => 65,
+                //     'jumlah'        => $total_jual_alkes,
+                //     'tipe'          => 'DEBIT',
+                //     'keterangan'    => 'lawan',
+                // );
+                // $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
+
                 //persediaan obat berkurang (tanpa diskon)
                 $data = array(
                     'id_trx_akun'   => $id_last->id_trx_akun,
@@ -552,31 +543,18 @@ class Periksamedis extends CI_Controller
                     'keterangan'    => 'akun',
                 );
                 $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
-                //pendapatan dari penjualan obat (tanpa diskon)
-                $data = array(
-                    'id_trx_akun'   => $id_last->id_trx_akun,
-                    'id_akun'       => 41,
-                    'jumlah'        => $total_jual_alkes,
-                    'tipe'          => 'KREDIT',
-                    'keterangan'    => 'akun',
-                );
-                $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
             }
             else{
                 $this->db->select('id_trx_akun');
                 $getIdTrx = $this->db->get_where('tbl_trx_akuntansi',['deskripsi' => 'Penjualan BMHP dari Nomor Pemeriksaan ' . $no_periksa])->row();
-                
-                $this->db->update('tbl_trx_akuntansi_detail',['jumlah' => $total_jual_alkes],['id_trx_akun' => $getIdTrx->id_trx_akun,'id_akun' => '20']);
-                
-                $this->db->update('tbl_trx_akuntansi_detail',['jumlah' => $total_jual_alkes],['id_trx_akun' => $getIdTrx->id_trx_akun,'id_akun' => '65']);
+                                
+                // $this->db->update('tbl_trx_akuntansi_detail',['jumlah' => $total_jual_alkes],['id_trx_akun' => $getIdTrx->id_trx_akun,'id_akun' => '65']);
                 
                 $this->db->update('tbl_trx_akuntansi_detail',['jumlah' => $total_jual_alkes],['id_trx_akun' => $getIdTrx->id_trx_akun,'id_akun' => '59']);
-                
-                $this->db->update('tbl_trx_akuntansi_detail',['jumlah' => $total_jual_alkes],['id_trx_akun' => $getIdTrx->id_trx_akun,'id_akun' => '41']);
             }
         }
     }
-    private function jurnal_otomatis_obat($total_jual_obat, $subsidi_obat, $grand, $no_periksa, $total_jual,$isEdit=null)
+    private function jurnal_otomatis_obat($hpp,$no_periksa, $total_jual,$isEdit=null)
     {
         if($isEdit==null){
             $data_trx = array(
@@ -591,24 +569,17 @@ class Periksamedis extends CI_Controller
         if ($insert) {
             if($isEdit==null){
                 $id_last = $this->db->select_max('id_trx_akun')->from('tbl_trx_akuntansi')->get()->row();
-                //kas bertambah (sudah dipotong diskon)
-                $data = array(
-                    'id_trx_akun'   => $id_last->id_trx_akun,
-                    'id_akun'       => 20,
-                    'jumlah'        => $grand,
-                    'tipe'          => 'DEBIT',
-                    'keterangan'    => 'lawan',
-                );
-                $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
-                //hpp (tanpa diskon)
-                $data = array(
-                    'id_trx_akun'   => $id_last->id_trx_akun,
-                    'id_akun'       => 65,
-                    'jumlah'        => $total_jual,
-                    'tipe'          => 'DEBIT',
-                    'keterangan'    => 'lawan',
-                );
-                $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
+
+                // //hpp (tanpa diskon)
+                // $data = array(
+                //     'id_trx_akun'   => $id_last->id_trx_akun,
+                //     'id_akun'       => 65,
+                //     'jumlah'        => $total_jual,
+                //     'tipe'          => 'DEBIT',
+                //     'keterangan'    => 'lawan',
+                // );
+                // $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
+
                 //persediaan obat berkurang (tanpa diskon)
                 $data = array(
                     'id_trx_akun'   => $id_last->id_trx_akun,
@@ -618,56 +589,45 @@ class Periksamedis extends CI_Controller
                     'keterangan'    => 'akun',
                 );
                 $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
-                //pendapatan dari penjualan obat (tanpa diskon)
-                $data = array(
-                    'id_trx_akun'   => $id_last->id_trx_akun,
-                    'id_akun'       => 39,
-                    'jumlah'        => $total_jual_obat,
-                    'tipe'          => 'KREDIT',
-                    'keterangan'    => 'akun',
-                );
-                $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
-                if($subsidi_obat!=0){
-                    //diskon untuk penjualan obat
-                    $data = array(
-                        'id_trx_akun'   => $id_last->id_trx_akun,
-                        'id_akun'       => 64,
-                        'jumlah'        => $subsidi_obat,
-                        'tipe'          => 'DEBIT',
-                        'keterangan'    => 'akun',
-                    );
-                    $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
-                }
+
+                // if($subsidi_obat!=0){
+                //     //diskon untuk penjualan obat
+                //     $data = array(
+                //         'id_trx_akun'   => $id_last->id_trx_akun,
+                //         'id_akun'       => 64,
+                //         'jumlah'        => $subsidi_obat,
+                //         'tipe'          => 'DEBIT',
+                //         'keterangan'    => 'akun',
+                //     );
+                //     $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
+                // }
             }
             else{
                 $this->db->select('id_trx_akun');
                 $getIdTrx = $this->db->get_where('tbl_trx_akuntansi',['deskripsi' => 'Penjualan Obat dari Nomor Pemeriksaan ' . $no_periksa])->row();
                 
-                $this->db->update('tbl_trx_akuntansi_detail',['jumlah' => $grand],['id_trx_akun' => $getIdTrx->id_trx_akun,'id_akun' => '20']);
-                
-                $this->db->update('tbl_trx_akuntansi_detail',['jumlah' => $total_jual],['id_trx_akun' => $getIdTrx->id_trx_akun,'id_akun' => '65']);
+                // $this->db->update('tbl_trx_akuntansi_detail',['jumlah' => $total_jual],['id_trx_akun' => $getIdTrx->id_trx_akun,'id_akun' => '65']);
                 
                 $this->db->update('tbl_trx_akuntansi_detail',['jumlah' => $total_jual],['id_trx_akun' => $getIdTrx->id_trx_akun,'id_akun' => '58']);
                 
-                $this->db->update('tbl_trx_akuntansi_detail',['jumlah' => $total_jual_obat],['id_trx_akun' => $getIdTrx->id_trx_akun,'id_akun' => '39']);
                 
-                if($subsidi_obat!=0){
-                    $cekInsSubsidi = $this->db->get_where('tbl_trx_akuntansi_detail',['id_trx_akun' => $getIdTrx->id_trx_akun,'id_akun' => '64'])->num_rows();
+                // if($subsidi_obat!=0){
+                //     $cekInsSubsidi = $this->db->get_where('tbl_trx_akuntansi_detail',['id_trx_akun' => $getIdTrx->id_trx_akun,'id_akun' => '64'])->num_rows();
                     
-                    if($cekInsSubsidi==0){
-                        $data = array(
-                            'id_trx_akun'   => $getIdTrx->id_trx_akun,
-                            'id_akun'       => 64,
-                            'jumlah'        => $subsidi_obat,
-                            'tipe'          => 'DEBIT',
-                            'keterangan'    => 'akun',
-                        );
-                        $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
-                    }
-                    else{
-                        $this->db->update('tbl_trx_akuntansi_detail',['jumlah' => $subsidi_obat],['id_trx_akun' => $getIdTrx->id_trx_akun,'id_akun' => '64']);
-                    }
-                }
+                //     if($cekInsSubsidi==0){
+                //         $data = array(
+                //             'id_trx_akun'   => $getIdTrx->id_trx_akun,
+                //             'id_akun'       => 64,
+                //             'jumlah'        => $subsidi_obat,
+                //             'tipe'          => 'DEBIT',
+                //             'keterangan'    => 'akun',
+                //         );
+                //         $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
+                //     }
+                //     else{
+                //         $this->db->update('tbl_trx_akuntansi_detail',['jumlah' => $subsidi_obat],['id_trx_akun' => $getIdTrx->id_trx_akun,'id_akun' => '64']);
+                //     }
+                // }
             }
         }
     }
@@ -1156,9 +1116,10 @@ class Periksamedis extends CI_Controller
         }
 
         //insert akuntansi
-        $this->jurnal_otomatis_obat($_POST['totalObat'],0,$_POST['totalObat'],$data_transaksi['id_transaksi'],$_POST['totalObat']);
-        
         $this->jurnal_otomatis_alkes($_POST['totalAlkes'],$data_transaksi['id_transaksi']);
+        $hpp = $_POST['totalObat']+$_POST['totalAlkes'];
+        $this->jurnal_otomatis_obat($hpp,$data_transaksi['id_transaksi'],$_POST['totalObat']);
+        
         
         if($_POST['pemeriksaan_selanjutnya']=='0'){
             //Get Next Antrian
@@ -1413,9 +1374,10 @@ class Periksamedis extends CI_Controller
         }
 
         //insert akuntansi
-        $this->jurnal_otomatis_obat($_POST['totalObat'],0,$_POST['totalObat'],$data_transaksi['no_transaksi'],$_POST['totalObat']);
-        
+        $hpp = $_POST['totalObat']+$_POST['totalAlkes'];
         $this->jurnal_otomatis_alkes($_POST['totalAlkes'],$data_transaksi['no_transaksi']);
+        $this->jurnal_otomatis_obat($hpp,$data_transaksi['no_transaksi'],$_POST['totalObat']);
+        
 
         if($_POST['pemeriksaan_selanjutnya']=='0'){
         //Get Next Antrian
@@ -1659,9 +1621,11 @@ class Periksamedis extends CI_Controller
         
         
         //insert akuntansi
-        $this->jurnal_otomatis_obat($_POST['totalObat'], 0, $_POST['totalObat'], $data_transaksi['no_transaksi'], $_POST['totalObat']);
-        
+        $hpp = $_POST['totalObat']+$_POST['totalAlkes'];
+
         $this->jurnal_otomatis_alkes($_POST['totalAlkes'], $data_transaksi['no_transaksi']);
+        $this->jurnal_otomatis_obat($hpp,$data_transaksi['no_transaksi'], $_POST['totalObat']);
+        
         
         
         if($_POST['pemeriksaan_selanjutnya']=='0'){
@@ -2070,9 +2034,11 @@ class Periksamedis extends CI_Controller
 
         //insert akuntansi
         $paramJurnal = isset($_POST['isEdit']) ? 'edit' : null;
-        $this->jurnal_otomatis_obat($_POST['totalObat'],0,$_POST['totalObat'],$data_transaksi['no_transaksi'],$_POST['totalObat'],$paramJurnal);
-        
+        $hpp = $_POST['totalObat']+$_POST['totalAlkes'];
+
         $this->jurnal_otomatis_alkes($_POST['totalAlkes'],$data_transaksi['no_transaksi'],$paramJurnal);
+        $this->jurnal_otomatis_obat($hpp,$data_transaksi['no_transaksi'],$_POST['totalObat'],$paramJurnal);
+        
 
         $updatePendaftaran = array(
             'dtm_upd' => date("Y-m-d H:i:s",  time())

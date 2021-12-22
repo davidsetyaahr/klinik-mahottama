@@ -66,7 +66,6 @@
                                     <th>Nama Dokter</th>
                                     <th>Tanggal Periksa</th>
                                     <th>Tanggal Pengambilan</th>
-                                    <th>Status</th>
                                 </tr>
                             </thead>
 
@@ -196,9 +195,6 @@
                 },
                 {
                     "data": "tgl_pengambilan"
-                },
-                {
-                    "data": "status"
                 },
             ],
             order: [[6, 'asc']],

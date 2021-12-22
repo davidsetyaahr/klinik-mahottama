@@ -31,9 +31,9 @@ class Apotek extends CI_Controller
     } 
     
     public function ambilobat(){
-        if (!isset($_GET['id'])) {
-            if ($this->input->post('no_periksa') != null){
-                $no_periksa = $this->input->post('no_periksa');
+        if (!isset($_GET['no_pendaftaran'])) {
+            if ($this->input->post('no_pendaftaran') != null){
+                $no_pendaftaran = $this->input->post('no_pendaftaran');
                 $check = $this->input->post('check_hidden');
                 $jumlah = $this->input->post('jml_obat');
                 $kode_obat = $this->input->post('obat');
@@ -49,7 +49,7 @@ class Apotek extends CI_Controller
                             'dtm_upd' => date("Y-m-d H:i:s",  time())
                         );
                         
-                        $this->Periksa_model->update_periksa_d_obat($id_periksa_d_obat_check,$data_periksa_d_obat_upd);
+                        $this->db->update('tbl_periksa_d_obat',$data_periksa_d_obat_upd,['no_pendaftaran' => $no_pendaftaran]);
                     
                         //Update stok obat
                         // $kode_barang = $kode_obat[$i];
@@ -65,23 +65,24 @@ class Apotek extends CI_Controller
                     }
                 }
                 
-                $this->Periksa_model->update($no_periksa, 
+                $this->db->update('tbl_periksa', 
                     array(
                         'is_ambil_obat' => 1,
                         'dtm_upd' => date("Y-m-d H:i:s",  time())
-                    )
+                    ),
+                    ['no_pendaftaran' => $no_pendaftaran]
                 );
                 
-                $data_transaksi_d = array(
-                    'amount_transaksi' => $this->hitung_total_alkes_obat($no_periksa),
-                    'dtm_upd' => date("Y-m-d H:i:s",  time())
-                );
-                $id_transaksi = $this->Transaksi_model->get_by_no($no_periksa)->id_transaksi;
+                // $data_transaksi_d = array(
+                //     'amount_transaksi' => $this->hitung_total_alkes_obat($no_periksa),
+                //     'dtm_upd' => date("Y-m-d H:i:s",  time())
+                // );
+                // $id_transaksi = $this->Transaksi_model->get_by_no($no_periksa)->id_transaksi;
                 
-                $this->Transaksi_model->update_d($no_periksa,$data_transaksi_d);
+                // $this->Transaksi_model->update_d($no_periksa,$data_transaksi_d);
                 
                 //Set session sukses
-                $this->session->set_flashdata('message', 'Data pengambilan obat berhasil disimpan, No Periksa ' . $no_periksa);
+                $this->session->set_flashdata('message', 'Data pengambilan obat berhasil disimpan, No Pendaftaran ' . $no_pendaftaran);
                 $this->session->set_flashdata('message_type', 'success');
                 
                 redirect(site_url('apotek'));
@@ -90,20 +91,20 @@ class Apotek extends CI_Controller
                 redirect(site_url('apotek'));
             }
         } else {
-            $no_periksa = $_GET['id'];
-            $data_periksa = $this->Periksa_model->get_by_id($no_periksa);
-            if(is_null($data_periksa)){
-                //Set session error
-                $this->session->set_flashdata('message', 'Tidak ada data, No Periksa '.$no_periksa);
-                $this->session->set_flashdata('message_type', 'danger');
-                redirect(site_url('apotek'));
-            }
+            $no_pendaftaran = $_GET['no_pendaftaran'];
+            $data_periksa = $this->Periksa_model->get_by_no_daftar($no_pendaftaran);
+            // if(is_null($data_periksa)){
+            //     //Set session error
+            //     $this->session->set_flashdata('message', 'Tidak ada data, No Periksa '.$no_pendaftaran);
+            //     $this->session->set_flashdata('message_type', 'danger');
+            //     redirect(site_url('apotek'));
+            // }
             
             //Data Periksa
-            $this->data['no_periksa'] = $data_periksa->no_periksa;
-            $this->data['anamnesi'] = $data_periksa->anamnesi;
-            $this->data['diagnosa'] = $data_periksa->diagnosa;
-            $this->data['tindakan'] = $data_periksa->tindakan;
+            $this->data['no_pendaftaran'] = $data_periksa->no_pendaftaran;
+            // $this->data['anamnesi'] = $data_periksa->anamnesi;
+            // $this->data['diagnosa'] = $data_periksa->diagnosa;
+            // $this->data['tindakan'] = $data_periksa->tindakan;
             // $this->data['nama_dokter'] = $data_periksa->id_dokter;
             $this->data['note_dokter'] = $data_periksa->note_dokter;
             $this->data['tgl_periksa'] = $data_periksa->dtm_crt;
@@ -126,7 +127,7 @@ class Apotek extends CI_Controller
             $this->data['periksa_d_alkes'] = $data_periksa_d_alkes;
             
             //Get Data Periksa D Obat
-            $data_periksa_d_obat = $this->Periksa_model->get_d_obat_by_id($data_periksa->no_periksa);
+            $data_periksa_d_obat = $this->Periksa_model->get_d_obat_by_no_daftar($data_periksa->no_pendaftaran);
             $this->data['periksa_d_obat'] = $data_periksa_d_obat;
             // print_r($data_periksa_d_obat);
             // exit();

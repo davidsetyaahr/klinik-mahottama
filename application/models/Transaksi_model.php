@@ -51,7 +51,7 @@ class Transaksi_model extends CI_Model
     }
 
     function get_detail_no_pendaftaran($no_pendaftaran){
-        $this->db->select('t.*, td.*, l.tipe_periksa, p.no_pendaftaran,p.is_bayar');
+        $this->db->select('t.*, td.*, l.tipe_periksa, p.no_pendaftaran');
         $this->db->join('tbl_transaksi_d td','t.id_transaksi = td.id_transaksi');
         $this->db->join('tbl_periksa_lanjutan l','t.id_periksa_lanjutan = l.id_periksa');
         $this->db->join('tbl_pendaftaran p','l.no_pendaftaran = p.no_pendaftaran');
@@ -132,7 +132,7 @@ class Transaksi_model extends CI_Model
         $this->datatables->join('tbl_klinik','tbl_transaksi.id_klinik=tbl_klinik.id_klinik');
         // $this->datatables->where('status_transaksi', '0');
         // $this->datatables->where('tbl_periksa.is_ambil_obat', '0');
-        $where = "status_transaksi = '0' and tbl_periksa.is_ambil_obat = '0' ";
+        $where = "status_transaksi = '0' and tbl_periksa.is_ambil_obat = '0' and is_bayar = '0' ";
         if($id_klinik != null)
             $where.="and tbl_transaksi.id_klinik = '$id_klinik' ";
             // $this->datatables->where('tbl_transaksi.id_klinik', $id_klinik);
@@ -163,7 +163,7 @@ class Transaksi_model extends CI_Model
         $this->datatables->join('tbl_pasien','tbl_periksa.no_rekam_medis=tbl_pasien.no_rekam_medis');
         $this->datatables->join('tbl_pendaftaran','tbl_pasien.no_rekam_medis=tbl_pendaftaran.no_rekam_medis');
         $this->datatables->join('tbl_klinik','tbl_transaksi.id_klinik=tbl_klinik.id_klinik');
-        $this->datatables->where('status_transaksi', '1');
+        $this->datatables->where('is_bayar', '1');
         if($id_klinik != null)
             $this->datatables->where('tbl_transaksi.id_klinik', $id_klinik);
 
@@ -186,18 +186,18 @@ class Transaksi_model extends CI_Model
     }
     
     function json_apotek($id_klinik = null){
-        $this->datatables->select('tbl_periksa.no_periksa,tbl_periksa.no_pendaftaran,tbl_periksa.no_rekam_medis, tbl_pasien.nama_lengkap as nama_pasien,tbl_dokter.nama_dokter as nama_dokter,tbl_periksa.dtm_crt as tgl_periksa,tbl_klinik.nama as klinik');
+        $this->datatables->select('tbl_periksa.no_periksa,tbl_periksa.no_pendaftaran,tbl_periksa.no_rekam_medis, tbl_pasien.nama_lengkap as nama_pasien,tbl_dokter.nama_dokter as nama_dokter,tbl_periksa.dtm_crt as tgl_periksa,tbl_klinik.nama as klinik,tbl_pendaftaran.no_pendaftaran');
         $this->datatables->from('tbl_periksa');
         $this->datatables->join('tbl_transaksi','tbl_periksa.no_periksa=tbl_transaksi.no_transaksi');
         $this->datatables->join('tbl_pasien','tbl_periksa.no_rekam_medis=tbl_pasien.no_rekam_medis');
         $this->datatables->join('tbl_dokter','tbl_periksa.id_dokter=tbl_dokter.id_dokter');
         $this->datatables->join('tbl_pendaftaran','tbl_periksa.no_pendaftaran=tbl_pendaftaran.no_pendaftaran','left');
         $this->datatables->join('tbl_klinik','tbl_pendaftaran.id_klinik=tbl_klinik.id_klinik','left');
-        $this->datatables->where('tbl_transaksi.status_transaksi', 1);
+        $this->datatables->where('is_bayar', '1');
         $this->datatables->where('tbl_periksa.is_ambil_obat', 0);
         if($id_klinik != null)
             $this->datatables->where('tbl_pendaftaran.id_klinik', $id_klinik);
-        $this->datatables->add_column('action',anchor(site_url('apotek/ambilobat?id=$1'),'Ambil','class="btn btn-danger btn-sm"'),'no_periksa');
+        $this->datatables->add_column('action',anchor(site_url('apotek/ambilobat?no_pendaftaran=$1'),'Ambil','class="btn btn-danger btn-sm"'),'no_pendaftaran');
             
         return $this->datatables->generate();
     }
@@ -467,5 +467,9 @@ class Transaksi_model extends CI_Model
         $this->db->join('tbl_obat_alkes_bhp to','to.kode_barang=td.kode_barang');
         $this->db->where('tr.no_transaksi', $no_transaksi);
         return $this->db->get()->result();
+    }
+    public function cekBayar($no_pendaftaran)
+    {
+        return $this->db->get_where('tbl_transaksi',['kode_transaksi' => 'PAYPRKS','no_transaksi' => $no_pendaftaran,'status_transaksi' => '1'])->num_rows();
     }
 }

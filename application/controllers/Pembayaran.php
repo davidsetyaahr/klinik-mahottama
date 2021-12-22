@@ -75,10 +75,9 @@ class Pembayaran extends CI_Controller
         $this->_rules();
         
         $data_transaksi = $this->Transaksi_model->get_detail_no_pendaftaran($no_pendaftaran); //Ini Row
-        echo "<pre>";
-        print_r($data_transaksi);
-        echo "</pre>";
+        $cekBayar = $this->Transaksi_model->cekBayar($no_pendaftaran);
         $tab = array('pemeriksaan','sks','rapid');
+
         // if(is_null($data_transaksi) || (empty($_GET['tab']) && !in_array($_GET['tab'],$tab))){
         if(is_null($data_transaksi) || is_null($_GET['tab']) || (isset($_GET['tab']) && !in_array($_GET['tab'],$tab))){
             //Set session error
@@ -87,7 +86,7 @@ class Pembayaran extends CI_Controller
             
             redirect(site_url('pembayaran'));
         } 
-        if($data_transaksi->is_bayar == 1){
+        if($cekBayar == 1){
             //Set session error
             $this->session->set_flashdata('message', 'Data pembayaran sudah dilakukan pembayaran, No Pendaftaran ' . $no_pendaftaran);
             $this->session->set_flashdata('message_type', 'danger');
@@ -102,122 +101,139 @@ class Pembayaran extends CI_Controller
             $total_pembayaran = str_replace('.','',$this->input->post('total_pembayaran'));
 
             $data_trans = array(
+                'kode_transaksi' => 'PAYPRKS',
+                'id_klinik' => '1',
+                'no_transaksi' => $no_pendaftaran,
+                'tgl_transaksi' => date('Y-m-d'),
+                'status_transaksi' => '1',
+                'atas_nama' => $_POST['atas_nama'],
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
                 'dtm_upd' => date("Y-m-d H:i:s",  time())
             );
+            $this->db->insert('tbl_transaksi',$data_trans); 
+            $this->db->select_max('id_transaksi');
+            $getLastId = $this->db->get('tbl_transaksi')->row();
 
             $data_trans_d = array();
-            if($this->input->post('subsidi_transaksi') != ''){
+
+            $data_trans_d[] = array(
+                // 'id_transaksi' => $id_transaksi,
+                'id_transaksi' => $getLastId->id_transaksi,
+                'deskripsi' => 'Total Biaya Pemeriksaan',
+                'amount_transaksi' => $total_transaksi,
+                'dc' => 'c'
+            );
+            if($subsidi_transaksi != '' && $subsidi_transaksi != 0){
                 $data_trans_d[] = array(
-                    // 'id_transaksi' => $id_transaksi,
-                    'id_transaksi' => $data_transaksi->id_transaksi,
-                    'deskripsi' => 'Subsidi dari Kasir' ,
-                    'amount_transaksi' => $subsidi_transaksi != '' ? $subsidi_transaksi : 0,
-                    'dc' => 'c'
+                    'id_transaksi' => $getLastId->id_transaksi,
+                    'deskripsi' => 'Subsidi dari Klinik',
+                    'amount_transaksi' => $subsidi_transaksi,
+                    'dc' => 'd'
                 );
             }
             $data_trans_d[] = array(
                 // 'id_transaksi' => $id_transaksi,
-                'id_transaksi' => $data_transaksi->id_transaksi,
-                'deskripsi' => 'Pembayaran Biaya Medis' . ($this->input->post('atas_nama') != '' ? ' a/n ' . $this->input->post('atas_nama') : '' ),
+                'id_transaksi' => $getLastId->id_transaksi,
+                'deskripsi' => 'Pembayaran Biaya Pemeriksaan',
                 'amount_transaksi' => $total_pembayaran,
-                'dc' => 'c'
+                'dc' => 'd'
             );
 
-            $biaya=array(
-                'biaya_tindakan'    => $biaya_tindakan,
-                'biaya_pemeriksaan' => $biaya_pemeriksaan,
-                'biaya_administrasi'=> $biaya_administrasi,
-                'komisi_dokter'     => 0,
-                'subsidi_transaksi' => $subsidi_transaksi,
-                'no_periksa' => $data_transaksi->no_transaksi,
-            );
-            switch ($_GET['tab']) {
-                case 'pemeriksaan':
-                    $this->db->select('id_dokter');
-                    $getDokter = $this->db->get_where('tbl_periksa',['no_periksa' => $data_transaksi->no_transaksi])->row();
-
-                    $id_dokter = $getDokter->id_dokter;
-
-                    $komisi = $this->Tbl_komisi_dokter_model->getMasterKomisi($id_dokter);
-                    //komisi pemeriksaan
-                    $biayaKomisi['Pemeriksaan'] = $komisi->komisi_biaya_pemeriksaan * $biaya_pemeriksaan / 100;
-                    //komisi tindakan
-                    $biayaKomisi['Tindakan'] = $komisi->komisi_biaya_tindakan * $biaya_tindakan / 100;
-                    //komisi obat
-                    $biayaKomisi['Obat'] = $komisi->komisi_biaya_obat * $biaya_obat / 100;
-
-                    $ttl = 0;
-                    foreach ($biayaKomisi as $key => $value) {
-                        $arrKomisi = array(
-                            'tanggal' => date('Y-m-d'),
-                            'id_dokter' => $id_dokter,
-                            'no_transaksi' => $data_transaksi->no_transaksi,
-                            'komisi' => $value,
-                            'type' => $key
-                        );
-                        $ttl = $ttl + $value;
-                        $this->Tbl_komisi_dokter_model->insert($arrKomisi);
-                    }
-                    $biaya['komisi_dokter'] = $ttl; 
-                break;
-                case 'sks':
-                    $getDokter = $this->Tbl_sksehat_model->getDetail($data_transaksi->no_transaksi,'sk.id_dokter');
-                    
-                    $id_dokter = $getDokter['id_dokter'];
-                    $komisi = $this->Tbl_komisi_dokter_model->getMasterKomisi($id_dokter);
-                    //komisi pemeriksaan
-                    $komisiPemeriksaan = $komisi->komisi_biaya_pemeriksaan * $biaya_pemeriksaan / 100;
-                    $arrKomisi = array(
-                        'tanggal' => date('Y-m-d'),
-                        'id_dokter' => $id_dokter,
-                        'no_transaksi' => $data_transaksi->no_transaksi,
-                        'komisi' => $komisiPemeriksaan,
-                        'type' => 'Pemeriksaan'
-                    );
-                    $this->Tbl_komisi_dokter_model->insert($arrKomisi);
-                    $biaya['komisi_dokter'] = $komisiPemeriksaan; 
-
-                break;
-                case 'rapid':
-                    $this->db->select('id_dokter');
-                    $getDokter = $this->db->get_where('tbl_rapid_antigen',['no_sampel' => $data_transaksi->no_transaksi])->row();
-
-                    $id_dokter = $getDokter->id_dokter;
-                    $komisi = $this->Tbl_komisi_dokter_model->getMasterKomisi($id_dokter);
-                    //komisi pemeriksaan
-                    $komisiPemeriksaan = $komisi->komisi_biaya_pemeriksaan * $biaya_pemeriksaan / 100;
-
-                    $arrKomisi = array(
-                        'tanggal' => date('Y-m-d'),
-                        'id_dokter' => $id_dokter,
-                        'no_transaksi' => $data_transaksi->no_transaksi,
-                        'komisi' => $komisiPemeriksaan,
-                        'type' => 'Pemeriksaan'
-                    );
-                    $this->Tbl_komisi_dokter_model->insert($arrKomisi);
-                    $biaya['komisi_dokter'] = $komisiPemeriksaan; 
-                break;
-                default:
-                    redirect(site_url('pembayaran'));
-                break;
-            }
-            $id_akun_bank = $this->input->post('cara_pembayaran')=='2' ? $this->input->post('id_akun_bank') : '20';
-            $this->jurnal_otomatis_pemeriksaan($biaya,$id_akun_bank);
-
-            $this->Transaksi_model->update($id_transaksi, $data_trans);
-            
             for($i = 0; $i < count($data_trans_d); $i++){
                 $this->Transaksi_model->insert_d($data_trans_d[$i]);
             }
+
+            // switch ($_GET['tab']) {
+            //     case 'pemeriksaan':
+            //         $this->db->select('id_dokter');
+            //         $getDokter = $this->db->get_where('tbl_periksa',['no_periksa' => $data_transaksi->no_transaksi])->row();
+
+            //         $id_dokter = $getDokter->id_dokter;
+
+            //         $komisi = $this->Tbl_komisi_dokter_model->getMasterKomisi($id_dokter);
+            //         //komisi pemeriksaan
+            //         $biayaKomisi['Pemeriksaan'] = $komisi->komisi_biaya_pemeriksaan * $biaya_pemeriksaan / 100;
+            //         //komisi tindakan
+            //         $biayaKomisi['Tindakan'] = $komisi->komisi_biaya_tindakan * $biaya_tindakan / 100;
+            //         //komisi obat
+            //         $biayaKomisi['Obat'] = $komisi->komisi_biaya_obat * $biaya_obat / 100;
+
+            //         $ttl = 0;
+            //         foreach ($biayaKomisi as $key => $value) {
+            //             $arrKomisi = array(
+            //                 'tanggal' => date('Y-m-d'),
+            //                 'id_dokter' => $id_dokter,
+            //                 'no_transaksi' => $data_transaksi->no_transaksi,
+            //                 'komisi' => $value,
+            //                 'type' => $key
+            //             );
+            //             $ttl = $ttl + $value;
+            //             $this->Tbl_komisi_dokter_model->insert($arrKomisi);
+            //         }
+            //         $biaya['komisi_dokter'] = $ttl; 
+            //     break;
+            //     case 'sks':
+            //         $getDokter = $this->Tbl_sksehat_model->getDetail($data_transaksi->no_transaksi,'sk.id_dokter');
+                    
+            //         $id_dokter = $getDokter['id_dokter'];
+            //         $komisi = $this->Tbl_komisi_dokter_model->getMasterKomisi($id_dokter);
+            //         //komisi pemeriksaan
+            //         $komisiPemeriksaan = $komisi->komisi_biaya_pemeriksaan * $biaya_pemeriksaan / 100;
+            //         $arrKomisi = array(
+            //             'tanggal' => date('Y-m-d'),
+            //             'id_dokter' => $id_dokter,
+            //             'no_transaksi' => $data_transaksi->no_transaksi,
+            //             'komisi' => $komisiPemeriksaan,
+            //             'type' => 'Pemeriksaan'
+            //         );
+            //         $this->Tbl_komisi_dokter_model->insert($arrKomisi);
+            //         $biaya['komisi_dokter'] = $komisiPemeriksaan; 
+
+            //     break;
+            //     case 'rapid':
+            //         $this->db->select('id_dokter');
+            //         $getDokter = $this->db->get_where('tbl_rapid_antigen',['no_sampel' => $data_transaksi->no_transaksi])->row();
+
+            //         $id_dokter = $getDokter->id_dokter;
+            //         $komisi = $this->Tbl_komisi_dokter_model->getMasterKomisi($id_dokter);
+            //         //komisi pemeriksaan
+            //         $komisiPemeriksaan = $komisi->komisi_biaya_pemeriksaan * $biaya_pemeriksaan / 100;
+
+            //         $arrKomisi = array(
+            //             'tanggal' => date('Y-m-d'),
+            //             'id_dokter' => $id_dokter,
+            //             'no_transaksi' => $data_transaksi->no_transaksi,
+            //             'komisi' => $komisiPemeriksaan,
+            //             'type' => 'Pemeriksaan'
+            //         );
+            //         $this->Tbl_komisi_dokter_model->insert($arrKomisi);
+            //         $biaya['komisi_dokter'] = $komisiPemeriksaan; 
+            //     break;
+            //     default:
+            //         redirect(site_url('pembayaran'));
+            //     break;
+            // }
+            $id_akun_bank = $this->input->post('cara_pembayaran')=='2' ? $this->input->post('id_akun_bank') : '20';
+
+            $biaya=array(
+                'biaya_pemeriksaan' => $total_transaksi,
+                'subsidi_transaksi' => $subsidi_transaksi,
+                // 'komisi_dokter'     => 0,
+                'no_pendaftaran' => $no_pendaftaran,
+            );
+            $this->jurnal_otomatis_pemeriksaan($biaya,$id_akun_bank);
+            
             
             //Jika menggunakan metode asuransi
             if($this->input->post('metode_pembayaran') == 1){
                 $data_asuransi = array(
-                    'no_transaksi' => $data_transaksi->no_transaksi,
+                    'no_pendaftaran' => $no_pendaftaran,
                     'amount' => $total_pembayaran,
                 );
                 $this->db->insert('tbl_rekap_asuransi', $data_asuransi);
             }
+
+            $this->db->update('tbl_pendaftaran',['is_bayar' => '1'],['no_pendaftaran' => $no_pendaftaran]);
 
             //Set session sukses
             $this->session->set_flashdata('message', 'Data pembayaran berhasil disimpan, No Periksa ' . $data_transaksi->no_transaksi);
@@ -247,106 +263,141 @@ class Pembayaran extends CI_Controller
     }
     private function jurnal_otomatis_pemeriksaan($biaya,$id_akun_bank){
         foreach ($biaya as $key => $value) {
-            if(!is_numeric($value) && $key!='no_periksa'){
+            if(!is_numeric($value) && $key!='no_pendaftaran'){
                 $biaya[$key] = 0;
             }
         }
-        if ($biaya['biaya_pemeriksaan'] != 0 || $biaya['biaya_administrasi'] != 0 || $biaya['biaya_tindakan'] != 0 || $biaya['komisi_dokter'] != 0) {
-            $total=($biaya['biaya_pemeriksaan'] + $biaya['biaya_tindakan'] + $biaya['biaya_administrasi']) - $biaya['subsidi_transaksi'] - $biaya['komisi_dokter'];
             $data_trx=array(
-                'deskripsi'     => 'Pendapatan dari Nomor Pemeriksaan '.$biaya['no_periksa'],
+                'deskripsi'     => 'Pendapatan dari Pemeriksaan Nomor Pendaftaran '.$biaya['no_pendaftaran'],
                 'tanggal'       => date('Y-m-d'),
             );
             $insert=$this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi', $data_trx);
             if ($insert) {
+                $this->db->select('deskripsi,sum(amount_transaksi) ttl');
+                $this->db->from('tbl_transaksi_d td');
+                $this->db->join('tbl_transaksi t','td.id_transaksi = t.id_transaksi');
+                $this->db->join('tbl_periksa_lanjutan pl','t.id_periksa_lanjutan = pl.id_periksa');
+                $this->db->where(['pl.no_pendaftaran' => $biaya['no_pendaftaran']]);
+                $this->db->group_by('td.deskripsi');
+                $getDetail = $this->db->get()->result();
+                
                 $id_last=$this->db->select_max('id_trx_akun')->from('tbl_trx_akuntansi')->get()->row();
-                if ($biaya['biaya_tindakan'] != 0) {
-                    $data=array(
-                        'id_trx_akun'   => $id_last->id_trx_akun,
-                        'id_akun'       => 63,
-                        'jumlah'        => $biaya['biaya_tindakan'],
-                        'tipe'          => 'KREDIT',
-                        'keterangan'    => 'akun',
-                    );
-                    $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
+                foreach ($getDetail as $key => $value) {
+                    switch ($value->deskripsi) {
+                        case 'Biaya Obat':
+                            $arr =  array(
+                                'id_trx_akun'   => $id_last->id_trx_akun,
+                                'jumlah'        => $value->ttl,
+                                'keterangan'    => 'akun',
+                                'id_akun'       => 112,
+                                'tipe'          => 'KREDIT',
+                            );
+                            $this->db->insert('tbl_trx_akuntansi_detail',$arr);
+                        break;
+                        case 'Biaya BMHP':
+                            $arr =  array(
+                                'id_trx_akun'   => $id_last->id_trx_akun,
+                                'jumlah'        => $value->ttl,
+                                'keterangan'    => 'akun',
+                                'id_akun'       => 113,
+                                'tipe'          => 'KREDIT',
+                            );
+                            $this->db->insert('tbl_trx_akuntansi_detail',$arr);
+                        break;
+                        case 'Biaya Tindakan':
+                            $arr =  array(
+                                'id_trx_akun'   => $id_last->id_trx_akun,
+                                'jumlah'        => $value->ttl,
+                                'keterangan'    => 'akun',
+                                'id_akun'       => 114,
+                                'tipe'          => 'KREDIT',
+                            );
+                            $this->db->insert('tbl_trx_akuntansi_detail',$arr);
+                        break;
+                        case 'Biaya Lainnya':
+                            $arr =  array(
+                                'id_trx_akun'   => $id_last->id_trx_akun,
+                                'jumlah'        => $value->ttl,
+                                'keterangan'    => 'akun',
+                                'id_akun'       => 115,
+                                'tipe'          => 'KREDIT',
+                            );
+                            $this->db->insert('tbl_trx_akuntansi_detail',$arr);
+                        break;
+                        case 'Biaya Periksa Lab':
+                            $arr =  array(
+                                'id_trx_akun'   => $id_last->id_trx_akun,
+                                'jumlah'        => $value->ttl,
+                                'keterangan'    => 'akun',
+                                'id_akun'       => 116,
+                                'tipe'          => 'KREDIT',
+                            );
+                            $this->db->insert('tbl_trx_akuntansi_detail',$arr);
+                        break;
+                        case 'Biaya Periksa Radiologi':
+                            $arr =  array(
+                                'id_trx_akun'   => $id_last->id_trx_akun,
+                                'jumlah'        => $value->ttl,
+                                'keterangan'    => 'akun',
+                                'id_akun'       => 117,
+                                'tipe'          => 'KREDIT',
+                            );
+                            $this->db->insert('tbl_trx_akuntansi_detail',$arr);
+                        break;
+                        case 'Biaya Kamar Rawat Inap':
+                            $arr =  array(
+                                'id_trx_akun'   => $id_last->id_trx_akun,
+                                'jumlah'        => $value->ttl,
+                                'keterangan'    => 'akun',
+                                'id_akun'       => 118,
+                                'tipe'          => 'KREDIT',
+                            );
+                            $this->db->insert('tbl_trx_akuntansi_detail',$arr);
+                        break;
+                        case 'Biaya Operasi':
+                            $arr =  array(
+                                'id_trx_akun'   => $id_last->id_trx_akun,
+                                'jumlah'        => $value->ttl,
+                                'keterangan'    => 'akun',
+                                'id_akun'       => 119,
+                                'tipe'          => 'KREDIT',
+                            );
+                            $this->db->insert('tbl_trx_akuntansi_detail',$arr);
+                        break;
+                    }
                 }
-                if ($biaya['biaya_pemeriksaan'] != 0) {
-                    $data=array(
+
+                if($biaya['subsidi_transaksi']){
+                    $arrSub =  array(
                         'id_trx_akun'   => $id_last->id_trx_akun,
-                        'id_akun'       => 62,
-                        'jumlah'        => $biaya['biaya_pemeriksaan'],
-                        'tipe'          => 'KREDIT',
-                        'keterangan'    => 'akun',
-                    );
-                    $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
-                }
-                if ($biaya['biaya_administrasi'] != 0) {
-                    $data=array(
-                        'id_trx_akun'   => $id_last->id_trx_akun,
-                        'id_akun'       => 68,
-                        'jumlah'        => $biaya['biaya_administrasi'],
-                        'tipe'          => 'KREDIT',
-                        'keterangan'    => 'akun',
-                    );
-                    $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
-                }
-                if ($biaya['subsidi_transaksi'] != 0) {
-                    $data=array(
-                        'id_trx_akun'   => $id_last->id_trx_akun,
-                        'id_akun'       => 69,
                         'jumlah'        => $biaya['subsidi_transaksi'],
-                        'tipe'          => 'DEBIT',
                         'keterangan'    => 'akun',
-                    );
-                    $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
-                }
-                if ($biaya['komisi_dokter'] != 0) {
-                    $data=array(
-                        'id_trx_akun'   => $id_last->id_trx_akun,
-                        'id_akun'       => 72,
-                        'jumlah'        => $biaya['komisi_dokter'],
+                        'id_akun'       => 120,
                         'tipe'          => 'DEBIT',
-                        'keterangan'    => 'akun',
                     );
-                    $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
+                    $this->db->insert('tbl_trx_akuntansi_detail',$arrSub);
                 }
-                $data=array(
+
+                $arrKas =  array(
                     'id_trx_akun'   => $id_last->id_trx_akun,
-                    'id_akun'       => $id_akun_bank,
-                    'jumlah'        => $total,
-                    'tipe'          => 'DEBIT',
+                    'jumlah'        => $biaya['biaya_pemeriksaan'],
                     'keterangan'    => 'lawan',
+                    'id_akun'       => 20,
+                    'tipe'          => 'DEBIT',
                 );
-                $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
+                $this->db->insert('tbl_trx_akuntansi_detail',$arrKas);
+
+                // if ($biaya['komisi_dokter'] != 0) {
+                //     $data=array(
+                //         'id_trx_akun'   => $id_last->id_trx_akun,
+                //         'id_akun'       => 72,
+                //         'jumlah'        => $biaya['komisi_dokter'],
+                //         'tipe'          => 'DEBIT',
+                //         'keterangan'    => 'akun',
+                //     );
+                //     $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
+                // }
             }
-        }else{
-            if ($biaya['subsidi_transaksi'] != 0) {
-                $data_trx=array(
-                    'deskripsi'     => 'Pendapatan dari Nomor Pemeriksaan '.$biaya['no_periksa'],
-                    'tanggal'       => date('Y-m-d'),
-                );
-                $insert=$this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi', $data_trx);
-                if ($insert) {
-                    $id_last=$this->db->select_max('id_trx_akun')->from('tbl_trx_akuntansi')->get()->row();
-                    $data=array(
-                        'id_trx_akun'   => $id_last->id_trx_akun,
-                        'id_akun'       => 69,
-                        'jumlah'        => $biaya['subsidi_transaksi'],
-                        'tipe'          => 'DEBIT',
-                        'keterangan'    => 'akun',
-                    );
-                    $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
-                    $data=array(
-                        'id_trx_akun'   => $id_last->id_trx_akun,
-                        'id_akun'       => $id_akun_bank,
-                        'jumlah'        => $biaya['subsidi_transaksi'],
-                        'tipe'          => 'KREDIT',
-                        'keterangan'    => 'lawan',
-                    );
-                    $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
-                }
-            }
-        } 
     }
     public function rekap_asuransi(){
         $this->form_validation->set_rules('id_klinik', 'Klinik', 'trim|required');

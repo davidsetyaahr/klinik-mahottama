@@ -1,5 +1,5 @@
 <?php echo form_open(current_url(), array('class' => 'form-horizontal', 'id' => 'form-rekam_medis')); ?>
-<input type="hidden" name="no_periksa" value="<?php echo $no_periksa;?>" />
+<input type="hidden" name="no_pendaftaran" value="<?php echo $no_pendaftaran;?>" />
 <div class="content-wrapper">
     <section class="content">
         <div class="row">
@@ -15,8 +15,8 @@
 						<div class="form-group">
 							<div class="col-sm-2">No Rekam Medis</div>
 							<div class="col-sm-4"><?php echo $no_rekam_medis;?></div>
-							<div class="col-sm-2">No Periksa</div>
-							<div class="col-sm-4"><?php echo $no_periksa;?></div>
+							<div class="col-sm-2">No Pendaftaran</div>
+							<div class="col-sm-4"><?php echo $no_pendaftaran;?></div>
                         </div>
                         <div class="form-group">
 							<div class="col-sm-2">Nama Pasien</div>

@@ -36,6 +36,16 @@ class Periksa_model extends CI_Model
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
     }
+
+    // get data by no daftar
+    function get_by_no_daftar($no_daftar,$select="")
+    {
+        if($select!=""){
+            $this->db->select($select);
+        }
+        $this->db->where('no_pendaftaran', $no_daftar);
+        return $this->db->get($this->table)->row();
+    }
     
     function get_d_fisik_by_id($id)
     {
@@ -49,6 +59,15 @@ class Periksa_model extends CI_Model
         $this->db->from('tbl_periksa_d_obat');
         $this->db->join('tbl_obat_alkes_bhp', 'tbl_periksa_d_obat.kode_barang = tbl_obat_alkes_bhp.kode_barang');
         $this->db->where($this->id, $id);
+        return $this->db->get()->result();
+    }
+    
+    function get_d_obat_by_no_daftar($no_daftar)
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_periksa_d_obat');
+        $this->db->join('tbl_obat_alkes_bhp', 'tbl_periksa_d_obat.kode_barang = tbl_obat_alkes_bhp.kode_barang');
+        $this->db->where('no_pendaftaran', $no_daftar);
         return $this->db->get()->result();
     }
     

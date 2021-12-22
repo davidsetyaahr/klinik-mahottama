@@ -31,7 +31,6 @@
                                         <th>Nama Pasien</th>
                                         <th>Klinik Periksa</th>
                                         <th>Tgl Periksa</th>
-                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -58,7 +57,6 @@
                                             <th>Klinik Periksa</th>
                                             <th>Tgl Periksa</th>
                                             <th>Tgl Pembayaran</th>
-                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -110,7 +108,7 @@
                 {
                     "data": "id_transaksi",
                     "orderable": false
-                },{"data": "no_pendaftaran"},{"data": "nama_pasien"},{"data": "id_klinik"},{"data": "tgl_periksa"},{"data": "status_transaksi"},
+                },{"data": "no_pendaftaran"},{"data": "nama_pasien"},{"data": "id_klinik"},{"data": "tgl_periksa"},
                 {
                     "data" : "action",
                     "orderable": false,
@@ -148,7 +146,7 @@
                 {
                     "data": "id_transaksi",
                     "orderable": false
-                },{"data": "no_pendaftaran"},{"data": "nama_pasien"},{"data": "id_klinik"},{"data": "tgl_periksa"},{"data": "tgl_pembayaran"},{"data": "status_transaksi"},
+                },{"data": "no_pendaftaran"},{"data": "nama_pasien"},{"data": "id_klinik"},{"data": "tgl_periksa"},{"data": "tgl_pembayaran"},
                 {
                     "render" : function(data,type,row){
                         var cetak = row.is_surat_ket_sakit=='1' ? row.cetak : ''
