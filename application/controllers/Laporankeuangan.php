@@ -115,6 +115,26 @@ class Laporankeuangan extends CI_Controller
         // }
         $this->template->load('template','laporankeuangan/laporan_biaya_pemeriksaan');
     }
+
+    public function biaya_poli(){
+        $this->template->load('template','laporankeuangan/laporan_biaya_poli');
+    }
+
+    public function biaya_rawat_inap(){
+        $this->template->load('template','laporankeuangan/laporan_biaya_rawat_inap');
+    }
+
+    public function biaya_operasi(){
+        $this->template->load('template','laporankeuangan/laporan_biaya_operasi');
+    }
+
+    public function biaya_lab(){
+        $this->template->load('template','laporankeuangan/laporan_biaya_lab');
+    }
+
+    public function biaya_radiologi(){
+        $this->template->load('template','laporankeuangan/laporan_biaya_radiologi');
+    }
     
     public function json($filter = null) {
         header('Content-Type: application/json');
@@ -133,6 +153,31 @@ class Laporankeuangan extends CI_Controller
     public function json_biaya_pemeriksaan($filter = null) {
         header('Content-Type: application/json');
         echo $this->Transaksi_model->json_biaya_pemeriksaan($filter);
+    }
+
+    public function json_biaya_poli($filter = null, $tiprks = '1') {
+        header('Content-Type: application/json');
+        echo $this->Transaksi_model->json_laporan_keuangan($filter, $tiprks);
+    }
+
+    public function json_biaya_rawat_inap($filter = null, $tiprks = '2') {
+        header('Content-Type: application/json');
+        echo $this->Transaksi_model->json_laporan_keuangan($filter, $tiprks);
+    }
+
+    public function json_biaya_operasi($filter = null, $tiprks = '3') {
+        header('Content-Type: application/json');
+        echo $this->Transaksi_model->json_laporan_keuangan($filter, $tiprks);
+    }
+
+    public function json_biaya_lab($filter = null, $tiprks = '4') {
+        header('Content-Type: application/json');
+        echo $this->Transaksi_model->json_laporan_keuangan($filter, $tiprks);
+    }
+
+    public function json_biaya_radiologi($filter = null, $tiprks = '5') {
+        header('Content-Type: application/json');
+        echo $this->Transaksi_model->json_laporan_keuangan($filter, $tiprks);
     }
     
     public function _rules() 

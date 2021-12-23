@@ -286,7 +286,7 @@ class Transaksi_model extends CI_Model
         
         $this->datatables->select('t.id_transaksi,td.dtm_crt as tgl_transaksi,t.no_transaksi,td.deskripsi,td.amount_transaksi,td.dc, (CASE td.dc WHEN "d" THEN td.amount_transaksi ELSE "-" END) as debit, (CASE td.dc WHEN "c" THEN td.amount_transaksi ELSE "-" END) as credit,k.nama as klinik');
         $this->datatables->from('tbl_transaksi t');
-        $this->datatables->join('tbl_transaksi_d td','t.no_transaksi=td.no_transaksi');
+        $this->datatables->join('tbl_transaksi_d td','t.id_transaksi=td.id_transaksi');
         $this->datatables->join('tbl_klinik k','t.id_klinik=k.id_klinik');
         $this->datatables->where('t.status_transaksi', 1);
         $this->datatables->where('td.amount_transaksi != ', 0);
@@ -318,7 +318,7 @@ class Transaksi_model extends CI_Model
         
         $this->datatables->select('t.id_transaksi,td.dtm_crt as tgl_transaksi,t.no_transaksi,td.deskripsi,td.amount_transaksi,td.dc, (CASE td.dc WHEN "d" THEN td.amount_transaksi ELSE "-" END) as debit, (CASE td.dc WHEN "c" THEN td.amount_transaksi ELSE "-" END) as credit,k.nama as klinik');
         $this->datatables->from('tbl_transaksi t');
-        $this->datatables->join('tbl_transaksi_d td','t.no_transaksi=td.no_transaksi');
+        $this->datatables->join('tbl_transaksi_d td','t.id_transaksi=td.id_transaksi');
         $this->datatables->join('tbl_klinik k','t.id_klinik=k.id_klinik');
         $this->datatables->where('t.status_transaksi', 1);
         $this->datatables->where('td.amount_transaksi != ', 0);
@@ -336,6 +336,40 @@ class Transaksi_model extends CI_Model
         // $this->datatables->where('t.id_klinik', $id_klinik);
         $this->datatables->like('td.deskripsi', 'Biaya Pemeriksaan');
         
+        return $this->datatables->generate();
+    }
+
+    function json_laporan_keuangan1($filters, $prks){
+        $filter = explode("_", $filters);
+        $dari = $filter[0];
+        $sampai = $filter[1];
+        $this->datatables->select('t.id_transaksi, l.no_pendaftaran, t.no_transaksi, t.tgl_transaksi, pa.nama_lengkap, td.amount_transaksi, td.deskripsi');
+        $this->datatables->from('tbl_transaksi t');
+        $this->datatables->join('tbl_transaksi_d td','t.id_transaksi=td.id_transaksi');
+        $this->datatables->join('tbl_periksa_lanjutan l','l.id_periksa=t.id_periksa_lanjutan');
+        $this->datatables->join('tbl_pendaftaran pe','pe.no_pendaftaran=l.no_pendaftaran');
+        $this->datatables->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
+        $this->datatables->where('t.status_transaksi', 0);
+        $this->datatables->where('t.kode_transaksi', $prks);
+        $this->datatables->where('td.dtm_crt >=', $dari);
+        $this->datatables->where('td.dtm_crt <=', $sampai);
+        return $this->datatables->generate();
+    }
+
+    function json_laporan_keuangan($filters, $tiprks){
+        $filter = explode("_", $filters);
+        $dari = $filter[0];
+        $sampai = $filter[1];
+        $this->datatables->select('sum(td.amount_transaksi) ttl, t.tgl_transaksi, t.no_transaksi,t.kode_transaksi,td.*,l.tipe_periksa,pe.no_pendaftaran,pa.nama_lengkap');
+        $this->datatables->from('tbl_transaksi t');
+        $this->datatables->join('tbl_transaksi_d td','t.id_transaksi=td.id_transaksi');
+        $this->datatables->join('tbl_periksa_lanjutan l','t.id_periksa_lanjutan=l.id_periksa');
+        $this->datatables->join('tbl_pendaftaran pe','pe.no_pendaftaran=l.no_pendaftaran');
+        $this->datatables->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
+        $this->datatables->where('l.tipe_periksa', $tiprks);
+        $this->datatables->where('td.dtm_crt >=', $dari);
+        $this->datatables->where('td.dtm_crt <=', $sampai);
+        $this->db->group_by('t.id_transaksi');
         return $this->datatables->generate();
     }
     
