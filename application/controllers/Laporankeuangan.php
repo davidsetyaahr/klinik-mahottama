@@ -237,4 +237,52 @@ class Laporankeuangan extends CI_Controller
         xlsEOF();
         exit();
     }
+
+    public function excel1($filter = null)
+    {
+        $this->load->helper('exportexcel');
+        $namaFile = "laporan_keuangan-".$filter."-".date('Ymd').".xls";
+        $judul = "laporan_keuangan";
+        $tablehead = 0;
+        $tablebody = 1;
+        $nourut = 1;
+        //penulisan header
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0,pre-check=0");
+        header("Content-Type: application/force-download");
+        header("Content-Type: application/octet-stream");
+        header("Content-Type: application/download");
+        header("Content-Disposition: attachment;filename=" . $namaFile . "");
+        header("Content-Transfer-Encoding: binary ");
+
+        xlsBOF();
+
+        $kolomhead = 0;
+        xlsWriteLabel($tablehead, $kolomhead++, "No");
+    	xlsWriteLabel($tablehead, $kolomhead++, "No Pendaftaran");
+    	xlsWriteLabel($tablehead, $kolomhead++, "No Transaksi");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Tanggal Transaksi");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Nama Pasien");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Nominal Transaksi");
+
+	    foreach ($this->Transaksi_model->get_laporan_keuangan($filter) as $data) {
+            $kolombody = 0;
+
+            //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
+            xlsWriteNumber($tablebody, $kolombody++, $nourut);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->no_pendaftaran);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->no_transaksi);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->tgl_transaksi);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_lengkap);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->total);
+    	    
+    
+    	    $tablebody++;
+            $nourut++;
+        }
+
+        xlsEOF();
+        exit();
+    }
 }
