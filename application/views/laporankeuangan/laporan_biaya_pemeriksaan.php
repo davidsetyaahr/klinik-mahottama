@@ -5,7 +5,7 @@
                 <div class="box box-warning box-solid">
 
                     <div class="box-header">
-                        <h3 class="box-title">LAPORAN BIAYA PEMERIKSAAN DOKTER</h3>
+                        <h3 class="box-title">LAPORAN BIAYA PEMERIKSAAN</h3>
                     </div>
 
                     <div class="box-body">
@@ -33,7 +33,7 @@
                         ?>
                         <hr />
                         <div style="padding-bottom: 10px;">
-                		<?php //echo anchor(site_url('laporankeuangan/excel/'.$_GET['dari'].'_'.$_GET['sampai']), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
+                		<?php echo anchor(site_url('laporankeuangan/excel_biaya_pemeriksaan/'.$_GET['dari'].'_'.$_GET['sampai']), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
                 		<?php // echo anchor(site_url('laporankeuangan/pdf'), '<i class="fa fa-file-pdf-o" aria-hidden="true"></i> Export PDF', 'class="btn btn-danger btn-sm"'); ?></div>
                         <div style="padding-bottom: 10px;">
                         </div>
@@ -41,11 +41,11 @@
                             <thead>
                                 <tr>
                                     <th width="30px">No</th>
+                                    <th>No Pendaftaran</th>
                                     <th>Tanggal Transaksi</th>
-                                    <th>Klinik</th>
-                                    <th>No Transaksi</th>
-                                    <th>Deskripsi Transaksi</th>
+                                    <th>Nama Pasien</th>
                                     <th>Nominal Transaksi</th>
+                                    <th width="30px">Aksi</th>
 <!--                                     <th>Debit</th>
                                     <th>Credit</th>
  -->                                </tr>
@@ -98,17 +98,18 @@ if(isset($_GET['dari'])){
             },
             processing: true,
             serverSide: true,
-            ajax: {"url": "json_biaya_pemeriksaan/<?php echo $_GET['dari'].'_'.$_GET['sampai'];?>", "type": "POST"},
+            ajax: {"url": "json_laporan_pemeriksaan/<?php echo $_GET['dari'].'_'.$_GET['sampai'];?>", "type": "POST"},
             columns: [
                 {
                     "data": "id_transaksi",
                     "orderable": false
-                },{"data": "tgl_transaksi"},{"data": "klinik"},{"data": "no_transaksi"},{"data": "deskripsi"},{"render": function(data,type,row){
-                  return formatRupiah(row.amount_transaksi)
-                }}/* ,{"data": "debit","className":"text-right"},
+                },
+                {"data": "no_pendaftaran"},{"data": "tgl_transaksi"},{"data": "nama_lengkap"},{"data": "amount_transaksi",  render: $.fn.dataTable.render.number( '.', ',', 2, 'Rp. ' )},
                 {
-                    "data" : "credit","className":"text-right"
-                } */
+                    "data" : "action",
+                    "orderable": false,
+                    "className" : "text-center"
+                }
             ],
             order: [[1, 'asc']],
             rowCallback: function(row, data, iDisplayIndex) {

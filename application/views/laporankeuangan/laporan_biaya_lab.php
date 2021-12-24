@@ -32,6 +32,7 @@
                             if(isset($_GET['dari'])){
                         ?>
                         <hr />
+                        <?php echo anchor(site_url('laporankeuangan/excel_lab/'.$_GET['dari'].'_'.$_GET['sampai']),'<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
                         <div style="padding-bottom: 10px;">
                         <div style="padding-bottom: 10px;">
                         </div>
@@ -44,6 +45,7 @@
                                     <th>Tanggal Transaksi</th>
                                     <th>Nama Pasien</th>
                                     <th>Nominal Transaksi</th>
+                                    <th width="30px">Aksi</th>
                                 </tr>
                             </thead>
                         </table>
@@ -56,6 +58,10 @@
         </div>
     </section>
 </div>
+
+<!-- MODAL -->
+<?php $this->load->view('laporankeuangan/detail_biaya')?>
+<!-- MODAL -->
 <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
 
 <?php 
@@ -100,7 +106,12 @@ if(isset($_GET['dari'])){
                     "data": "id_transaksi",
                     "orderable": false
                 },
-                {"data": "no_pendaftaran"},{"data": "no_transaksi"},{"data": "tgl_transaksi"},{"data": "nama_lengkap"},{"data": "ttl",  render: $.fn.dataTable.render.number( '.', ',', 2, 'Rp. ' )}
+                {"data": "no_pendaftaran"},{"data": "no_transaksi"},{"data": "tgl_transaksi"},{"data": "nama_lengkap"},{"data": "ttl",  render: $.fn.dataTable.render.number( '.', ',', 2, 'Rp. ' )},
+                {
+                    "data" : "action",
+                    "orderable": false,
+                    "className" : "text-center"
+                }
             ],
             order: [[1, 'asc']],
             rowCallback: function(row, data, iDisplayIndex) {

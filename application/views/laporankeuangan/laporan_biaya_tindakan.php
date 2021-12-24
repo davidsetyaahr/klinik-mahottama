@@ -5,7 +5,7 @@
                 <div class="box box-warning box-solid">
 
                     <div class="box-header">
-                        <h3 class="box-title">LAPORAN BIAYA TINDAKAN</h3>
+                        <h3 class="box-title">LAPORAN BIAYA OBAT</h3>
                     </div>
 
                     <div class="box-body">
@@ -32,22 +32,19 @@
                             if(isset($_GET['dari'])){
                         ?>
                         <hr />
+                        <?php echo anchor(site_url('laporankeuangan/excel_biaya_tindakan/'.$_GET['dari'].'_'.$_GET['sampai']),'<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
                         <div style="padding-bottom: 10px;">
-                		<?php //echo anchor(site_url('laporankeuangan/excel/'.$filters), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
-                		<?php // echo anchor(site_url('laporankeuangan/pdf'), '<i class="fa fa-file-pdf-o" aria-hidden="true"></i> Export PDF', 'class="btn btn-danger btn-sm"'); ?></div>
                         <div style="padding-bottom: 10px;">
                         </div>
                         <table class="table table-bordered table-striped" id="mytable">
                             <thead>
                                 <tr>
                                     <th width="30px">No</th>
-                                    <th>Tanggal Transaksi</th>
-                                    <th>Klinik</th>
-                                    <th>No Transaksi</th>
-                                    <th>Deskripsi Transaksi</th>
+                                    <th>No Pendaftaran</th>
+                                    <th>Nama Pasien</th>
+                                    <!-- <th>Tipe Periksa</th> -->
                                     <th>Nominal Transaksi</th>
-                                    <!-- <th>Debit</th>
-                                    <th>Credit</th> -->
+                                    <th width="30px">Aksi</th>
                                 </tr>
                             </thead>
                         </table>
@@ -98,15 +95,20 @@ if(isset($_GET['dari'])){
             },
             processing: true,
             serverSide: true,
-            ajax: {"url": "json_biaya_tindakan/<?php echo $_GET['dari'].'_'.$_GET['sampai'];?>", "type": "POST"},
+            ajax: {"url": "json_laporan_tindakan/<?php echo $_GET['dari'].'_'.$_GET['sampai'];?>", "type": "POST"},
             columns: [
                 {
-                    "data": "id_transaksi",
+                    "data": "id_periksa_d_tindakan",
                     "orderable": false
                 },
-                {"data": "tgl_transaksi"},{"data": "klinik"},{"data": "no_transaksi"},{"data": "deskripsi"},{"render": function(data,type,row){
-                  return formatRupiah(row.amount_transaksi)
-                }}
+                {"data": "no_pendaftaran"},{"data": "nama_lengkap"}
+                // ,{"data": "tipe"}
+                ,{"data": "ttl",  render: $.fn.dataTable.render.number( '.', ',', 2, 'Rp. ' )},
+                {
+                    "data" : "action",
+                    "orderable": false,
+                    "className" : "text-center"
+                }
             ],
             order: [[1, 'asc']],
             rowCallback: function(row, data, iDisplayIndex) {
@@ -125,14 +127,3 @@ if(isset($_GET['dari'])){
 <?php
 }
 ?>
-
-<script type="text/javascript">
-    function formatRupiah(angka)
-      {
-        var reverse = angka.toString().split('').reverse().join(''),
-        ribuan = reverse.match(/\d{1,3}/g);
-        ribuan = ribuan.join('.').split('').reverse().join('');
-        return ribuan;
-      }
-
-</script>

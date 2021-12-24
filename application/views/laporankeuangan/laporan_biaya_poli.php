@@ -33,7 +33,7 @@
                         ?>
                         <hr />
                         <div style="padding-bottom: 10px;">
-                		<?php //echo anchor(site_url('laporankeuangan/excel/'.$filters), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
+                		<?php echo anchor(site_url('laporankeuangan/excel_poli/'.$_GET['dari'].'_'.$_GET['sampai']),'<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
                 		<?php // echo anchor(site_url('laporankeuangan/pdf'), '<i class="fa fa-file-pdf-o" aria-hidden="true"></i> Export PDF', 'class="btn btn-danger btn-sm"'); ?></div>
                         <div style="padding-bottom: 10px;">
                         </div>
@@ -47,6 +47,7 @@
                                     <th>Nama Pasien</th>
                                     <!-- <th>Deskripsi Transaksi</th> -->
                                     <th>Nominal Transaksi</th>
+                                    <th width="30px">Aksi</th>
                                     <!-- <th>Debit</th>
                                     <th>Credit</th> -->
                                 </tr>
@@ -61,6 +62,11 @@
         </div>
     </section>
 </div>
+
+<!-- Modal start here -->
+<?php $this->load->view('laporankeuangan/detail_biaya')?>
+<!-- Modal start here -->
+
 <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
 
 <?php 
@@ -105,7 +111,12 @@ if(isset($_GET['dari'])){
                     "data": "id_transaksi",
                     "orderable": false
                 },
-                {"data": "no_pendaftaran"},{"data": "no_transaksi"},{"data": "tgl_transaksi"},{"data": "nama_lengkap"},{"data": "ttl",  render: $.fn.dataTable.render.number( '.', ',', 2, 'Rp. ' )}
+                {"data": "no_pendaftaran"},{"data": "no_transaksi"},{"data": "tgl_transaksi"},{"data": "nama_lengkap"},{"data": "ttl",  render: $.fn.dataTable.render.number( '.', ',', 2, 'Rp. ' )},
+                {
+                    "data" : "action",
+                    "orderable": false,
+                    "className" : "text-center"
+                }
             ],
             order: [[1, 'asc']],
             rowCallback: function(row, data, iDisplayIndex) {
