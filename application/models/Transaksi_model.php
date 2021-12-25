@@ -373,8 +373,10 @@ class Transaksi_model extends CI_Model
         $this->datatables->where('td.dtm_crt <=', $sampai);
         $this->datatables->where('td.deskripsi <=', 'Pembayaran Biaya Pemeriksaan');
         $this->datatables->like('t.kode_transaksi', 'PAYPRKS');
-        $this->datatables->add_column('action', anchor('#show','<i class="fa fa-eye" aria-hidden="true"></i>', array('class' => 'btn btn-info btn-sm', 'data-toggle' => 'modal')));
+        $this->datatables->add_column('action', anchor('#','<i class="fa fa-eye" aria-hidden="true"></i>',"class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal'"));
+        // $this->datatables->add_column('action', anchor('#','<i class="fa fa-eye" aria-hidden="true"></i>',"class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal'"));
         // $this->datatables->like('td.deskripsi', 'Pembayaran Biaya Pemeriksaan');
+        
         $this->db->group_by('pe.no_pendaftaran');
         return $this->datatables->generate();
     }
@@ -426,9 +428,23 @@ class Transaksi_model extends CI_Model
         $this->datatables->where('l.tipe_periksa', $tiprks);
         $this->datatables->where('td.dtm_crt >=', $dari);
         $this->datatables->where('td.dtm_crt <=', $sampai);
-        $this->datatables->add_column('action', anchor('#show','<i class="fa fa-eye" aria-hidden="true"></i>', array('class' => 'btn btn-info btn-sm', 'data-toggle' => 'modal')));
+        $this->datatables->add_column('action', anchor('#','<i class="fa fa-eye" aria-hidden="true"></i>',"class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal' onClick='javascript: cekDetail(\"$1\")'"),'no_pendaftaran');
         $this->db->group_by('t.id_transaksi');
         return $this->datatables->generate();
+    }
+
+    // function json_detail_poli($nopendaftar, $tiprks)
+    function json_detail_poli($nopendaftar, $tiprks)
+    {
+        $this->db->select('td.amount_transaksi, t.tgl_transaksi, t.no_transaksi,t.kode_transaksi,td.*,l.tipe_periksa,pe.no_pendaftaran,pa.nama_lengkap');
+        $this->db->from('tbl_transaksi t');
+        $this->db->join('tbl_transaksi_d td','t.id_transaksi=td.id_transaksi');
+        $this->db->join('tbl_periksa_lanjutan l','t.id_periksa_lanjutan=l.id_periksa');
+        $this->db->join('tbl_pendaftaran pe','pe.no_pendaftaran=l.no_pendaftaran');
+        $this->db->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
+        $this->db->where('pe.no_pendaftaran', $nopendaftar);
+        $this->db->where('l.tipe_periksa', $tiprks);
+        return $this->db->get()->result_array();
     }
 
     function ambil_laporan_keuangan($filters, $tiprks){
