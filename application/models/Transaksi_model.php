@@ -402,13 +402,14 @@ class Transaksi_model extends CI_Model
         $filter = explode("_", $filters);
         $dari = $filter[0];
         $sampai = $filter[1];
-        $this->datatables->select('do.id_periksa_d_obat, do.harga_satuan, ob.nama_barang, do.no_periksa, do.jumlah, sum(do.harga_satuan*do.jumlah) ttl, pe.no_pendaftaran, do.kode_barang, pa.nama_lengkap');
+        $this->datatables->select('do.id_periksa_d_obat, do.harga_satuan, ob.kode_barang, ob.nama_barang, do.no_periksa, do.jumlah, sum(do.harga_satuan*do.jumlah) ttl, pe.no_pendaftaran, do.kode_barang, pa.nama_lengkap');
         $this->datatables->from('tbl_periksa_d_obat do');
         $this->datatables->join('tbl_pendaftaran pe','pe.no_pendaftaran=do.no_pendaftaran');
         $this->datatables->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
         $this->datatables->join('tbl_obat_alkes_bhp ob','do.kode_barang=ob.kode_barang');
         $this->datatables->where('do.dtm_crt >=', $dari);
         $this->datatables->where('do.dtm_crt <=', $sampai);
+        // $this->datatables->where('ob.nama_barang', $brg);
         // $this->datatables->where('do.no_pendaftaran', '000924');
         $this->datatables->add_column('action', anchor('#','<i class="fa fa-eye" aria-hidden="true"></i>',"class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal' onClick='javasciprt: cekDetail(\"$1\")'"),'no_periksa');
         // $this->datatables->like('td.deskripsi', 'Pembayaran Biaya Pemeriksaan');

@@ -11,6 +11,7 @@ class Laporankeuangan extends CI_Controller
         is_login();
         $this->load->model('Transaksi_model');
         $this->load->model('Periksa_model');
+        $this->load->model('Tbl_obat_alkes_bhp_model');
         $this->load->library('form_validation');        
 	    $this->load->library('datatables');
     }
@@ -64,7 +65,9 @@ class Laporankeuangan extends CI_Controller
         //     $this->data['filters'] = '';
         // }
         // $this->template->load('template','laporankeuangan/laporan_biaya_obat', $this->data);
-        $this->template->load('template','laporankeuangan/laporan_biaya_obat');
+        $data['obat'] = $this->Tbl_obat_alkes_bhp_model->get_all();
+        // var_dump($data['obat']);
+        $this->template->load('template','laporankeuangan/laporan_biaya_obat', $data);
     }
     public function biaya_tindakan(){
         // $this->_rules();

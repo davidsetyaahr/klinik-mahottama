@@ -33,6 +33,16 @@
                         ?>
                         <hr />
                         <?php echo anchor(site_url('laporankeuangan/excel_biaya_obat/'.$_GET['dari'].'_'.$_GET['sampai']),'<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
+                        
+                        <div style="padding-top: 10px;">
+                        <select name="" id="" class="form-control select2" width="200">
+                            <option value="">Pilih Obat</option>
+                            <?php 
+                                    foreach ($obat as $key => $value) {
+                                        echo "<option  value='".$value->kode_barang."'>".$value->nama_barang."</option>";
+                                    }
+                                ?>
+                        </select>
                         <div style="padding-bottom: 10px;">
                         <div style="padding-bottom: 10px;">
                         </div>
