@@ -77,19 +77,6 @@
             $("#totalAlkes").val(totalAlkes)
             grandTotal()
         }
-        $(".tindakan").change(function(){
-            var totalTindakan = 0
-            var valTindakan = $(this).val()
-            if(valTindakan!=null){
-                $.each(valTindakan, function(i,v){
-                    var harga = parseInt($(".tindakan option[value='"+v+"']").attr('data-harga'))
-                    totalTindakan+=harga
-                })
-            }
-            $("#totalTindakan").val(totalTindakan)
-            grandTotal()
-        })
-
 
         function selectObat(thisAttr){
             var stok = thisAttr.find(':selected').data('stok')
@@ -281,6 +268,62 @@
             e.preventDefault();
             removeAlkes($(this))
         })
+        function totalTindakan() {
+            var totalBiaya = 0
+            $(".total_tindakan").each(function(i, v) {
+                var subTotal = parseInt(v.value)
+                totalBiaya += subTotal
+            })
+            $("#totalTindakan").val(totalBiaya)
+            grandTotal()
+        }
+        $(".remove-tindakan").click(function(e){
+            e.preventDefault();
+            removeTindakan($(this))
+        })
+        function removeTindakan(params){
+            var dataNo = params.attr('data-no')
+            var dataRowTindakan = parseInt($('#row-tindakan').attr('data-row'))
+            var newRow = dataRowTindakan - 1
+            $('#row-tindakan').attr('data-row',newRow)
+            $('.loop-tindakan[data-no="'+dataNo+'"]').remove()
+            totalBiayaTindakan()
+        }
+        function totalBiayaTindakan() {
+            var totalBiaya = 0
+            $(".total_tindakan").each(function(i, v) {
+                var subTotal = parseInt(v.value)
+                totalBiaya += subTotal
+            })
+            $("#totalTindakan").val(totalBiaya)
+             grandTotal()
+        }
+
+        function getBiayaTindakan(thisParam) {
+            var biaya = thisParam.find(":selected").attr('data-harga')
+            var getNo = thisParam.closest('.loop-tindakan').attr('data-no')
+            $(".loop-tindakan[data-no='" + getNo + "'] .biaya_tindakan").val(biaya)
+        }
+        function subTotalBiayaTindakan(dataNo) {
+            var qty_biaya = parseInt($(".loop-tindakan[data-no='" + dataNo + "'] .qty_tindakan").val())
+            var biaya = parseInt($(".loop-tindakan[data-no='" + dataNo + "'] .biaya_tindakan").val())
+            var subtotal = isNaN(qty_biaya * biaya) ? 0 : qty_biaya * biaya
+            $(".loop-tindakan[data-no='" + dataNo + "'] .total_tindakan").val(subtotal)
+        }
+
+        $(".tindakan").change(function() {
+            getBiayaTindakan($(this))
+            var dataNo = $(this).closest('.loop-tindakan').attr('data-no')
+            subTotalBiayaTindakan(dataNo)
+            totalBiayaTindakan()
+        })
+        $(".loop-tindakan .qty_tindakan").keyup(function(){
+            var dataNo = $(this).closest('.loop-tindakan').attr('data-no')
+            subTotalBiayaTindakan(dataNo)  
+            totalBiayaTindakan()
+        })
+
+        
         $("#addItemTindakan").click(function(e){
             e.preventDefault();
             var dataRow = parseInt($('#row-tindakan').attr('data-row'))
@@ -292,15 +335,25 @@
                     $('#row-tindakan').append(data)
                     $('#row-tindakan').attr('data-row',dataRow + 1)
 
-
                     $(".remove-tindakan").click(function(e){
                         e.preventDefault();
-                        var dataNo = $(this).attr('data-no')
-                        var dataRow = parseInt($('#row-tindakan').attr('data-row'))
-                        $('.loop-tindakan[data-no="'+dataNo+'"]').remove()
-                        $('#row-tindakan').attr('data-row',dataRow-1)
+                        removeTindakan($(this))
                     })
+                    $(".tindakan").change(function() {
+                        getBiayaTindakan($(this))
+                        var dataNo = $(this).closest('.loop-tindakan').attr('data-no')
+                        subTotalBiayaTindakan(dataNo)
+                        totalBiayaTindakan()
+                    })
+
+                    $(".loop-tindakan .qty_tindakan").keyup(function(){
+                        var dataNo = $(this).closest('.loop-tindakan').attr('data-no')
+                        subTotalBiayaTindakan(dataNo)  
+                        totalBiayaTindakan()
+                    })
+
                     $(".select2").select2()
                 }
             })
         })
+

@@ -213,41 +213,6 @@
                                 </div>
                             </div>
 						</div>
-						<!--
-						<div class="form-group">
-							<div class="col-sm-2">Diagnosa</div>
-							<div class="col-sm-4">
-								<input type="text" name="diagnosa_value[]" class="form-control">
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-sm-2"></div>
-							<div class="col-sm-4">
-								<input type="text" name="diagnosa_value[]" class="form-control">
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-sm-2"></div>
-							<div class="col-sm-4">
-								<input type="text" name="diagnosa_value[]" class="form-control">
-							</div>
-						</div>
-						<div id="input_fields_wrap_diagnosa">
-							<div class="form-group">
-								<div class="col-sm-2"></div>
-								<div class="col-sm-4">
-									<input type="text" name="diagnosa_value[]" class="form-control">
-								</div>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-sm-6">
-								<div align="right">
-									<button id="add_field_button_diagnosa"><i class="fa fa-plus"></i>Tambah</button>
-								</div>
-							</div>
-						</div>
-						-->
 						<div class="form-group">
 							<div class="col-sm-12">
 								<div align="right">
@@ -284,90 +249,13 @@
                         <h3 class="box-title">FORM TINDAKAN MEDIS</h3>
                     </div>
                     <div class="box-body">
-      <!--                  <div class="form-group">-->
-						<!--	<div class="col-sm-2">Riwayat Alergi Obat</div>-->
-						<!--	<div class="col-sm-10">-->
-      <!--                          <?php echo form_textarea(array('id'=>'riwayat_alergi_obat2','name'=>'riwayat_alergi_obat2','type'=>'textarea','value'=>'','rows'=>'4','class'=>'form-control', 'readonly'=>''));?>-->
-      <!--                      </div>-->
-						<!--</div>  -->
-						<!--<hr />-->
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<div class="col-sm-2">Tindakan</div>
 							<div class="col-sm-10">
                                 <?php echo form_textarea(array('id'=>'tindakan','name'=>'tindakan','type'=>'textarea','value'=>'','rows'=>'4','class'=>'form-control'));?>
                             </div>
 						</div>
-						<hr />
-						<!--<div id="input_fields_wrap_alkes">-->
-    		<!--				<div class="form-group">-->
-    		<!--					<div class="col-sm-2">Alat Kesehatan</div>-->
-    		<!--					<div class="col-sm-6">-->
-      <!--                              <div class="input-group">-->
-      <!--                                  <span class="input-group-addon">1</span>-->
-      <!--                                  <?php echo form_dropdown('alat_kesehatan[]',$alkes_option,'',array('id'=>'alat_kesehatan[]','class'=>'form-control select2','onchange'=>'get_alkes(this)','style'=>'width:100%;'));?>-->
-      <!--                                  </div>-->
-      <!--                          </div>-->
-    		<!--					<div class="col-sm-2">-->
-      <!--                              <?php echo form_dropdown('jml_alat_kesehatan[]', array(''=>'Pilih Jumlah'),'',array('id'=>'jml_alat_kesehatan[]','class'=>'form-control','onchange'=>'get_alkes(this, true)'));?>-->
-      <!--                          </div>-->
-    		<!--					<div class="col-sm-2">-->
-      <!--                              <?php echo form_input(array('id'=>'harga_alkes[]','name'=>'harga_alkes[]','type'=>'text','value'=>'','class'=>'form-control', 'readonly'=>'readonly','style'=>'text-align:right;'));?>-->
-      <!--                          </div>-->
-    		<!--				</div>-->
-    		<!--				<div class="form-group">-->
-    		<!--					<div class="col-sm-2"></div>-->
-    		<!--					<div class="col-sm-6">-->
-      <!--                              <div class="input-group">-->
-      <!--                                  <span class="input-group-addon">2</span>-->
-      <!--                                  <?php echo form_dropdown('alat_kesehatan[]',$alkes_option,'',array('id'=>'alat_kesehatan[]','class'=>'form-control select2','onchange'=>'get_alkes(this)','style'=>'width:100%;'));?>-->
-      <!--                                  </div>-->
-      <!--                          </div>-->
-    		<!--					<div class="col-sm-2">-->
-      <!--                              <?php echo form_dropdown('jml_alat_kesehatan[]', array(''=>'Pilih Jumlah'),'',array('id'=>'jml_alat_kesehatan[]','class'=>'form-control','onchange'=>'get_alkes(this, true)'));?>-->
-      <!--                          </div>-->
-    		<!--					<div class="col-sm-2">-->
-      <!--                              <?php echo form_input(array('id'=>'harga_alkes[]','name'=>'harga_alkes[]','type'=>'text','value'=>'','class'=>'form-control', 'readonly'=>'readonly','style'=>'text-align:right;'));?>-->
-      <!--                          </div>-->
-    		<!--				</div>-->
-    					<!--	<div class="form-group">-->
-    					<!--		<div class="col-sm-2"></div>-->
-    					<!--		<div class="col-sm-6">-->
-         <!--                           <div class="input-group">-->
-         <!--                               <span class="input-group-addon">3</span>-->
-         <!--                               <?php echo form_dropdown('alat_kesehatan[]',$alkes_option,'',array('id'=>'alat_kesehatan[]','class'=>'form-control select2','onchange'=>'get_alkes(this)','style'=>'width:100%;'));?>-->
-         <!--                               </div>-->
-         <!--                       </div>-->
-    					<!--		<div class="col-sm-2">-->
-         <!--                           <?php echo form_dropdown('jml_alat_kesehatan[]', array(''=>'Pilih Jumlah'),'',array('id'=>'jml_alat_kesehatan[]','class'=>'form-control','onchange'=>'get_alkes(this, true)'));?>-->
-         <!--                       </div>-->
-    					<!--		<div class="col-sm-2">-->
-         <!--                           <?php echo form_input(array('id'=>'harga_alkes[]','name'=>'harga_alkes[]','type'=>'text','value'=>'','class'=>'form-control', 'readonly'=>'readonly','style'=>'text-align:right;'));?>-->
-         <!--                       </div>-->
-    					<!--	</div>-->
-    					<!--	<div class="form-group">-->
-    					<!--		<div class="col-sm-2"></div>-->
-    					<!--		<div class="col-sm-6">-->
-         <!--                           <div class="input-group">-->
-         <!--                               <span class="input-group-addon">4</span>-->
-         <!--                               <?php echo form_dropdown('alat_kesehatan[]',$alkes_option,'',array('id'=>'alat_kesehatan[]','class'=>'form-control select2','onchange'=>'get_alkes(this)','style'=>'width:100%;'));?>-->
-         <!--                               </div>-->
-         <!--                       </div>-->
-    					<!--		<div class="col-sm-2">-->
-         <!--                           <?php echo form_dropdown('jml_alat_kesehatan[]', array(''=>'Pilih Jumlah'),'',array('id'=>'jml_alat_kesehatan[]','class'=>'form-control','onchange'=>'get_alkes(this, true)'));?>-->
-         <!--                       </div>-->
-    					<!--		<div class="col-sm-2">-->
-         <!--                           <?php echo form_input(array('id'=>'harga_alkes[]','name'=>'harga_alkes[]','type'=>'text','value'=>'','class'=>'form-control', 'readonly'=>'readonly','style'=>'text-align:right;'));?>-->
-         <!--                       </div>-->
-    					<!--	</div>-->
-    					<!--</div>-->
-						<!--<div class="form-group">-->
-						<!--	<div class="col-sm-12">-->
-						<!--		<div align="right">-->
-						<!--			<button id="add_field_button_alkes"><i class="fa fa-plus"></i>Tambah</button>-->
-						<!--		</div>-->
-						<!--	</div>-->
-						<!--</div>-->
-						<!--<hr />-->
+						<hr /> -->
 						<div class="form-group">
     							<div class="col-sm-2" align="center">
                                     <label>Nama Obat / BMHP</label>
@@ -531,71 +419,44 @@
 							</div>
 						</div>
                         <div class="form-group" id="row-biaya" data-row='0'>
-                                    <?php
-                                    $this->load->view('rekam_medis/loop-pilihan-biaya', ['no' => 0])
-                                    ?>
+                        <?php
+                            $this->load->view('rekam_medis/loop-pilihan-biaya', ['no' => 0])
+                        ?>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <a href="" class="btn btn-info btn-sm" id="addItemBiaya"><span class="fa fa-plus"></span> Tambah Item</a>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-4">
-                                    <a href="" class="btn btn-info btn-sm" id="addItemBiaya"><span class="fa fa-plus"></span> Tambah Item</a>
-                                </div>
+                        </div>
+                        <div class="form-group" id="row-tindakan" data-row='0'>
+                        <?php
+                            $this->load->view('loop/loop-pilihan-tindakan', ['no' => 0,'isPoli' => true])
+                        ?>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <a href="" class="btn btn-info btn-sm" id="addItemTindakan"><span class="fa fa-plus"></span> Tambah Item</a>
                             </div>
+                        </div>
 						<hr />
                         <div class="form-group">
 							<div class="col-sm-2"></div>
 							<div class="col-sm-4">
 								<div class="input-group">
                                     <span class="input-group-addon" style="background-color: #fcffc4;">Total Biaya Lainnya</span>
-                                    <!-- <?php echo form_input(array('id'=>'biaya_total','name'=>'biaya_total','type'=>'number','value'=>'','class'=>'form-control','readonly'=>'readonly','style'=>'text-align:right;','placeholder'=>'0'));?> -->
+                                    <!-- <?php echo form_input(array('id'=>'biaya_total','name'=>'biaya_total','type'=>'number','value'=>'0','class'=>'form-control','readonly'=>'readonly','style'=>'text-align:right;','placeholder'=>'0'));?> -->
                                     <input type="text" id="totalBiaya" name="totalBiaya" class="form-control" value='0' readonly>
                                 </div>
 							</div>
 						</div>
-						<div class="form-group">
-                            <!-- <div class="col-sm-2">Total Biaya Lainnya</div>
-                                <div class="col-sm-4">
-                                    <input type="text" id="totalBiaya" name="totalBiaya" class="form-control" value='0' readonly>
-                                </div> -->
-							<!-- <div class="col-sm-2">Biaya</div>
-							<div class="col-sm-4">
-								<div class="input-group">
-                                    <span class="input-group-addon" style="background-color: #fcffc4;">Pemeriksaan</span>
-                                    <?php echo form_input(array('id'=>'biaya_pemeriksaan','name'=>'biaya_pemeriksaan','type'=>'number','value'=>'','class'=>'form-control','style'=>'text-align:right;', 'onchange'=>'hitung_biaya()','placeholder'=>'0'));?>
-                                </div>
-							</div>
-							<div class="col-sm-6">
-								<?php // echo form_dropdown('ket_pemeriksaan', array('1'=>'Subsidi','0'=>'Non Subsidi'),'0',array('id'=>'ket_pemeriksaan','class'=>'form-control', 'onchange'=>'hitung_biaya()'));?>
-                                  <input type="radio" name="ket_pemeriksaan" id="ket_pemeriksaan" value="1">
-                                  Subsidi
-                                  &nbsp
-                                  <input type="radio" name="ket_pemeriksaan" id="ket_pemeriksaan" value="0" checked onchange="hitung_biaya();">
-                                  Non Subsidi
-							</div> -->
-						</div>
-						<div class="form-group">
+                        <div class="form-group">
 							<div class="col-sm-2"></div>
 							<div class="col-sm-4">
 								<div class="input-group">
-                                    <span class="input-group-addon" style="background-color: #fcffc4;">Tindakan</span>
-                                    <!-- <input type="hidden" name="name_tindakan[]" id="nameTindakan"> -->
-                                    <select name="name_tindakan[]" id="name_tindakan" style="width:100%" class="select2 form-control" onchange="hitung_biaya()" multiple='multiple'>
-                                        <option value="0">---Pilih Tindakan---</option>
-                                        <?php 
-                                            foreach ($master_tindakan as $key => $value) {
-                                                echo "<option data-biaya='".$value->biaya."' value='".$value->kode_tindakan."'>".$value->kode_tindakan." - ".$value->tindakan." ".number_format($value->biaya,0,',','.')."</option>";
-                                            }
-                                        ?>
-                                    </select>
-                                    <?php //echo form_input(array('id'=>'biaya_tindakan','name'=>'biaya_tindakan','type'=>'number','value'=>'','class'=>'form-control','style'=>'text-align:right;', 'onchange'=>'hitung_biaya()','placeholder'=>'0'));?>
+                                    <span class="input-group-addon" style="background-color: #fcffc4;">Total Biaya Tindakan</span>
+                                    <!-- <?php echo form_input(array('id'=>'biaya_tindakan','name'=>'biaya_tindakan','type'=>'number','value'=>'0','class'=>'form-control','readonly'=>'readonly','style'=>'text-align:right;','placeholder'=>'0'));?> -->
+                                    <input type="text" id="totalTindakan" name="totalBiayaTindakan" class="form-control" value='0' readonly>
                                 </div>
-							</div>
-							<div class="col-sm-6">
-								<?php // echo form_dropdown('ket_tindakan', array('1'=>'Subsidi','0'=>'Non Subsidi'),'0',array('id'=>'ket_tindakan','class'=>'form-control', 'onchange'=>'hitung_biaya()'));?>
-								  <input type="radio" name="ket_tindakan" id="ket_tindakan" value="1">
-                                  Subsidi
-                                  &nbsp
-                                  <input type="radio" name="ket_tindakan" id="ket_tindakan" value="0" checked onchange="hitung_biaya();">
-                                  Non Subsidi
 							</div>
 						</div>
 						<div class="form-group">
@@ -603,16 +464,16 @@
 							<div class="col-sm-4">
 								<div class="input-group">
                                     <span class="input-group-addon" style="background-color: #fcffc4;">Obat-obatan dan BMHP</span>
-                                    <?php echo form_input(array('id'=>'biaya_obat_obatan','name'=>'biaya_obat_obatan','type'=>'number','value'=>'','class'=>'form-control','style'=>'text-align:right;', 'onchange'=>'hitung_biaya()','placeholder'=>'0'));?>
+                                    <?php echo form_input(array('id'=>'biaya_obat_obatan','name'=>'biaya_obat_obatan','type'=>'number','value'=>'0','class'=>'form-control','style'=>'text-align:right;', 'onchange'=>'hitung_biaya()','readonly' => 'true'));?>
                                 </div>
 							</div>
 							<div class="col-sm-6">
 								<?php // echo form_dropdown('ket_obat_obatan', array('1'=>'Subsidi','0'=>'Non Subsidi'),'0',array('id'=>'ket_obat_obatan','class'=>'form-control', 'onchange'=>'hitung_biaya()'));?>
-								<input type="radio" name="ket_obat_obatan" id="ket_obat_obatan" value="1">
+								<!-- <input type="radio" name="ket_obat_obatan" id="ket_obat_obatan" value="1">
                                   Subsidi
                                   &nbsp
                                   <input type="radio" name="ket_obat_obatan" id="ket_obat_obatan" value="0" checked onchange="hitung_biaya();">
-                                  Non Subsidi
+                                  Non Subsidi -->
 							</div>
 						</div>
 						<!--<div class="form-group">-->
@@ -678,6 +539,7 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+        hitung_biaya()
         function getBiaya(thisParam) {
             var biaya = thisParam.find(":selected").attr('data-biaya')
             var getNo = thisParam.closest('.loop-biaya').attr('data-no')
@@ -715,6 +577,79 @@
             var dataNo = $(this).closest('.loop-biaya').attr('data-no')
             subTotalBiaya(dataNo)
             totalBiaya()
+        })
+        function totalBiayaTindakan() {
+            var totalBiaya = 0
+            $(".total_tindakan").each(function(i, v) {
+                var subTotal = parseInt(v.value)
+                totalBiaya += subTotal
+            })
+            $("#totalTindakan").val(totalBiaya)
+            // grandTotal()
+            hitung_biaya()
+        }
+
+        function getBiayaTindakan(thisParam) {
+            var biaya = thisParam.find(":selected").attr('data-harga')
+            var getNo = thisParam.closest('.loop-tindakan').attr('data-no')
+            $(".loop-tindakan[data-no='" + getNo + "'] .biaya_tindakan").val(biaya)
+        }
+        function subTotalBiayaTindakan(dataNo) {
+            var qty_biaya = parseInt($(".loop-tindakan[data-no='" + dataNo + "'] .qty_tindakan").val())
+            var biaya = parseInt($(".loop-tindakan[data-no='" + dataNo + "'] .biaya_tindakan").val())
+            var subtotal = isNaN(qty_biaya * biaya) ? 0 : qty_biaya * biaya
+            $(".loop-tindakan[data-no='" + dataNo + "'] .total_tindakan").val(subtotal)
+        }
+
+        $(".tindakan").change(function() {
+            getBiayaTindakan($(this))
+            var dataNo = $(this).closest('.loop-tindakan').attr('data-no')
+            subTotalBiayaTindakan(dataNo)
+            totalBiayaTindakan()
+        })
+        $(".loop-tindakan .qty_tindakan").keyup(function(){
+            var dataNo = $(this).closest('.loop-tindakan').attr('data-no')
+            subTotalBiayaTindakan(dataNo)  
+            totalBiayaTindakan()
+        })
+        
+        $("#addItemTindakan").click(function(e){
+            e.preventDefault();
+            var dataRow = parseInt($('#row-tindakan').attr('data-row'))
+            $.ajax({
+                type : 'get',
+                url : '<?= base_url().'periksamedis/newItemLoopTindakan' ?>',
+                data : {no : dataRow+1,isPoli : true},
+                success : function(data){
+                    $('#row-tindakan').append(data)
+                    $('#row-tindakan').attr('data-row',dataRow + 1)
+
+                    $(".remove-tindakan").click(function(e){
+                        e.preventDefault();
+                        var dataNo = $(this).attr('data-no')
+                        var dataRowTindakan = parseInt($('#row-tindakan').attr('data-row'))
+                        var newRow = dataRowTindakan - 1
+                        $('#row-tindakan').attr('data-row',newRow)
+                        $('.loop-tindakan[data-no="'+dataNo+'"]').remove()
+                        totalBiayaTindakan()
+                    })
+                    $(".tindakan").change(function() {
+                        getBiayaTindakan($(this))
+                        var dataNo = $(this).closest('.loop-tindakan').attr('data-no')
+                        subTotalBiayaTindakan(dataNo)
+                        totalBiayaTindakan()
+                    })
+
+                    $(".loop-tindakan .qty_tindakan").keyup(function(){
+                        var dataNo = $(this).closest('.loop-tindakan').attr('data-no')
+                        subTotalBiayaTindakan(dataNo)  
+                        totalBiayaTindakan()
+                    })
+
+
+                    $(".select2").select2()
+                }
+            })
         })
 
         $("#addItemBiaya").click(function(e) {
@@ -754,6 +689,7 @@
                 }
             })
         })
+
 
         $("#addICD").click(function(e){
             e.preventDefault()
@@ -848,7 +784,6 @@
 		var anamnesies = <?php echo $anamnesies;?>;
 		var alergi_obat = <?php echo $alergi_obat;?>;
 		var diagnosa = <?php echo $diagnosa;?>;
-		var tindakan = <?php echo $tindakan;?>;
 			 
 		$( "#anamnesi" )
 		 // don't navigate away from the field on tab when selecting an item
@@ -1295,14 +1230,15 @@ $(document).ready(function() {
         
         $('#total_harga').val(total_harga);
         $('#grandtotal_harga').val(total_harga - subsidi);
+        $('#biaya_obat_obatan').val(total_harga - subsidi);
         hitung_biaya();
     }
     
     function hitung_biaya(){
         
-        $('#ket_pemeriksaan:checked').val() == 0 ? $('#biaya_pemeriksaan').val() : $('#biaya_pemeriksaan').val(0);
-        $('#ket_tindakan:checked').val() == 0 ? $('#name_tindakan').val() : $('#name_tindakan').val(0);
-        $('#ket_obat_obatan:checked').val() == 0 ? $('#biaya_obat_obatan').val($('#grandtotal_harga').val()) : $('#biaya_obat_obatan').val(0);
+        // $('#ket_pemeriksaan:checked').val() == 0 ? $('#biaya_pemeriksaan').val() : $('#biaya_pemeriksaan').val(0);
+        // $('#ket_tindakan:checked').val() == 0 ? $('#name_tindakan').val() : $('#name_tindakan').val(0);
+        // $('#ket_obat_obatan:checked').val() == 0 ? $('#biaya_obat_obatan').val($('#grandtotal_harga').val()) : $('#biaya_obat_obatan').val(0);
         //  $('#ket_administrasi:checked').val() == 0 ? $('#biaya_administrasi').val() : $('#biaya_administrasi').val(0);
         
         // $('input[name=ket_administrasi]:checked').val() == 0 ? alert('0') : alert('1');
@@ -1310,16 +1246,9 @@ $(document).ready(function() {
         //Get Biaya
         var pemeriksaan = $('#biaya_pemeriksaan').val() != '' ? $('#biaya_pemeriksaan').val() : 0;
         var biaya = parseInt($("#totalBiaya").val());
-        var tindakan = 0;
-        if($('#name_tindakan').val()!=null ){
-            $.each($('#name_tindakan').val(), function(key,val){
-                tindakan+=parseInt($("#name_tindakan option[value='"+val+"']").attr('data-biaya'))
-                // tindakan+=parseInt(val.attr('data-biaya'))
-            })
-        }
         var obat_obatan = $('#biaya_obat_obatan').val() != '' ? $('#biaya_obat_obatan').val() : 0;
-        // var administrasi = $('#biaya_administrasi').val() != '' ? $('#biaya_administrasi').val() : 0;
-        $('#biaya_total').val(parseInt(biaya) + parseInt(tindakan) + parseInt(obat_obatan)/* + parseInt(administrasi)*/);
+        var tindakan = $('#totalTindakan').val() != '' ? $('#totalTindakan').val() : 0;
+        $('#biaya_total').val(parseInt(biaya) + parseInt(obat_obatan)+ parseInt(tindakan));
     }
     
     $(document).on("change","input[type=radio]",function(){

@@ -73,6 +73,12 @@
                                 ?>
                             </div>
                             <div class="form-group row">
+                                <div class="col-md-4">
+                                    <a href="" class="btn btn-info btn-sm" id="addItemTindakan"><span class="fa fa-plus"></span> Tambah Item</a>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <div class="col-sm-2">Total Biaya Periksa Radiologi</div>
                                 <div class="col-sm-10">
                                     <input type="text" name="totalRadiologi" id="totalRadiologi" class="form-control" value='0' readonly>

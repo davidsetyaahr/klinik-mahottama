@@ -45,6 +45,11 @@
                                     $this->load->view('loop/loop-pilihan-tindakan', ['no' => 0])
                                     ?>
                                 </div>
+                                <div class="form-group row">
+                                    <div class="col-md-4">
+                                        <a href="" class="btn btn-info btn-sm" id="addItemTindakan"><span class="fa fa-plus"></span> Tambah Item</a>
+                                    </div>
+                                </div>
                                 <div class="form-group" id="row-biaya" data-row='0'>
                                     <?php
                                     $this->load->view('rawat-inap/loop-pilihan-biaya', ['no' => 0])
@@ -111,6 +116,7 @@
                                     <div class="col-sm-10">
                                         <select name="pemeriksaan_selanjutnya" id="" style="width:100%" class="select2 form-control">
                                             <option value="3">Tetap Di Operasi</option>
+                                            <option value="0">Pemeriksaan Selesai</option>
                                             <option value="2">Rawat Inap</option>
                                             <option value="4">Laboratorium</option>
                                             <option value="5">Radiologi</option>
