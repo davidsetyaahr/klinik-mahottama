@@ -584,7 +584,7 @@
                 var subTotal = parseInt(v.value)
                 totalBiaya += subTotal
             })
-            $("#totalBiayaTindakan").val(totalBiaya)
+            $("#totalTindakan").val(totalBiaya)
             // grandTotal()
             hitung_biaya()
         }

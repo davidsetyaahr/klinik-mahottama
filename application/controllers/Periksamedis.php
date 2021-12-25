@@ -1389,7 +1389,7 @@ class Periksamedis extends CI_Controller
         $this->session->set_flashdata('message', 'Data pemeriksaan berhasil disimpan, No Pendaftaran ' . $this->no_pendaftaran);
         $this->session->set_flashdata('message_type', 'success');
 
-        redirect(site_url('periksamedis/antrian'));
+        redirect(site_url('periksamedis'));
     }
 
     public function newItemLoopObat()
