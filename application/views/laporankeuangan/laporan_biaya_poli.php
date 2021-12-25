@@ -64,7 +64,33 @@
 </div>
 
 <!-- Modal start here -->
-<?php $this->load->view('laporankeuangan/detail_biaya')?>
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" id="title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <h3>Detail Biaya</h3>
+        <table class="table table-bordered table-striped" id="detailPoli">
+            <thead>
+                <tr>
+                    <th width="30px">No</th>
+                    <th>Deskripsi</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+  </div>
+  </div>
+</div>
 <!-- Modal start here -->
 
 <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
@@ -127,6 +153,39 @@ if(isset($_GET['dari'])){
                 $('td:eq(0)', row).html(index);
             }
         });
+
+        function cekDetail(nopendaftar){
+        $('#myModal').show();
+        // t = $('#detailPoli').DataTable();
+        // t.clear().draw(false);
+        $('#detailPoli td').remove();
+        $.ajax({
+            type: "GET",
+            url: "<?=base_url('laporankeuangan/json_detail_poli/')?>"+nopendaftar, //json get site
+            dataType : 'json',
+            success: function(response){
+                arrData = response;
+                // $('#title').html('Purchase Order Nomor : '+id)
+                for(i = 0; i < arrData.length; i++){
+                    // t.row.add([
+                    var table=    '<tr><td><div class="text-center">'+arrData[i].no_pendaftaran+'</div></td>'+
+                        '<td><div class="text-center">'+arrData[i].deskripsi+'</div></td>'+
+                        '<td><div class="text-left">Rp. '+formatRupiah(arrData[i].amount_transaksi)+'</div></td></tr>';
+                    $('#detailPoli').append(table);
+                    // ]).draw(false);
+                }
+            }
+        });
+        
+    }
+
+    function formatRupiah(angka, prefix)
+      {
+        var reverse = angka.toString().split('').reverse().join(''),
+        ribuan = reverse.match(/\d{1,3}/g);
+        ribuan = ribuan.join('.').split('').reverse().join('');
+        return ribuan;
+      }
 
         
     });

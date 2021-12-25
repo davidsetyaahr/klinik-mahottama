@@ -176,6 +176,11 @@ class Laporankeuangan extends CI_Controller
         echo $this->Transaksi_model->json_laporan_keuangan($filter, $tiprks);
     }
 
+    public function json_detail_poli($nopendaftar, $tiprks = '1'){
+        header('Content-Type: application/json');
+        echo json_encode($this->Transaksi_model->json_detail_poli($nopendaftar, $tiprks));
+    }
+
     public function json_biaya_rawat_inap($filter = null, $tiprks = '2') {
         header('Content-Type: application/json');
         echo $this->Transaksi_model->json_laporan_keuangan($filter, $tiprks);
