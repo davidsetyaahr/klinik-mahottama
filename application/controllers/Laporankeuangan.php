@@ -155,16 +155,42 @@ class Laporankeuangan extends CI_Controller
         header('Content-Type: application/json');
         echo $this->Transaksi_model->json_laporan_pemeriksaan($filter);
     }
-
-    public function json_laporan_obat($filter = null, $dprks='Biaya Obat') {
+    
+    public function json_pemeriksaan_detail() {
         header('Content-Type: application/json');
-        echo $this->Transaksi_model->json_laporan_biaya($filter, $dprks);
+        echo json_encode($this->Transaksi_model->json_detail_periksa($_GET['no_transaksi']));
+    }
+
+    // public function json_laporan_obat($filter = null, $dprks='Biaya Obat') {
+    //     header('Content-Type: application/json');
+    //     echo $this->Transaksi_model->json_laporan_biaya($filter, $dprks);
+    // }
+
+    public function json_laporan_obat($filter = null) {
+        header('Content-Type: application/json');
+        echo $this->Transaksi_model->json_laporan_obat($filter);
     }
 
     public function json_laporan_tindakan($filter = null) {
         header('Content-Type: application/json');
         echo $this->Transaksi_model->json_laporan_tindakan($filter);
     }
+
+    public function json_detail_tindakan() {
+        header('Content-Type: application/json');
+        echo json_encode($this->Transaksi_model->json_detail_tindakan($_GET['no_pendaftaran']));
+    }
+
+    public function json_detail_obat() {
+        header('Content-Type: application/json');
+        echo json_encode($this->Transaksi_model->json_detail_obat($_GET['no_periksa']));
+    }
+
+    public function json_detail_periksa() {
+        header('Content-Type: application/json');
+        echo json_encode($this->Transaksi_model->json_detail_periksa($_GET['no_transaksi']));
+    }
+    
 
     public function json_biaya_pemeriksaan($filter = null) {
         header('Content-Type: application/json');
@@ -176,9 +202,14 @@ class Laporankeuangan extends CI_Controller
         echo $this->Transaksi_model->json_laporan_keuangan($filter, $tiprks);
     }
 
-    public function json_detail_poli($nopendaftar, $tiprks = '1'){
+    public function json_detail_poli(){
         header('Content-Type: application/json');
-        echo json_encode($this->Transaksi_model->json_detail_poli($nopendaftar, $tiprks));
+        echo json_encode($this->Transaksi_model->json_detail_periksa($_GET['no_transaksi']));
+    }
+
+    public function json_detail_rawat_inap(){
+        header('Content-Type: application/json');
+        echo json_encode($this->Transaksi_model->json_detail_periksa($_GET['no_transaksi']));
     }
 
     public function json_biaya_rawat_inap($filter = null, $tiprks = '2') {

@@ -5,7 +5,7 @@
                 <div class="box box-warning box-solid">
 
                     <div class="box-header">
-                        <h3 class="box-title">LAPORAN BIAYA OBAT</h3>
+                        <h3 class="box-title">LAPORAN BIAYA TINDAKAN</h3>
                     </div>
 
                     <div class="box-body">
@@ -57,6 +57,38 @@
         </div>
     </section>
 </div>
+
+<!-- MODAL -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" id="title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <h3>Detail Biaya</h3>
+        <table class="table table-bordered table-striped" id="detailTindakan">
+            <thead>
+                <tr>
+                    <th width="30px">No</th>
+                    <th>No Periksa</th>
+                    <th>Tindakan</th>
+                    <th>Harga</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+  </div>
+  </div>
+</div>
+<!-- MODAL -->
 <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
 
 <?php 
@@ -122,6 +154,35 @@ if(isset($_GET['dari'])){
 
         
     });
+
+    function cekDetail(no_pendaftaran){
+        $('#myModal').show();
+        $('#detailTindakan td').remove();
+        $.ajax({
+            type: "GET",
+            url: "<?= base_url('laporankeuangan/json_detail_tindakan?no_pendaftaran=')?>"+no_pendaftaran, //json get site
+            dataType : 'json',
+            success: function(response){
+                arrData = response;
+                $('#title').html('Nomor Pendaftaran : '+no_pendaftaran)
+                for(i = 0; i < arrData.length; i++){
+                    var table= '<tr><td><div class="text-center">'+arrData[i].no_pendaftaran+'</div></td>'+
+                        '<td><div class="text-center">'+arrData[i].no_periksa+'</div></td>'+
+                        '<td><div class="text-center">'+arrData[i].tindakan+'</div></td>'+
+                        '<td><div class="text-left">Rp. '+formatRupiah(arrData[i].biaya)+'</div></td></tr>';
+                    $('#detailTindakan tbody').append(table);
+                }
+            }
+        });
+
+    }
+    function formatRupiah(angka, prefix)
+      {
+        var reverse = angka.toString().split('').reverse().join(''),
+        ribuan = reverse.match(/\d{1,3}/g);
+        ribuan = ribuan.join('.').split('').reverse().join('');
+        return ribuan;
+      }
     
 </script>
 <?php

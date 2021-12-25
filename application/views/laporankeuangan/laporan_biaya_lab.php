@@ -125,6 +125,34 @@ if(isset($_GET['dari'])){
 
         
     });
+
+    function cekDetail(no_transaksi){
+        $('#myModal').show();
+        $('#detailBiaya td').remove();
+        $.ajax({
+            type: "GET",
+            url: "<?= base_url('laporankeuangan/json_detail_poli?no_transaksi=')?>"+no_transaksi, //json get site
+            dataType : 'json',
+            success: function(response){
+                arrData = response;
+                $('#title').html('Nomor Periksa : '+no_transaksi)
+                for(i = 0; i < arrData.length; i++){
+                    var table= '<tr><td><div class="text-center">'+arrData[i].no_pendaftaran+'</div></td>'+
+                        '<td><div class="text-center">'+arrData[i].deskripsi+'</div></td>'+
+                        '<td><div class="text-left">Rp. '+formatRupiah(arrData[i].amount_transaksi)+'</div></td></tr>';
+                    $('#detailBiaya tbody').append(table);
+                }
+            }
+        });
+
+    }
+    function formatRupiah(angka, prefix)
+      {
+        var reverse = angka.toString().split('').reverse().join(''),
+        ribuan = reverse.match(/\d{1,3}/g);
+        ribuan = ribuan.join('.').split('').reverse().join('');
+        return ribuan;
+      }
     
 </script>
 <?php

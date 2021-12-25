@@ -64,34 +64,8 @@
 </div>
 
 <!-- Modal start here -->
-<div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title" id="title">Modal Header</h4>
-      </div>
-      <div class="modal-body">
-        <h3>Detail Biaya</h3>
-        <table class="table table-bordered table-striped" id="detailPoli">
-            <thead>
-                <tr>
-                    <th width="30px">No</th>
-                    <th>Deskripsi</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-  </div>
-  </div>
-</div>
-<!-- Modal start here -->
+<?php $this->load->view('laporankeuangan/detail_biaya')?>
+<!-- Modal end here -->
 
 <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
 
@@ -152,33 +126,29 @@ if(isset($_GET['dari'])){
                 var index = page * length + (iDisplayIndex + 1);
                 $('td:eq(0)', row).html(index);
             }
-        });
+        });  
+    });
 
-        function cekDetail(nopendaftar){
+    function cekDetail(no_transaksi){
         $('#myModal').show();
-        // t = $('#detailPoli').DataTable();
-        // t.clear().draw(false);
-        $('#detailPoli td').remove();
+        $('#detailBiaya td').remove();
         $.ajax({
             type: "GET",
-            url: "<?=base_url('laporankeuangan/json_detail_poli/')?>"+nopendaftar, //json get site
+            url: "<?= base_url('laporankeuangan/json_detail_rawat_inap?no_transaksi=')?>"+no_transaksi, //json get site
             dataType : 'json',
             success: function(response){
                 arrData = response;
-                // $('#title').html('Purchase Order Nomor : '+id)
+                $('#title').html('Nomor Periksa : '+no_transaksi)
                 for(i = 0; i < arrData.length; i++){
-                    // t.row.add([
-                    var table=    '<tr><td><div class="text-center">'+arrData[i].no_pendaftaran+'</div></td>'+
+                    var table= '<tr><td><div class="text-center">'+arrData[i].no_pendaftaran+'</div></td>'+
                         '<td><div class="text-center">'+arrData[i].deskripsi+'</div></td>'+
                         '<td><div class="text-left">Rp. '+formatRupiah(arrData[i].amount_transaksi)+'</div></td></tr>';
-                    $('#detailPoli').append(table);
-                    // ]).draw(false);
+                    $('#detailBiaya tbody').append(table);
                 }
             }
         });
-        
-    }
 
+    }
     function formatRupiah(angka, prefix)
       {
         var reverse = angka.toString().split('').reverse().join(''),
@@ -186,9 +156,6 @@ if(isset($_GET['dari'])){
         ribuan = ribuan.join('.').split('').reverse().join('');
         return ribuan;
       }
-
-        
-    });
     
 </script>
 <?php

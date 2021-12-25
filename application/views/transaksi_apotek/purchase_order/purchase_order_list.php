@@ -150,6 +150,8 @@
     });
     function cekDetail(id){
         $('#myModal').show();
+        var d = "<?=base_url('transaksi_apotek/json_detail_po/')?>"+id;
+        console.log(d);
         // t = $('#detailObat').DataTable();
         // t.clear().draw(false);
         $('#detailObat td').remove();

@@ -359,6 +359,23 @@ class Transaksi_model extends CI_Model
         return $this->datatables->generate();
     }
 
+    function json_laporan_biaya2($filters, $dprks){
+        $this->db->select('td.amount_transaksi, t.tgl_transaksi, t.no_transaksi,t.kode_transaksi,td.*,l.tipe_periksa,pe.no_pendaftaran,pa.nama_lengkap,(CASE l.tipe_periksa WHEN 1 THEN "POLI" WHEN 2 THEN "RAWAT INAP" WHEN 3 THEN "OPERASI" WHEN 4 THEN "LABORATORIUM" ELSE "RADIOLOGI" END) tipe');
+        $this->db->from('tbl_transaksi t');
+        $this->db->join('tbl_transaksi_d td','t.id_transaksi=td.id_transaksi');
+        $this->db->join('tbl_periksa_lanjutan l','t.id_periksa_lanjutan=l.id_periksa');
+        $this->db->join('tbl_pendaftaran pe','pe.no_pendaftaran=l.no_pendaftaran');
+        $this->db->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
+        $this->db->where('td.dtm_crt >=', $dari);
+        $this->db->where('td.dtm_crt <=', $sampai);
+        $this->db->like('td.deskripsi', $dprks);
+        $this->db->add_column('action', anchor('#show','<i class="fa fa-eye" aria-hidden="true"></i>', array('class' => 'btn btn-info btn-sm', 'data-toggle' => 'modal')));
+        // $this->datatables->like('td.deskripsi', 'Pembayaran Biaya Pemeriksaan');
+        $this->db->group_by('pe.no_pendaftaran');
+        // $this->db->group_by('l.tipe_periksa');
+        return $this->datatables->generate();
+    }
+
     function json_laporan_pemeriksaan($filters){
         $filter = explode("_", $filters);
         $dari = $filter[0];
@@ -373,7 +390,7 @@ class Transaksi_model extends CI_Model
         $this->datatables->where('td.dtm_crt <=', $sampai);
         $this->datatables->where('td.deskripsi <=', 'Pembayaran Biaya Pemeriksaan');
         $this->datatables->like('t.kode_transaksi', 'PAYPRKS');
-        $this->datatables->add_column('action', anchor('#','<i class="fa fa-eye" aria-hidden="true"></i>',"class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal'"));
+        $this->datatables->add_column('action', anchor('#','<i class="fa fa-eye" aria-hidden="true"></i>',"class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal' onClick='javasciprt: cekDetail(\"$1\")'"),'no_transaksi');
         // $this->datatables->add_column('action', anchor('#','<i class="fa fa-eye" aria-hidden="true"></i>',"class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal'"));
         // $this->datatables->like('td.deskripsi', 'Pembayaran Biaya Pemeriksaan');
         
@@ -381,18 +398,38 @@ class Transaksi_model extends CI_Model
         return $this->datatables->generate();
     }
 
+    function json_laporan_obat($filters){
+        $filter = explode("_", $filters);
+        $dari = $filter[0];
+        $sampai = $filter[1];
+        $this->datatables->select('do.id_periksa_d_obat, do.harga_satuan, ob.nama_barang, do.no_periksa, do.jumlah, sum(do.harga_satuan*do.jumlah) ttl, pe.no_pendaftaran, do.kode_barang, pa.nama_lengkap');
+        $this->datatables->from('tbl_periksa_d_obat do');
+        $this->datatables->join('tbl_pendaftaran pe','pe.no_pendaftaran=do.no_pendaftaran');
+        $this->datatables->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
+        $this->datatables->join('tbl_obat_alkes_bhp ob','do.kode_barang=ob.kode_barang');
+        $this->datatables->where('do.dtm_crt >=', $dari);
+        $this->datatables->where('do.dtm_crt <=', $sampai);
+        // $this->datatables->where('do.no_pendaftaran', '000924');
+        $this->datatables->add_column('action', anchor('#','<i class="fa fa-eye" aria-hidden="true"></i>',"class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal' onClick='javasciprt: cekDetail(\"$1\")'"),'no_periksa');
+        // $this->datatables->like('td.deskripsi', 'Pembayaran Biaya Pemeriksaan');
+        $this->db->group_by('do.no_periksa');
+        // $this->db->group_by('do.no_pendaftaran');
+        return $this->datatables->generate();
+    }
+
     function json_laporan_tindakan($filters){
         $filter = explode("_", $filters);
         $dari = $filter[0];
         $sampai = $filter[1];
-        $this->datatables->select('sum(dt.biaya) ttl, pe.no_pendaftaran, dt.id_periksa_d_tindakan, pa.nama_lengkap');
+        $this->datatables->select('sum(dt.biaya) ttl, pe.no_pendaftaran, dt.id_periksa_d_tindakan, tn.tindakan, pa.nama_lengkap, dt.no_periksa');
         $this->datatables->from('tbl_periksa_d_tindakan dt');
         $this->datatables->join('tbl_pendaftaran pe','pe.no_pendaftaran=dt.no_pendaftaran');
         $this->datatables->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
+        $this->datatables->join('tbl_tindakan tn', 'tn.kode_tindakan=dt.kode_tindakan');
         // $this->datatables->where('l.tipe_periksa', $tiprks);
         $this->datatables->where('dt.dtm_crt >=', $dari);
         $this->datatables->where('dt.dtm_crt <=', $sampai);
-        $this->datatables->add_column('action', anchor('#show','<i class="fa fa-eye" aria-hidden="true"></i>', array('class' => 'btn btn-info btn-sm', 'data-toggle' => 'modal')));
+        $this->datatables->add_column('action', anchor('#','<i class="fa fa-eye" aria-hidden="true"></i>',"class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal' onClick='javasciprt: cekDetail(\"$1\")'"),'no_pendaftaran');
         // $this->datatables->like('td.deskripsi', 'Pembayaran Biaya Pemeriksaan');
         $this->db->group_by('dt.no_pendaftaran');
         return $this->datatables->generate();
@@ -428,22 +465,44 @@ class Transaksi_model extends CI_Model
         $this->datatables->where('l.tipe_periksa', $tiprks);
         $this->datatables->where('td.dtm_crt >=', $dari);
         $this->datatables->where('td.dtm_crt <=', $sampai);
-        $this->datatables->add_column('action', anchor('#','<i class="fa fa-eye" aria-hidden="true"></i>',"class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal' onClick='javascript: cekDetail(\"$1\")'"),'no_pendaftaran');
+        $this->datatables->add_column('action', anchor('#','<i class="fa fa-eye" aria-hidden="true"></i>',"class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal' onClick='javasciprt: cekDetail(\"$1\")'"),'no_transaksi');
         $this->db->group_by('t.id_transaksi');
         return $this->datatables->generate();
     }
 
     // function json_detail_poli($nopendaftar, $tiprks)
-    function json_detail_poli($nopendaftar, $tiprks)
+    function json_detail_periksa($no_transaksi)
     {
-        $this->db->select('td.amount_transaksi, t.tgl_transaksi, t.no_transaksi,t.kode_transaksi,td.*,l.tipe_periksa,pe.no_pendaftaran,pa.nama_lengkap');
+        $this->db->select('t.tgl_transaksi, t.no_transaksi,t.kode_transaksi,td.*,pe.no_pendaftaran,pa.nama_lengkap');
         $this->db->from('tbl_transaksi t');
         $this->db->join('tbl_transaksi_d td','t.id_transaksi=td.id_transaksi');
-        $this->db->join('tbl_periksa_lanjutan l','t.id_periksa_lanjutan=l.id_periksa');
-        $this->db->join('tbl_pendaftaran pe','pe.no_pendaftaran=l.no_pendaftaran');
+        // $this->db->join('tbl_periksa_lanjutan l','t.id_periksa_lanjutan=l.id_periksa');
+        $this->db->join('tbl_pendaftaran pe','pe.no_pendaftaran=t.no_transaksi');
         $this->db->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
-        $this->db->where('pe.no_pendaftaran', $nopendaftar);
-        $this->db->where('l.tipe_periksa', $tiprks);
+        $this->db->where('t.no_transaksi', $no_transaksi);
+        // $this->db->where('td.deskripsi', 'Pembayaran Biaya Pemeriksaan');
+        return $this->db->get()->result_array();
+    }
+
+    function json_detail_tindakan($no_pendaftaran){
+        $this->db->select('dt.*, tn.tindakan, pe.no_pendaftaran, pa.nama_lengkap');
+        $this->db->from('tbl_periksa_d_tindakan dt');
+        $this->db->join('tbl_pendaftaran pe','pe.no_pendaftaran=dt.no_pendaftaran');
+        $this->db->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
+        $this->db->join('tbl_tindakan tn', 'tn.kode_tindakan=dt.kode_tindakan');
+        // $this->db->group_by('dt.no_periksa');
+        $this->db->where('dt.no_pendaftaran', $no_pendaftaran);
+        return $this->db->get()->result_array();
+    }
+
+    function json_detail_obat($no_periksa){
+        $this->db->select('do.*,(harga_satuan*jumlah) total, ob.nama_barang, pe.no_pendaftaran, pa.nama_lengkap');
+        $this->db->from('tbl_periksa_d_obat do');
+        $this->db->join('tbl_pendaftaran pe','pe.no_pendaftaran=do.no_pendaftaran');
+        $this->db->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
+        $this->db->join('tbl_obat_alkes_bhp ob', 'ob.kode_barang=do.kode_barang');
+        // $this->db->group_by('do.no_periksa');
+        $this->db->where('do.no_periksa', $no_periksa);
         return $this->db->get()->result_array();
     }
 
