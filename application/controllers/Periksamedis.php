@@ -109,7 +109,7 @@ class Periksamedis extends CI_Controller
                 'no_rekam_medis' => $data_pendaftaran->no_rekam_medis,
                 'anamnesi' => rtrim($this->input->post('anamnesi'), ", "),
                 'diagnosa' => rtrim($this->input->post('diagnosa'), ", "),
-                'tindakan' => rtrim($this->input->post('tindakan'), ", "),
+                // 'tindakan' => rtrim($this->input->post('tindakan'), ", "),
                 'is_surat_ket_sakit' => $this->input->post('is_cetak_surat') != null ? $this->input->post('is_cetak_surat') : 0,
                 'nomor_skt' => $sktNomor,
                 'tujuan_surat' => $this->input->post('is_cetak_surat') == 1 ? $this->input->post('tujuan_surat') : '',
@@ -239,18 +239,14 @@ class Periksamedis extends CI_Controller
                 }
             }
 
-            $biayaTindakan = 0;
             $data_periksa_d_tindakan = [];
-            foreach ($_POST['name_tindakan'] as $key => $value) {
-                $this->db->select('biaya');
-                $tindakan = $this->db->get_where('tbl_tindakan',['kode_tindakan' => $value])->row();
-                $biayaTindakan += $tindakan->biaya;
-
+            foreach ($_POST['tindakan'] as $key => $value) {
                 $data_periksa_d_tindakan[] = array(
                     'no_pendaftaran' => $data_pendaftaran->no_pendaftaran,
                     'no_periksa' => $this->input->post('no_periksa'),
                     'kode_tindakan' => $value,
-                    'biaya' => $tindakan->biaya,
+                    'jumlah' =>$_POST['qty_tindakan'][$key],
+                    'biaya' => $_POST['biaya_tindakan'][$key],
                     'tipe_periksa' =>'1'
                 );
             }
@@ -318,18 +314,18 @@ class Periksamedis extends CI_Controller
                     ));
                 }
             }
-            //Insert Master Ref Tindakan
-            $master_ref_tindakan = $this->split_string($this->input->post('tindakan'), ',');
-            for ($i = 0; $i < count($master_ref_tindakan); $i++) {
-                $master_ref = $this->Master_reference_model->get_by_value($master_ref_tindakan[$i]['value'], $this->master_ref_code_tindakan);
-                if ($master_ref == null) {
-                    $this->Master_reference_model->insert(array(
-                        'master_ref_code' => $this->master_ref_code_tindakan,
-                        'master_ref_value' => $master_ref_tindakan[$i]['value'],
-                        'master_ref_name' => $master_ref_tindakan[$i]['name']
-                    ));
-                }
-            }
+            // //Insert Master Ref Tindakan
+            // $master_ref_tindakan = $this->split_string($this->input->post('tindakan'), ',');
+            // for ($i = 0; $i < count($master_ref_tindakan); $i++) {
+            //     $master_ref = $this->Master_reference_model->get_by_value($master_ref_tindakan[$i]['value'], $this->master_ref_code_tindakan);
+            //     if ($master_ref == null) {
+            //         $this->Master_reference_model->insert(array(
+            //             'master_ref_code' => $this->master_ref_code_tindakan,
+            //             'master_ref_value' => $master_ref_tindakan[$i]['value'],
+            //             'master_ref_name' => $master_ref_tindakan[$i]['name']
+            //         ));
+            //     }
+            // }
 
             //Insert Periksa Diagnosa
             foreach ($_POST['id_diagnosa'] as $id) {
@@ -399,7 +395,7 @@ class Periksamedis extends CI_Controller
                 array(
                     'id_transaksi' => $lastIdTp->id_transaksi,
                     'deskripsi' => 'Biaya Tindakan ',
-                    'amount_transaksi' => $biayaTindakan != '' || $biayaTindakan != 0 ? $biayaTindakan : 0,
+                    'amount_transaksi' => $_POST['totalBiayaTindakan'],
                     'dc' => 'd'
                 ),
                 array(
@@ -444,7 +440,7 @@ class Periksamedis extends CI_Controller
             $this->data['anamnesies'] = $this->get_master_ref($this->master_ref_code_anamnesi);
             $this->data['alergi_obat'] = $this->get_master_ref($this->master_ref_code_alergiobat);
             $this->data['diagnosa'] = $this->get_master_ref($this->master_ref_code_diagnosa);
-            $this->data['tindakan'] = $this->get_master_ref($this->master_ref_code_tindakan);
+            // $this->data['tindakan'] = $this->get_master_ref($this->master_ref_code_tindakan);
             $this->data['alkes_option'] = array();
             $this->data['alkes_option'][''] = 'Pilih Alat Kesehatan';
             $alkes_opt_js = array();
@@ -457,6 +453,7 @@ class Periksamedis extends CI_Controller
             }
             $this->data['alkes_option_js'] = json_encode($alkes_opt_js);
             $this->data['biaya'] = $this->Tbl_biaya_model->getBiaya();
+            $this->data['tindakan'] = $this->db->get('tbl_tindakan')->result();
             $this->data['obat_option'] = array();
             $this->data['obat_option'][''] = 'Pilih Obat';
             $obat_opt_js = array();
@@ -1005,13 +1002,12 @@ class Periksamedis extends CI_Controller
 
         //d_periksa_tindakan
         foreach ($_POST['tindakan'] as $key => $value) {
-            $this->db->select('biaya');
-            $tindakan = $this->db->get_where('tbl_tindakan',['kode_tindakan' => $value])->row();
             $periksa_d_tindakan = array(
                 'no_pendaftaran' => $this->no_pendaftaran,
                 'no_periksa' => $this->input->post('no_periksa'),
                 'kode_tindakan' => $value,
-                'biaya' => $tindakan->biaya,
+                'jumlah' => $_POST['qty_tindakan'][$key],
+                'biaya' => $_POST['biaya_tindakan'][$key],
                 'tipe_periksa' => '4',
             );
             $this->db->insert('tbl_periksa_d_tindakan',$periksa_d_tindakan);
@@ -1261,13 +1257,12 @@ class Periksamedis extends CI_Controller
 
         //d_periksa_tindakan
         foreach ($_POST['tindakan'] as $key => $value) {
-            $this->db->select('biaya');
-            $tindakan = $this->db->get_where('tbl_tindakan',['kode_tindakan' => $value])->row();
             $periksa_d_tindakan = array(
                 'no_pendaftaran' => $this->no_pendaftaran,
                 'no_periksa' => $this->input->post('no_periksa'),
                 'kode_tindakan' => $value,
-                'biaya' => $tindakan->biaya,
+                'jumlah' => $_POST['qty_tindakan'][$key],
+                'biaya' => $_POST['biaya_tindakan'][$key],
                 'tipe_periksa' => '5',
             );
             $this->db->insert('tbl_periksa_d_tindakan',$periksa_d_tindakan);
@@ -1413,8 +1408,11 @@ class Periksamedis extends CI_Controller
 
     public function newItemLoopTindakan()
     {
-        $this->data['tindakan'] = $this->db->get('tbl_tipe_periksa_radiologi')->result();
+        $this->data['tindakan'] = $this->db->get('tbl_tindakan')->result();
         $this->data['no'] = $_GET['no'];
+        if(isset($_GET['isPoli'])){
+            $this->data['isPoli'] = true;
+        }
         $this->load->view('loop/loop-pilihan-tindakan', $this->data);
     }
 
@@ -1525,16 +1523,15 @@ class Periksamedis extends CI_Controller
         
         //d_periksa_tindakan
         foreach ($_POST['tindakan'] as $key => $value) {
-            $this->db->select('biaya');
-            $tindakan = $this->db->get_where('tbl_tindakan', ['kode_tindakan' => $value])->row();
             $periksa_d_tindakan = array(
                 'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $data_transaksi['no_transaksi'],
+                'no_periksa' => $this->input->post('no_periksa'),
                 'kode_tindakan' => $value,
-                'biaya' => $tindakan->biaya,
+                'jumlah' => $_POST['qty_tindakan'][$key],
+                'biaya' => $_POST['biaya_tindakan'][$key],
                 'tipe_periksa' => '3',
-                );
-            $this->db->insert('tbl_periksa_d_tindakan', $periksa_d_tindakan);
+            );
+            $this->db->insert('tbl_periksa_d_tindakan',$periksa_d_tindakan);
         }
         
         //d_periksa_biaya
@@ -1576,7 +1573,7 @@ class Periksamedis extends CI_Controller
         
         $data_transaksi_d = array();
 
-        $this->db->insert($data_transaksi);
+        $this->db->insert("tbl_transaksi",$data_transaksi);
         
         $lastIdOpr = $this->db->select_max('id_transaksi')->from('tbl_transaksi')->get()->row();
         if ($_POST['totalObat'] != 0) {
@@ -1670,13 +1667,12 @@ class Periksamedis extends CI_Controller
             $this->data['getKamar'] = $this->Periksa_model->oldKamarRawatInap($this->no_pendaftaran);
             
             $this->data['getBiaya'] = $this->Periksa_model->oldBiaya($this->no_pendaftaran,'2');
+
+            $this->data['getTindakan'] = $this->Periksa_model->oldTindakan($this->no_pendaftaran,'2');
             
             $this->data['getObat'] = $this->Periksa_model->oldObat($this->no_pendaftaran,'2');
 
             $this->data['getAlkes'] = $this->Periksa_model->oldAlkes($this->no_pendaftaran,'2');
-
-            $this->db->select('kode_tindakan,biaya');
-            $this->data['getTindakan'] = $this->db->get_where('tbl_periksa_d_tindakan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2'])->result();
             
             $this->data['edit'] = true;
         }
@@ -1764,8 +1760,6 @@ class Periksamedis extends CI_Controller
             }
         }
 
-        $getIdPeriksaLanjutan = $this->Periksa_model->getIdPeriksaLanjutan($this->no_pendaftaran,'2'); 
-
         // input inventory barang
         if(empty($_POST['isEdit'])){
             $kode_receipt1 = 'RCP' . time();
@@ -1780,6 +1774,7 @@ class Periksamedis extends CI_Controller
         else{
             $this->db->select('id_inventory');
             $getKodeReceipt = $this->db->get_where('tbl_inventory',['id_periksa_lanjutan' => $getIdPeriksaLanjutan->id_periksa])->row();
+            // print_r($getKodeReceipt);
             $kode_receipt1 = $getKodeReceipt->id_inventory;
         }
         
@@ -1867,49 +1862,78 @@ class Periksamedis extends CI_Controller
             }       
         }
 
-        
-        //d_periksa_tindakan (new only)
-        if(empty($_POST['isEdit'])){
+    
+        //insert d_periksa_tindakan (old and new)
+        if(isset($_POST['tindakan'])){
             foreach ($_POST['tindakan'] as $key => $value) {
-                $this->db->select('biaya');
-                $tindakan = $this->db->get_where('tbl_tindakan',['kode_tindakan' => $value])->row();
                 $periksa_d_tindakan = array(
                     'no_pendaftaran' => $this->no_pendaftaran,
                     'no_periksa' => $data_transaksi['no_transaksi'],
                     'kode_tindakan' => $value,
-                    'biaya' => $tindakan->biaya,
+                    'jumlah' => $_POST['qty_tindakan'][$key],
+                    'biaya' => $_POST['biaya_tindakan'][$key],
                     'tipe_periksa' => '2',
                 );
                 $this->db->insert('tbl_periksa_d_tindakan',$periksa_d_tindakan);
             }
         }
-        else{ //d_periksa_tindakan (old only)
-            if(isset($_POST['is_tindakan_update'])){
-                foreach ($_POST['tindakan'] as $key => $value) {
-                    $cekTindakan = $this->db->get_where('tbl_periksa_d_tindakan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2','kode_tindakan' => $value])->num_rows();
-                    if($cekTindakan==0){
-                        $this->db->select('biaya');
-                        $tindakan = $this->db->get_where('tbl_tindakan',['kode_tindakan' => $value])->row();
-                        $periksa_d_tindakan = array(
-                            'no_pendaftaran' => $this->no_pendaftaran,
-                            'no_periksa' => $data_transaksi['no_transaksi'],
-                            'kode_tindakan' => $value,
-                            'biaya' => $tindakan->biaya,
-                            'tipe_periksa' => '2',
-                        );
-                        $this->db->insert('tbl_periksa_d_tindakan',$periksa_d_tindakan);
-                    }
-                }
-                $this->db->select('kode_tindakan');
-                $getTindakanRawatInap =  $this->db->get_where('tbl_periksa_d_tindakan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2'])->result();
 
-                foreach ($getTindakanRawatInap as $key => $value) {
-                    if(!in_array($value->kode_tindakan,$_POST['tindakan'])){
-                        $this->db->delete('tbl_periksa_d_tindakan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2','kode_tindakan' => $value->kode_tindakan]);
-                    }
-                }
+        //update d_periksa_tindakan (old only)
+        if(isset($_POST['upd_qty_tindakan_id'])){
+            foreach ($_POST['upd_qty_tindakan_id'] as $key => $value) {
+                $this->db->update('tbl_periksa_d_tindakan',['jumlah' => $_POST['upd_qty_tindakan_val'][$key]],['id_periksa_d_tindakan' => $value]);
             }
         }
+
+        //delete d_periksa_tindakan (old only)
+        if(isset($_POST['del_id_detail_tindakan'])){
+            foreach ($_POST['del_id_detail_tindakan'] as $key => $value) {
+                $this->db->delete('tbl_periksa_d_tindakan',['id_periksa_d_tindakan' => $value]);
+            }
+        }
+
+        // //d_periksa_tindakan (new only)
+        // if(empty($_POST['isEdit'])){
+        //     foreach ($_POST['tindakan'] as $key => $value) {
+        //         $this->db->select('biaya');
+        //         $tindakan = $this->db->get_where('tbl_tindakan',['kode_tindakan' => $value])->row();
+        //         $periksa_d_tindakan = array(
+        //             'no_pendaftaran' => $this->no_pendaftaran,
+        //             'no_periksa' => $data_transaksi['no_transaksi'],
+        //             'kode_tindakan' => $value,
+        //             'biaya' => $tindakan->biaya,
+        //             'tipe_periksa' => '2',
+        //         );
+        //         $this->db->insert('tbl_periksa_d_tindakan',$periksa_d_tindakan);
+        //     }
+        // }
+        // else{ //d_periksa_tindakan (old only)
+        //     if(isset($_POST['is_tindakan_update'])){
+        //         foreach ($_POST['tindakan'] as $key => $value) {
+        //             $cekTindakan = $this->db->get_where('tbl_periksa_d_tindakan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2','kode_tindakan' => $value])->num_rows();
+        //             if($cekTindakan==0){
+        //                 $this->db->select('biaya');
+        //                 $tindakan = $this->db->get_where('tbl_tindakan',['kode_tindakan' => $value])->row();
+        //                 $periksa_d_tindakan = array(
+        //                     'no_pendaftaran' => $this->no_pendaftaran,
+        //                     'no_periksa' => $data_transaksi['no_transaksi'],
+        //                     'kode_tindakan' => $value,
+        //                     'biaya' => $tindakan->biaya,
+        //                     'tipe_periksa' => '2',
+        //                 );
+        //                 $this->db->insert('tbl_periksa_d_tindakan',$periksa_d_tindakan);
+        //             }
+        //         }
+        //         $this->db->select('kode_tindakan');
+        //         $getTindakanRawatInap =  $this->db->get_where('tbl_periksa_d_tindakan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2'])->result();
+
+        //         foreach ($getTindakanRawatInap as $key => $value) {
+        //             if(!in_array($value->kode_tindakan,$_POST['tindakan'])){
+        //                 $this->db->delete('tbl_periksa_d_tindakan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2','kode_tindakan' => $value->kode_tindakan]);
+        //             }
+        //         }
+        //     }
+        // }
 
         //insert d_periksa_biaya (old and new)
         if(isset($_POST['id_biaya'])){
@@ -2520,7 +2544,7 @@ class Periksamedis extends CI_Controller
         $this->form_validation->set_rules('anamnesi', 'Anamnesi', 'trim|required');
         $this->form_validation->set_rules('riwayat_alergi_obat', 'Riwayat Alergi Obat', 'trim|required');
         $this->form_validation->set_rules('diagnosa', 'Diagnosa', 'trim|required');
-        $this->form_validation->set_rules('tindakan', 'Tindakan', 'trim|required');
+        // $this->form_validation->set_rules('tindakan', 'Tindakan', 'trim|required');
 
         $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }

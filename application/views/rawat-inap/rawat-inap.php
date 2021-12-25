@@ -107,19 +107,23 @@
                                         <a href="" class="btn btn-info btn-sm" id="addItemAlkes"><span class="fa fa-plus"></span> Tambah Item</a>
                                     </div>
                                 </div>
-                                <div class="form-group" id="row-tindakan" data-row='0'>
+                                <div class="form-group" id="row-tindakan" data-row='<?= $edit ? count((array)$getTindakan) : 0 ?>'>
                                     <?php
-                                        $totalBiayaTindakan = 0;
                                         if($edit){
-                                            $totalBiayaTindakan = array_sum(array_column($getTindakan, 'biaya'));
-                                            // foreach ($getTindakan as $key => $value) {
-                                                $data['value'] = $getTindakan;
-                                                $this->load->view('loop/loop-pilihan-tindakan', ['no' => $key,'selected' => $data]);
+                                            // $totalBiayaTindakan = array_sum(array_column($getTindakan, 'biaya'));
+                                             foreach ($getTindakan as $key => $value) {
+                                                $this->load->view('loop/loop-pilihan-tindakan', ['no' => $key,'selected' => $value]);
+                                            }
                                         }
                                         else{
                                             $this->load->view('loop/loop-pilihan-tindakan', ['no' => 0]);
                                         }
                                     ?>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-4">
+                                        <a href="" class="btn btn-info btn-sm" id="addItemTindakan"><span class="fa fa-plus"></span> Tambah Item</a>
+                                    </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya Kamar</div>
@@ -164,8 +168,8 @@
                                     <div class="col-sm-2">Pemeriksaan Selanjutnya</div>
                                     <div class="col-sm-10">
                                         <select name="pemeriksaan_selanjutnya" id="" style="width:100%" class="select2 form-control">
-                                            <option value="0">Pemeriksaan Selesai</option>
                                             <option value="2">Tetap Di Rawat Inap</option>
+                                            <option value="0">Pemeriksaan Selesai</option>
                                             <option value="3">Operasi</option>
                                             <option value="4">Laboratorium</option>
                                             <option value="5">Radiologi</option>
@@ -200,7 +204,7 @@
             totalBiaya()
             totalObat()
             totalAlkes()
-            // totalTindakan()
+            totalTindakan()
             
             $(".oldChangeQtyHari").keyup(function(){
                 var dataNo = $(this).closest('.loop-kamar').attr('data-no')
@@ -253,6 +257,38 @@
                     <input type="hidden" name='del_id_detail_rawat_inap[]' value='${idDetail}' class='del_id_detail_rawat_inap'>
                 `)
             })
+
+            $(".oldChangeQtyTindakan").keyup(function(){
+                var dataNo = $(this).closest('.loop-tindakan').attr('data-no')
+                var defaultTindakan = $(".loop-tindakan[data-no='"+dataNo+"'] .qty_tindakan").attr('data-qty')
+                var newVal = $(this).val()
+                var idDetail = $(".loop-tindakan[data-no='"+dataNo+"']").attr('data-iddetail')
+                
+                if($(".upd_qty_tindakan_id[value='"+idDetail+"']").length==0 && defaultTindakan!=newVal && (newVal!='' && newVal!=0)){
+                    $(".loop-tindakan[data-no='"+dataNo+"']").append(`
+                        <input type="hidden" name='upd_qty_tindakan_id[]' value='${idDetail}' class='upd_qty_tindakan_id'>
+                        <input type="hidden" name='upd_qty_tindakan_val[]' value='${newVal}' data-id='${idDetail}' class='upd_qty_tindakan_val'>
+                    `)
+                }
+                else if($(".upd_qty_tindakan_id[value='"+idDetail+"']").length==1 && defaultTindakan==newVal){
+                    $(".upd_qty_tindakan_id[value='"+idDetail+"']").remove()
+                    $(".upd_qty_tindakan_val[data-id='"+idDetail+"']").remove()
+                }
+                else if($(".upd_qty_tindakan_id[value='"+idDetail+"']").length==1 && newVal!=$(".upd_qty_tindakan_val[data-id='"+idDetail+"']").val()){
+                    $(".upd_qty_tindakan_val[data-id='"+idDetail+"']").val(newVal)
+                }
+            })
+
+            $(".oldRemoveTindakan").click(function(e){
+                e.preventDefault()
+                var dataNo = $(this).attr('data-no')
+                var idDetail = $(this).attr('data-iddetail')
+                
+                $("#row-tindakan").append(`
+                    <input type="hidden" name='del_id_detail_tindakan[]' value='${idDetail}' class='del_id_detail_tindakan'>
+                `)
+            })
+
 
             $(".oldChangeQtyBiaya").keyup(function(){
                 var dataNo = $(this).closest('.loop-biaya').attr('data-no')
