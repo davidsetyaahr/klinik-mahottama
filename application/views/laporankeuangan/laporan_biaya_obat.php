@@ -22,6 +22,20 @@
                                 </div>
                             </div>
                             <div class="row">
+                            <br>
+                                <div class="col-md-12">
+                                    <select name="kode_barang" id="" class="form-control select2" width="200">
+                                        <option value="">Semua Obat</option>
+                                        <?php 
+                                                foreach ($obat as $key => $value) {
+                                                    $s = isset($_GET['kode_barang']) && $_GET['kode_barang']==$value->kode_barang ? 'selected' : '';
+                                                    echo "<option  value='".$value->kode_barang."' $s>".$value->nama_barang."</option>";
+                                                }
+                                            ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-6">
                                     <br>
                                     <button class="btn btn-danger"><span class="fa fa-search"></span> Tampilkan</button>
@@ -35,14 +49,6 @@
                         <?php echo anchor(site_url('laporankeuangan/excel_biaya_obat/'.$_GET['dari'].'_'.$_GET['sampai']),'<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
                         
                         <div style="padding-top: 10px;">
-                        <select name="" id="" class="form-control select2" width="200">
-                            <option value="">Pilih Obat</option>
-                            <?php 
-                                    foreach ($obat as $key => $value) {
-                                        echo "<option  value='".$value->kode_barang."'>".$value->nama_barang."</option>";
-                                    }
-                                ?>
-                        </select>
                         <div style="padding-bottom: 10px;">
                         <div style="padding-bottom: 10px;">
                         </div>
@@ -54,8 +60,10 @@
                                     <!-- <th>Tanggal Transaksi</th> -->
                                     <th>No Periksa</th>
                                     <th>Nama Pasien</th>
-                                    <th>Nominal Transaksi</th>
-                                    <th width="30px">Aksi</th>
+                                    <th>Nama Obat</th>
+                                    <th>Jumlah</th>
+                                    <th>Harga</th>
+                                    <th>Total</th>
                                 </tr>
                             </thead>
                         </table>
@@ -141,20 +149,17 @@ if(isset($_GET['dari'])){
             },
             processing: true,
             serverSide: true,
-            ajax: {"url": "json_laporan_obat/<?php echo $_GET['dari'].'_'.$_GET['sampai'];?>", "type": "POST"},
+            ajax: {"url": "json_laporan_obat/<?php echo $_GET['dari'].'_'.$_GET['sampai'].'_'.$_GET['kode_barang'];?>", "type": "POST"},
             columns: [
                 {
                     "data": "id_periksa_d_obat",
                     "orderable": false
                 },
                 {"data": "no_periksa"},{"data": "nama_lengkap"}
-                // ,{"data": "no_pendaftaran"}
-                ,{"data": "ttl",  render: $.fn.dataTable.render.number( '.', ',', 2, 'Rp. ' )},
-                {
-                    "data" : "action",
-                    "orderable": false,
-                    "className" : "text-center"
-                }
+                ,{"data": "nama_barang"},
+                {"data": "jumlah"},
+                {"data": "harga_satuan", render : $.fn.dataTable.render.number( '.', ',', 2, 'Rp. ' )},
+                {"data": "ttl",  render: $.fn.dataTable.render.number( '.', ',', 2, 'Rp. ' )},
             ],
             order: [[1, 'asc']],
             rowCallback: function(row, data, iDisplayIndex) {

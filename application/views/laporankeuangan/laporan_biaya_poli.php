@@ -134,17 +134,22 @@ if(isset($_GET['dari'])){
         $('#detailBiaya td').remove();
         $.ajax({
             type: "GET",
-            url: "<?= base_url('laporankeuangan/json_detail_rawat_inap?no_transaksi=')?>"+no_transaksi, //json get site
+            url: "<?= base_url('laporankeuangan/json_detail_poli?no_transaksi=')?>"+no_transaksi, //json get site
             dataType : 'json',
             success: function(response){
                 arrData = response;
                 $('#title').html('Nomor Periksa : '+no_transaksi)
+                var no = 0;
+                var total = 0;
                 for(i = 0; i < arrData.length; i++){
-                    var table= '<tr><td><div class="text-center">'+arrData[i].no_pendaftaran+'</div></td>'+
-                        '<td><div class="text-center">'+arrData[i].deskripsi+'</div></td>'+
-                        '<td><div class="text-left">Rp. '+formatRupiah(arrData[i].amount_transaksi)+'</div></td></tr>';
-                    $('#detailBiaya tbody').append(table);
+                    total+=parseInt(arrData[i].amount_transaksi);
+                    no++
+                    var table= '<tr><td>'+no+'</td>'+
+                        '<td>'+arrData[i].deskripsi+'</td>'+
+                        '<td>Rp. '+formatRupiah(arrData[i].amount_transaksi)+'</td></tr>';
+                        $('#detailBiaya tbody').append(table);
                 }
+                $('#detailBiaya tbody').append('<tr><td colspan="2" align="center">Total</td><td>Rp. '+formatRupiah(total)+'</td></tr>');
             }
         });
 

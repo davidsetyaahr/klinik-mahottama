@@ -65,7 +65,7 @@ class Laporankeuangan extends CI_Controller
         //     $this->data['filters'] = '';
         // }
         // $this->template->load('template','laporankeuangan/laporan_biaya_obat', $this->data);
-        $data['obat'] = $this->Tbl_obat_alkes_bhp_model->get_all();
+        $data['obat'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat();
         // var_dump($data['obat']);
         $this->template->load('template','laporankeuangan/laporan_biaya_obat', $data);
     }
@@ -555,19 +555,23 @@ class Laporankeuangan extends CI_Controller
 
         $kolomhead = 0;
         xlsWriteLabel($tablehead, $kolomhead++, "No");
-    	xlsWriteLabel($tablehead, $kolomhead++, "No Pendaftaran");
-    	xlsWriteLabel($tablehead, $kolomhead++, "Tanggal Transaksi");
+    	xlsWriteLabel($tablehead, $kolomhead++, "No Periksa");
     	xlsWriteLabel($tablehead, $kolomhead++, "Nama Pasien");
-    	xlsWriteLabel($tablehead, $kolomhead++, "Nominal Transaksi");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Nama Obat");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Jumlah");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Harga");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Total");
 
-	    foreach ($this->Transaksi_model->ambil_laporan_biaya($filter, $dprks) as $data) {
+	    foreach ($this->Transaksi_model->json_laporan_obat($filter, $export=true) as $data) {
             $kolombody = 0;
 
             //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
             xlsWriteNumber($tablebody, $kolombody++, $nourut);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->no_pendaftaran);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->tgl_transaksi);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->no_periksa);
     	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_lengkap);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_barang);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->jumlah);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->harga_satuan);
     	    xlsWriteNumber($tablebody, $kolombody++, $data->ttl);
     	    
     
