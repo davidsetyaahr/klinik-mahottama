@@ -180,7 +180,7 @@ class Transaksi_model extends CI_Model
         //     $this->datatables->where('tbl_pendaftaran.tipe_periksa', $tipe);
         // }
         $this->db->order_by('tbl_transaksi.no_transaksi','asc');
-        $this->db->group_by('tbl_transaksi.no_transaksi');
+        $this->datatables->group_by('tbl_transaksi.no_transaksi');
             
         return $this->datatables->generate();
     }
@@ -419,6 +419,36 @@ class Transaksi_model extends CI_Model
         $from->where('do.dtm_crt <=', $sampai.' 23:59:59');
         if($kode_obat!=''){
             $from->where('do.kode_barang', $kode_obat);
+        }
+        if($export){
+            return $this->db->get()->result();
+        }
+        else{
+            return $this->datatables->generate();
+        }
+    }
+
+    function json_laporan_alkes($filters,$export=false){
+        $filter = explode("_", $filters);
+        $dari = $filter[0];
+        $sampai = $filter[1];
+        $kode_obat = $filter[2];
+        if($export){
+            $from = $this->db;
+        }
+        else{
+            $from = $this->datatables;    
+        }
+        $from->select('da.id_periksa_d_alkes, da.harga_satuan, ob.kode_barang, ob.nama_barang, da.no_periksa, da.jumlah, (da.harga_satuan*da.jumlah) ttl, pe.no_pendaftaran, da.kode_barang, pa.nama_lengkap');
+        $from->from('tbl_periksa_d_alkes da');
+        $from->join('tbl_pendaftaran pe','pe.no_pendaftaran=da.no_pendaftaran');
+        $from->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
+        $from->join('tbl_obat_alkes_bhp ob','da.kode_barang=ob.kode_barang');
+        $from->where('da.dtm_crt >=', $dari.' 00:00:00');
+        $from->where('da.dtm_crt >=', $dari.' 00:00:00');
+        $from->where('da.dtm_crt <=', $sampai.' 23:59:59');
+        if($kode_obat!=''){
+            $from->where('da.kode_barang', $kode_obat);
         }
         if($export){
             return $this->db->get()->result();
