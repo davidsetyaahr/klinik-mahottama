@@ -9,6 +9,13 @@ class Tbl_tindakan_model extends CI_Model
     public $id = 'kode_tindakan';
     public $order = 'DESC';
 
+
+    function get_all()
+    {
+        return $this->db->get('tbl_tindakan')->result();
+    }
+
+
     public function json()
     {
         $this->datatables->select("ti.kode_tindakan,ti.tindakan,ti.biaya,tk.item");

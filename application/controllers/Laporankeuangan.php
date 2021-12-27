@@ -12,6 +12,7 @@ class Laporankeuangan extends CI_Controller
         $this->load->model('Transaksi_model');
         $this->load->model('Periksa_model');
         $this->load->model('Tbl_obat_alkes_bhp_model');
+        $this->load->model('Tbl_tindakan_model');
         $this->load->library('form_validation');        
 	    $this->load->library('datatables');
     }
@@ -91,8 +92,8 @@ class Laporankeuangan extends CI_Controller
         //     $this->data['filters'] = '';
         //     $this->data['id_klinik'] = set_value('id_klinik');;
         // }
-
-        $this->template->load('template','laporankeuangan/laporan_biaya_tindakan');
+        $data['tindakan'] = $this->Tbl_tindakan_model->get_all();
+        $this->template->load('template','laporankeuangan/laporan_biaya_tindakan', $data);
     }
 
     public function biaya_pemeriksaan(){

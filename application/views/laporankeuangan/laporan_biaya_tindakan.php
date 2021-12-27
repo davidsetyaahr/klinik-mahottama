@@ -22,6 +22,20 @@
                                 </div>
                             </div>
                             <div class="row">
+                            <div class="col-md-12">
+                                <br>
+                                    <select name="kode_tindakan" id="" class="form-control select2" width="200">
+                                        <option value="">Semua Tindakan</option>
+                                        <?php 
+                                                foreach ($tindakan as $key => $value) {
+                                                    // $s = isset($_GET['kode_tindakan']) && $_GET['kode_tindakan']==$value->kode_tindakan ? 'selected' : '';
+                                                    echo "<option  value='".$value->kode_tindakan."'>".$value->tindakan."</option>";
+                                                }
+                                            ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-6">
                                     <br>
                                     <button class="btn btn-danger"><span class="fa fa-search"></span> Tampilkan</button>
@@ -40,11 +54,13 @@
                             <thead>
                                 <tr>
                                     <th width="30px">No</th>
-                                    <th>No Pendaftaran</th>
+                                    <th>No Periksa</th>
                                     <th>Nama Pasien</th>
-                                    <!-- <th>Tipe Periksa</th> -->
-                                    <th>Nominal Transaksi</th>
-                                    <th width="30px">Aksi</th>
+                                    <th>Nama Tindakan</th>
+                                    <th>Jumlah</th>
+                                    <th>Harga</th>
+                                    <th>Total</th>
+                                    <!-- <th width="30px">Aksi</th> -->
                                 </tr>
                             </thead>
                         </table>
@@ -132,15 +148,18 @@ if(isset($_GET['dari'])){
                 {
                     "data": "id_periksa_d_tindakan",
                     "orderable": false
-                },
-                {"data": "no_pendaftaran"},{"data": "nama_lengkap"}
-                // ,{"data": "tipe"}
-                ,{"data": "ttl",  render: $.fn.dataTable.render.number( '.', ',', 2, 'Rp. ' )},
-                {
-                    "data" : "action",
-                    "orderable": false,
-                    "className" : "text-center"
                 }
+                ,{"data": "no_periksa"}
+                ,{"data": "nama_lengkap"}
+                ,{"data": "tindakan"}
+                ,{"data": "jumlah"}
+                ,{"data": "biaya",  render: $.fn.dataTable.render.number( '.', ',', 2, 'Rp. ' )}
+                ,{"data": "ttl",  render: $.fn.dataTable.render.number( '.', ',', 2, 'Rp. ' )}
+                // {
+                //     "data" : "action",
+                //     "orderable": false,
+                //     "className" : "text-center"
+                // }
             ],
             order: [[1, 'asc']],
             rowCallback: function(row, data, iDisplayIndex) {

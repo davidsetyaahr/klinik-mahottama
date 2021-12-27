@@ -432,7 +432,7 @@ class Transaksi_model extends CI_Model
         $filter = explode("_", $filters);
         $dari = $filter[0];
         $sampai = $filter[1];
-        $this->datatables->select('sum(dt.biaya) ttl, pe.no_pendaftaran, dt.id_periksa_d_tindakan, tn.tindakan, pa.nama_lengkap, dt.no_periksa');
+        $this->datatables->select('dt.biaya, dt.no_periksa, dt.jumlah, (dt.jumlah*dt.biaya) ttl, pe.no_pendaftaran, dt.id_periksa_d_tindakan, tn.tindakan, pa.nama_lengkap, dt.no_periksa');
         $this->datatables->from('tbl_periksa_d_tindakan dt');
         $this->datatables->join('tbl_pendaftaran pe','pe.no_pendaftaran=dt.no_pendaftaran');
         $this->datatables->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
@@ -440,9 +440,9 @@ class Transaksi_model extends CI_Model
         // $this->datatables->where('l.tipe_periksa', $tiprks);
         $this->datatables->where('dt.dtm_crt >=', $dari.' 00:00:00');
         $this->datatables->where('dt.dtm_crt <=', $sampai.' 23:59:59');
-        $this->datatables->add_column('action', anchor('#','<i class="fa fa-eye" aria-hidden="true"></i>',"class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal' onClick='javasciprt: cekDetail(\"$1\")'"),'no_pendaftaran');
+        // $this->datatables->add_column('action', anchor('#','<i class="fa fa-eye" aria-hidden="true"></i>',"class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal' onClick='javasciprt: cekDetail(\"$1\")'"),'no_pendaftaran');
         // $this->datatables->like('td.deskripsi', 'Pembayaran Biaya Pemeriksaan');
-        $this->db->group_by('dt.no_pendaftaran');
+        // $this->db->group_by('dt.no_pendaftaran');
         return $this->datatables->generate();
     }
 

@@ -46,7 +46,7 @@
                             if(isset($_GET['dari'])){
                         ?>
                         <hr />
-                        <?php echo anchor(site_url('laporankeuangan/excel_biaya_obat/'.$_GET['dari'].'_'.$_GET['sampai']),'<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
+                        <?php echo anchor(site_url('laporankeuangan/excel_biaya_obat/'.$_GET['dari'].'_'.$_GET['sampai'].'_'.$_GET['kode_barang']),'<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
                         
                         <div style="padding-top: 10px;">
                         <div style="padding-bottom: 10px;">
