@@ -609,7 +609,7 @@ class Laporankeuangan extends CI_Controller
     public function excel_biaya_alkes($filter = null)
     {
         $this->load->helper('exportexcel');
-        $namaFile = "laporan_keuangan-alkes"."-".date('Ymd').".xls";
+        $namaFile = "laporan_keuangan-bmhp"."-".date('Ymd').".xls";
         $judul = "laporan_keuangan";
         $tablehead = 0;
         $tablebody = 1;

@@ -5,7 +5,7 @@
                 <div class="box box-warning box-solid">
 
                     <div class="box-header">
-                        <h3 class="box-title">LAPORAN BIAYA ALKES</h3>
+                        <h3 class="box-title">LAPORAN BIAYA BMHP</h3>
                     </div>
 
                     <div class="box-body">
@@ -25,7 +25,7 @@
                             <br>
                                 <div class="col-md-12">
                                     <select name="kode_barang" id="" class="form-control select2" width="200">
-                                        <option value="">Semua Alkes</option>
+                                        <option value="">Semua BMHP</option>
                                         <?php 
                                                 foreach ($obat as $key => $value) {
                                                     $s = isset($_GET['kode_barang']) && $_GET['kode_barang']==$value->kode_barang ? 'selected' : '';
@@ -60,7 +60,7 @@
                                     <!-- <th>Tanggal Transaksi</th> -->
                                     <th>No Periksa</th>
                                     <th>Nama Pasien</th>
-                                    <th>Nama Obat</th>
+                                    <th>Nama BMHP</th>
                                     <th>Jumlah</th>
                                     <th>Harga</th>
                                     <th>Total</th>
