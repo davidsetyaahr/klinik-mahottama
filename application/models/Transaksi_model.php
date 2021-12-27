@@ -428,7 +428,7 @@ class Transaksi_model extends CI_Model
         }
     }
 
-    function json_laporan_tindakan($filters, $export=false){
+    function json_laporan_tindakan($filters,$export=false){
         $filter = explode("_", $filters);
         $dari = $filter[0];
         $sampai = $filter[1];
@@ -439,14 +439,14 @@ class Transaksi_model extends CI_Model
         else{
             $from = $this->datatables;    
         }
-        $this->datatables->select('dt.biaya, dt.no_periksa, dt.kode_tindakan, dt.jumlah, (dt.jumlah*dt.biaya) ttl, pe.no_pendaftaran, dt.id_periksa_d_tindakan, tn.kode_tindakan, tn.tindakan, pa.nama_lengkap, dt.no_periksa');
-        $this->datatables->from('tbl_periksa_d_tindakan dt');
-        $this->datatables->join('tbl_pendaftaran pe','pe.no_pendaftaran=dt.no_pendaftaran');
-        $this->datatables->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
-        $this->datatables->join('tbl_tindakan tn', 'tn.kode_tindakan=dt.kode_tindakan');
-        $this->datatables->where('dt.dtm_crt >=', $dari.' 00:00:00');
-        $this->datatables->where('dt.dtm_crt >=', $dari.' 00:00:00');
-        $this->datatables->where('dt.dtm_crt <=', $sampai.' 23:59:59');
+        $from->select('dt.biaya, dt.no_periksa, dt.kode_tindakan, dt.jumlah, (dt.jumlah*dt.biaya) ttl, pe.no_pendaftaran, dt.id_periksa_d_tindakan, tn.kode_tindakan, tn.tindakan, pa.nama_lengkap, dt.no_periksa');
+        $from->from('tbl_periksa_d_tindakan dt');
+        $from->join('tbl_pendaftaran pe','pe.no_pendaftaran=dt.no_pendaftaran');
+        $from->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
+        $from->join('tbl_tindakan tn', 'tn.kode_tindakan=dt.kode_tindakan');
+        $from->where('dt.dtm_crt >=', $dari.' 00:00:00');
+        $from->where('dt.dtm_crt >=', $dari.' 00:00:00');
+        $from->where('dt.dtm_crt <=', $sampai.' 23:59:59');
         if($kode_tindakan!=''){
             $from->where('dt.kode_tindakan', $kode_tindakan);
         }
@@ -469,14 +469,14 @@ class Transaksi_model extends CI_Model
         else{
             $from = $this->datatables;    
         }
-        $this->datatables->select('db.biaya, db.no_periksa, db.id_biaya, db.jumlah, (db.jumlah*db.biaya) ttl, pe.no_pendaftaran, db.id_periksa_d_biaya,  bi.nama_biaya, pa.nama_lengkap');
-        $this->datatables->from('tbl_periksa_d_biaya db');
-        $this->datatables->join('tbl_pendaftaran pe','pe.no_pendaftaran=db.no_pendaftaran');
-        $this->datatables->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
-        $this->datatables->join('tbl_biaya bi', 'db.id_biaya=bi.id_biaya');
-        $this->datatables->where('db.dtm_crt >=', $dari.' 00:00:00');
-        $this->datatables->where('db.dtm_crt >=', $dari.' 00:00:00');
-        $this->datatables->where('db.dtm_crt <=', $sampai.' 23:59:59');
+        $from->select('db.biaya, db.no_periksa, db.id_biaya, db.jumlah, (db.jumlah*db.biaya) ttl, pe.no_pendaftaran, db.id_periksa_d_biaya,bi.id_biaya, bi.nama_biaya, pa.nama_lengkap');
+        $from->from('tbl_periksa_d_biaya db');
+        $from->join('tbl_pendaftaran pe','pe.no_pendaftaran=db.no_pendaftaran');
+        $from->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
+        $from->join('tbl_biaya bi', 'db.id_biaya=bi.id_biaya');
+        $from->where('db.dtm_crt >=', $dari.' 00:00:00');
+        $from->where('db.dtm_crt >=', $dari.' 00:00:00');
+        $from->where('db.dtm_crt <=', $sampai.' 23:59:59');
         if($id_biaya!=''){
             $from->where('db.id_biaya', $id_biaya);
         }
