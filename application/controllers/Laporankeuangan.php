@@ -13,6 +13,7 @@ class Laporankeuangan extends CI_Controller
         $this->load->model('Periksa_model');
         $this->load->model('Tbl_obat_alkes_bhp_model');
         $this->load->model('Tbl_tindakan_model');
+        $this->load->model('Tbl_biaya_model');
         $this->load->library('form_validation');        
 	    $this->load->library('datatables');
     }
@@ -94,6 +95,12 @@ class Laporankeuangan extends CI_Controller
         // }
         $data['tindakan'] = $this->Tbl_tindakan_model->get_all();
         $this->template->load('template','laporankeuangan/laporan_biaya_tindakan', $data);
+    }
+
+    public function biaya_lainnya(){
+        $data['biaya'] = $this->Tbl_biaya_model->get_all();
+        $this->template->load('template','laporankeuangan/laporan_biaya_lainnya', $data);
+        // $this->template->load('template','laporankeuangan/laporan_biaya_lainnya');
     }
 
     public function biaya_pemeriksaan(){
@@ -178,6 +185,11 @@ class Laporankeuangan extends CI_Controller
     public function json_laporan_tindakan($filter = null) {
         header('Content-Type: application/json');
         echo $this->Transaksi_model->json_laporan_tindakan($filter);
+    }
+
+    public function json_laporan_biaya($filter = null) {
+        header('Content-Type: application/json');
+        echo $this->Transaksi_model->json_laporan_biaya($filter);
     }
 
     public function json_detail_tindakan() {
@@ -534,7 +546,7 @@ class Laporankeuangan extends CI_Controller
         exit();
     }
 
-    public function excel_biaya_obat($filter = null, $dprks='Biaya Obat')
+    public function excel_biaya_obat($filter = null)
     {
         $this->load->helper('exportexcel');
         $namaFile = "laporan_keuangan-obat"."-".date('Ymd').".xls";
@@ -652,17 +664,23 @@ class Laporankeuangan extends CI_Controller
 
         $kolomhead = 0;
         xlsWriteLabel($tablehead, $kolomhead++, "No");
-    	xlsWriteLabel($tablehead, $kolomhead++, "No Pendaftaran");
+    	xlsWriteLabel($tablehead, $kolomhead++, "No Periksa");
     	xlsWriteLabel($tablehead, $kolomhead++, "Nama Pasien");
-    	xlsWriteLabel($tablehead, $kolomhead++, "Nominal Transaksi");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Nama Tindakan");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Jumlah");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Harga");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Total");
 
-	    foreach ($this->Transaksi_model->ambil_laporan_tindakan($filter) as $data) {
+	    foreach ($this->Transaksi_model->json_laporan_tindakan($filter, $export=true) as $data) {
             $kolombody = 0;
 
             //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
             xlsWriteNumber($tablebody, $kolombody++, $nourut);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->no_pendaftaran);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->no_periksa);
     	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_lengkap);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->tindakan);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->jumlah);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->biaya);
     	    xlsWriteNumber($tablebody, $kolombody++, $data->ttl);
     	    
     
