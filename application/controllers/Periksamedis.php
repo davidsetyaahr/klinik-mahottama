@@ -60,21 +60,26 @@ class Periksamedis extends CI_Controller
         }
 
         $periksaLanjutan = $this->db->get_where('tbl_periksa_lanjutan', ['no_pendaftaran' => $this->no_pendaftaran,'is_periksa' => '1'])->row();
-        if ($periksaLanjutan->tipe_periksa == '1') {
-            //poli
-            redirect(base_url() . "periksamedis/poli");
-        } else if ($periksaLanjutan->tipe_periksa == '2') {
-            //rawat inap
-            redirect(base_url() . "periksamedis/rawat_inap");
-        } else if ($periksaLanjutan->tipe_periksa == '3') {
-            //operasi
-            redirect(base_url() . "periksamedis/operasi");
-        } else if ($periksaLanjutan->tipe_periksa == '4') {
-            //lab
-            redirect(site_url('periksamedis/periksa_lab/'));
-        } else if ($periksaLanjutan->tipe_periksa == '5') {
-            //radiologi
-            redirect(site_url('periksamedis/periksa_radiologi/'));
+        if(count((array)$periksaLanjutan)==0){
+            redirect(base_url() . "periksamedis/antrian");
+        }
+        else{
+            if ($periksaLanjutan->tipe_periksa == '1') {
+                //poli
+                redirect(base_url() . "periksamedis/poli");
+            } else if ($periksaLanjutan->tipe_periksa == '2') {
+                //rawat inap
+                redirect(base_url() . "periksamedis/rawat_inap");
+            } else if ($periksaLanjutan->tipe_periksa == '3') {
+                //operasi
+                redirect(base_url() . "periksamedis/operasi");
+            } else if ($periksaLanjutan->tipe_periksa == '4') {
+                //lab
+                redirect(site_url('periksamedis/periksa_lab/'));
+            } else if ($periksaLanjutan->tipe_periksa == '5') {
+                //radiologi
+                redirect(site_url('periksamedis/periksa_radiologi/'));
+            }
         }
     }
 
