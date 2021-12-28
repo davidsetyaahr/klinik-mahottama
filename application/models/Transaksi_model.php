@@ -51,7 +51,7 @@ class Transaksi_model extends CI_Model
     }
 
     function get_detail_no_pendaftaran($no_pendaftaran){
-        $this->db->select('t.*, td.*, l.tipe_periksa, p.no_pendaftaran');
+        $this->db->select('t.*, td.*, l.tipe_periksa, p.no_pendaftaran, p.no_rekam_medis');
         $this->db->join('tbl_transaksi_d td','t.id_transaksi = td.id_transaksi');
         $this->db->join('tbl_periksa_lanjutan l','t.id_periksa_lanjutan = l.id_periksa');
         $this->db->join('tbl_pendaftaran p','l.no_pendaftaran = p.no_pendaftaran');
@@ -168,6 +168,7 @@ class Transaksi_model extends CI_Model
             $this->datatables->where('tbl_transaksi.id_klinik', $id_klinik);
 
         $this->datatables->add_column('cetak_struk',anchor(site_url('pembayaran/cetak_surat/$1?view=cetak_struk_periksa'),'Cetak Struk',array('class' => 'btn btn-info btn-sm','target'=>'_blank')),'no_pendaftaran');
+        $this->datatables->add_column('cetak_pembayaran',anchor(site_url('pembayaran/cetak_surat_pembayaran/$1'),'Cetak Laporan Periksa',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran');
         $this->datatables->add_column('action',anchor(site_url('pembayaran/cetak_surat/$1'),'Cetak Kwitansi',array('class' => 'btn btn-warning btn-sm','target'=>'_blank')),'no_pendaftaran');
 
         // if($tipe==1 || $tipe==4){
