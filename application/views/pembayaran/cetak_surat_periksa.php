@@ -196,7 +196,8 @@
         </table>
 <div style="width:40%;margin-left:auto; margin-top: 80px;">
   <!-- <span>(<?= $this->session->userdata('full_name'); ?>)</span> -->
-  <span style="margin-left:100px">(<?= $atas_nama ?>)</span>
+  <!-- <span style="margin-left:100px">(<?= $atas_nama ?>)</span> -->
+  <span style="margin-left:80px">(............................)</span>
 </div>
 </section>
 
