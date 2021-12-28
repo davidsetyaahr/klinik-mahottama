@@ -18,9 +18,10 @@
 	  }
 	  .header, .header .left{
 		  display: flex;
+          justify-content: center;
 	  }
     .header .left{
-      width:55%;
+      /* width:55%; */
     }
 	  .header .right{
 		  width: 45%;
@@ -47,12 +48,12 @@
   <section class="sheet padding-10mm">
 
 	<div class="header">
-		<div class="left" style="margin-left:20%">
-      <div class="img">
-        <img src="<?php echo base_url()."assets/images/".getInfoRS('logo')?>" alt="logo" width="150" />
+		<div class="left">
+      <div class="img" style="margin-top: -30px;">
+        <img src="<?php echo base_url()."assets/images/".getInfoRS('logo')?>" alt="logo" width="150px" />
       </div>
       <div class="left" style="margin-left: 15px;">
-          <div class="left" style="border-right: 6px solid #22396c;height:100px;"></div>
+          <div class="left" style="border-right: 6px solid #22396c;height: 65px;"></div>
       </div>
       <div class="address" style="margin-left:15px">
           <!-- <h2 style="font-family:times-new-roman;margin-top:0;margin-bottom:0px"><?= getInfoRS('nama_rumah_sakit') ?></h2> -->
