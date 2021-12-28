@@ -181,7 +181,7 @@ class Transaksi_model extends CI_Model
         //     $this->datatables->where('tbl_pendaftaran.tipe_periksa', $tipe);
         // }
         $this->db->order_by('tbl_transaksi.no_transaksi','asc');
-        $this->db->group_by('tbl_transaksi.no_transaksi');
+        $this->datatables->group_by('tbl_transaksi.no_transaksi');
             
         return $this->datatables->generate();
     }
@@ -340,7 +340,7 @@ class Transaksi_model extends CI_Model
         return $this->datatables->generate();
     }
 
-    function json_laporan_biaya($filters, $dprks){
+    function json_laporan_biaya3($filters, $dprks){
         $filter = explode("_", $filters);
         $dari = $filter[0];
         $sampai = $filter[1];
@@ -429,22 +429,94 @@ class Transaksi_model extends CI_Model
         }
     }
 
-    function json_laporan_tindakan($filters){
+    function json_laporan_alkes($filters,$export=false){
         $filter = explode("_", $filters);
         $dari = $filter[0];
         $sampai = $filter[1];
-        $this->datatables->select('dt.biaya, dt.no_periksa, dt.jumlah, (dt.jumlah*dt.biaya) ttl, pe.no_pendaftaran, dt.id_periksa_d_tindakan, tn.tindakan, pa.nama_lengkap, dt.no_periksa');
-        $this->datatables->from('tbl_periksa_d_tindakan dt');
-        $this->datatables->join('tbl_pendaftaran pe','pe.no_pendaftaran=dt.no_pendaftaran');
-        $this->datatables->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
-        $this->datatables->join('tbl_tindakan tn', 'tn.kode_tindakan=dt.kode_tindakan');
-        // $this->datatables->where('l.tipe_periksa', $tiprks);
-        $this->datatables->where('dt.dtm_crt >=', $dari.' 00:00:00');
-        $this->datatables->where('dt.dtm_crt <=', $sampai.' 23:59:59');
-        // $this->datatables->add_column('action', anchor('#','<i class="fa fa-eye" aria-hidden="true"></i>',"class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal' onClick='javasciprt: cekDetail(\"$1\")'"),'no_pendaftaran');
-        // $this->datatables->like('td.deskripsi', 'Pembayaran Biaya Pemeriksaan');
-        // $this->db->group_by('dt.no_pendaftaran');
-        return $this->datatables->generate();
+        $kode_obat = $filter[2];
+        if($export){
+            $from = $this->db;
+        }
+        else{
+            $from = $this->datatables;    
+        }
+        $from->select('da.id_periksa_d_alkes, da.harga_satuan, ob.kode_barang, ob.nama_barang, da.no_periksa, da.jumlah, (da.harga_satuan*da.jumlah) ttl, pe.no_pendaftaran, da.kode_barang, pa.nama_lengkap');
+        $from->from('tbl_periksa_d_alkes da');
+        $from->join('tbl_pendaftaran pe','pe.no_pendaftaran=da.no_pendaftaran');
+        $from->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
+        $from->join('tbl_obat_alkes_bhp ob','da.kode_barang=ob.kode_barang');
+        $from->where('da.dtm_crt >=', $dari.' 00:00:00');
+        $from->where('da.dtm_crt >=', $dari.' 00:00:00');
+        $from->where('da.dtm_crt <=', $sampai.' 23:59:59');
+        if($kode_obat!=''){
+            $from->where('da.kode_barang', $kode_obat);
+        }
+        if($export){
+            return $this->db->get()->result();
+        }
+        else{
+            return $this->datatables->generate();
+        }
+    }
+
+    function json_laporan_tindakan($filters,$export=false){
+        $filter = explode("_", $filters);
+        $dari = $filter[0];
+        $sampai = $filter[1];
+        $kode_tindakan = $filter[2];
+        if($export){
+            $from = $this->db;
+        }
+        else{
+            $from = $this->datatables;    
+        }
+        $from->select('dt.biaya, dt.no_periksa, dt.kode_tindakan, dt.jumlah, (dt.jumlah*dt.biaya) ttl, pe.no_pendaftaran, dt.id_periksa_d_tindakan, tn.kode_tindakan, tn.tindakan, pa.nama_lengkap, dt.no_periksa');
+        $from->from('tbl_periksa_d_tindakan dt');
+        $from->join('tbl_pendaftaran pe','pe.no_pendaftaran=dt.no_pendaftaran');
+        $from->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
+        $from->join('tbl_tindakan tn', 'tn.kode_tindakan=dt.kode_tindakan');
+        $from->where('dt.dtm_crt >=', $dari.' 00:00:00');
+        $from->where('dt.dtm_crt >=', $dari.' 00:00:00');
+        $from->where('dt.dtm_crt <=', $sampai.' 23:59:59');
+        if($kode_tindakan!=''){
+            $from->where('dt.kode_tindakan', $kode_tindakan);
+        }
+        if($export){
+            return $this->db->get()->result();
+        }
+        else{
+            return $this->datatables->generate();
+        }
+    }
+
+    function json_laporan_biaya($filters, $export=false){
+        $filter = explode("_", $filters);
+        $dari = $filter[0];
+        $sampai = $filter[1];
+        $id_biaya = $filter[2];
+        if($export){
+            $from = $this->db;
+        }
+        else{
+            $from = $this->datatables;    
+        }
+        $from->select('db.biaya, db.no_periksa, db.id_biaya, db.jumlah, (db.jumlah*db.biaya) ttl, pe.no_pendaftaran, db.id_periksa_d_biaya,bi.id_biaya, bi.nama_biaya, pa.nama_lengkap');
+        $from->from('tbl_periksa_d_biaya db');
+        $from->join('tbl_pendaftaran pe','pe.no_pendaftaran=db.no_pendaftaran');
+        $from->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
+        $from->join('tbl_biaya bi', 'db.id_biaya=bi.id_biaya');
+        $from->where('db.dtm_crt >=', $dari.' 00:00:00');
+        $from->where('db.dtm_crt >=', $dari.' 00:00:00');
+        $from->where('db.dtm_crt <=', $sampai.' 23:59:59');
+        if($id_biaya!=''){
+            $from->where('db.id_biaya', $id_biaya);
+        }
+        if($export){
+            return $this->db->get()->result();
+        }
+        else{
+            return $this->datatables->generate();
+        }
     }
 
     function json_laporan_keuangan1($filters, $prks){

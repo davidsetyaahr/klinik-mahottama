@@ -9,6 +9,12 @@ class Tbl_biaya_model extends CI_Model
     public $id = 'id_biaya';
     public $order = 'DESC';
 
+
+    function get_all()
+    {
+        return $this->db->get('tbl_biaya')->result();
+    }
+
     public function getBiaya($tipe='db')
     {
         $db = $tipe=='json' ? $this->datatables : $this->db;

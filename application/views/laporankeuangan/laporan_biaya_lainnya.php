@@ -5,7 +5,7 @@
                 <div class="box box-warning box-solid">
 
                     <div class="box-header">
-                        <h3 class="box-title">LAPORAN BIAYA TINDAKAN</h3>
+                        <h3 class="box-title">LAPORAN BIAYA LAINNYA</h3>
                     </div>
 
                     <div class="box-body">
@@ -24,12 +24,12 @@
                             <div class="row">
                             <div class="col-md-12">
                                 <br>
-                                    <select name="kode_tindakan" id="" class="form-control select2" width="200">
-                                        <option value="">Semua Tindakan</option>
+                                    <select name="id_biaya" id="" class="form-control select2" width="200">
+                                        <option value="">Semua Biaya</option>
                                         <?php 
-                                                foreach ($tindakan as $key => $value) {
-                                                    $s = isset($_GET['kode_tindakan']) && $_GET['kode_tindakan']==$value->kode_tindakan ? 'selected' : '';
-                                                    echo "<option  value='".$value->kode_tindakan."' $s>".$value->tindakan."</option>";
+                                                foreach ($biaya as $key => $value) {
+                                                    $s = isset($_GET['id_biaya']) && $_GET['id_biaya']==$value->id_biaya ? 'selected' : '';
+                                                    echo "<option  value='".$value->id_biaya."' $s>".$value->nama_biaya."</option>";
                                                 }
                                             ?>
                                     </select>
@@ -46,7 +46,7 @@
                             if(isset($_GET['dari'])){
                         ?>
                         <hr />
-                        <?php echo anchor(site_url('laporankeuangan/excel_biaya_tindakan/'.$_GET['dari'].'_'.$_GET['sampai'].'_'.$_GET['kode_tindakan']),'<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
+                        <?php echo anchor(site_url('laporankeuangan/excel_biaya_lainnya/'.$_GET['dari'].'_'.$_GET['sampai'].'_'.$_GET['id_biaya']),'<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
                         <div style="padding-bottom: 10px;">
                         <div style="padding-bottom: 10px;">
                         </div>
@@ -143,15 +143,15 @@ if(isset($_GET['dari'])){
             },
             processing: true,
             serverSide: true,
-            ajax: {"url": "json_laporan_tindakan/<?php echo $_GET['dari'].'_'.$_GET['sampai'].'_'.$_GET['kode_tindakan'];?>", "type": "POST"},
+            ajax: {"url": "json_laporan_biaya/<?php echo $_GET['dari'].'_'.$_GET['sampai'].'_'.$_GET['id_biaya'];?>", "type": "POST"},
             columns: [
                 {
-                    "data": "id_periksa_d_tindakan",
+                    "data": "id_periksa_d_biaya",
                     "orderable": false
                 }
                 ,{"data": "no_periksa"}
                 ,{"data": "nama_lengkap"}
-                ,{"data": "tindakan"}
+                ,{"data": "nama_biaya"}
                 ,{"data": "jumlah"}
                 ,{"data": "biaya",  render: $.fn.dataTable.render.number( '.', ',', 2, 'Rp. ' )}
                 ,{"data": "ttl",  render: $.fn.dataTable.render.number( '.', ',', 2, 'Rp. ' )}

@@ -13,6 +13,7 @@ class Laporankeuangan extends CI_Controller
         $this->load->model('Periksa_model');
         $this->load->model('Tbl_obat_alkes_bhp_model');
         $this->load->model('Tbl_tindakan_model');
+        $this->load->model('Tbl_biaya_model');
         $this->load->library('form_validation');        
 	    $this->load->library('datatables');
     }
@@ -70,6 +71,12 @@ class Laporankeuangan extends CI_Controller
         // var_dump($data['obat']);
         $this->template->load('template','laporankeuangan/laporan_biaya_obat', $data);
     }
+
+    public function biaya_alkes(){
+        $data['obat'] = $this->Tbl_obat_alkes_bhp_model->get_all_alkes1();
+        $this->template->load('template','laporankeuangan/laporan_biaya_alkes', $data);
+    }
+
     public function biaya_tindakan(){
         // $this->_rules();
         // $this->data['option_tahun'] = array();
@@ -94,6 +101,11 @@ class Laporankeuangan extends CI_Controller
         // }
         $data['tindakan'] = $this->Tbl_tindakan_model->get_all();
         $this->template->load('template','laporankeuangan/laporan_biaya_tindakan', $data);
+    }
+
+    public function biaya_lainnya(){
+        $data['biaya'] = $this->Tbl_biaya_model->get_all();
+        $this->template->load('template','laporankeuangan/laporan_biaya_lainnya', $data);
     }
 
     public function biaya_pemeriksaan(){
@@ -175,9 +187,19 @@ class Laporankeuangan extends CI_Controller
         echo $this->Transaksi_model->json_laporan_obat($filter);
     }
 
+    public function json_laporan_alkes($filter = null) {
+        header('Content-Type: application/json');
+        echo $this->Transaksi_model->json_laporan_alkes($filter);
+    }
+
     public function json_laporan_tindakan($filter = null) {
         header('Content-Type: application/json');
         echo $this->Transaksi_model->json_laporan_tindakan($filter);
+    }
+
+    public function json_laporan_biaya($filter = null) {
+        header('Content-Type: application/json');
+        echo $this->Transaksi_model->json_laporan_biaya($filter);
     }
 
     public function json_detail_tindakan() {
@@ -534,7 +556,7 @@ class Laporankeuangan extends CI_Controller
         exit();
     }
 
-    public function excel_biaya_obat($filter = null, $dprks='Biaya Obat')
+    public function excel_biaya_obat($filter = null)
     {
         $this->load->helper('exportexcel');
         $namaFile = "laporan_keuangan-obat"."-".date('Ymd').".xls";
@@ -573,6 +595,106 @@ class Laporankeuangan extends CI_Controller
     	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_barang);
     	    xlsWriteNumber($tablebody, $kolombody++, $data->jumlah);
     	    xlsWriteNumber($tablebody, $kolombody++, $data->harga_satuan);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->ttl);
+    	    
+    
+    	    $tablebody++;
+            $nourut++;
+        }
+
+        xlsEOF();
+        exit();
+    }
+
+    public function excel_biaya_alkes($filter = null)
+    {
+        $this->load->helper('exportexcel');
+        $namaFile = "laporan_keuangan-bmhp"."-".date('Ymd').".xls";
+        $judul = "laporan_keuangan";
+        $tablehead = 0;
+        $tablebody = 1;
+        $nourut = 1;
+        //penulisan header
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0,pre-check=0");
+        header("Content-Type: application/force-download");
+        header("Content-Type: application/octet-stream");
+        header("Content-Type: application/download");
+        header("Content-Disposition: attachment;filename=" . $namaFile . "");
+        header("Content-Transfer-Encoding: binary ");
+
+        xlsBOF();
+
+        $kolomhead = 0;
+        xlsWriteLabel($tablehead, $kolomhead++, "No");
+    	xlsWriteLabel($tablehead, $kolomhead++, "No Periksa");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Nama Pasien");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Nama Obat");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Jumlah");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Harga");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Total");
+
+	    foreach ($this->Transaksi_model->json_laporan_alkes($filter, $export=true) as $data) {
+            $kolombody = 0;
+
+            //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
+            xlsWriteNumber($tablebody, $kolombody++, $nourut);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->no_periksa);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_lengkap);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_barang);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->jumlah);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->harga_satuan);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->ttl);
+    	    
+    
+    	    $tablebody++;
+            $nourut++;
+        }
+
+        xlsEOF();
+        exit();
+    }
+
+    public function excel_biaya_lainnya($filter = null)
+    {
+        $this->load->helper('exportexcel');
+        $namaFile = "laporan_keuangan-biaya"."-".date('Ymd').".xls";
+        $judul = "laporan_keuangan";
+        $tablehead = 0;
+        $tablebody = 1;
+        $nourut = 1;
+        //penulisan header
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0,pre-check=0");
+        header("Content-Type: application/force-download");
+        header("Content-Type: application/octet-stream");
+        header("Content-Type: application/download");
+        header("Content-Disposition: attachment;filename=" . $namaFile . "");
+        header("Content-Transfer-Encoding: binary ");
+
+        xlsBOF();
+
+        $kolomhead = 0;
+        xlsWriteLabel($tablehead, $kolomhead++, "No");
+    	xlsWriteLabel($tablehead, $kolomhead++, "No Periksa");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Nama Pasien");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Nama Biaya");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Jumlah");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Harga");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Total");
+
+	    foreach ($this->Transaksi_model->json_laporan_biaya($filter, $export=true) as $data) {
+            $kolombody = 0;
+
+            //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
+            xlsWriteNumber($tablebody, $kolombody++, $nourut);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->no_periksa);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_lengkap);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_biaya);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->jumlah);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->biaya);
     	    xlsWriteNumber($tablebody, $kolombody++, $data->ttl);
     	    
     
@@ -652,17 +774,23 @@ class Laporankeuangan extends CI_Controller
 
         $kolomhead = 0;
         xlsWriteLabel($tablehead, $kolomhead++, "No");
-    	xlsWriteLabel($tablehead, $kolomhead++, "No Pendaftaran");
+    	xlsWriteLabel($tablehead, $kolomhead++, "No Periksa");
     	xlsWriteLabel($tablehead, $kolomhead++, "Nama Pasien");
-    	xlsWriteLabel($tablehead, $kolomhead++, "Nominal Transaksi");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Nama Tindakan");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Jumlah");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Harga");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Total");
 
-	    foreach ($this->Transaksi_model->ambil_laporan_tindakan($filter) as $data) {
+	    foreach ($this->Transaksi_model->json_laporan_tindakan($filter, $export=true) as $data) {
             $kolombody = 0;
 
             //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
             xlsWriteNumber($tablebody, $kolombody++, $nourut);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->no_pendaftaran);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->no_periksa);
     	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_lengkap);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->tindakan);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->jumlah);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->biaya);
     	    xlsWriteNumber($tablebody, $kolombody++, $data->ttl);
     	    
     

@@ -5,7 +5,7 @@
                 <div class="box box-warning box-solid">
 
                     <div class="box-header">
-                        <h3 class="box-title">LAPORAN BIAYA TINDAKAN</h3>
+                        <h3 class="box-title">LAPORAN BIAYA BMHP</h3>
                     </div>
 
                     <div class="box-body">
@@ -22,14 +22,14 @@
                                 </div>
                             </div>
                             <div class="row">
-                            <div class="col-md-12">
-                                <br>
-                                    <select name="kode_tindakan" id="" class="form-control select2" width="200">
-                                        <option value="">Semua Tindakan</option>
+                            <br>
+                                <div class="col-md-12">
+                                    <select name="kode_barang" id="" class="form-control select2" width="200">
+                                        <option value="">Semua BMHP</option>
                                         <?php 
-                                                foreach ($tindakan as $key => $value) {
-                                                    $s = isset($_GET['kode_tindakan']) && $_GET['kode_tindakan']==$value->kode_tindakan ? 'selected' : '';
-                                                    echo "<option  value='".$value->kode_tindakan."' $s>".$value->tindakan."</option>";
+                                                foreach ($obat as $key => $value) {
+                                                    $s = isset($_GET['kode_barang']) && $_GET['kode_barang']==$value->kode_barang ? 'selected' : '';
+                                                    echo "<option  value='".$value->kode_barang."' $s>".$value->nama_barang."</option>";
                                                 }
                                             ?>
                                     </select>
@@ -46,7 +46,9 @@
                             if(isset($_GET['dari'])){
                         ?>
                         <hr />
-                        <?php echo anchor(site_url('laporankeuangan/excel_biaya_tindakan/'.$_GET['dari'].'_'.$_GET['sampai'].'_'.$_GET['kode_tindakan']),'<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
+                        <?php echo anchor(site_url('laporankeuangan/excel_biaya_alkes/'.$_GET['dari'].'_'.$_GET['sampai'].'_'.$_GET['kode_barang']),'<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
+                        
+                        <div style="padding-top: 10px;">
                         <div style="padding-bottom: 10px;">
                         <div style="padding-bottom: 10px;">
                         </div>
@@ -54,13 +56,14 @@
                             <thead>
                                 <tr>
                                     <th width="30px">No</th>
+                                    <!-- <th>No Pendaftaran</th> -->
+                                    <!-- <th>Tanggal Transaksi</th> -->
                                     <th>No Periksa</th>
                                     <th>Nama Pasien</th>
-                                    <th>Nama Tindakan</th>
+                                    <th>Nama BMHP</th>
                                     <th>Jumlah</th>
                                     <th>Harga</th>
                                     <th>Total</th>
-                                    <!-- <th width="30px">Aksi</th> -->
                                 </tr>
                             </thead>
                         </table>
@@ -91,8 +94,10 @@
                 <tr>
                     <th width="30px">No</th>
                     <th>No Periksa</th>
-                    <th>Tindakan</th>
+                    <th>Nama Barang</th>
+                    <th>Jumlah</th>
                     <th>Harga</th>
+                    <th>Total</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -105,6 +110,7 @@
   </div>
 </div>
 <!-- MODAL -->
+
 <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
 
 <?php 
@@ -143,23 +149,17 @@ if(isset($_GET['dari'])){
             },
             processing: true,
             serverSide: true,
-            ajax: {"url": "json_laporan_tindakan/<?php echo $_GET['dari'].'_'.$_GET['sampai'].'_'.$_GET['kode_tindakan'];?>", "type": "POST"},
+            ajax: {"url": "json_laporan_alkes/<?php echo $_GET['dari'].'_'.$_GET['sampai'].'_'.$_GET['kode_barang'];?>", "type": "POST"},
             columns: [
                 {
-                    "data": "id_periksa_d_tindakan",
+                    "data": "id_periksa_d_alkes",
                     "orderable": false
-                }
-                ,{"data": "no_periksa"}
-                ,{"data": "nama_lengkap"}
-                ,{"data": "tindakan"}
-                ,{"data": "jumlah"}
-                ,{"data": "biaya",  render: $.fn.dataTable.render.number( '.', ',', 2, 'Rp. ' )}
-                ,{"data": "ttl",  render: $.fn.dataTable.render.number( '.', ',', 2, 'Rp. ' )}
-                // {
-                //     "data" : "action",
-                //     "orderable": false,
-                //     "className" : "text-center"
-                // }
+                },
+                {"data": "no_periksa"},{"data": "nama_lengkap"}
+                ,{"data": "nama_barang"},
+                {"data": "jumlah"},
+                {"data": "harga_satuan", render : $.fn.dataTable.render.number( '.', ',', 2, 'Rp. ' )},
+                {"data": "ttl",  render: $.fn.dataTable.render.number( '.', ',', 2, 'Rp. ' )},
             ],
             order: [[1, 'asc']],
             rowCallback: function(row, data, iDisplayIndex) {
@@ -174,21 +174,23 @@ if(isset($_GET['dari'])){
         
     });
 
-    function cekDetail(no_pendaftaran){
+    function cekDetail(no_periksa){
         $('#myModal').show();
         $('#detailTindakan td').remove();
         $.ajax({
             type: "GET",
-            url: "<?= base_url('laporankeuangan/json_detail_tindakan?no_pendaftaran=')?>"+no_pendaftaran, //json get site
+            url: "<?= base_url('laporankeuangan/json_detail_obat?no_periksa=')?>"+no_periksa, //json get site
             dataType : 'json',
             success: function(response){
                 arrData = response;
-                $('#title').html('Nomor Pendaftaran : '+no_pendaftaran)
+                $('#title').html('Nomor Pendaftaran : '+no_periksa)
                 for(i = 0; i < arrData.length; i++){
                     var table= '<tr><td><div class="text-center">'+arrData[i].no_pendaftaran+'</div></td>'+
                         '<td><div class="text-center">'+arrData[i].no_periksa+'</div></td>'+
-                        '<td><div class="text-center">'+arrData[i].tindakan+'</div></td>'+
-                        '<td><div class="text-left">Rp. '+formatRupiah(arrData[i].biaya)+'</div></td></tr>';
+                        '<td><div class="text-center">'+arrData[i].nama_barang+'</div></td>'+
+                        '<td><div class="text-center">'+arrData[i].jumlah+'</div></td>'+
+                        '<td><div class="text-center">Rp. '+formatRupiah(arrData[i].harga_satuan)+'</div></td>'+
+                        '<td><div class="text-left">Rp. '+formatRupiah(arrData[i].total)+'</div></td></tr>';
                     $('#detailTindakan tbody').append(table);
                 }
             }
