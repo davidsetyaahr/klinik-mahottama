@@ -19,8 +19,15 @@ class Biaya extends CI_Controller
         $this->template->load('template','master_data/biaya/biaya_list');
     }
     public function json() {
+        $biaya = $this->Tbl_biaya_model->getBiaya();
+        $output = array(
+            "draw" => 0,
+            "recordsTotal" => count((array)$biaya),
+            "recordsFiltered" => count((array)$biaya),
+            "data" => $biaya,
+        );
         header('Content-Type: application/json');
-        echo $this->Tbl_biaya_model->getBiaya('json');
+        echo json_encode($output);
     }
     public function _rules() 
     {
@@ -43,9 +50,9 @@ class Biaya extends CI_Controller
             'id_biaya_presentase' => set_value('id_biaya_presentase'),
             'biaya' => set_value('biaya'),
             'item' => $this->Tbl_kategori_biaya_model->get_all(),
-            'biayaFix' => $this->Tbl_biaya_model->getBiayaFix()
+            'biayaFix' => $this->Tbl_biaya_model->getBiaya()
         );
-        $this->template->load('template','master_data/biaya/tbl_biaya_form', $data);
+       $this->template->load('template','master_data/biaya/tbl_biaya_form', $data);
     }
 
     public function create_action() 
@@ -75,20 +82,20 @@ class Biaya extends CI_Controller
 
     public function edit($id)
     {
-        $row = $this->Tbl_biaya_model->get_by_id($id);
+        $row = $this->Tbl_biaya_model->getBiaya($not=null,['id_biaya' => $id]);
         if ($row) {
             $data = array(
                 'button' => 'Update',
                 'action' => site_url('biaya/update'),
-                'id_biaya' => set_value('id_biaya',$row->id_biaya),
-                'id_kategori_biaya' => set_value('id_kategori_biaya',$row->id_kategori_biaya),
-                'tipe_biaya' => set_value('tipe_biaya',$row->tipe_biaya),
-                'presentase' => set_value('presentase',$row->presentase),
-                'id_biaya_presentase' => set_value('id_biaya_presentase',$row->id_biaya_presentase),
-                'nama_biaya' => set_value('nama_biaya',$row->nama_biaya),
-                'biaya' => set_value('biaya',$row->biaya),
+                'id_biaya' => set_value('id_biaya',$row[0]->id_biaya),
+                'id_kategori_biaya' => set_value('id_kategori_biaya',$row[0]->id_kategori_biaya),
+                'tipe_biaya' => set_value('tipe_biaya',$row[0]->tipe_biaya),
+                'presentase' => set_value('presentase',$row[0]->presentase),
+                'id_biaya_presentase' => set_value('id_biaya_presentase',$row[0]->id_biaya_presentase),
+                'nama_biaya' => set_value('nama_biaya',$row[0]->nama_biaya),
+                'biaya' => set_value('biaya',$row[0]->biaya),
                 'item' => $this->Tbl_kategori_biaya_model->get_all(),
-                'biayaFix' => $this->Tbl_biaya_model->getBiayaFix($not=$id)
+                'biayaFix' => $this->Tbl_biaya_model->getBiaya($not=$id)
             );
             $this->template->load('template','master_data/biaya/tbl_biaya_form', $data);
         } else {
