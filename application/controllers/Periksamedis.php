@@ -1443,7 +1443,6 @@ class Periksamedis extends CI_Controller
         $this->data['tindakan'] = $this->db->get('tbl_tindakan')->result();
         $this->data['jenis'] = $this->db->get('tbl_jenis_operasi')->result();
         $this->data['operasi'] = $this->Tbl_jenis_operasi_model->getBiayaOperasi();
-        var_dump($this->data['operasi']);
         $this->data['obat'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 1);
         $this->data['biaya'] = $this->Tbl_biaya_model->getBiaya();
         $this->data['alkes'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 2);

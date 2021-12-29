@@ -27,18 +27,19 @@
                                         <textarea name="alamat" class="form-control" rows="6" readonly><?= isset($alamat) ? $alamat : '' ?></textarea>
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="form-group row opr">
                                     <div class="col-md-2">Pilih Jenis Operasi</div>
                                     <div class="col-md-10">
-                                        <select name="periksa_operasi[]" class="form-control select2 periksaLab" style="width:100%">
+                                        <select name="periksa_operasi[]" class="form-control select2 periksaLab getOpr selectOpr" style="width:100%">
                                             <option value="">---Pilih Jenis Operasi---</option>
                                             <?php 
                                                 foreach ($operasi as $key => $value) {
-                                                    echo "<option data-biaya='".$value->biaya."' value='".$value->id."'>".$value->nama_jenis_operasi."</option>";
+                                                    echo "<option data-biaya-opr='".$value->biaya."' value='".$value->id."'>".$value->nama_jenis_operasi."</option>";
                                                 }
                                                 ?>
                                         </select>
                                     </div>
+                                    <div class="col-md-2"><input type="hidden" class="form-control biayaopr"></div>
                                 </div>
                                 <div class="form-group" id="row-tindakan" data-row='0'>
                                     <?php
