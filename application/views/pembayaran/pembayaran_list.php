@@ -150,7 +150,7 @@
                 {
                     "render" : function(data,type,row){
                         var cetak = row.is_surat_ket_sakit=='1' ? row.cetak : ''
-                        return row.cetak_struk+"&nbsp;"+row.action+"&nbsp;"+cetak
+                        return row.cetak_struk+"&nbsp;"+row.action+"&nbsp;"+cetak+"&nbsp;"+row.cetak_pembayaran
                     },
                     "orderable": false,
                     "className" : "text-center"
