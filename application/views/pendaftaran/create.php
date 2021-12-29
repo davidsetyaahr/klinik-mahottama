@@ -146,6 +146,12 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <div class="col-sm-4">Status Pasien <?php echo form_error('is_pasien'); ?></div>
+                            <div class="col-sm-8">
+                                <?php echo form_dropdown('is_pasien', array('1'=>'Pasien Baru','0'=>'Pasien Lama'),$is_pasien,array('id'=>'is_pasien','class'=>'form-control'));?>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <div class="col-sm-12">
                                 <div align="right">
                                     <a href="<?php echo site_url('pendaftaran') ?>" class="btn btn-info"><i class="fa fa-sign-out"></i> Kembali</a>

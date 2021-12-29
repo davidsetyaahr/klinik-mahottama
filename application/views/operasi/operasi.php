@@ -33,8 +33,8 @@
                                         <select name="periksa_operasi[]" class="form-control select2 periksaLab" style="width:100%">
                                             <option value="">---Pilih Jenis Operasi---</option>
                                             <?php 
-                                                foreach ($jenis as $key => $value) {
-                                                    echo "<option value='".$value->id_jenis_operasi."'>".$value->nama_jenis_operasi."</option>";
+                                                foreach ($operasi as $key => $value) {
+                                                    echo "<option data-biaya='".$value->biaya."' value='".$value->id."'>".$value->nama_jenis_operasi."</option>";
                                                 }
                                                 ?>
                                         </select>

@@ -58,6 +58,7 @@ class Pendaftaran extends CI_Controller
 				'id_dokter' => $this->input->post('nama_dokter'),
 				'id_klinik' => $this->id_klinik,
 				'id_poli' => $this->input->post('id_poli'),
+                'is_pasien'     =>  $this->input->post('is_pasien'),
 	        );
 
 			$row = $this->Tbl_pasien_model->get_by_id($this->input->post('no_rekam_medis'));
@@ -95,7 +96,7 @@ class Pendaftaran extends CI_Controller
         } else {	
             $pasien_existing = null;
             if($this->session->flashdata('no_rekam_medis') != null)
-                $pasien_existing = $this->Tbl_pasien_model->get_by_id($this->session->flashdata('no_rekam_medis'));
+                $pasien_existing = $this->Tbl_pasien_model->get_pendaftaran($this->session->flashdata('no_rekam_medis'));
 			
 			$this->data['message'] = $this->session->flashdata('message');
 			
@@ -111,7 +112,6 @@ class Pendaftaran extends CI_Controller
                 $this->data['no_id_pasien'] = '000001';
             }
 			$this->data['no_rekam_medis_default'] = $this->Master_sequence_model->set_code_by_master_seq_code("NOREKAMMEDIS");
-			
 			$this->data['no_rekam_medis'] = $pasien_existing != null ? $pasien_existing->no_rekam_medis : ($dataPasien != null ? set_value('no_rekam_medis') : $this->data['no_rekam_medis_default']);
 			$this->data['no_id'] = $pasien_existing != null ? $pasien_existing->no_id_pasien : $this->data['no_id_pasien'];
 			$this->data['nama_lengkap'] = $pasien_existing != null ? $pasien_existing->nama_lengkap : set_value('nama_lengkap');
@@ -126,6 +126,7 @@ class Pendaftaran extends CI_Controller
 			$this->data['rw'] = $pasien_existing != null ? $pasien_existing->rw : set_value('rw');
 			$this->data['nama_orangtua_atau_istri'] = $pasien_existing != null ? $pasien_existing->nama_orang_tua_atau_istri : set_value('nama_orangtua_atau_istri');
 			$this->data['nomor_telepon'] = $pasien_existing != null ? $pasien_existing->nomer_telepon : set_value('nomor_telepon');
+            $this->data['is_pasien'] = $pasien_existing != null ? '0' : set_value('is_pasien');
 			$this->data['nama_dokter'] = set_value('nama_dokter');	
             $this->data['poli'] = $this->db->get('tbl_poli')->result();
 			

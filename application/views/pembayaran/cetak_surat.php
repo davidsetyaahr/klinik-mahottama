@@ -126,6 +126,22 @@
       <td width="45%">
         <h3 style="margin-bottom:5px"><u>FOR PAYMENT</u></h3>
           <table width="100%">
+            <td><div style="margin-bottom: 5px"><strong><br>Administrasi</strong></div></td>          
+            <tr>
+              <?php if($isPasien==1){
+                echo "<td>Pasien Baru</td>";
+                $admin = 45000;
+                echo "<td>:</td>";
+                echo "<td>"."Rp.".number_format($admin,2,',','.')."</td>";
+              }
+                else{
+                  echo "<td>Pasien Lama</td>";
+                  $admin = 25000;
+                  echo "<td>:</td>";
+                  echo "<td>"."Rp.".number_format($admin,2,',','.')."</td>";
+                }
+              ?> 
+            </tr>
             <?php
             $total_transaksi = 0;
             $i = 1;
@@ -171,7 +187,7 @@
             <tr>
                 <td width="85%"><b>Amount</b></td>
                 <td width="10%"><b>Rp</b></td>
-                <td width="35%"><b><?php echo number_format($total_transaksi-$subsidi,2,',','.');?></b></td>
+                <td width="35%"><b><?php echo number_format($total_transaksi+$admin-$subsidi,2,',','.');?></b></td>
             </tr>
           </table>
       </td>

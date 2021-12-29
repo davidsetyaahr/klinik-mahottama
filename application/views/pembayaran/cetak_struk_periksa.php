@@ -88,6 +88,29 @@
         <th align="left">Item</th>
         <th align="right">Jumlah</th>
 	</tr>
+  <tr>
+      <td align="left"><div style="margin-bottom: 5px"><strong><br>Administrasi</strong></div></td>
+  </tr>
+    <tr>
+      <td align="left" style="border-bottom:1px solid black; border-bottom:1px solid black">
+      <?php if($isPasien==1)
+          echo "Pasien Baru";
+          else
+          echo "Pasien Lama";
+           ?>
+      </td>
+      <td align="right" style="border-bottom:1px solid black; border-bottom:1px solid black">
+          <?php if($isPasien==1){
+          // echo "Pasien Baru";
+          $admin = 45000;
+          echo "Rp.".number_format($admin,2,',','.');
+          }else{
+          // echo "Pasien Lama";
+          $admin = 25000;
+          echo "Rp.".number_format($admin,2,',','.');
+          } ?>
+        </td>
+    </tr>
     <?php
             $total_transaksi = 0;
             $i = 1;
@@ -128,7 +151,7 @@
     </tr>
 	<tr style="border-bottom:1px solid black; border-bottom:1px solid black">
 		<th align="left">Total</th>
-		<th align="right">Rp. <?=number_format($total_transaksi-$subsidi, 0, '.', '.')?></th>
+		<th align="right">Rp. <?=number_format($total_transaksi+$admin-$subsidi, 0, '.', '.')?></th>
 	</tr>
 </table>
 <br>

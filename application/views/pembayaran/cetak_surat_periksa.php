@@ -142,6 +142,27 @@
         <th align="left"><i>Layanan</i></th>
         <th align="right"><i>Yang Dibayarkan (IDR)</i></th>
 	</tr>
+  <tr>
+  <td align="left"><div style="margin-bottom: 5px"><strong><br><i>Administrasi</i></strong></div></td>
+  </tr>
+  <tr><td align="left" style="border-bottom:1px solid black; border-bottom:1px solid black">
+      <?php if($isPasien==1)
+          echo "Pasien Baru";
+          else
+          echo "Pasien Lama";
+           ?>
+      </td>
+      <td align="right" style="border-bottom:1px solid black; border-bottom:1px solid black">
+          <?php if($isPasien==1){
+          // echo "Pasien Baru";
+          $admin = 45000;
+          echo "Rp.".number_format($admin,2,',','.');
+          }else{
+          // echo "Pasien Lama";
+          $admin = 25000;
+          echo "Rp.".number_format($admin,2,',','.');
+          } ?>
+        </td></tr>
     <?php
             $total_transaksi = 0;
             $i = 1;

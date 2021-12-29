@@ -55,6 +55,27 @@
                             <div class="col-sm-3"><label>Deskripsi Transaksi</label></div>
 							<div class="col-sm-3"><label>Nominal Transaksi</label></div>
 						</div>
+                        <div class="form-group">
+							<div class="col-sm-3"><strong>Administrasi</strong></div>
+						</div>
+                        <div class="form-group">
+                            <div class="col-sm-3"><?php 
+                                if($isPasien==1)
+                                    echo "Pasien Baru";
+                                else
+                                    echo "Pasien Lama"
+                                ?>
+                            </div>
+                            <div class="col-sm-3">
+                                <?php if($isPasien==1){
+                                    $admin = 45000;
+                                    echo number_format($admin,2,',','.');
+                                }else{
+                                    $admin = 25000;
+                                    echo number_format($admin,2,',','.');
+                                } ?>
+                            </div>
+                        </div>
                     <?php
                     $tipe = "";
                     $caption = ['','<div style="margin-bottom: 15px"><strong>Poli</strong></div>','<div style="margin-bottom: 15px"><strong>Rawat Inap</strong></div>','<div style="margin-bottom: 15px"><strong>Operasi</strong></div>','<div style="margin-bottom: 15px"><strong>Laboratorium</strong></div>','<div style="margin-bottom: 15px"><strong>Radiologi</strong></div>'];
@@ -86,7 +107,7 @@
                         <div class="form-group">
 							<div class="col-sm-3">Total Transaksi</div>
     						<div class="col-sm-3">
-    							<?php echo form_input(array('id'=>'total_transaksi','name'=>'total_transaksi','type'=>'text','value'=>number_format($total_transaksi,0,',','.'),'class'=>'form-control','readonly'=>'readonly','style'=>'text-align:right;','placeholder'=>'0'));?>
+    							<?php echo form_input(array('id'=>'total_transaksi','name'=>'total_transaksi','type'=>'text','value'=>number_format($total_transaksi+$admin,0,',','.'),'class'=>'form-control','readonly'=>'readonly','style'=>'text-align:right;','placeholder'=>'0'));?>
     						</div>
 						</div> 
 						<div class="form-group">
@@ -98,7 +119,7 @@
 						<div class="form-group">
 							<div class="col-sm-3">Total yang Harus Dibayar</div>
     						<div class="col-sm-3">
-    							<?php echo form_input(array('id'=>'total_pembayaran','name'=>'total_pembayaran','type'=>'text','value'=>number_format($total_transaksi,0,',','.'),'class'=>'form-control','readonly'=>'readonly','style'=>'text-align:right;','placeholder'=>'0'));?>
+    							<?php echo form_input(array('id'=>'total_pembayaran','name'=>'total_pembayaran','type'=>'text','value'=>number_format($total_transaksi+$admin,0,',','.'),'class'=>'form-control','readonly'=>'readonly','style'=>'text-align:right;','placeholder'=>'0'));?>
     						</div>
 						</div>
 						<!--<div class="form-group">-->
