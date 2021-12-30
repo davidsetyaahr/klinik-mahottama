@@ -56,7 +56,15 @@ class Tbl_jenis_operasi_model extends CI_Model
         $this->db->from('tbl_biaya_jenis_operasi');
         $this->db->join('tbl_jenis_operasi', 'tbl_jenis_operasi.id_jenis_operasi = tbl_biaya_jenis_operasi.id_jenis_operasi');
         $this->db->join('tbl_biaya', 'tbl_biaya.id_biaya = tbl_biaya_jenis_operasi.id_biaya');
-        // $this->db->group_by('tbl_biaya_jenis_operasi.id_jenis_operasi');
+        return $this->db->get()->result();
+    }
+
+    function getIdOperasi($j_id)
+    {
+        $this->db->select('tbl_biaya_jenis_operasi.*, tbl_biaya.biaya, tbl_biaya.nama_biaya');
+        $this->db->from('tbl_biaya_jenis_operasi');
+        $this->db->join('tbl_biaya', 'tbl_biaya.id_biaya = tbl_biaya_jenis_operasi.id_biaya');
+        $this->db->where('tbl_biaya_jenis_operasi.id_jenis_operasi', $j_id);
         return $this->db->get()->result();
     }
 

@@ -30,6 +30,46 @@
             getBiaya($(this))
         })
 
+        function subTotalBiayaOpr() {
+            var qty_biaya = parseInt($(".loop-biaya .qty_biaya").val())
+            var biaya = parseInt($(".loop-biaya .biaya").val())
+            var subtotal = isNaN(qty_biaya * biaya) ? 0 : qty_biaya * biaya
+            $(".loop-biaya .total_biaya").val(subtotal)
+        }
+
+        $("#jenis_operasi").change(function(){
+        var id_jenis = $(this).val()
+        $.ajax({
+            type : 'GET',
+            url : '<?php echo base_url().'periksamedis/jenisOpr' ?>',
+            data : {id_jenis : id_jenis},
+            success : function(data){
+                data = JSON.parse(data)
+                $.each(data, function(k, v) {
+                    $("#row-biaya").append(`
+                        <div class="loop-biaya row" data-no="">
+                        <br>
+                            <div class="col-md-5">
+                                <select name="id_biaya[]" class="form-control select2 getBiaya tipe-biaya" style="width:100%" readonly>
+                                <option value="${v.id_biaya}">${v.nama_biaya}</option>
+                                </select>
+                            </div>
+                            <div class='col-md-2'">
+                                <input id="qty" name="qty_biaya[]" value="1" type="number" class="form-control qty_biaya" placeholder="Kuantitas">
+                            </div>
+                            <div class="col-md-2">
+                                <input id="biaya" name="biaya[]" value="${v.biaya}" type="text" class="form-control biaya" placeholder="Harga Biaya" style="text-align:left;" value="" readonly> 
+                            </div>
+                            <div class="col-md-3">  
+                                <input id="total_biaya" name="subtotal_biaya[]" value="" type="text" class="form-control total_biaya" placeholder="Sub Total" style="text-align:left;" value="" readonly> 
+                            </div>
+                    `)
+                });
+                subTotalBiayaOpr()
+            }
+        })
+    })
+
         $(".tipe-biaya").change(function() {
             var dataNo = $(this).closest('.loop-biaya').attr('data-no')
             subTotalBiaya(dataNo)

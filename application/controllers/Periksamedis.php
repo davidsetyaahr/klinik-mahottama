@@ -920,6 +920,12 @@ class Periksamedis extends CI_Controller
         $this->data['no'] = $_GET['no'];
         $this->load->view('periksa-lab/loop-pilihan-lab', $this->data);
     }
+
+    public function jenisOpr(){
+        $this->data['operasi'] = $this->Tbl_jenis_operasi_model->getIdOperasi($_GET['id_jenis']);
+        echo json_encode($this->data['operasi']);
+    }
+
     public function save_periksa_lab()
     {
         $data_pendaftaran = $this->Pendaftaran_model->get_by_id($this->no_pendaftaran);
