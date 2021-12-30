@@ -9,26 +9,11 @@
             var subtotal = isNaN(qty_biaya * biaya) ? 0 : qty_biaya * biaya
             $(".loop-biaya[data-no='" + dataNo + "'] .total_biaya").val(subtotal)
         }
-        function getOpr(thisParam){
-            var biaya = thisParam.find(":selected").attr('data-biaya-opr')
-            console.log(biaya)
-            $(".opr .biayaopr").val(biaya)
-        }
-
-        $(".selectOpr").keyup(function() {
-            var dataNo = $(this).closest('.opr').attr('data-biaya-opr')
-            totalBiaya()
-        })
-
-        $(".getOpr").change(function() {
-            getOpr($(this))
-        })
         function totalBiaya() {
             var totalBiaya = 0
-            var biayaOpr = parseInt($(".opr .biayaopr").val())
             $(".total_biaya").each(function(i, v) {
                 var subTotal = parseInt(v.value)
-                totalBiaya += subTotal + biayaOpr
+                totalBiaya += subTotal
             })
             $("#totalBiaya").val(totalBiaya)
             grandTotal()

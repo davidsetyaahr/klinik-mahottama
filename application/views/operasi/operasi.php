@@ -34,7 +34,7 @@
                                             <option value="">---Pilih Jenis Operasi---</option>
                                             <?php 
                                                 foreach ($operasi as $key => $value) {
-                                                    echo "<option data-biaya-opr='".$value->biaya."' value='".$value->id."'>".$value->nama_jenis_operasi."</option>";
+                                                    echo "<option data-biaya='".$value->biaya."' data-nama-biaya='".$value->nama_biaya."' data-id-biaya='".$value->id_biaya."' data-id-jenis-opr='".$value->id_jenis_operasi."' value='".$value->id."'>".$value->nama_jenis_operasi."</option>";
                                                 }
                                                 ?>
                                         </select>
@@ -52,15 +52,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="row-biaya" data-row='0'>
-                                    <?php
-                                    $this->load->view('rawat-inap/loop-pilihan-biaya', ['no' => 0])
-                                    ?>
+                                    
                                 </div>
-                                <div class="form-group row">
+                                <!-- <div class="form-group row">
                                     <div class="col-md-4">
                                         <a href="" class="btn btn-info btn-sm" id="addItemBiaya"><span class="fa fa-plus"></span> Tambah Item</a>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="form-group" id="row-obat" data-row='0'>
                                     <?php
                                     $this->load->view('loop/loop-pilihan-obat', ['no' => 0])
@@ -147,6 +145,58 @@
         <?php 
             $this->load->view('template/periksaJS');
         ?>
+
+function getOpr(thisParam){
+            var biaya = thisParam.find(":selected").attr('data-biaya')
+            var nama = thisParam.find(":selected").attr('data-nama-biaya')
+            var idBiaya = thisParam.find(":selected").attr('data-id-biaya')
+            var idJenisOpr = thisParam.find(":selected").attr('data-id-jenis-opr')
+            // var subBiaya = parseInt($(".opr .biaya").val())
+            // var qty_biaya = parseInt($(".opr .qty_biaya").val())
+
+            // console.log(biaya)
+            // console.log(nama)
+            // console.log(idBiaya)
+            // console.log(qty_biaya)
+
+            $(".opr .biayaopr").val(biaya)
+            $("#row-biaya").append(`
+                <div class="row opr">
+                    <div class='col-md-5'>
+                            <input id="biaya" name="id_biaya[]" class="form-control" style="width:100%" placeholder="" value="${nama}" readonly>
+                    </div>
+                        <div class='col-md-2'>
+                            <input id="qty" name="qty_biaya[]" value="1" type="number" class="form-control qty_biaya" placeholder="Kuantitas">
+                        </div>
+                        <div class='col-md-2'>
+                            <input id="biaya" name="biaya[]" value="${biaya}" type="number" class="form-control biaya" placeholder="Harga" readonly>
+                        </div>
+                        <div class='col-md-3'>
+                            <input id="total_biaya" name="subtotal_biaya[]" value="" type="number" class="form-control total_biaya" placeholder="Sub Total" readonly>
+                        </div>
+                </div>
+                <br>
+            `)
+        }
+
+        $(".getOpr").change(function() {
+            getOpr($(this))
+            subTotalBiayaOpr()
+            totalBiaya()
+        })
+
+        $(".qty_biaya").keyup(function() {
+            var qty = $(this).closest('.opr').attr('')
+            subTotalBiayaOpr(qty)
+            // totalBiaya()
+        })
+
+        function subTotalBiayaOpr() {
+            var qty_biaya = parseInt($(".opr .qty_biaya").val())
+            var biaya = parseInt($(".opr .biaya").val())
+            var subtotal = isNaN(qty_biaya * biaya) ? 0 : qty_biaya * biaya
+            $(".opr .total_biaya").val(subtotal)
+        }
 
         function grandTotal() {
             var totalObat = parseInt($("#totalObat").val())
