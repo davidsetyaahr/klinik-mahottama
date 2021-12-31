@@ -31,6 +31,7 @@ class Alat_operasi extends CI_Controller
     public function create() 
     {
         $data = array(
+            'judul' => 'INPUT DATA ALAT OPERASI',
             'button' => 'Create',
             'action' => site_url('Alat_operasi/create_action'),
             'id' => set_value('id'),
@@ -64,6 +65,7 @@ class Alat_operasi extends CI_Controller
 
         if ($row) {
             $data = array(
+                'judul' => 'EDIT DATA ALAT OPERASI',
                 'button' => 'Update',
                 'action' => site_url('Alat_operasi/update'),
                 'id' => set_value('id',$row->id),

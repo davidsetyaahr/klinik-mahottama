@@ -39,6 +39,7 @@
                                 <tr>
                                     <th width="30px">No</th>
                             		<th>Nama Ruangan Operasi</th>
+                            		<th>Status Ruangan Operasi</th>
                             		<th width="100px">Action</th>
                                 </tr>
                             </thead>
@@ -89,7 +90,7 @@
                 {
                     "data": "id",
                     "orderable": false
-                },{"data": "nama"},
+                },{"data": "nama"},{"data": "status"},
                 {
                     "data" : "action",
                     "orderable": false,

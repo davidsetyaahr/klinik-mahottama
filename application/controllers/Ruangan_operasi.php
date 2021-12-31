@@ -47,6 +47,7 @@ class Ruangan_operasi extends CI_Controller
         } else {
             $data = array(
                 'nama' => $this->input->post('nama',TRUE),
+                'status' => '0',
             );
             $this->Tbl_ruangan_operasi_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
