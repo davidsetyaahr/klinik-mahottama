@@ -51,9 +51,9 @@
                                         <a href="" class="btn btn-info btn-sm" id="addItemTindakan"><span class="fa fa-plus"></span> Tambah Item</a>
                                     </div>
                                 </div>
-                                <div class="form-group" id="row-biaya" data-row='0'>
+                                <div class="form-group" id="row-biaya" data-row='1'>
                                     <?php
-                                        $this->load->view('rawat-inap/loop-pilihan-biaya', ['no' => 0])
+                                        $this->load->view('rawat-inap/loop-pilihan-biaya', ['no' => 1])
                                     ?>
                                 </div>
                                 <div class="form-group row">

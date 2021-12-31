@@ -13,17 +13,22 @@
             var totalBiaya = 0
             $(".total_biaya").each(function(i, v) {
                 var subTotal = parseInt(v.value)
-                totalBiaya += subTotal
+                if(!isNaN(subTotal)){
+                    totalBiaya += subTotal
+                }
             })
             $("#totalBiaya").val(totalBiaya)
             grandTotal()
         }
 
         $(".qty_biaya").keyup(function() {
-            var dataNo = $(this).closest('.loop-biaya').attr('data-no')
+            qtyBiaya($(this))
+        })
+        function qtyBiaya(param){
+            var dataNo = param.closest('.loop-biaya').attr('data-no')
             subTotalBiaya(dataNo)
             totalBiaya()
-        })
+        }
 
 
         $(".getBiaya").change(function() {
@@ -38,20 +43,23 @@
         }
 
         $("#jenis_operasi").change(function(){
-        var id_jenis = $(this).val()
-        $.ajax({
+            var id_jenis = $(this).val()
+            var dataNo =  $("#row-biaya").attr('data-row')
+            $.ajax({
             type : 'GET',
             url : '<?php echo base_url().'periksamedis/jenisOpr' ?>',
             data : {id_jenis : id_jenis},
             success : function(data){
                 data = JSON.parse(data)
+                var no = parseInt(dataNo)
                 $.each(data, function(k, v) {
-                    $("#row-biaya").append(`
-                        <div class="loop-biaya row" data-no="">
+                    no++
+                    $("#row-biaya").prepend(`
+                        <div class="loop-biaya row" data-no="${no}">
                         <br>
                             <div class="col-md-5">
-                                <select name="id_biaya[]" class="form-control select2 getBiaya tipe-biaya" style="width:100%" readonly>
-                                <option value="${v.id_biaya}">${v.nama_biaya}</option>
+                                <select name="id_biaya[]" class="form-control getBiaya tipe-biaya" style="width:100%" readonly>
+                                    <option value="${v.id_biaya}">${v.nama_biaya}</option>
                                 </select>
                             </div>
                             <div class='col-md-2'">
@@ -61,11 +69,15 @@
                                 <input id="biaya" name="biaya[]" value="${v.biaya}" type="text" class="form-control biaya" placeholder="Harga Biaya" style="text-align:left;" value="" readonly> 
                             </div>
                             <div class="col-md-3">  
-                                <input id="total_biaya" name="subtotal_biaya[]" value="" type="text" class="form-control total_biaya" placeholder="Sub Total" style="text-align:left;" value="" readonly> 
+                                <input id="total_biaya" name="subtotal_biaya[]" value="${v.biaya}" type="text" class="form-control total_biaya" placeholder="Sub Total" style="text-align:left;" value="" readonly> 
                             </div>
                     `)
                 });
-                subTotalBiayaOpr()
+                $("#row-biaya").attr('data-row',no)
+                $(".qty_biaya").keyup(function() {
+                    qtyBiaya($(this))
+                })
+                totalBiaya()
             }
         })
     })

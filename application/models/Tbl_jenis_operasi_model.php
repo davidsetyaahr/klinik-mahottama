@@ -26,6 +26,7 @@ class Tbl_jenis_operasi_model extends CI_Model
             
         return $this->datatables->generate();
     }
+
     public function insert($data)
     {
         $this->db->insert($this->table,$data);
@@ -52,7 +53,7 @@ class Tbl_jenis_operasi_model extends CI_Model
     
     function getBiayaOperasi()
     {
-        $this->db->select('tbl_biaya_jenis_operasi.*,tbl_jenis_operasi.nama_jenis_operasi, tbl_biaya.biaya, tbl_biaya.nama_biaya');
+        $this->db->select('tbl_biaya_jenis_operasi.id,tbl_jenis_operasi.nama_jenis_operasi, tbl_biaya.biaya, tbl_biaya.nama_biaya');
         $this->db->from('tbl_biaya_jenis_operasi');
         $this->db->join('tbl_jenis_operasi', 'tbl_jenis_operasi.id_jenis_operasi = tbl_biaya_jenis_operasi.id_jenis_operasi');
         $this->db->join('tbl_biaya', 'tbl_biaya.id_biaya = tbl_biaya_jenis_operasi.id_biaya');
@@ -66,6 +67,41 @@ class Tbl_jenis_operasi_model extends CI_Model
         $this->db->join('tbl_biaya', 'tbl_biaya.id_biaya = tbl_biaya_jenis_operasi.id_biaya');
         $this->db->where('tbl_biaya_jenis_operasi.id_jenis_operasi', $j_id);
         return $this->db->get()->result();
+    }
+
+    function maxId(){
+        $this->db->select('MAX(id) lastId');
+        $this->db->from('tbl_biaya_jenis_operasi');
+        return $this->db->get()->row();
+    }
+
+    public function jsonBiayaOpr()
+    {
+        $this->datatables->select('tbl_biaya_jenis_operasi.*, tbl_biaya.biaya, tbl_biaya.nama_biaya, tbl_jenis_operasi.nama_jenis_operasi');
+        $this->datatables->from('tbl_biaya_jenis_operasi');
+        $this->datatables->join('tbl_biaya', 'tbl_biaya.id_biaya = tbl_biaya_jenis_operasi.id_biaya');
+        $this->datatables->join('tbl_jenis_operasi', 'tbl_jenis_operasi.id_jenis_operasi = tbl_biaya_jenis_operasi.id_jenis_operasi');
+        $this->datatables->add_column('action', 
+                anchor(site_url('jenis_biaya_operasi/edit/$1'),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>', array('class' => 'btn btn-success btn-sm'))." 
+                ".anchor(site_url('jenis_biaya_operasi/delete/$1'),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'), 'id'); 
+        return $this->datatables->generate();
+    }
+
+    function getByIdOpr($id)
+    {
+        $this->db->where('tbl_biaya_jenis_operasi.id_jenis_operasi', $id);
+        return $this->db->get('tbl_biaya_jenis_operasi')->row();
+    }
+
+    function deleteBiayaOpr($id)
+    {
+        $this->db->where('tbl_biaya_jenis_operasi.id_jenis_operasi', $id);
+        $this->db->delete('tbl_biaya_jenis_operasi');
+    }
+
+    public function insertBiayaOpr($data)
+    {
+        $this->db->insert('tbl_biaya_jenis_operasi',$data);
     }
 
 }

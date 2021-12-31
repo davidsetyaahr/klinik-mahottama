@@ -12,7 +12,9 @@ class Tbl_biaya_model extends CI_Model
 
     function get_all()
     {
-        return $this->db->get('tbl_biaya')->result();
+        $this->db->order_by($this->id, $this->order);
+        return $this->db->get($this->table)->result();
+        // return $this->db->get('tbl_biaya')->result();
     }
 
     public function getBiaya($not=null,$where=null)
