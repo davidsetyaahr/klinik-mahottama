@@ -1481,6 +1481,7 @@ class Periksamedis extends CI_Controller
             'no_periksa' => $this->input->post('no_periksa'),
             'id_jenis_operasi' => $value,
             'id_ruangan' => $_POST['ruangan'][$key],
+            'biaya_ok' => $this->input->post('biaya_ok'),
             );
             // $roomEmpty = $this->Tbl_ruangan_operasi_model->get_by_id($_POST['ruangan'][$key]);
             // $updateRoom = array(
@@ -1629,11 +1630,11 @@ class Periksamedis extends CI_Controller
             );  
         }
         
-        if ($_POST['totalTindakan'] != 0) {
+        if ($_POST['biaya_ok'] != 0) {
             $data_transaksi_d[] = array(
                 'id_transaksi' => $lastIdOpr->id_transaksi,
-                'deskripsi' => 'Biaya Tindakan',
-                'amount_transaksi' => $_POST['totalTindakan'],
+                'deskripsi' => 'Biaya OK',
+                'amount_transaksi' => $_POST['biaya_ok'],
                 'dc' => 'd'
             );
         }

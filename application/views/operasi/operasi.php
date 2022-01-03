@@ -95,6 +95,12 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
+                                <div class="col-md-2">Biaya OK</div>
+                                    <div class="col-md-10">
+                                        <input type="number" id="biayaOk" name="biaya_ok" class="form-control" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya</div>
                                     <div class="col-sm-10">
                                         <input type="text" name="totalBiaya" id="totalBiaya" class="form-control" value='0' readonly>
@@ -218,13 +224,19 @@
         //                         </div>
         //                 </div>
 
+
+        $("#biayaOk").keyup(function(){
+            var x = $("#biayaOk").val();
+            console.log(x);
+        });
+
         function grandTotal() {
             var totalObat = parseInt($("#totalObat").val())
             var totalAlkes = parseInt($("#totalAlkes").val())
-            // var totalTindakan = parseInt($("#totalTindakan").val())
+            var biayaOk = $("#biayaOk").val();
             var totalBiaya = parseInt($("#totalBiaya").val())
 
-            var grandTotal = totalObat + totalAlkes + totalBiaya
+            var grandTotal = totalObat + totalAlkes + totalBiaya + biayaOk
             $("#grandTotal").val(grandTotal)
         }
     })

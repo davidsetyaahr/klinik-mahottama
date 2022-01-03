@@ -3,7 +3,7 @@
 <div class="col-md-6">
 <div id="container_alat"></div>
         <select name="id_alat[]" class="form-control select2 selectAlat">
-            <option value="">---Pilih Alat---</option>
+            <option value="">---Pilih Alat Operasi---</option>
         <?php 
                 foreach ($alat as $key => $value) {
                     echo "<option data-stok='".$value->stok_tidak_terpakai."' value='".$value->id."'>".$value->nama."</option>";
