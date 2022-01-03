@@ -12,7 +12,7 @@
         </select>
     </div>
     <div class="<?= $no != 0 ? 'col-md-5' : 'col-md-6' ?>">
-        <select name="qty_alat[]" id="qty_alat" class="form-control stokAlat">
+        <select name="qty_alat[]" id="qty_alat" class="form-control select2 stokAlat">
             <?php
             for ($i = 1; $i <= $stok[0]->stok_barang; $i++) {
                 echo "<option>$i</option>";

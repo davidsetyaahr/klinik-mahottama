@@ -1482,12 +1482,12 @@ class Periksamedis extends CI_Controller
             'id_jenis_operasi' => $value,
             'id_ruangan' => $_POST['ruangan'][$key],
             );
-            $roomEmpty = $this->Tbl_ruangan_operasi_model->get_by_id($_POST['ruangan'][$key]);
-            $updateRoom = array(
-                'status' => '1',
-            );
+            // $roomEmpty = $this->Tbl_ruangan_operasi_model->get_by_id($_POST['ruangan'][$key]);
+            // $updateRoom = array(
+            //     'status' => '1',
+            // );
         $this->db->insert('tbl_periksa_operasi', $periksaOperasi);
-        $this->Tbl_ruangan_operasi_model->update($roomEmpty->id, $updateRoom);
+        // $this->Tbl_ruangan_operasi_model->update($roomEmpty->id, $updateRoom);
         }
 
         // TRANSAKSI
@@ -1560,7 +1560,13 @@ class Periksamedis extends CI_Controller
                 'id_alat' => $value,
                 'jumlah' => $_POST['qty_alat'][$key],
             );
+            // $getIdAlat = $this->Tbl_alat_operasi_model->get_by_id($value);
             $this->db->insert('tbl_periksa_operasi_d_alat',$periksa_d_alat);
+            // $stockUpdate = array(
+            //     'stok_terpakai' => $getIdAlat->stok_terpakai + $_POST['qty_alat'][$key],
+            //     'stok_tidak_terpakai' => $getIdAlat->stok_tidak_terpakai - $_POST['qty_alat'][$key],
+            // );
+            // $this->Tbl_alat_operasi_model->update($getIdAlat->id, $stockUpdate);
         }
         
         //d_periksa_biaya
