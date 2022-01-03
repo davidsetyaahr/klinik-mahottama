@@ -50,4 +50,11 @@ class Tbl_ruangan_operasi_model extends CI_Model
         $this->db->delete($this->table);
     }
 
+    function getRoomEmpty(){
+        $this->db->select('*');
+        // $this->db->from($this->table);
+        $this->db->where('status','0');
+        return $this->db->get($this->table)->result();
+    }
+
 }

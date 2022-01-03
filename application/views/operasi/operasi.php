@@ -41,14 +41,27 @@
                                     </div>
                                     <div class="col-md-2"><input type="hidden" class="form-control biayaopr"></div>
                                 </div>
-                                <div class="form-group" id="row-tindakan" data-row='0'>
+                                <div class="form-group row">
+                                    <div class="col-md-2">Pilih Ruangan Operasi</div>
+                                    <div class="col-md-10">
+                                        <select name="ruangan[]" id="ruangan" data-row="0" class="form-control select2 " style="width:100%">
+                                            <option value="">---Pilih Ruangan Operasi---</option>
+                                            <?php 
+                                                foreach ($ruangan as $key => $value) {
+                                                    echo "<option value='".$value->id."'>".$value->nama."</option>";
+                                                }
+                                                ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="row-alat" data-row='0'>
                                     <?php
-                                    $this->load->view('loop/loop-pilihan-tindakan', ['no' => 0])
+                                    $this->load->view('loop/loop-pilihan-alat-operasi', ['no' => 0])
                                     ?>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-4">
-                                        <a href="" class="btn btn-info btn-sm" id="addItemTindakan"><span class="fa fa-plus"></span> Tambah Item</a>
+                                        <a href="" class="btn btn-info btn-sm" id="addItemAlat"><span class="fa fa-plus"></span> Tambah Item</a>
                                     </div>
                                 </div>
                                 <div class="form-group" id="row-biaya" data-row='1'>
@@ -79,12 +92,6 @@
                                 <div class="form-group row">
                                     <div class="col-md-4">
                                         <a href="" class="btn btn-info btn-sm" id="addItemAlkes"><span class="fa fa-plus"></span> Tambah Item</a>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-2">Total Biaya Tindakan</div>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="totalTindakan" id="totalTindakan" class="form-control" value='0' readonly>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -214,10 +221,10 @@
         function grandTotal() {
             var totalObat = parseInt($("#totalObat").val())
             var totalAlkes = parseInt($("#totalAlkes").val())
-            var totalTindakan = parseInt($("#totalTindakan").val())
+            // var totalTindakan = parseInt($("#totalTindakan").val())
             var totalBiaya = parseInt($("#totalBiaya").val())
 
-            var grandTotal = totalObat + totalAlkes + totalTindakan + totalBiaya
+            var grandTotal = totalObat + totalAlkes + totalBiaya
             $("#grandTotal").val(grandTotal)
         }
     })
