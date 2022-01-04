@@ -49,15 +49,18 @@ class Kasir extends CI_Controller
                 'status_transaksi' => 0,
                 'atas_nama' => $this->input->post('atas_nama')
             );
+            $this->Transaksi_model->insert_trx($data_transkasi);
             
+            $lastIdJual = $this->db->select_max('id_transaksi')->from('tbl_transaksi')->get()->row();
             $data_transaksi_d = array(
                 array(
-                    'no_transaksi' => $this->input->post('no_transaksi'),
+                    'id_transaksi' => $lastIdJual->id_transaksi,
                     'deskripsi' => 'Total Obat-obatan',
                     'amount_transaksi' => $this->input->post('total_harga'),
                     'dc' => 'd'
                 ),
             );
+            $this->Transaksi_model->insert_d_trx($data_transaksi_d);
             
             $post_obat = $this->input->post('obat');
             $post_obat_jml = $this->input->post('jml_obat');
@@ -139,7 +142,7 @@ class Kasir extends CI_Controller
             }
             
             //Insert into tbl_transaksi
-            $this->Transaksi_model->insert($data_transkasi,$data_transaksi_d);
+            // $this->Transaksi_model->insert($data_transkasi,$data_transaksi_d);
             $this->Transaksi_model->insert_transaksi_d_obat($data_transaksi_d_obat);
              
             redirect('kasir/jual_obat');
@@ -182,7 +185,7 @@ class Kasir extends CI_Controller
             //pendapatan masuk
             $data=array(
                         'id_trx_akun'   => $id_last->id_trx_akun,
-                        'id_akun'       => $id_akun,
+                        'id_akun'       => 112,
                         'jumlah'        => $total,
                         'tipe'          => 'KREDIT',
                         'keterangan'    => 'akun',

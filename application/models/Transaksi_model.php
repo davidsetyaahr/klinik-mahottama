@@ -50,6 +50,14 @@ class Transaksi_model extends CI_Model
         return $this->db->get('tbl_transaksi_d td')->result();
     }
 
+    function get_detail_by_n_id($h_id)
+    {
+        $this->db->select('td.*, t.no_transaksi');
+        $this->db->join('tbl_transaksi t','td.id_transaksi = t.id_transaksi');
+        $this->db->where('t.no_transaksi', $h_id);
+        return $this->db->get('tbl_transaksi_d td')->result();
+    }
+
     function get_detail_no_pendaftaran($no_pendaftaran){
         $this->db->select('t.*, td.*, l.tipe_periksa, p.no_pendaftaran, p.no_rekam_medis');
         $this->db->join('tbl_transaksi_d td','t.id_transaksi = td.id_transaksi');
@@ -91,6 +99,19 @@ class Transaksi_model extends CI_Model
     {
         $this->db->insert($this->table, $data);
         $insert_id = $this->db->insert_id();
+        for($i = 0; $i < count($data_d); $i++){
+            // $data_d[$i]['id_transaksi'] = $insert_id;
+            $this->db->insert('tbl_transaksi_d',$data_d[$i]);
+        }
+    }
+
+    function insert_trx($data = null)
+    {
+        $this->db->insert($this->table, $data);
+    }
+
+    function insert_d_trx($data_d = null)
+    {
         for($i = 0; $i < count($data_d); $i++){
             // $data_d[$i]['id_transaksi'] = $insert_id;
             $this->db->insert('tbl_transaksi_d',$data_d[$i]);
