@@ -45,6 +45,7 @@
         $("#jenis_operasi").change(function(){
             var id_jenis = $(this).val()
             var dataNo =  $("#row-biaya").attr('data-row')
+            $(".loop-biaya").remove()
             $.ajax({
             type : 'GET',
             url : '<?php echo base_url().'periksamedis/jenisOpr' ?>',
