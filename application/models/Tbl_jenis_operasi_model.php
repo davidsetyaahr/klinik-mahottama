@@ -53,11 +53,27 @@ class Tbl_jenis_operasi_model extends CI_Model
     
     function getBiayaOperasi()
     {
-        $this->db->select('tbl_biaya_jenis_operasi.id,tbl_jenis_operasi.nama_jenis_operasi, tbl_biaya.biaya, tbl_biaya.nama_biaya');
+        $this->db->select('tbl_biaya_jenis_operasi.id,tbl_jenis_operasi.nama_jenis_operasi, tbl_biaya.biaya, tbl_biaya.nama_biaya,tbl_biaya.tipe_biaya,tbl_biaya.presentase');
         $this->db->from('tbl_biaya_jenis_operasi');
         $this->db->join('tbl_jenis_operasi', 'tbl_jenis_operasi.id_jenis_operasi = tbl_biaya_jenis_operasi.id_jenis_operasi');
         $this->db->join('tbl_biaya', 'tbl_biaya.id_biaya = tbl_biaya_jenis_operasi.id_biaya');
-        return $this->db->get()->result();
+        $sql = $this->db->get()->result();
+        foreach ($sql as $key => $value) {
+            if($value->tipe_biaya=='2' && $value->biaya==0){ //cek row 1
+                $get = $this->db->get_where('tbl_biaya',['id_biaya' => $value->id_biaya_presentase])->row();
+                if($get->tipe_biaya=='2'){
+                    $this->db->select('biaya');
+                    $get2 = $this->db->get_where('tbl_biaya',['id_biaya' => $get->id_biaya_presentase])->row();
+                    $biaya = $get->presentase / 100 * $get2->biaya;
+                    $value->biaya = $value->presentase / 100 * $biaya;
+                }
+                else{
+                    $value->biaya = $get->biaya;
+                }
+            }
+        }
+        return $sql;
+
     }
 
     function getIdOperasi($j_id)
