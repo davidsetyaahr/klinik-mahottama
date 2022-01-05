@@ -127,6 +127,8 @@ class Periksamedis extends CI_Controller
                 'note_dokter' => $this->input->post('note_dokter'),
                 'note_apoteker' => $this->input->post('note_apoteker'),
                 'obat_detail' => rtrim($obat_detail_value, ", "),
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time())
             );
 
             $getIdPeriksaLanjutan = $this->Periksa_model->getIdPeriksaLanjutan($this->no_pendaftaran,'1');

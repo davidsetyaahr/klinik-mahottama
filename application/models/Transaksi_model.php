@@ -202,7 +202,7 @@ class Transaksi_model extends CI_Model
         //     $this->datatables->where('tbl_pendaftaran.tipe_periksa', $tipe);
         // }
         $this->db->order_by('tbl_transaksi.no_transaksi','asc');
-        $this->datatables->group_by('tbl_transaksi.no_transaksi');
+        $this->db->group_by('tbl_pendaftaran.no_pendaftaran');
             
         return $this->datatables->generate();
     }

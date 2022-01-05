@@ -59,6 +59,8 @@ class Pendaftaran extends CI_Controller
 				'id_klinik' => $this->id_klinik,
 				'id_poli' => $this->input->post('id_poli'),
                 'is_pasien'     =>  $this->input->post('is_pasien'),
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time())
 	        );
 
 			$row = $this->Tbl_pasien_model->get_by_id($this->input->post('no_rekam_medis'));
