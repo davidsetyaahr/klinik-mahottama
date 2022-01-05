@@ -168,7 +168,7 @@ class Transaksi_model extends CI_Model
         //     // $this->datatables->where('tbl_pendaftaran.tipe_periksa', $tipe);
         // }
         $this->datatables->where($where);
-        $this->db->order_by('tbl_transaksi.no_transaksi','asc');
+        $this->db->order_by('tbl_pendaftaran.no_pendaftaran','desc');
         $this->db->group_by('tbl_pendaftaran.no_pendaftaran');
 
         $this->datatables->add_column('action',anchor(site_url('pembayaran/bayar/$1?tab=pemeriksaan'),'Bayar','class="btn btn-danger btn-sm"'),'no_pendaftaran');
@@ -201,7 +201,7 @@ class Transaksi_model extends CI_Model
         //     $this->datatables->add_column('cetak', anchor(site_url('pembayaran/cetak-sklab?id=$1'),'Cetak SK LAB','class="btn btn-danger btn-sm"'),'no_periksa');
         //     $this->datatables->where('tbl_pendaftaran.tipe_periksa', $tipe);
         // }
-        $this->db->order_by('tbl_transaksi.no_transaksi','asc');
+        $this->db->order_by('tbl_pendaftaran.no_pendaftaran','asc');
         $this->db->group_by('tbl_pendaftaran.no_pendaftaran');
             
         return $this->datatables->generate();
