@@ -54,6 +54,7 @@
                     var no = parseInt(dataNo)
                     $(".biaya-auto").remove()
                     $.each(data, function(k, v) {
+                        console.log(v)
                         no++
                     $("#row-biaya").prepend(`
                         <div class="loop-biaya row biaya-auto" data-no="${no}">
