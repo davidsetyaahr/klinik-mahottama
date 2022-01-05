@@ -45,18 +45,18 @@
         $("#jenis_operasi").change(function(){
             var id_jenis = $(this).val()
             var dataNo =  $("#row-biaya").attr('data-row')
-            $(".loop-biaya").remove()
             $.ajax({
-            type : 'GET',
-            url : '<?php echo base_url().'periksamedis/jenisOpr' ?>',
-            data : {id_jenis : id_jenis},
-            success : function(data){
-                data = JSON.parse(data)
-                var no = parseInt(dataNo)
-                $.each(data, function(k, v) {
-                    no++
+                type : 'GET',
+                url : '<?php echo base_url().'periksamedis/jenisOpr' ?>',
+                data : {id_jenis : id_jenis},
+                success : function(data){
+                    data = JSON.parse(data)
+                    var no = parseInt(dataNo)
+                    $.each(data, function(k, v) {
+                        no++
+                        $(".biaya-auto").remove()
                     $("#row-biaya").prepend(`
-                        <div class="loop-biaya row" data-no="${no}">
+                        <div class="loop-biaya row biaya-auto" data-no="${no}">
                         <br>
                             <div class="col-md-5">
                                 <select name="id_biaya[]" class="form-control getBiaya tipe-biaya" style="width:100%" readonly>
