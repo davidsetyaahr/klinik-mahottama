@@ -53,10 +53,20 @@ class Tbl_jenis_operasi_model extends CI_Model
     
     function getBiayaOperasi()
     {
-        $this->db->select('tbl_biaya_jenis_operasi.id,tbl_jenis_operasi.nama_jenis_operasi, tbl_biaya.biaya, tbl_biaya.nama_biaya,tbl_biaya.tipe_biaya,tbl_biaya.presentase');
+        $this->db->select('tbl_biaya_jenis_operasi.id,tbl_jenis_operasi.nama_jenis_operasi, tbl_biaya.biaya, tbl_biaya.nama_biaya');
         $this->db->from('tbl_biaya_jenis_operasi');
         $this->db->join('tbl_jenis_operasi', 'tbl_jenis_operasi.id_jenis_operasi = tbl_biaya_jenis_operasi.id_jenis_operasi');
         $this->db->join('tbl_biaya', 'tbl_biaya.id_biaya = tbl_biaya_jenis_operasi.id_biaya');
+        return $this->db->get()->result();
+    }
+
+    function getIdOperasi($j_id)
+    {
+        $this->db->select("b.nama_biaya, b.tipe_biaya, b.id_biaya_presentase, b.presentase, case when b.tipe_biaya = '1' then b.biaya else b.presentase / 100 * (select biaya from tbl_biaya where id_biaya = b.id_biaya_presentase) end as biaya");
+        $this->db->from('tbl_biaya_jenis_operasi bj');
+        $this->db->join('tbl_jenis_operasi jo', 'jo.id_jenis_operasi = bj.id_jenis_operasi');
+        $this->db->join('tbl_biaya b', 'b.id_biaya = bj.id_biaya');
+        $this->db->where('bj.id_jenis_operasi', $j_id);
         $sql = $this->db->get()->result();
         foreach ($sql as $key => $value) {
             if($value->tipe_biaya=='2' && $value->biaya==0){ //cek row 1
@@ -73,16 +83,6 @@ class Tbl_jenis_operasi_model extends CI_Model
             }
         }
         return $sql;
-
-    }
-
-    function getIdOperasi($j_id)
-    {
-        $this->db->select('tbl_biaya_jenis_operasi.*, tbl_biaya.biaya, tbl_biaya.nama_biaya');
-        $this->db->from('tbl_biaya_jenis_operasi');
-        $this->db->join('tbl_biaya', 'tbl_biaya.id_biaya = tbl_biaya_jenis_operasi.id_biaya');
-        $this->db->where('tbl_biaya_jenis_operasi.id_jenis_operasi', $j_id);
-        return $this->db->get()->result();
     }
 
     function maxId(){
