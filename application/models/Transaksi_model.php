@@ -169,7 +169,7 @@ class Transaksi_model extends CI_Model
         // }
         $this->datatables->where($where);
         $this->db->order_by('tbl_transaksi.no_transaksi','asc');
-        $this->db->group_by('tbl_transaksi.no_transaksi');
+        $this->db->group_by('tbl_pendaftaran.no_pendaftaran');
 
         $this->datatables->add_column('action',anchor(site_url('pembayaran/bayar/$1?tab=pemeriksaan'),'Bayar','class="btn btn-danger btn-sm"'),'no_pendaftaran');
             
