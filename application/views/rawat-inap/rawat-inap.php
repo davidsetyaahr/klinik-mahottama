@@ -152,7 +152,7 @@
                                 <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya Tindakan</div>
                                     <div class="col-sm-10">
-                                        <input type="text" id="totalTindakan" name="totalTindakan" class="form-control" value='' readonly>
+                                        <input type="text" id="totalTindakan" name="totalTindakan" class="form-control" value='0' readonly>
                                     </div>
                                 </div>
                                 <div class="form-group row">

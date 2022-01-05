@@ -8,7 +8,7 @@
             <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data">
                 <table class='table table-bordered'>   
                 <input type="hidden" name="id" value="<?= $id  ?>">    
-                        <tr><td width='200'>Jenis Operasi <?php echo form_error('id_jenis_operasi') ?></td><td><select name="id_jenis_operasi" id="id_jenis_operasi" class="form-control select2">
+                        <tr><td width='200'>Jenis Operasi <?php echo form_error('id_jenis_operasi') ?></td><td><select name="id_jenis_operasi[]" id="id_jenis_operasi" class="form-control select2">
                                 <option value="0">Pilih Jenis Operasi</option>
                                 <?php 
                                     foreach ($jenis as $key => $value) {
@@ -18,8 +18,8 @@
                                 ?>
                             </select></td></tr>
 
-                            <tr><td width='200'>Biaya Operasi <?php echo form_error('id_biaya') ?></td><td><select name="id_biaya" id="id_biaya" class="form-control select2">
-                            <option value="0">Pilih Jenis Biaya</option>
+                            <tr><td width='200'>Biaya Operasi <?php echo form_error('id_biaya') ?></td><td><select name="id_biaya[]" id="id_biaya" multiple="multiple" class="form-control select2">
+                            <!-- <option value="0">Pilih Jenis Biaya</option> -->
                                 <?php 
                                     foreach ($biaya as $key => $value) {
                                         $k = $value->id_biaya == $id_biaya ? 'selected' : '';

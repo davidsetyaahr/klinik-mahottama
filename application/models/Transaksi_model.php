@@ -388,8 +388,8 @@ class Transaksi_model extends CI_Model
         $this->db->join('tbl_periksa_lanjutan l','t.id_periksa_lanjutan=l.id_periksa');
         $this->db->join('tbl_pendaftaran pe','pe.no_pendaftaran=l.no_pendaftaran');
         $this->db->join('tbl_pasien pa','pa.no_rekam_medis=pe.no_rekam_medis');
-        $this->db->where('td.dtm_crt >=', $dari.' 00:00:00');
-        $this->db->where('td.dtm_crt <=', $sampai.' 23:59:59');
+        // $this->db->where('td.dtm_crt >=', $dari.' 00:00:00');
+        // $this->db->where('td.dtm_crt <=', $sampai.' 23:59:59');
         $this->db->like('td.deskripsi', $dprks);
         $this->db->add_column('action', anchor('#show','<i class="fa fa-eye" aria-hidden="true"></i>', array('class' => 'btn btn-info btn-sm', 'data-toggle' => 'modal')));
         // $this->datatables->like('td.deskripsi', 'Pembayaran Biaya Pemeriksaan');
