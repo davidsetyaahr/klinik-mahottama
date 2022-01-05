@@ -18,7 +18,7 @@ class Tbl_ruangan_operasi_model extends CI_Model
 
     public function json()
     {
-        $this->datatables->select('id,nama, (case when status = "1" then "Terisi" else "Kosong" end) as status');
+        $this->datatables->select('id,nama, (case when status = "1" then "Sedang Digunakan" else "Kosong" end) as status');
         $this->datatables->from('tbl_ruangan_operasi');
         $this->datatables->add_column('action', 
                 anchor(site_url('ruangan_operasi/edit/$1'),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>', array('class' => 'btn btn-success btn-sm'))." 
@@ -48,6 +48,13 @@ class Tbl_ruangan_operasi_model extends CI_Model
     {
         $this->db->where($this->id, $id);
         $this->db->delete($this->table);
+    }
+
+    function getRoomEmpty(){
+        $this->db->select('*');
+        // $this->db->from($this->table);
+        $this->db->where('status','0');
+        return $this->db->get($this->table)->result();
     }
 
 }

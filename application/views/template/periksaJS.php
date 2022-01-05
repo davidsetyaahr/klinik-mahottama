@@ -281,6 +281,8 @@
         $("#addItemAlkes").click(function(e){
             e.preventDefault();
             var dataRow = parseInt($('#row-alkes').attr('data-row'))
+            var dataNo = parseInt($('#row-alat').attr('data-no'))
+            console.log(dataRow,dataNo)
             $.ajax({
                 type : 'get',
                 url : '<?= base_url().'periksamedis/newItemLoopAlkes' ?>',
@@ -312,6 +314,7 @@
         })
         function removeAlkes(params){
             var dataNo = params.attr('data-no')
+            console.log(dataNo)
             var dataRow = parseInt($('#row-alkes').attr('data-row'))
             $('.loop-alkes[data-no="'+dataNo+'"]').remove()
             $('#row-alkes').attr('data-row',dataRow-1)
@@ -410,3 +413,58 @@
             })
         })
 
+
+        function selectAlat(thisAttr){
+            var stok = thisAttr.find(':selected').data('stok')
+            console.log(stok)
+            var dataId = thisAttr.closest('.loop-alat').attr('data-no')
+            $(".loop-alat[data-no='"+dataId+"'] .stokAlat option").remove();
+            var option = "";
+            if(stok==0){
+                option = "<option value=''>Habis</option>";
+            }
+            else{
+                for (let s = 1; s <= stok; s++) { option+="<option>" +s+"</option>";
+                    }
+                }
+                $(".loop-alat[data-no='"+dataId+"'] .stokAlat").append(option);
+        }
+        $(".selectAlat").change(function(){
+            selectAlat($(this))
+        })
+
+        $("#addItemAlat").click(function(e){
+            e.preventDefault();
+            var dataRow = parseInt($('#row-alat').attr('data-row'))
+            var dataNo = parseInt($('#row-alat').attr('data-no'))
+            console.log(dataRow,dataNo)
+            $.ajax({
+                type : 'get',
+                url : '<?= base_url().'periksamedis/newItemLoopAlat' ?>',
+                data : {no : dataRow+1},
+                success : function(data){
+                    $('#row-alat').append(data)
+                    $('#row-alat').attr('data-row',dataRow + 1)
+                    $(".selectAlat").change(function(){
+                        selectAlat($(this))
+                    })
+                    $(".remove-alat").click(function(e){
+                        e.preventDefault();
+                        removeAlat($(this))
+                    })
+                    $(".select2").select2()
+                }
+            })
+        })
+
+        $(".remove-alat").click(function (e) {
+            e.preventDefault();
+            removeAlat($(this))
+        })
+        function removeAlat(params) {
+            var dataNo = params.attr('data-no'); 
+            console.log(dataNo);
+            var dataRow = parseInt($('#row-alat').attr('data-row')) 
+            $('.loop-alat[data-no="' + dataNo + '" ]').remove() 
+            $('#row-alat').attr('data-row', dataRow - 1)
+        }

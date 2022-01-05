@@ -82,6 +82,7 @@ class Ruangan_operasi extends CI_Controller
         } else {
             $data = array(
                 'nama' => $this->input->post('nama', TRUE),
+                // 'status' => '0',
             );
             $this->Tbl_ruangan_operasi_model->update($this->input->post('id', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');

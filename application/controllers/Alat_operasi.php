@@ -50,7 +50,7 @@ class Alat_operasi extends CI_Controller
         } else {
             $data = array(
                 'nama' => $this->input->post('nama',TRUE),
-                'stok_terpakai' => $this->input->post('stok_terpakai',TRUE),
+                // 'stok_terpakai' => $this->input->post('stok_terpakai',TRUE),
                 'stok_tidak_terpakai' => $this->input->post('stok_tidak_terpakai',TRUE),
             );
             $this->Tbl_alat_operasi_model->insert($data);
@@ -70,7 +70,7 @@ class Alat_operasi extends CI_Controller
                 'action' => site_url('Alat_operasi/update'),
                 'id' => set_value('id',$row->id),
                 'nama' => set_value('nama',$row->nama),
-                'stok_terpakai' => set_value('stok_terpakai',$row->stok_terpakai),
+                // 'stok_terpakai' => set_value('stok_terpakai',$row->stok_terpakai),
                 'stok_tidak_terpakai' => set_value('stok_tidak_terpakai',$row->stok_tidak_terpakai),
             );
             $this->template->load('template','master_data/operasi/tbl_alat_operasi_form', $data);
@@ -89,7 +89,7 @@ class Alat_operasi extends CI_Controller
         } else {
             $data = array(
                 'nama' => $this->input->post('nama', TRUE),
-                'stok_terpakai' => $this->input->post('stok_terpakai',TRUE),
+                // 'stok_terpakai' => $this->input->post('stok_terpakai',TRUE),
                 'stok_tidak_terpakai' => $this->input->post('stok_tidak_terpakai',TRUE),
             );
             $this->Tbl_alat_operasi_model->update($this->input->post('id', TRUE), $data);

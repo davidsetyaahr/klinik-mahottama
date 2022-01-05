@@ -45,26 +45,37 @@ class Jenis_biaya_operasi extends CI_Controller
 
     public function create_action() 
     {
-        $this->_rules();
-        if ($this->form_validation->run() == FALSE) {
-            $this->create();
-        } else {
-            $data = array(
-                'id_jenis_operasi' => $this->input->post('id_jenis_operasi',TRUE),
-                'id_biaya' => $this->input->post('id_biaya',TRUE),
-            );
-            // foreach ($_POST['id_jenis_operasi'] as $key => $value) {
-            //     $data = array(
-            //         'id_jenis_operasi' => $_POST['id_jenis_operasi'][$key],
-            //         'id_biaya' => $_POST['id_biaya'][$key],
-            //     );
+        // $this->_rules();
+        // if ($this->form_validation->run() == FALSE) {
+        //     $this->create();
+        // } else {
+        //     $data = array(
+        //         'id_jenis_operasi' => $this->input->post('id_jenis_operasi',TRUE),
+        //         'id_biaya' => $this->input->post('id_biaya',TRUE),
+        //     );
+        //     foreach ($_POST['id_jenis_operasi'] as $key => $value) {
+        //         $data = array(
+        //             'id_jenis_operasi' => $_POST['id_jenis_operasi'][$key],
+        //             'id_biaya' => $_POST['id_biaya'][$key],
+        //         );
 
-            //     $this->Tbl_biaya_jenis_operasi_model->insert($data);
-            // }
-            $this->Tbl_biaya_jenis_operasi_model->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success');
-            redirect(site_url('Jenis_biaya_operasi'));
+        //         $this->Tbl_biaya_jenis_operasi_model->insert($data);
+        //     }
+            
+        //     $this->Tbl_biaya_jenis_operasi_model->insert($data);
+        //     $this->session->set_flashdata('message', 'Create Record Success');
+        //     redirect(site_url('Jenis_biaya_operasi'));
+        // }
+        // var_dump($_POST);
+        foreach ($_POST['id_biaya'] as $value) {
+            $data = array(
+                'id_jenis_operasi' => $_POST['id_jenis_operasi'][0],
+                'id_biaya' => $value,
+            );
+            $this->db->insert('tbl_biaya_jenis_operasi', $data);
         }
+        $this->session->set_flashdata('message', 'Create Record Success');
+        redirect(site_url('Jenis_biaya_operasi'));
     }
 
     public function edit($id)

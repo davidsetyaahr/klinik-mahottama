@@ -462,14 +462,25 @@ class Pembayaran extends CI_Controller
             $data_trans = array(
                 // 'atas_nama' => $this->input->post('atas_nama'),
                 'status_transaksi' => 1,
-                'dtm_upd' => date("Y-m-d H:i:s",  time())
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
+                // 'kode_transaksi' => 'PAYOBAT',
+                // 'id_klinik' => '1',
+                // 'no_transaksi' => $data_transaksi->no_transaksi,
+                // 'tgl_transaksi' => date('Y-m-d'),
+                // 'status_transaksi' => '1',
+                // 'atas_nama' => $data_transaksi->atas_nama,
+                // 'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                // 'dtm_upd' => date("Y-m-d H:i:s",  time())
             );
             
+            // $this->db->insert('tbl_transaksi',$data_trans); 
+            $this->db->select_max('id_transaksi');
+            $getLastId = $this->db->get('tbl_transaksi')->row();
             $data_trans_d = array();
             if($this->input->post('subsidi_transaksi') != ''){
                 $data_trans_d[] = array(
                     // 'id_transaksi' => $id_transaksi,
-                    'no_transaksi' => $data_transaksi->no_transaksi,
+                    'id_transaksi' => $getLastId->id_transaksi,
                     'deskripsi' => 'Subsidi dari Kasir' ,
                     'amount_transaksi' => $this->input->post('subsidi_transaksi') != '' ? $this->input->post('subsidi_transaksi') : 0,
                     'dc' => 'c'
@@ -478,9 +489,9 @@ class Pembayaran extends CI_Controller
             $lastId = $this->db->select_max('id_transaksi')->from('tbl_transaksi')->get()->row();
             $data_trans_d[] = array(
                 // 'id_transaksi' => $id_transaksi,
-                // 'id_transaksi' => $lastId->id_transaksi,
-                'no_transaksi' => $data_transaksi->no_transaksi,
-                'deskripsi' => 'Pembayaran Biaya Medis',
+                'id_transaksi' => $lastId->id_transaksi,
+                // 'id_transaksi' => $getLastId->id_transaksi,
+                'deskripsi' => 'Pembayaran Transaksi Obat',
                 'amount_transaksi' => $this->input->post('total_pembayaran'),
                 'dc' => 'c'
             );
@@ -515,7 +526,7 @@ class Pembayaran extends CI_Controller
             $this->data['total_transaksi'] = 0;
             $this->data['getDiskon']=$this->db->where('bulan', date('Y-m'))->get('tbl_diskon_trx')->row();
             
-            $this->data['transaksi_d'] = $this->Transaksi_model->get_detail_by_h_id($data_transaksi->no_transaksi);//Ini array
+            $this->data['transaksi_d'] = $this->Transaksi_model->get_detail_by_n_id($data_transaksi->no_transaksi);//Ini array
             
             $this->data['transaksi_d_obat'] = $this->Transaksi_model->get_detail_obat_by_h_id($data_transaksi->no_transaksi); //Ini array
             

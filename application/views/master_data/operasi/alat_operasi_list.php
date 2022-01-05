@@ -39,8 +39,8 @@
                                 <tr>
                                     <th width="30px">No</th>
                             		<th>Nama Alat Operasi</th>
-                            		<th>Stok Terpakai</th>
-                            		<th>Stok Tidak Terpakai</th>
+                            		<!-- <th>Stok Terpakai</th> -->
+                            		<th>Kuantitas</th>
                             		<th width="100px">Action</th>
                                 </tr>
                             </thead>
@@ -91,7 +91,9 @@
                 {
                     "data": "id",
                     "orderable": false
-                },{"data": "nama"},{"data": "stok_terpakai"},{"data": "stok_tidak_terpakai"},
+                },{"data": "nama"},
+                // {"data": "stok_terpakai"},
+                {"data": "stok_tidak_terpakai"},
                 {
                     "data" : "action",
                     "orderable": false,

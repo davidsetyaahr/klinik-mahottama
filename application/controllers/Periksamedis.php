@@ -29,6 +29,8 @@ class Periksamedis extends CI_Controller
         $this->load->model('Tbl_dokter_model');
         $this->load->model('Tbl_kamar_model');
         $this->load->model('Tbl_jenis_operasi_model');
+        $this->load->model('Tbl_ruangan_operasi_model');
+        $this->load->model('Tbl_alat_operasi_model');
         $this->load->model('Master_reference_model');
         $this->load->library('form_validation');
         $this->load->library('datatables');
@@ -503,6 +505,13 @@ class Periksamedis extends CI_Controller
         $this->data['biaya'] = $this->Tbl_biaya_model->getBiaya();
         $this->data['no'] = $_GET['no'];
         $this->load->view('rekam_medis/loop-pilihan-biaya', $this->data);
+    }
+
+    public function newItemLoopAlat()
+    {
+        $this->data['alat'] = $this->Tbl_alat_operasi_model->get_all();
+        $this->data['no'] = $_GET['no'];
+        $this->load->view('loop/loop-pilihan-alat-operasi', $this->data);
     }
 
     public function addICD()
@@ -1452,6 +1461,8 @@ class Periksamedis extends CI_Controller
         $this->data['last'] = $this->Tbl_jenis_operasi_model->maxId();
         $this->data['obat'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 1);
         $this->data['biaya'] = $this->Tbl_biaya_model->getBiaya();
+        $this->data['alat'] = $this->Tbl_alat_operasi_model->get_all();
+        $this->data['ruangan'] = $this->Tbl_ruangan_operasi_model->getRoomEmpty();
         $this->data['alkes'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 2);
         $this->template->load('template', 'operasi/operasi', $this->data);
     }
@@ -1469,18 +1480,16 @@ class Periksamedis extends CI_Controller
             'no_pendaftaran' => $this->no_pendaftaran,
             'no_periksa' => $this->input->post('no_periksa'),
             'id_jenis_operasi' => $value,
+            'id_ruangan' => $_POST['ruangan'][$key],
+            'biaya_ok' => $this->input->post('biaya_ok'),
             );
+            // $roomEmpty = $this->Tbl_ruangan_operasi_model->get_by_id($_POST['ruangan'][$key]);
+            // $updateRoom = array(
+            //     'status' => '1',
+            // );
         $this->db->insert('tbl_periksa_operasi', $periksaOperasi);
+        // $this->Tbl_ruangan_operasi_model->update($roomEmpty->id, $updateRoom);
         }
-
-        // TRANSAKSI
-        $data_transaksi = array(
-            'kode_transaksi' => 'PRKSOPR',
-            'id_klinik' => $this->id_klinik,
-            'no_transaksi' => $this->input->post('no_periksa'),
-            'tgl_transaksi' => date('Y-m-d', time()),
-            'status_transaksi' => 0,
-        );
         
         $getIdPeriksaLanjutan = $this->Periksa_model->getIdPeriksaLanjutan($this->no_pendaftaran,'3'); 
         // insert inventory barang
@@ -1505,7 +1514,7 @@ class Periksamedis extends CI_Controller
         
             $periksa_d_obat = array(
                 'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $data_transaksi['no_transaksi'],
+                'no_periksa' => $this->input->post('no_periksa'),
                 'kode_barang' => $value,
                 'jumlah' => $_POST['jml_obat'][$key],
                 'harga_satuan' => $_POST['harga_obat'][$key],
@@ -1526,7 +1535,7 @@ class Periksamedis extends CI_Controller
         
         $periksa_d_alkes = array(
                 'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $data_transaksi['no_transaksi'],
+                'no_periksa' => $this->input->post('no_periksa'),
                 'kode_barang' => $value,
                 'jumlah' => $_POST['jml_alkes'][$key],
                 'harga_satuan' => $_POST['harga_alkes'][$key],
@@ -1535,24 +1544,28 @@ class Periksamedis extends CI_Controller
         $this->db->insert('tbl_periksa_d_alkes', $periksa_d_alkes);
         }
         
-        //d_periksa_tindakan
-        foreach ($_POST['tindakan'] as $key => $value) {
-            $periksa_d_tindakan = array(
+        //d_periksa_alat
+        foreach ($_POST['id_alat'] as $key => $value) {
+            $periksa_d_alat = array(
                 'no_pendaftaran' => $this->no_pendaftaran,
                 'no_periksa' => $this->input->post('no_periksa'),
-                'kode_tindakan' => $value,
-                'jumlah' => $_POST['qty_tindakan'][$key],
-                'biaya' => $_POST['biaya_tindakan'][$key],
-                'tipe_periksa' => '3',
+                'id_alat' => $value,
+                'jumlah' => $_POST['qty_alat'][$key],
             );
-            $this->db->insert('tbl_periksa_d_tindakan',$periksa_d_tindakan);
+            // $getIdAlat = $this->Tbl_alat_operasi_model->get_by_id($value);
+            $this->db->insert('tbl_periksa_operasi_d_alat',$periksa_d_alat);
+            // $stockUpdate = array(
+            //     'stok_terpakai' => $getIdAlat->stok_terpakai + $_POST['qty_alat'][$key],
+            //     'stok_tidak_terpakai' => $getIdAlat->stok_tidak_terpakai - $_POST['qty_alat'][$key],
+            // );
+            // $this->Tbl_alat_operasi_model->update($getIdAlat->id, $stockUpdate);
         }
         
         //d_periksa_biaya
         foreach ($_POST['id_biaya'] as $key => $value) {
             $periksa_d_biaya = array(
                 'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $data_transaksi['no_transaksi'],
+                'no_periksa' => $this->input->post('no_periksa'),
                 'id_biaya' => $value,
                 'jumlah' => $_POST['qty_biaya'][$key],
                 'biaya' => $_POST['biaya'][$key],
@@ -1584,10 +1597,19 @@ class Periksamedis extends CI_Controller
         }
         
         $this->Pendaftaran_model->update($this->no_pendaftaran, $updatePendaftaran);
-        
-        $data_transaksi_d = array();
 
+                // TRANSAKSI
+        $data_transaksi = array(
+            'kode_transaksi' => 'PRKSOPR',
+            'id_klinik' => $this->id_klinik,
+            'no_transaksi' => $this->input->post('no_periksa'),
+            'id_periksa_lanjutan' => $getIdPeriksaLanjutan->id_periksa,
+            'tgl_transaksi' => date('Y-m-d', time()),
+            'status_transaksi' => 0,
+        );
         $this->db->insert("tbl_transaksi",$data_transaksi);
+
+        $data_transaksi_d = array();
         
         $lastIdOpr = $this->db->select_max('id_transaksi')->from('tbl_transaksi')->get()->row();
         if ($_POST['totalObat'] != 0) {
@@ -1608,11 +1630,11 @@ class Periksamedis extends CI_Controller
             );  
         }
         
-        if ($_POST['totalTindakan'] != 0) {
+        if ($_POST['biaya_ok'] != 0) {
             $data_transaksi_d[] = array(
                 'id_transaksi' => $lastIdOpr->id_transaksi,
-                'deskripsi' => 'Biaya Tindakan',
-                'amount_transaksi' => $_POST['totalTindakan'],
+                'deskripsi' => 'Biaya OK',
+                'amount_transaksi' => $_POST['biaya_ok'],
                 'dc' => 'd'
             );
         }
