@@ -45,6 +45,7 @@
         $("#jenis_operasi").change(function(){
             var id_jenis = $(this).val()
             var dataNo =  $("#row-biaya").attr('data-row')
+            $(".biaya-auto").remove()
             $.ajax({
                 type : 'GET',
                 url : '<?php echo base_url().'periksamedis/jenisOpr' ?>',
@@ -54,7 +55,6 @@
                     var no = parseInt(dataNo)
                     $.each(data, function(k, v) {
                         no++
-                        $(".biaya-auto").remove()
                     $("#row-biaya").prepend(`
                         <div class="loop-biaya row biaya-auto" data-no="${no}">
                         <br>
