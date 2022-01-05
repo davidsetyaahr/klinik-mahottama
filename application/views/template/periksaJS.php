@@ -45,7 +45,6 @@
         $("#jenis_operasi").change(function(){
             var id_jenis = $(this).val()
             var dataNo =  $("#row-biaya").attr('data-row')
-            $(".biaya-auto").remove()
             $.ajax({
                 type : 'GET',
                 url : '<?php echo base_url().'periksamedis/jenisOpr' ?>',
@@ -53,6 +52,7 @@
                 success : function(data){
                     data = JSON.parse(data)
                     var no = parseInt(dataNo)
+                    $(".biaya-auto").remove()
                     $.each(data, function(k, v) {
                         no++
                     $("#row-biaya").prepend(`
