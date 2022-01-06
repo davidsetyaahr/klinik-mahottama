@@ -1,6 +1,6 @@
 <div class="row loop-alkes" data-no="<?= $no ?>" <?= isset($selected) ? "data-idDetail='".$selected->id_periksa_d_alkes."'" : '' ?>>
 <br>
-<div class="col-md-5">
+<div class="col-md-6">
         <select name="<?= isset($selected) ? 'old_' : '' ?>kode_alkes[]" class="form-control <?= !isset($selected) ? 'select2' : '' ?> selectAlkes alkes" <?= isset($selected) ? 'readonly' : '' ?>>
             <?php 
                 if(!isset($selected)){
@@ -19,7 +19,7 @@
         ?>
         </select>
     </div>
-    <div class="col-md-2">
+    <div class="<?= $no!=0 ? 'col-md-5' : 'col-md-6' ?>">
         <select name="<?= isset($selected) ? 'old_' : '' ?>jml_alkes[]" class="form-control stokAlkes qty <?= isset($selected) ? 'oldChangeQtyAlkes' : ''  ?>"  <?= isset($selected) ? "data-qty='".$selected->jumlah."'" : ''  ?>>
         <?php 
                 if(isset($selected)){
@@ -32,12 +32,12 @@
         </select>
         <!-- <input type="text" name="hasil[]" class="form-control" placeholder="Hasil" id="" style="<?php echo ($no!=0) ? 'margin-right:10px' : '' ?>"> -->
     </div>
-    <div class="col-md-2">
-        <input type="text" name="<?= isset($selected) ? 'old_' : '' ?>harga_alkes[]" value="<?= isset($selected) ? $selected->harga_satuan : '' ?>" class="form-control harga" placeholder="Harga alkes" readonly>
-    </div>
-    <div class="<?= $no!=0 ? 'col-md-2' : 'col-md-3' ?>">
-        <input type="text" name="<?= isset($selected) ? 'old_' : '' ?>subtotal_alkes[]" class="form-control total" value="<?= isset($selected) ? $selected->harga_satuan * $selected->jumlah : '' ?>" placeholder="Sub Total" readonly>
-    </div>
+    <!-- <div class="col-md-2"> -->
+        <input type="hidden" name="<?= isset($selected) ? 'old_' : '' ?>harga_alkes[]" value="<?= isset($selected) ? $selected->harga_satuan : '' ?>" class="form-control harga" placeholder="Harga alkes" readonly>
+    <!-- </div> -->
+    <!-- <div class="<?= $no!=0 ? 'col-md-2' : 'col-md-3' ?>"> -->
+        <input type="hidden" name="<?= isset($selected) ? 'old_' : '' ?>subtotal_alkes[]" class="form-control total" value="<?= isset($selected) ? $selected->harga_satuan * $selected->jumlah : '' ?>" placeholder="Sub Total" readonly>
+    <!-- </div> -->
     <?php 
         if($no!=0){
     ?>

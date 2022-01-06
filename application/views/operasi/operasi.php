@@ -94,36 +94,36 @@
                                         <a href="" class="btn btn-info btn-sm" id="addItemAlkes"><span class="fa fa-plus"></span> Tambah Item</a>
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <!-- <div class="form-group row">
                                 <div class="col-md-2">Biaya OK</div>
-                                    <div class="col-md-10">
-                                        <input type="number" id="biayaOk" value="0" name="biaya_ok" class="form-control" placeholder="">
-                                    </div>
+                                    <div class="col-md-10"> -->
+                                        <input type="hidden" id="biayaOk" value="0" name="biaya_ok" class="form-control" placeholder="">
+                                    <!-- </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya</div>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="totalBiaya" id="totalBiaya" class="form-control" value='0' readonly>
-                                    </div>
+                                    <div class="col-sm-10"> -->
+                                        <input type="hidden" name="totalBiaya" id="totalBiaya" class="form-control" value='0' readonly>
+                                    <!-- </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya Obat</div>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="totalObat" id="totalObat" class="form-control" value='0' readonly>
-                                    </div>
+                                    <div class="col-sm-10"> -->
+                                        <input type="hidden" name="totalObat" id="totalObat" class="form-control" value='0' readonly>
+                                    <!-- </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya BMHP</div>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="totalAlkes" id="totalAlkes" class="form-control" value='0' readonly>
-                                    </div>
+                                    <div class="col-sm-10"> -->
+                                        <input type="hidden" name="totalAlkes" id="totalAlkes" class="form-control" value='0' readonly>
+                                    <!-- </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-2">Grand Total</div>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="grandTotal" id="grandTotal" class="form-control" value='0' readonly>
-                                    </div>
-                                </div>
+                                    <div class="col-sm-10"> -->
+                                        <input type="hidden" name="grandTotal" id="grandTotal" class="form-control" value='0' readonly>
+                                    <!-- </div>
+                                </div> -->
                                 <hr>
                                 <div class="form-group row">
                                     <div class="col-sm-2">Pemeriksaan Selanjutnya</div>

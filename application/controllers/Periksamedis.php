@@ -66,22 +66,25 @@ class Periksamedis extends CI_Controller
         if(count((array)$periksaLanjutan)==0){
             redirect(base_url() . "periksamedis/antrian");
         }
-        else{
-            if ($periksaLanjutan->tipe_periksa == '1') {
+        else{                
+            if ($_SESSION['id_user_level']=='10' && $periksaLanjutan->tipe_periksa == '1') {
                 //poli
                 redirect(base_url() . "periksamedis/poli");
-            } else if ($periksaLanjutan->tipe_periksa == '2') {
+            } else if ($_SESSION['id_user_level']=='11' && $periksaLanjutan->tipe_periksa == '2') {
                 //rawat inap
                 redirect(base_url() . "periksamedis/rawat_inap");
-            } else if ($periksaLanjutan->tipe_periksa == '3') {
+            } else if ($_SESSION['id_user_level']=='12' && $periksaLanjutan->tipe_periksa == '3') {
                 //operasi
                 redirect(base_url() . "periksamedis/operasi");
-            } else if ($periksaLanjutan->tipe_periksa == '4') {
+            } else if (($_SESSION['id_user_level']=='10' || $_SESSION['id_user_level']=='11') && $periksaLanjutan->tipe_periksa == '4') {
                 //lab
                 redirect(site_url('periksamedis/periksa_lab/'));
-            } else if ($periksaLanjutan->tipe_periksa == '5') {
+            } else if (($_SESSION['id_user_level']=='10' || $_SESSION['id_user_level']=='11') && $periksaLanjutan->tipe_periksa == '5') {
                 //radiologi
                 redirect(site_url('periksamedis/periksa_radiologi/'));
+            }
+            else{
+                redirect(site_url('periksamedis/antrian'));
             }
         }
     }

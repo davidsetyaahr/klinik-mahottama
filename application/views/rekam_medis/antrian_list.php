@@ -32,14 +32,33 @@
                         <div style="padding-bottom: 10px;">
                         </div>
                         <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#medis">Poli</a></li>
-                            <li><a data-toggle="tab" href="#inap">Rawat Inap</a></li>
-                            <li><a data-toggle="tab" href="#operasi">Operasi</a></li>
+                            <?php 
+                                if($_SESSION['id_user_level']=='10'){
+                            ?>
+                                <li class="active"><a data-toggle="tab" href="#medis">Poli</a></li>
+                            <?php } ?>
+                            <?php 
+                                if($_SESSION['id_user_level']=='11'){
+                            ?>
+                                <li class="active"><a data-toggle="tab" href="#inap">Rawat Inap</a></li>
+                            <?php } ?>
+                            <?php 
+                                if($_SESSION['id_user_level']=='12'){
+                            ?>
+                                <li class="active"><a data-toggle="tab" href="#operasi">Operasi</a></li>
+                            <?php } ?>
+                            <?php 
+                                if($_SESSION['id_user_level']!='12'){
+                                    ?>
                             <li><a data-toggle="tab" href="#lab">Laboratorium</a></li>
                             <li><a data-toggle="tab" href="#radiologi">Radiologi</a></li>
+                            <?php } ?>
                         </ul>
                         <br>
                         <div class="tab-content">
+                            <?php 
+                                if($_SESSION['id_user_level']=='10'){
+                            ?>
                             <div id="medis" class="tab-pane fade in active">
                                 <table class="table table-bordered table-striped" id="mytable">
                                     <thead>
@@ -58,7 +77,11 @@
                                     </thead>
                                 </table>
                             </div>
-                            <div id="inap" class="tab-pane fade in">
+                            <?php } ?>
+                            <?php 
+                                if($_SESSION['id_user_level']=='11'){
+                            ?>
+                            <div id="inap" class="tab-pane fade in active">
                             <table class="table table-bordered table-striped" width="100%" id="tableInap">
                                     <thead>
                                         <tr>
@@ -76,7 +99,11 @@
                                     </thead>
                                 </table>
                             </div>
-                            <div id="operasi" class="tab-pane fade in">
+                            <?php } ?>
+                            <?php 
+                                if($_SESSION['id_user_level']=='12'){
+                            ?>
+                            <div id="operasi" class="tab-pane fade in active">
                             <table class="table table-bordered table-striped" width="100%" id="tableOperasi">
                                     <thead>
                                         <tr>
@@ -94,6 +121,10 @@
                                     </thead>
                                 </table>
                             </div>
+                            <?php } ?>
+                            <?php 
+                                if($_SESSION['id_user_level']!='12'){
+                            ?>
                             <div id="lab" class="tab-pane fade in">
                             <table class="table table-bordered table-striped" width="100%" id="tableLab">
                                     <thead>
@@ -130,6 +161,7 @@
                                     </thead>
                                 </table>
                             </div>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -153,7 +185,9 @@
                 "iTotalPages": Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength)
             };
         };
-
+        <?php 
+            if($_SESSION['id_user_level']=='10'){
+        ?>
         var t = $("#mytable").dataTable({
             initComplete: function() {
                 var api = this.api();
@@ -191,6 +225,10 @@
                 $('td:eq(0)', row).html(index);
             }
         });
+        <?php } ?>
+        <?php 
+            if($_SESSION['id_user_level']=='11'){
+        ?>
         var t = $("#tableInap").dataTable({
             initComplete: function() {
                 var api = this.api();
@@ -228,6 +266,10 @@
                 $('td:eq(0)', row).html(index);
             }
         });
+        <?php } ?>
+        <?php 
+            if($_SESSION['id_user_level']=='12'){
+        ?>
         var t = $("#tableOperasi").dataTable({
             initComplete: function() {
                 var api = this.api();
@@ -265,6 +307,10 @@
                 $('td:eq(0)', row).html(index);
             }
         });
+        <?php } ?>
+        <?php 
+            if($_SESSION['id_user_level']!='12'){
+        ?>
         var t = $("#tableLab").dataTable({
             initComplete: function() {
                 var api = this.api();
@@ -339,5 +385,6 @@
                 $('td:eq(0)', row).html(index);
             }
         });
+        <?php } ?>
     });
 </script>

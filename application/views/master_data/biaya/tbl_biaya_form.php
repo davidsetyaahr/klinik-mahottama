@@ -73,7 +73,7 @@
             }
         })
         function getTtlBiaya(){
-            var persentase = parseInt($("#persentase").val());
+            var persentase = $("#persentase").val();
             var biaya = parseInt($("#id_biaya_persentase").find(':selected').data('biaya'));
             var ttl = persentase / 100 * biaya 
             ttl = isNaN(ttl) ? 0 : ttl

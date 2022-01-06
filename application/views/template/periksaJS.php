@@ -58,20 +58,20 @@
                     $("#row-biaya").prepend(`
                         <div class="loop-biaya row biaya-auto" data-no="${no}">
                         <br>
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 <select name="id_biaya[]" class="form-control getBiaya tipe-biaya" style="width:100%" readonly>
                                     <option value="${v.id_biaya}">${v.nama_biaya}</option>
                                 </select>
                             </div>
-                            <div class='col-md-2'">
+                            <div class='col-md-6'">
                                 <input id="qty" name="qty_biaya[]" value="1" type="number" class="form-control qty_biaya" placeholder="Kuantitas">
                             </div>
-                            <div class="col-md-2">
-                                <input id="biaya" name="biaya[]" value="${v.biaya}" type="text" class="form-control biaya" placeholder="Harga Biaya" style="text-align:left;" value="" readonly> 
-                            </div>
-                            <div class="col-md-3">  
-                                <input id="total_biaya" name="subtotal_biaya[]" value="${v.biaya}" type="text" class="form-control total_biaya" placeholder="Sub Total" style="text-align:left;" value="" readonly> 
-                            </div>
+                            <!-- <div class="col-md-2"> -->
+                                <input id="biaya" name="biaya[]" value="${v.biaya}" type="hidden" class="form-control biaya" placeholder="Harga Biaya" style="text-align:left;" value="" readonly> 
+                            <!-- </div> -->
+                            <!-- <div class="col-md-3">   -->
+                                <input id="total_biaya" name="subtotal_biaya[]" value="${v.biaya}" type="hidden" class="form-control total_biaya" placeholder="Sub Total" style="text-align:left;" value="" readonly> 
+                            <!-- </div> -->
                     `)
                 });
                 $("#row-biaya").attr('data-row',no)

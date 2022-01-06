@@ -257,7 +257,7 @@
 						</div>
 						<hr /> -->
 						<div class="form-group">
-    							<div class="col-sm-2" align="center">
+    							<div class="col-sm-3" align="center">
                                     <label>Nama Obat / BMHP</label>
                                 </div>
     							<div class="col-sm-2" align="center">
@@ -269,13 +269,13 @@
     							<div class="col-sm-2" align="center">
                                     <label>Anjuran Obat</label>
                                 </div>
-                                <div class="col-sm-2" align="center">
+                                <div class="col-sm-3" align="center">
                                     <label>Penggunaan Obat</label>
                                 </div>
     						</div>
 						<div id="input_fields_wrap_obat">
     						<div class="form-group">
-    							<div class="col-sm-2">
+    							<div class="col-sm-3">
                                     <div class="input-group">
                                         <span class="input-group-addon">1</span>
                                         <?php echo form_dropdown('obat[]',$obat_option,'',array('id'=>'obat[]','class'=>'form-control select2','onchange'=>'get_obat(this)','style'=>'width:100%;'));?>
@@ -291,12 +291,12 @@
                                     <input type="text" id="anjuran_obat[]" name="anjuran_obat[]" class="form-control">
                                     <!-- <?php echo form_dropdown('anjuran_obat[]',array(''=>'Pilih Anjuran'),'',array('id'=>'anjuran_obat[]','class'=>'form-control'));?> -->
                                 </div>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <?php echo form_input(array('id'=>'kegunaan_obat[]','name'=>'kegunaan_obat[]','type'=>'text','value'=>'','class'=>'form-control'));?>
                                 </div>
-    							<div class="col-sm-2">
-                                    <?php echo form_input(array('id'=>'harga_obat[]','name'=>'harga_obat[]','type'=>'text','value'=>'','class'=>'form-control', 'readonly'=>'readonly','style'=>'text-align:right;'));?>
-                                </div>
+    							<!-- <div class="col-sm-2"> -->
+                                    <?php echo form_input(array('id'=>'harga_obat[]','name'=>'harga_obat[]','type'=>'hidden','value'=>'','class'=>'form-control', 'readonly'=>'readonly','style'=>'text-align:right;'));?>
+                                <!-- </div> -->
                                 <!-- <div class="col-sm-2">
                                     <?php echo form_input(array('id'=>'harga_obat_real[]','name'=>'harga_obat_real[]','type'=>'text','value'=>'','class'=>'form-control', 'readonly'=>'readonly','style'=>'text-align:right;'));?>
                                 </div> -->
@@ -317,13 +317,13 @@
                                         <?php echo form_dropdown('alat_kesehatan[]',$alkes_option,'',array('id'=>'alat_kesehatan[]','class'=>'form-control select2','onchange'=>'get_alkes(this)','style'=>'width:100%;'));?>
                                         </div>
                                 </div>
-    							<div class="col-sm-4">
+    							<div class="col-sm-6">
                                     <select id="jml_alat_kesehatan[]" name="jml_alat_kesehatan[]" class="form-control select2" onchange="get_alkes(this, true)" style="width:100%">
                                         <option value="">Pilih Jumlah</option>
                                     </select>
                                 </div>
     							<div class="col-sm-2">
-                                    <input id="harga_alkes[]" name="harga_alkes[]" type="text" value="" class="form-control" readonly="readonly" style="text-align:right;" />
+                                    <input id="harga_alkes[]" name="harga_alkes[]" type="hidden" value="" class="form-control" readonly="readonly" style="text-align:right;" />
                                 </div>
                             </div>
                         </div>
@@ -343,10 +343,10 @@
 
 						<hr />
 						<div class="form-group">
-							<div class="col-sm-8"></div>
-							<div class="col-sm-2">Total</div>
+							<!-- <div class="col-sm-8"></div>
+							<div class="col-sm-2">Total</div> -->
 							<div class="col-sm-2">
-                                <?php echo form_input(array('id'=>'total_harga','name'=>'total_harga','type'=>'text','value'=>'','class'=>'form-control','readonly'=>'readonly','style'=>'text-align:right;'));?>
+                                <?php echo form_input(array('id'=>'total_harga','name'=>'total_harga','type'=>'hidden','value'=>'','class'=>'form-control','readonly'=>'readonly','style'=>'text-align:right;'));?>
                             </div>
 						</div>
 <!-- 						<div class="form-group">
@@ -359,10 +359,10 @@
                             </div> 
 						</div> -->
                         <div class="form-group">
-							<div class="col-sm-8"></div>
-							<div class="col-sm-2">Grand Total</div>
+							<!-- <div class="col-sm-8"></div>
+							<div class="col-sm-2">Grand Total</div> -->
 							<div class="col-sm-2">
-                                <?php echo form_input(array('id'=>'grandtotal_harga','name'=>'grandtotal_harga','type'=>'text','value'=>'','class'=>'form-control','readonly'=>'readonly','style'=>'text-align:right;'));?>
+                                <?php echo form_input(array('id'=>'grandtotal_harga','name'=>'grandtotal_harga','type'=>'hidden','value'=>'','class'=>'form-control','readonly'=>'readonly','style'=>'text-align:right;'));?>
                             </div>
 						</div>
 						<hr />
@@ -443,9 +443,9 @@
 							<div class="col-sm-2"></div>
 							<div class="col-sm-4">
 								<div class="input-group">
-                                    <span class="input-group-addon" style="background-color: #fcffc4;">Total Biaya Lainnya</span>
+                                    <!-- <span class="input-group-addon" style="background-color: #fcffc4;">Total Biaya Lainnya</span> -->
                                     <!-- <?php echo form_input(array('id'=>'biaya_total','name'=>'biaya_total','type'=>'number','value'=>'0','class'=>'form-control','readonly'=>'readonly','style'=>'text-align:right;','placeholder'=>'0'));?> -->
-                                    <input type="text" id="totalBiaya" name="totalBiaya" class="form-control" value='0' readonly>
+                                    <input type="hidden" id="totalBiaya" name="totalBiaya" class="form-control" value='0' readonly>
                                 </div>
 							</div>
 						</div>
@@ -453,9 +453,9 @@
 							<div class="col-sm-2"></div>
 							<div class="col-sm-4">
 								<div class="input-group">
-                                    <span class="input-group-addon" style="background-color: #fcffc4;">Total Biaya Tindakan</span>
+                                    <!-- <span class="input-group-addon" style="background-color: #fcffc4;">Total Biaya Tindakan</span> -->
                                     <!-- <?php echo form_input(array('id'=>'biaya_tindakan','name'=>'biaya_tindakan','type'=>'number','value'=>'0','class'=>'form-control','readonly'=>'readonly','style'=>'text-align:right;','placeholder'=>'0'));?> -->
-                                    <input type="text" id="totalTindakan" name="totalBiayaTindakan" class="form-control" value='0' readonly>
+                                    <input type="hidden" id="totalTindakan" name="totalBiayaTindakan" class="form-control" value='0' readonly>
                                 </div>
 							</div>
 						</div>
@@ -463,8 +463,8 @@
 							<div class="col-sm-2"></div>
 							<div class="col-sm-4">
 								<div class="input-group">
-                                    <span class="input-group-addon" style="background-color: #fcffc4;">Obat-obatan dan BMHP</span>
-                                    <?php echo form_input(array('id'=>'biaya_obat_obatan','name'=>'biaya_obat_obatan','type'=>'number','value'=>'0','class'=>'form-control','style'=>'text-align:right;', 'onchange'=>'hitung_biaya()','readonly' => 'true'));?>
+                                    <!-- <span class="input-group-addon" style="background-color: #fcffc4;">Obat-obatan dan BMHP</span> -->
+                                    <?php echo form_input(array('id'=>'biaya_obat_obatan','name'=>'biaya_obat_obatan','type'=>'hidden','value'=>'0','class'=>'form-control','style'=>'text-align:right;', 'onchange'=>'hitung_biaya()','readonly' => 'true'));?>
                                 </div>
 							</div>
 							<div class="col-sm-6">
@@ -497,8 +497,8 @@
 							<div class="col-sm-2"></div>
 							<div class="col-sm-4">
 								<div class="input-group">
-                                    <span class="input-group-addon" style="background-color: #fcffc4;">Total Biaya</span>
-                                    <?php echo form_input(array('id'=>'biaya_total','name'=>'biaya_total','type'=>'number','value'=>'','class'=>'form-control','readonly'=>'readonly','style'=>'text-align:right;','placeholder'=>'0'));?>
+                                    <!-- <span class="input-group-addon" style="background-color: #fcffc4;">Total Biaya</span> -->
+                                    <?php echo form_input(array('id'=>'biaya_total','name'=>'biaya_total','type'=>'hidden','value'=>'','class'=>'form-control','readonly'=>'readonly','style'=>'text-align:right;','placeholder'=>'0'));?>
                                 </div>
 							</div>
 						</div>
@@ -961,11 +961,11 @@ $(document).ready(function() {
 
         var input_alkes = '<select id="alat_kesehatan[]" name="alat_kesehatan[]" class="form-control select2" onchange="get_alkes(this)" style="width:100%;">'+option_alkes+'</select>';
         var input_jml_alkes = '<select id="jml_alat_kesehatan[]" name="jml_alat_kesehatan[]" class="form-control" onchange="get_alkes(this, true)"><option value="">Pilih Jumlah</option></select>';
-        var input_harga_alkes = '<input id="harga_alkes[]" name="harga_alkes[]" type="text" value="" class="form-control" readonly="readonly" style="text-align:right;" />';
+        var input_harga_alkes = '<input id="harga_alkes[]" name="harga_alkes[]" type="hidden" value="" class="form-control" readonly="readonly" style="text-align:right;" />';
         
         if(z < max_fields){ //max input box allowed
             z++; //text box increment
-            $(wrapper_alkes).append('<div class="form-group"><div class="col-sm-6"><div class="input-group"><span class="input-group-addon"><a href="#" class="remove_field_alkes">X</a></span>'+input_alkes+'</div></div><div class="col-sm-4">'+input_jml_alkes+'</div><div class="col-sm-2">'+input_harga_alkes+'</div></div>'); //add input box
+            $(wrapper_alkes).append('<div class="form-group"><div class="col-sm-6"><div class="input-group"><span class="input-group-addon"><a href="#" class="remove_field_alkes">X</a></span>'+input_alkes+'</div></div><div class="col-sm-6">'+input_jml_alkes+'</div><div class="col-sm-2">'+input_harga_alkes+'</div></div>'); //add input box
         }
         $('select').select2({
             // dropdownAutoWidth : false,
@@ -998,13 +998,13 @@ $(document).ready(function() {
         // var input_anjuran_obat = '<select id="anjuran_obat[]" name="anjuran_obat[]" class="form-control"><option value="">Pilih Anjuran</option></select>';
         var input_anjuran_obat = '<input type="text" id="anjuran_obat[]" name="anjuran_obat[]" class="form-control">';
         var input_ket_obat = '<select id="ket_obat[]" name="ket_obat[]" class="form-control"><option value="">Pilih Keterangan</option></select>';
-        var input_harga_obat = '<input id="harga_obat[]" name="harga_obat[]" type="text" value="" class="form-control" readonly="readonly" style="text-align:right;" />';
+        var input_harga_obat = '<input id="harga_obat[]" name="harga_obat[]" type="hidden" value="" class="form-control" readonly="readonly" style="text-align:right;" />';
         // var input_harga_obat_real = '<input id="harga_obat_real[]" name="harga_obat_real[]" type="text" value="" class="form-control" readonly="readonly" style="text-align:right;" />';
         var input_kegunaan_obat = '<input id="kegunaan_obat[]" name="kegunaan_obat[]" type="text" value="" class="form-control" />';
         
         if(y < max_fields){ //max input box allowed
             y++; //text box increment
-            $(wrapper_obat).append('<div class="form-group"><div class="col-sm-2"><div class="input-group"><span class="input-group-addon"><a href="#" class="remove_field_obat">X</a></span>'+input_alkes+'</div></div><div class="col-sm-2">'+input_ket_obat+'</div><div class="col-sm-2">'+input_jml_obat+'</div><div class="col-sm-2">'+input_anjuran_obat+'</div><div class="col-sm-2">'+input_kegunaan_obat+'</div><div class="col-sm-2">'
+            $(wrapper_obat).append('<div class="form-group"><div class="col-sm-3"><div class="input-group"><span class="input-group-addon"><a href="#" class="remove_field_obat">X</a></span>'+input_alkes+'</div></div><div class="col-sm-2">'+input_ket_obat+'</div><div class="col-sm-2">'+input_jml_obat+'</div><div class="col-sm-2">'+input_anjuran_obat+'</div><div class="col-sm-3">'+input_kegunaan_obat+'</div><div class="col-sm-2">'
                 +input_harga_obat+'</div>'); //add input box
         }
         $('select').select2({

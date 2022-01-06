@@ -1,6 +1,6 @@
 <div class="row loop-lab" data-no="<?= $no ?>">
 <br>
-    <div class="col-md-5">
+    <div class="col-md-6">
         <select name="periksa_lab[]" class="form-control select2 periksaLab" style="width:100%">
         <option value="">---Pilih Pemeriksaan LAB---</option>
         <?php 
@@ -10,10 +10,10 @@
                 ?>
         </select>
     </div>
-    <div class="col-md-2">
-        <input type="text" name="harga_periksa_lab[]" class="form-control total" placeholder="Harga" id="" readonly>
-    </div>
-    <div class="<?= $no!=0 ? 'col-md-4' : 'col-md-5' ?>">
+    <!-- <div class="col-md-2"> -->
+        <input type="hidden" name="harga_periksa_lab[]" class="form-control total" placeholder="Harga" id="" readonly>
+    <!-- </div> -->
+    <div class="<?= $no!=0 ? 'col-md-5' : 'col-md-6' ?>">
         <input type="text" name="hasil[]" class="form-control" placeholder="Hasil" id="" style="<?php echo ($no!=0) ? 'margin-right:10px' : '' ?>">
     </div>
     <?php 
