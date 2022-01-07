@@ -35,11 +35,19 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-4">Pemeriksaan <?php echo form_error('tipe_periksa'); ?></div>
-                            <div class="col-sm-8">
+                            <!-- <div class="col-sm-8">
                                 <?php echo form_dropdown('tipe_periksa', array(''=>'Pilih Pemeriksaan','1'=>'Poli','6'=>'UGD'),$tipe_periksa,array('id'=>'tipe_periksa','class'=>'form-control tipe'));?>
+                            </div> -->
+                            <div class="col-sm-8">
+                                <select name="tipe_periksa" class="form-control select2 tipe">
+                                    <option value="" data-tipe="">Pilih Pemeriksaan</option>
+                                    <option value="1" data-tipe="1">Poli</option>
+                                    <option value="6" data-tipe="6">UGD</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div id="poli"></div>
+                        <!-- <div class="form-group">
                             <div class="col-sm-4">Poli</div>
                             <div class="col-sm-8">
                                 <select name="id_poli" class="form-control select2 poli">
@@ -51,7 +59,7 @@
                                     ?>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <div class="col-sm-4">No Rekam Medis <?php echo form_error('no_rekam_medis'); ?></div>
                             <div class="col-sm-8">
@@ -154,7 +162,7 @@
                         <div class="form-group">
                             <div class="col-sm-4">Status Pasien <?php echo form_error('is_pasien'); ?></div>
                             <div class="col-sm-8">
-                                <?php echo form_dropdown('is_pasien', array('1'=>'Pasien Baru','0'=>'Pasien Lama'),$is_pasien,array('id'=>'is_pasien','class'=>'form-control'));?>
+                                <?php echo form_dropdown('is_pasien', array('1'=>'Pasien Baru','0'=>'Pasien Lama'),$is_pasien,array('id'=>'is_pasien','class'=>'form-control','readonly' => 'true'));?>
                             </div>
                         </div>
                         <div class="form-group">
@@ -230,14 +238,17 @@ select[readonly].select2+.select2-container .select2-selection {
 <script type="text/javascript">
     $(document).ready(function() {
         $(".namaDokter").change(function(){
-            var idPoli = $(this).find(":selected").attr('data-poli')
+            getPoli()
+        })
+        function getPoli(){
+            var idPoli = $(".namaDokter").find(":selected").attr('data-poli')
             $(".poli").val(idPoli)
             $(".poli").select2()
             $(".poli").removeAttr('readonly');
             if(idPoli!=0){
                 $(".poli").attr('readonly','true');
             }
-        })
+        }
         function changePoli(thisAttr){
             var idPoli = thisAttr.val()
             // console.log()
@@ -255,12 +266,31 @@ select[readonly].select2+.select2-container .select2-selection {
                 }
             })
         }
-        $(".poli").change(function(){
-            changePoli($(this))
-        })
         $(".tipe").change(function(){
-            console.log('asd');
-            $(".tipe").append("<input/>");
+            var idTipe = $(this).find(":selected").attr('data-tipe')
+            if(idTipe==1){
+            $("#poli").append(`
+                <div class="form-group" id="select-poli">
+                <div class="col-sm-4">Poli <?php echo form_error('poli'); ?></div>
+                    <div class="col-sm-8">
+                        <select name="id_poli" class="form-control select2 poli">
+                            <option value="">Pilih Poli</option>
+                            <?php 
+                                foreach ($poli as $key => $value) {
+                                    echo "<option value='".$value->id_poli."'>".$value->item."</option>";
+                                }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+            `);
+            $(".poli").change(function(){
+                changePoli($(this))
+            })
+            getPoli()
+            } else{
+                $("#select-poli").remove()
+            }
         })
         // $("#tipe_dokter_umum").change(function(){
         //     var thisVal = $(this).val()

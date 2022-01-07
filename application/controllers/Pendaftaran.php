@@ -57,7 +57,7 @@ class Pendaftaran extends CI_Controller
 				'no_rekam_medis' => $this->input->post('no_rekam_medis'),
 				'id_dokter' => $this->input->post('nama_dokter'),
 				'id_klinik' => $this->id_klinik,
-				'id_poli' => $this->input->post('id_poli'),
+				'id_poli' => !empty($this->input->post('id_poli')) ? $this->input->post('id_poli') : '0',
                 'is_pasien'     =>  $this->input->post('is_pasien'),
                 'dtm_crt' => date("Y-m-d H:i:s",  time()),
                 'dtm_upd' => date("Y-m-d H:i:s",  time())
@@ -99,7 +99,8 @@ class Pendaftaran extends CI_Controller
             $pasien_existing = null;
             if($this->session->flashdata('no_rekam_medis') != null)
                 $pasien_existing = $this->Tbl_pasien_model->get_pendaftaran($this->session->flashdata('no_rekam_medis'));
-			
+            
+            
 			$this->data['message'] = $this->session->flashdata('message');
 			
 			$this->db->where('no_id_pasien', set_value('no_id'));
@@ -128,9 +129,9 @@ class Pendaftaran extends CI_Controller
 			$this->data['rw'] = $pasien_existing != null ? $pasien_existing->rw : set_value('rw');
 			$this->data['nama_orangtua_atau_istri'] = $pasien_existing != null ? $pasien_existing->nama_orang_tua_atau_istri : set_value('nama_orangtua_atau_istri');
 			$this->data['nomor_telepon'] = $pasien_existing != null ? $pasien_existing->nomer_telepon : set_value('nomor_telepon');
-            $this->data['is_pasien'] = $pasien_existing != null ? '0' : set_value('is_pasien');
+            $this->data['is_pasien'] = $pasien_existing != null ? '0' : '1';
 			$this->data['nama_dokter'] = set_value('nama_dokter');	
-			$this->data['tipe_periksa'] = $pasien_existing != null ? $pasien_existing->tipe_periksa : set_value('tipe_periksa');
+			// $this->data['tipe_periksa'] = $pasien_existing != null ? $pasien_existing->tipe_periksa : set_value('tipe_periksa');
             $this->data['poli'] = $this->db->get('tbl_poli')->result();
 			
 			// $this->data['option_dokter'] = array();
