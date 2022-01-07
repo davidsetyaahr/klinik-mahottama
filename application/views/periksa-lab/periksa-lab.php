@@ -77,12 +77,12 @@
                                     <a href="" class="btn btn-info btn-sm" id="addItemTindakan"><span class="fa fa-plus"></span> Tambah Item</a>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <!-- <div class="form-group row">
                                 <div class="col-sm-2">Total Biaya Periksa Lab</div>
-                                <div class="col-sm-10">
-                                    <input type="text" id="totalLab" name="totalLab" class="form-control" value='0' readonly>
-                                </div>
-                            </div>
+                                <div class="col-sm-10"> -->
+                                    <input type="hidden" id="totalLab" name="totalLab" class="form-control" value='0' readonly>
+                                <!-- </div>
+                            </div> -->
                             <!-- <div class="form-group row">
                                 <div class="col-sm-2">Total Biaya Obat</div>
                                 <div class="col-sm-10"> -->

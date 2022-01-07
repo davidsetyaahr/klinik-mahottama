@@ -74,7 +74,7 @@ class Pendaftaran extends CI_Controller
 			$this->Pendaftaran_model->insert($data_pendaftaran);
             $periksaLanjutan = array(
                 'no_pendaftaran' => $data_pendaftaran['no_pendaftaran'],
-                'tipe_periksa' => '1',
+                'tipe_periksa' => $this->input->post('tipe_periksa'),
                 'tanggal' => date('Y-m-d H:i:s'),
                 'is_periksa' => '1',
             );
@@ -130,6 +130,7 @@ class Pendaftaran extends CI_Controller
 			$this->data['nomor_telepon'] = $pasien_existing != null ? $pasien_existing->nomer_telepon : set_value('nomor_telepon');
             $this->data['is_pasien'] = $pasien_existing != null ? '0' : set_value('is_pasien');
 			$this->data['nama_dokter'] = set_value('nama_dokter');	
+			$this->data['tipe_periksa'] = $pasien_existing != null ? $pasien_existing->tipe_periksa : set_value('tipe_periksa');
             $this->data['poli'] = $this->db->get('tbl_poli')->result();
 			
 			// $this->data['option_dokter'] = array();
@@ -426,6 +427,7 @@ class Pendaftaran extends CI_Controller
 			$this->data['rw'] = $pasien_existing != null ? $pasien_existing->rw : set_value('rw');
 			$this->data['nama_orangtua_atau_istri'] = $pasien_existing != null ? $pasien_existing->nama_orang_tua_atau_istri : set_value('nama_orangtua_atau_istri');
 			$this->data['nomor_telepon'] = $pasien_existing != null ? $pasien_existing->nomer_telepon : set_value('nomor_telepon');
+			$this->data['tipe_periksa'] = $pasien_existing != null ? $pasien_existing->tipe_periksa : set_value('tipe_periksa');
 			$this->data['nama_dokter'] = set_value('nama_dokter');	
             $this->data['captcha'] = $this->recaptcha->getWidget();
             $this->data['script_captcha'] = $this->recaptcha->getScriptTag();
