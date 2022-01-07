@@ -330,6 +330,16 @@ class Pembayaran extends CI_Controller
                             );
                             $this->db->insert('tbl_trx_akuntansi_detail',$arr);
                         break;
+                        case 'Biaya Operasi':
+                            $arr =  array(
+                                'id_trx_akun'   => $id_last->id_trx_akun,
+                                'jumlah'        => $value->ttl,
+                                'keterangan'    => 'akun',
+                                'id_akun'       => 115,
+                                'tipe'          => 'KREDIT',
+                            );
+                            $this->db->insert('tbl_trx_akuntansi_detail',$arr);
+                        break;
                         case 'Biaya Periksa Lab':
                             $arr =  array(
                                 'id_trx_akun'   => $id_last->id_trx_akun,
@@ -360,16 +370,16 @@ class Pembayaran extends CI_Controller
                             );
                             $this->db->insert('tbl_trx_akuntansi_detail',$arr);
                         break;
-                        case 'Biaya Operasi':
-                            $arr =  array(
-                                'id_trx_akun'   => $id_last->id_trx_akun,
-                                'jumlah'        => $value->ttl,
-                                'keterangan'    => 'akun',
-                                'id_akun'       => 119,
-                                'tipe'          => 'KREDIT',
-                            );
-                            $this->db->insert('tbl_trx_akuntansi_detail',$arr);
-                        break;
+                        // case 'Biaya Operasi':
+                        //     $arr =  array(
+                        //         'id_trx_akun'   => $id_last->id_trx_akun,
+                        //         'jumlah'        => $value->ttl,
+                        //         'keterangan'    => 'akun',
+                        //         'id_akun'       => 119,
+                        //         'tipe'          => 'KREDIT',
+                        //     );
+                        //     $this->db->insert('tbl_trx_akuntansi_detail',$arr);
+                        // break;
                     }
                 }
 

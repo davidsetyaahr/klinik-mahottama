@@ -136,7 +136,7 @@ class Pendaftaran_model extends CI_Model
  */        $this->datatables->where($where);
 
         // $this->datatables->add_column('action',anchor(site_url('periksamedis/periksa/$1?lanjutan=$3'),'Periksa','class="btn btn-warning btn-sm $2"'),'no_pendaftaran,status_antrian,periksa_lanjutan');
-        $this->datatables->add_column('action',anchor(site_url('periksamedis/periksa/$1?tipe=$3'),'Periksa','class="btn btn-warning btn-sm"'),'no_pendaftaran,tipe_periksa');
+        $this->datatables->add_column('action',anchor(site_url('periksamedis/periksa/$1?tipe=$2'),'Periksa','class="btn btn-warning btn-sm"'),'no_pendaftaran,tipe_periksa');
             
         return $this->datatables->generate();
     }
