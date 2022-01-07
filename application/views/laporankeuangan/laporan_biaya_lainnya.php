@@ -1,3 +1,8 @@
+<style>
+.select2.select2-container.select2-container--default{
+    width : 100% !important;
+}
+</style>
 <div class="content-wrapper">
     <section class="content">
         <div class="row">
@@ -22,17 +27,40 @@
                                 </div>
                             </div>
                             <div class="row">
-                            <div class="col-md-12">
+                                <div class="col-md-6">
                                 <br>
-                                    <select name="id_biaya" id="" class="form-control select2" width="200">
-                                        <option value="">Semua Biaya</option>
-                                        <?php 
-                                                foreach ($biaya as $key => $value) {
-                                                    $s = isset($_GET['id_biaya']) && $_GET['id_biaya']==$value->id_biaya ? 'selected' : '';
-                                                    echo "<option  value='".$value->id_biaya."' $s>".$value->nama_biaya."</option>";
-                                                }
-                                            ?>
-                                    </select>
+                                        <label for="">Filter Berdasarkan Biaya</label>
+                                        <select name="filter" id="filter" class="form-control" width="100%">
+                                            <option <?= isset($_GET['filter']) && $_GET['filter']=='Biaya' ? 'selected' : '' ?>>Biaya</option>
+                                            <option <?= isset($_GET['filter']) && $_GET['filter']=='Dokter' ? 'selected' : '' ?>>Dokter</option>
+                                        </select>
+                                    </div>
+                                <div class="col-md-6">
+                                <br>
+                                    <div id="biaya" <?= isset($_GET['id_dokter']) ? "style='display:none'" : '' ?>>
+                                        <label for="">Biaya</label>
+                                        <select name="id_biaya" id="" class="form-control select2 " width="100%" <?= isset($_GET['id_dokter']) ? "disabled" : '' ?>>
+                                            <option value="">Semua Biaya</option>
+                                            <?php 
+                                                    foreach ($biaya as $key => $value) {
+                                                        $s = isset($_GET['id_biaya']) && $_GET['id_biaya']==$value->id_biaya ? 'selected' : '';
+                                                        echo "<option  value='".$value->id_biaya."' $s>".$value->nama_biaya."</option>";
+                                                    }
+                                                ?>
+                                        </select>
+                                    </div>
+                                    <div id="dokter" <?= isset($_GET['id_biaya']) || empty($_GET['dari']) ? "style='display:none'" : '' ?>>
+                                        <label for="">Dokter</label>
+                                        <select name="id_dokter" id="" class="form-control select2" width="100%" <?= isset($_GET['id_biaya']) || empty($_GET['dari']) ? "disabled" : '' ?>>
+                                            <option value="">Semua Dokter</option>
+                                            <?php 
+                                                    foreach ($dokter as $key => $value) {
+                                                        $s = isset($_GET['id_dokter']) && $_GET['id_dokter']==$value->id_dokter ? 'selected' : '';
+                                                        echo "<option  value='".$value->id_dokter."' $s>".$value->nama_dokter."</option>";
+                                                    }
+                                                ?>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -44,9 +72,10 @@
                     </form>
                         <?php 
                             if(isset($_GET['dari'])){
+                                $id = isset($_GET['id_biaya']) ? $_GET['id_biaya'] : $_GET['id_dokter'];
                         ?>
                         <hr />
-                        <?php echo anchor(site_url('laporankeuangan/excel_biaya_lainnya/'.$_GET['dari'].'_'.$_GET['sampai'].'_'.$_GET['id_biaya']),'<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
+                        <?php echo anchor(site_url('laporankeuangan/excel_biaya_lainnya/'.$_GET['dari'].'_'.$_GET['sampai'].'_'.$id.'_'.$_GET['filter']),'<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
                         <div style="padding-bottom: 10px;">
                         <div style="padding-bottom: 10px;">
                         </div>
@@ -106,7 +135,25 @@
 </div>
 <!-- MODAL -->
 <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
-
+<script>
+    $(document).ready(function() {
+        $("#filter").change(function(){
+            var filter = $(this).val()
+            if(filter=='Biaya'){
+                $("#biaya").show()
+                $("#biaya select").prop('disabled',false)
+                $("#dokter").hide()
+                $("#dokter select").prop('disabled',true)
+            }
+            else{
+                $("#dokter").show()
+                $("#dokter select").prop('disabled',false)
+                $("#biaya").hide()
+                $("#biaya select").prop('disabled',true)
+            }
+        })
+    })
+</script>
 <?php 
 if(isset($_GET['dari'])){
 ?>
@@ -143,7 +190,7 @@ if(isset($_GET['dari'])){
             },
             processing: true,
             serverSide: true,
-            ajax: {"url": "json_laporan_biaya/<?php echo $_GET['dari'].'_'.$_GET['sampai'].'_'.$_GET['id_biaya'];?>", "type": "POST"},
+            ajax: {"url": "json_laporan_biaya/<?php echo $_GET['dari'].'_'.$_GET['sampai'].'_'.$id.'_'.$_GET['filter'];?>", "type": "POST"},
             columns: [
                 {
                     "data": "id_periksa_d_biaya",

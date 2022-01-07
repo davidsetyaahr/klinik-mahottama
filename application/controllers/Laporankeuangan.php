@@ -105,6 +105,9 @@ class Laporankeuangan extends CI_Controller
 
     public function biaya_lainnya(){
         $data['biaya'] = $this->Tbl_biaya_model->get_all();
+
+        $this->db->select('nama_dokter,id_dokter');
+        $data['dokter'] = $this->db->get('tbl_dokter')->result();
         $this->template->load('template','laporankeuangan/laporan_biaya_lainnya', $data);
     }
 

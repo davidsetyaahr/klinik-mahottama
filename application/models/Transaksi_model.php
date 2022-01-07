@@ -514,7 +514,12 @@ class Transaksi_model extends CI_Model
         $filter = explode("_", $filters);
         $dari = $filter[0];
         $sampai = $filter[1];
-        $id_biaya = $filter[2];
+        if($filter[3]=='Biaya'){
+            $id_biaya = $filter[2];
+        }
+        else{
+            $id_dokter = $filter[2];
+        }
         if($export){
             $from = $this->db;
         }
@@ -529,8 +534,16 @@ class Transaksi_model extends CI_Model
         $from->where('db.dtm_crt >=', $dari.' 00:00:00');
         $from->where('db.dtm_crt >=', $dari.' 00:00:00');
         $from->where('db.dtm_crt <=', $sampai.' 23:59:59');
-        if($id_biaya!=''){
+        if(isset($id_biaya) && $id_biaya!=''){
             $from->where('db.id_biaya', $id_biaya);
+        }
+        if(isset($id_dokter)){
+            if($id_dokter!=''){
+                $from->where('bi.is_id_dokter', $id_dokter);
+            }
+            else{
+                $from->where('bi.is_id_dokter !=', '0');
+            }
         }
         if($export){
             return $this->db->get()->result();
