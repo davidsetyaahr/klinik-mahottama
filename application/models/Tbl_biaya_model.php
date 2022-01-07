@@ -28,6 +28,7 @@ class Tbl_biaya_model extends CI_Model
         if($not!=null){
             $this->db->where('id_biaya !=',$not);
         }
+        $this->db->order_by('b.id_biaya','desc');
         $sql = $this->db->get()->result();
         foreach ($sql as $key => $value) {
             if($value->tipe_biaya=='2' && $value->biaya==0){ //cek row 1

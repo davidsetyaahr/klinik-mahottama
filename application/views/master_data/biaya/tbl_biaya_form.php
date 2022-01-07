@@ -30,7 +30,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <input type="number" class="form-control" name="persentase" id="persentase" value="<?= $presentase ?>">
+                                    <input type="number" step="0.01" class="form-control" name="persentase" id="persentase" value="<?= $presentase ?>">
                                     <span class="input-group-addon">%</span>
                                 </div>                        
                             </div>                                    
