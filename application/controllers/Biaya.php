@@ -21,7 +21,7 @@ class Biaya extends CI_Controller
     public function json() {
         $biaya = $this->Tbl_biaya_model->getBiaya();
         $output = array(
-            "draw" => 0,
+            "draw" => $_POST['draw'],
             "recordsTotal" => count((array)$biaya),
             "recordsFiltered" => count((array)$biaya),
             "data" => $biaya,
@@ -49,9 +49,12 @@ class Biaya extends CI_Controller
             'presentase' => set_value('presentase'),
             'id_biaya_presentase' => set_value('id_biaya_presentase'),
             'biaya' => set_value('biaya'),
+            'is_id_dokter' => set_value('is_id_dokter'),
             'item' => $this->Tbl_kategori_biaya_model->get_all(),
-            'biayaFix' => $this->Tbl_biaya_model->getBiaya()
+            'biayaFix' => $this->Tbl_biaya_model->getBiaya(),
         );
+        $this->db->select('nama_dokter,id_dokter');
+        $data['dokter'] = $this->db->get('tbl_dokter')->result();
        $this->template->load('template','master_data/biaya/tbl_biaya_form', $data);
     }
 
@@ -66,6 +69,7 @@ class Biaya extends CI_Controller
                 'id_kategori_biaya' => $this->input->post('id_kategori_biaya', TRUE),
                 'nama_biaya' => $this->input->post('nama_biaya', TRUE),
                 'tipe_biaya' => $this->input->post('tipe_biaya', TRUE),
+                'is_id_dokter' => $this->input->post('is_id_dokter', TRUE),
             );
             if($data['tipe_biaya']=='1'){
                 $data['biaya'] = $this->input->post('biaya', TRUE);
@@ -94,9 +98,12 @@ class Biaya extends CI_Controller
                 'id_biaya_presentase' => set_value('id_biaya_presentase',$row[0]->id_biaya_presentase),
                 'nama_biaya' => set_value('nama_biaya',$row[0]->nama_biaya),
                 'biaya' => set_value('biaya',$row[0]->biaya),
+                'is_id_dokter' => set_value('is_id_dokter',$row[0]->is_id_dokter),
                 'item' => $this->Tbl_kategori_biaya_model->get_all(),
                 'biayaFix' => $this->Tbl_biaya_model->getBiaya($not=$id)
             );
+            $this->db->select('nama_dokter,id_dokter');
+            $data['dokter'] = $this->db->get('tbl_dokter')->result();
             $this->template->load('template','master_data/biaya/tbl_biaya_form', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
@@ -115,6 +122,7 @@ class Biaya extends CI_Controller
                 'id_kategori_biaya' => $this->input->post('id_kategori_biaya', TRUE),
                 'nama_biaya' => $this->input->post('nama_biaya', TRUE),
                 'tipe_biaya' => $this->input->post('tipe_biaya', TRUE),
+                'is_id_dokter' => $this->input->post('is_id_dokter', TRUE),
             );
             if($data['tipe_biaya']=='1'){
                 $data['biaya'] = $this->input->post('biaya', TRUE);

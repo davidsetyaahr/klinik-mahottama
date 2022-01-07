@@ -19,9 +19,10 @@ class Tbl_biaya_model extends CI_Model
 
     public function getBiaya($not=null,$where=null)
     {
-        $this->db->select("b.id_biaya,b.id_kategori_biaya, kb.item, b.nama_biaya, b.tipe_biaya, b.id_biaya_presentase, b.presentase, case when b.tipe_biaya = '1' then b.biaya else b.presentase / 100 * (select biaya from tbl_biaya where id_biaya = b.id_biaya_presentase) end as biaya");
+        $this->db->select("b.id_biaya,b.id_kategori_biaya, b.is_id_dokter, case when b.is_id_dokter = '0' then '-' else d.nama_dokter end as nama_dokter, kb.item, b.nama_biaya, b.tipe_biaya, b.id_biaya_presentase, b.presentase, case when b.tipe_biaya = '1' then b.biaya else b.presentase / 100 * (select biaya from tbl_biaya where id_biaya = b.id_biaya_presentase) end as biaya, case when b.tipe_biaya='1' then 'Biaya Fix' else 'Biaya Persentase' end as tipe_biaya_text");
         $this->db->from("tbl_biaya b");
         $this->db->join("tbl_kategori_biaya kb", "b.id_kategori_biaya = kb.id_kategori_biaya");
+        $this->db->join("tbl_dokter d", "b.is_id_dokter = d.id_dokter",'left');
         if($where!=null){
             $this->db->where($where);
         }
@@ -43,8 +44,9 @@ class Tbl_biaya_model extends CI_Model
                     $value->biaya = $get->biaya;
                 }
             }
+            $cekBtnDel = $this->db->get_where('tbl_biaya',['id_biaya_presentase' => $value->id_biaya])->num_rows()==0 ? anchor(site_url('biaya/delete/'.$value->id_biaya),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"') : '';
             $value->action = anchor(site_url('biaya/edit/'.$value->id_biaya),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>', array('class' => 'btn btn-success btn-sm'))." 
-            ".anchor(site_url('biaya/delete/'.$value->id_biaya),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"');
+            ".$cekBtnDel;
         }
         return $sql;
     }

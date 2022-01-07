@@ -48,6 +48,17 @@
                         </div>
                         </td></tr> 
                         <tr><td width='200'>Biaya <?php echo form_error('biaya') ?></td><td><input type="int" class="form-control" name="biaya" id="biaya" placeholder="Biaya" value="<?php echo $biaya; ?>" <?= $tipe_biaya=='2' ? 'readonly' : '' ?> /></td></tr>
+                        <tr><td width='200'>Untuk Dokter<?php echo form_error('is_id_dokter') ?></td><td>
+                            <select name="is_id_dokter" id="is_id_dokter" class="form-control select2">
+                                <option value="" <?= $is_id_dokter=='' ? 'selected' : '' ?>>Tidak Ada</option>
+                                <?php
+                                    foreach ($dokter as $key => $value) {
+                                        $s = $is_id_dokter==$value->id_dokter ? 'selected' : '';
+                                        echo "<option value='".$value->id_dokter."' $s>".$value->nama_dokter."</option>";
+                                    }
+                                ?>
+                            </select>
+                        </td></tr> 
                         <tr><td></td><td>
                             <button type="submit" class="btn btn-danger"><i class="fa fa-floppy-o"></i> <?php echo $button ?></button> 
                             <a href="<?php echo site_url('biaya') ?>" class="btn btn-info"><i class="fa fa-sign-out"></i> Kembali</a></td></tr>

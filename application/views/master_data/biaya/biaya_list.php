@@ -41,6 +41,8 @@
                             		<th>Nama Kategori</th>
                             		<th>Nama Biaya</th>
                             		<th>Biaya</th>
+                            		<th>Untuk Dokter</th>
+                            		<th>Tipe Biaya</th>
                             		<th width="100px">Action</th>
                                 </tr>
                             </thead>
@@ -92,6 +94,8 @@
                     "data": "id_biaya",
                     "orderable": false
                 },{"data": "item"},{"data": "nama_biaya"},{"data": "biaya",  render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp. ' )},
+                {"data": "nama_dokter"},
+                {"data": "tipe_biaya_text"},
                 {
                     "data" : "action",
                     "orderable": false,
