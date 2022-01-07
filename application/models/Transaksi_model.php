@@ -571,7 +571,7 @@ class Transaksi_model extends CI_Model
         $this->datatables->where('td.dtm_crt >=', $dari.' 00:00:00');
         $this->datatables->where('td.dtm_crt <=', $sampai.' 23:59:59');
         $this->datatables->add_column('action', anchor('#','<i class="fa fa-eye" aria-hidden="true"></i>',"class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal' onClick='javasciprt: cekDetail(\"$1\")'"),'no_transaksi');
-        $this->db->group_by('t.id_transaksi');
+        $this->datatables->group_by('t.id_transaksi');
         return $this->datatables->generate();
     }
 

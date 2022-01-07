@@ -34,6 +34,12 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <div class="col-sm-4">Pemeriksaan <?php echo form_error('tipe_periksa'); ?></div>
+                            <div class="col-sm-8">
+                                <?php echo form_dropdown('tipe_periksa', array(''=>'Pilih Pemeriksaan','1'=>'Poli','6'=>'UGD'),$tipe_periksa,array('id'=>'tipe_periksa','class'=>'form-control tipe'));?>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <div class="col-sm-4">Poli</div>
                             <div class="col-sm-8">
                                 <select name="id_poli" class="form-control select2 poli">
@@ -251,6 +257,10 @@ select[readonly].select2+.select2-container .select2-selection {
         }
         $(".poli").change(function(){
             changePoli($(this))
+        })
+        $(".tipe").change(function(){
+            console.log('asd');
+            $(".tipe").append("<input/>");
         })
         // $("#tipe_dokter_umum").change(function(){
         //     var thisVal = $(this).val()
