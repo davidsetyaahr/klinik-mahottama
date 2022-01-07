@@ -167,7 +167,7 @@
             $total_transaksi = 0;
             $i = 1;
             $tipe = "";
-            $caption = ['','<td align="left"><div style="margin-bottom: 5px"><strong><br><i>Poli</i></strong></div></td>','<td align="left"><div style="margin-bottom: 5px"><strong><br><i>Rawat Inap</i></strong></div></td>','<td align="left"><div style="margin-bottom: 5px"><strong><br><i>Operasi</i></strong></div></td>','<td align="left"><div style="margin-bottom: 5px"><strong><br><i>Laboratorium</i></strong></div></td>','<td align="left"><div style="margin-bottom: 5px"><strong><br><i>Radiologi</i></strong></div></td>'];
+            $caption = ['','<td align="left"><div style="margin-bottom: 5px"><strong><br><i>Poli</i></strong></div></td>','<td align="left"><div style="margin-bottom: 5px"><strong><br><i>Rawat Inap</i></strong></div></td>','<td align="left"><div style="margin-bottom: 5px"><strong><br><i>Operasi</i></strong></div></td>','<td align="left"><div style="margin-bottom: 5px"><strong><br><i>Laboratorium</i></strong></div></td>','<td align="left"><div style="margin-bottom: 5px"><strong><br><i>Radiologi</i></strong></div></td>','<td align="left"><div style="margin-bottom: 5px"><strong><br><i>UGD</i></strong></div></td>'];
             foreach($transaksi_d as $data){
               if(strpos($data->deskripsi, 'Pembayaran Biaya Medis') === false){
                 if($data->amount_transaksi > 0){
@@ -203,7 +203,7 @@
     </tr>
 	<tr style="border-bottom:1px solid black; border-bottom:1px solid black">
 		<th align="left"><i>Total</i></th>
-		<th align="right">Rp. <?=number_format($total_transaksi-$subsidi, 0, '.', '.')?></th>
+		<th align="right">Rp. <?=number_format($total_transaksi+$admin-$subsidi, 0, '.', '.')?></th>
 	</tr>
 </table>
 </div>

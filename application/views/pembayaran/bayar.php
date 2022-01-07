@@ -78,7 +78,7 @@
                         </div>
                     <?php
                     $tipe = "";
-                    $caption = ['','<div style="margin-bottom: 15px"><strong>Poli</strong></div>','<div style="margin-bottom: 15px"><strong>Rawat Inap</strong></div>','<div style="margin-bottom: 15px"><strong>Operasi</strong></div>','<div style="margin-bottom: 15px"><strong>Laboratorium</strong></div>','<div style="margin-bottom: 15px"><strong>Radiologi</strong></div>'];
+                    $caption = ['','<div style="margin-bottom: 15px"><strong>Poli</strong></div>','<div style="margin-bottom: 15px"><strong>Rawat Inap</strong></div>','<div style="margin-bottom: 15px"><strong>Operasi</strong></div>','<div style="margin-bottom: 15px"><strong>Laboratorium</strong></div>','<div style="margin-bottom: 15px"><strong>Radiologi</strong></div>','<div style="margin-bottom: 15px"><strong>UGD</strong></div>'];
                         foreach($transaksi_d as $data){
                     ?>
                     <?php if($caption[$data->tipe_periksa]!=$tipe){
