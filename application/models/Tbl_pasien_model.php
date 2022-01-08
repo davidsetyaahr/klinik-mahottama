@@ -79,6 +79,14 @@ class Tbl_pasien_model extends CI_Model
         $this->db->where('pa.no_rekam_medis', $id);
         return $this->db->get()->row();
     }
+
+    function get_status($id){
+        $this->db->select('*');
+        $this->db->from('tbl_pendaftaran');
+        // $this->db->join('tbl_pendaftaran pe','pe.no_rekam_medis = pa.no_rekam_medis','left');
+        $this->db->where('no_rekam_medis', $id);
+        return $this->db->get()->row();
+    }
 }
 
 /* End of file Tbl_pasien_model.php */

@@ -77,6 +77,7 @@ class Pembayaran extends CI_Controller
         $data_transaksi = $this->Transaksi_model->get_detail_no_pendaftaran($no_pendaftaran); //Ini Row
         // var_dump($data_transaksi->no_rekam_medis);
         $data_pasien = $this->Tbl_pasien_model->get_pendaftaran($data_transaksi->no_rekam_medis);
+        $status_pasien = $this->Tbl_pasien_model->get_status($data_transaksi->no_rekam_medis);
         // var_dump($data_pasien->is_pasien);
         $cekBayar = $this->Transaksi_model->cekBayar($no_pendaftaran);
         $tab = array('pemeriksaan','sks','rapid');
@@ -255,7 +256,7 @@ class Pembayaran extends CI_Controller
             $this->data['transaksi_d'] = $this->Transaksi_model->get_detail_by_h_id($data_transaksi->no_pendaftaran); //Ini array
             $this->data['getSubsidi'] = $this->Transaksi_model->cekSubsidi($data_transaksi->no_pendaftaran);
             $this->data['cekSubsidi'] = count((array)$this->data['getSubsidi']);
-            $this->data['isPasien'] = $data_pasien->is_pasien;
+            $this->data['isPasien'] = $status_pasien->is_pasien;
 
             
             if($this->input->post('total_transaksi')){
@@ -565,7 +566,7 @@ class Pembayaran extends CI_Controller
     public function cetak_surat($no_pendaftaran){
         $no_pendaftaran = $no_pendaftaran;
         $data_transaksi = $this->Transaksi_model->get_detail_no_pendaftaran($no_pendaftaran);
-        $ambil_pasien = $this->Tbl_pasien_model->get_pendaftaran($data_transaksi->no_rekam_medis);
+        $ambil_pasien = $this->Tbl_pasien_model->get_status($data_transaksi->no_rekam_medis);
         // if($data_transaksi->status_transaksi == 1){
         //     //Set session error
         //     $this->session->set_flashdata('message', 'Pembayaran sudah dilakukan');
@@ -633,7 +634,7 @@ class Pembayaran extends CI_Controller
     public function cetak_surat_pembayaran($no_pendaftaran){
         $no_pendaftaran = $no_pendaftaran;
         $data_transaksi = $this->Transaksi_model->get_detail_no_pendaftaran($no_pendaftaran);
-        $ambil_pasien = $this->Tbl_pasien_model->get_pendaftaran($data_transaksi->no_rekam_medis);
+        $ambil_pasien = $this->Tbl_pasien_model->get_status($data_transaksi->no_rekam_medis);
         if(empty($_GET['tab'])){
             $data_periksa = $this->Periksa_model->get_by_id($data_transaksi->no_transaksi);
             $data_pasien = $this->Tbl_pasien_model->get_by_id($data_periksa->no_rekam_medis);

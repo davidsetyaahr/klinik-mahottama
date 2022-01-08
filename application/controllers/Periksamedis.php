@@ -69,24 +69,38 @@ class Periksamedis extends CI_Controller
         else{                
             if ($_SESSION['id_user_level']=='10' && $periksaLanjutan->tipe_periksa == '1') {
                 //poli
+                $this->session->set_flashdata('message', 'Data pemeriksaan berhasil disimpan, No Pendaftaran ' . $this->no_pendaftaran);
+                $this->session->set_flashdata('message_type', 'success');
                 redirect(base_url() . "periksamedis/poli");
             } else if ($_SESSION['id_user_level']=='11' && $periksaLanjutan->tipe_periksa == '2') {
                 //rawat inap
+                $this->session->set_flashdata('message', 'Data pemeriksaan berhasil disimpan, No Pendaftaran ' . $this->no_pendaftaran);
+                $this->session->set_flashdata('message_type', 'success');
                 redirect(base_url() . "periksamedis/rawat_inap");
             } else if ($_SESSION['id_user_level']=='12' && $periksaLanjutan->tipe_periksa == '3') {
                 //operasi
+                $this->session->set_flashdata('message', 'Data pemeriksaan berhasil disimpan, No Pendaftaran ' . $this->no_pendaftaran);
+                $this->session->set_flashdata('message_type', 'success');
                 redirect(base_url() . "periksamedis/operasi");
             } else if (($_SESSION['id_user_level']=='10' || $_SESSION['id_user_level']=='11') && $periksaLanjutan->tipe_periksa == '4') {
                 //lab
+                $this->session->set_flashdata('message', 'Data pemeriksaan berhasil disimpan, No Pendaftaran ' . $this->no_pendaftaran);
+                $this->session->set_flashdata('message_type', 'success');
                 redirect(site_url('periksamedis/periksa_lab/'));
             } else if (($_SESSION['id_user_level']=='10' || $_SESSION['id_user_level']=='11') && $periksaLanjutan->tipe_periksa == '5') {
                 //radiologi
+                $this->session->set_flashdata('message', 'Data pemeriksaan berhasil disimpan, No Pendaftaran ' . $this->no_pendaftaran);
+                $this->session->set_flashdata('message_type', 'success');
                 redirect(site_url('periksamedis/periksa_radiologi/'));
             } else if ($_SESSION['id_user_level']=='' && $periksaLanjutan->tipe_periksa == '13'){
                 // UGD
+                $this->session->set_flashdata('message', 'Data pemeriksaan berhasil disimpan, No Pendaftaran ' . $this->no_pendaftaran);
+                $this->session->set_flashdata('message_type', 'success');
                 redirect(base_url() . "periksamedis/ugd");
             }
             else{
+                $this->session->set_flashdata('message', 'Data pemeriksaan berhasil disimpan, No Pendaftaran ' . $this->no_pendaftaran);
+                $this->session->set_flashdata('message_type', 'success');
                 redirect(site_url('periksamedis/antrian'));
             }
         }
@@ -2048,7 +2062,7 @@ class Periksamedis extends CI_Controller
             $data_transaksi_d[] = array(
                 'id_transaksi' => $lastIdOpr->id_transaksi,
                 'deskripsi' => 'Biaya OK',
-                'amount_transaksi' => $_POST['biaya_ok'],
+                'amount_transaksi' => $_POST['totalBiayaOk'],
                 'dc' => 'd'
             );
         }

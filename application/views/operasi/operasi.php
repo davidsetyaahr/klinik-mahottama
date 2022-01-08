@@ -2,6 +2,18 @@
     <section class="content">
         <div class="row">
             <div class="col-md-12">
+            <?php 
+            if($this->session->flashdata('message')){
+                if($this->session->flashdata('message_type') == 'danger')
+                    echo alert('alert-danger', 'Perhatian', $this->session->flashdata('message'));
+                else if($this->session->flashdata('message_type') == 'success')
+                    echo alert('alert-success', 'Sukses', $this->session->flashdata('message')); 
+                else
+                    echo alert('alert-info', 'Info', $this->session->flashdata('message')); 
+            }
+            ?>
+            </div>
+            <div class="col-md-12">
                 <div class="box box-warning box-solid">
                     <div class="box-header with-border">
                         <h3 class="box-title">OPERASI</h3>
@@ -30,16 +42,17 @@
                                 <div class="form-group row opr">
                                     <div class="col-md-2">Pilih Jenis Operasi</div>
                                     <div class="col-md-10">
-                                        <select name="periksa_operasi[]" id="jenis_operasi" data-row="0" class="form-control select2 periksaLab selectOpr" style="width:100%">
+                                        <select name="periksa_operasi[]" id="jenis_operasi" data-row="0" class="form-control select2 periksaLab selectOpr getOk" style="width:100%">
                                             <option value="">---Pilih Jenis Operasi---</option>
                                             <?php 
                                                 foreach ($jenis as $key => $value) {
-                                                    echo "<option data-id-jenis-opr='".$value->id_jenis_operasi."' value='".$value->id_jenis_operasi."'>".$value->nama_jenis_operasi."</option>";
+                                                    echo "<option data-id-jenis-opr='".$value->id_jenis_operasi."' data-biaya-ok='".$value->biaya_ok."' value='".$value->id_jenis_operasi."'>".$value->nama_jenis_operasi."</option>";
                                                 }
                                                 ?>
                                         </select>
                                     </div>
                                     <div class="col-md-2"><input type="hidden" class="form-control biayaopr"></div>
+                                    <div class="col-md-2"><input name="biaya_ok" type="hidden" class="form-control ok"></div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-2">Pilih Ruangan Operasi</div>
@@ -97,7 +110,7 @@
                                 <!-- <div class="form-group row">
                                 <div class="col-md-2">Biaya OK</div>
                                     <div class="col-md-10"> -->
-                                        <input type="hidden" id="biayaOk" value="0" name="biaya_ok" class="form-control" placeholder="">
+                                        <input type="hidden" id="totalBiayaOk" value="0" name="totalBiayaOk" class="form-control" readonly>
                                     <!-- </div>
                                 </div>
                                 <div class="form-group row">
@@ -142,7 +155,7 @@
                                     <div class="col-md-12">
                                         <div class="pull-right">
                                             <button type="reset" class="btn btn-default"><span class="fa fa-times"></span> Batal</button>
-                                            <button type="submit" class="btn btn-warning"><span class="fa fa-save"></span> Periksa</button>
+                                            <button type="submit" class="btn btn-warning" onclick="confirm('Yakin Simpan?')"><span class="fa fa-save"></span> Periksa</button>
                                         </div>
                                     </div>
                                 </div>
@@ -225,17 +238,17 @@
         //                 </div>
 
 
-        $('#biayaOk').on('keyup', function()
-        {
-            // console.log($(this).val())
-            $(this).val()
-            grandTotal()
-        });
+        // $('#biayaOk').on('keyup', function()
+        // {
+        //     // console.log($(this).val())
+        //     $(this).val()
+        //     grandTotal()
+        // });
 
         function grandTotal() {
             var totalObat = parseInt($("#totalObat").val())
             var totalAlkes = parseInt($("#totalAlkes").val())
-            var biayaOk = parseInt($("#biayaOk").val())
+            var biayaOk = parseInt($("#totalBiayaOk").val())
             var totalBiaya = parseInt($("#totalBiaya").val())
             var grandTotal = totalObat + totalAlkes + totalBiaya + biayaOk
             $("#grandTotal").val(grandTotal)
