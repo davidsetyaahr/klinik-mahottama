@@ -1062,6 +1062,39 @@ class Periksamedis extends CI_Controller
             }
         }
     }
+
+    private function jurnal_otomatis_biaya_ok($biaya_ok, $no_periksa,$isEdit=null)
+    {
+        if($isEdit==null){
+            $data_trx = array(
+                'deskripsi'     => 'Penjualan Biaya OK dari Nomor Pemeriksaan '.$no_periksa,
+                'tanggal'       => date('Y-m-d'),
+            );
+            $insert = $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi', $data_trx);
+        }
+        else{
+            $insert = true;
+        }
+        if ($insert) {
+            if($isEdit==null){
+                $id_last = $this->db->select_max('id_trx_akun')->from('tbl_trx_akuntansi')->get()->row();
+
+                $data = array(
+                    'id_trx_akun'   => $id_last->id_trx_akun,
+                    'id_akun'       => 59,
+                    'jumlah'        => $biaya_ok,
+                    'tipe'          => 'KREDIT',
+                    'keterangan'    => 'akun',
+                );
+                $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi_detail', $data);
+            }
+            else{
+                $this->db->select('id_trx_akun');
+                $getIdTrx = $this->db->get_where('tbl_trx_akuntansi',['deskripsi' => 'Penjualan Biaya OK dari Nomor Pemeriksaan ' . $no_periksa])->row();
+                $this->db->update('tbl_trx_akuntansi_detail',['jumlah' => $biaya_ok],['id_trx_akun' => $getIdTrx->id_trx_akun,'id_akun' => '59']);
+            }
+        }
+    }
     private function jurnal_otomatis_obat($hpp,$no_periksa, $total_jual,$isEdit=null)
     {
         if($isEdit==null){
@@ -2231,6 +2264,7 @@ class Periksamedis extends CI_Controller
         $hpp = $_POST['totalObat']+$_POST['totalAlkes'];
 
         $this->jurnal_otomatis_alkes($_POST['totalAlkes'], $data_transaksi['no_transaksi']);
+        $this->jurnal_otomatis_biaya_ok($_POST['biaya_ok'], $data_transaksi['no_transaksi']);
         $this->jurnal_otomatis_obat($hpp,$data_transaksi['no_transaksi'], $_POST['totalObat']);
         
         
