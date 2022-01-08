@@ -44,6 +44,8 @@ class Jabatan extends CI_Controller
         } else {
             $data = array(
             'nama_jabatan' => $this->input->post('nama_jabatan',TRUE),
+            'dtm_crt' => date("Y-m-d H:i:s",  time()),
+            'dtm_upd' => date("Y-m-d H:i:s",  time()),
         );
 
             $this->Tbl_jabatan_model->insert($data);

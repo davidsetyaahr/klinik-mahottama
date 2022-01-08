@@ -107,6 +107,8 @@ class Absensi_pegawai extends CI_Controller
             'uang_makan' => $this->input->post('uang_makan',TRUE),
             'uang_transport' => $this->input->post('uang_transport',TRUE),
             'tunjangan' => $this->input->post('tunjangan',TRUE),
+            'dtm_crt' => date("Y-m-d H:i:s",  time()),
+            'dtm_upd' => date("Y-m-d H:i:s",  time()),
         );
             $check=$this->db->where('id_pegawai', $this->input->post('id_pegawai'))->get('Tbl_absensi_pegawai')->num_rows();
             if ($check < 1) {

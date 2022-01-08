@@ -61,6 +61,8 @@ class Datasatuan extends CI_Controller
             $data = array(
 		'nama_satuan' => $this->input->post('nama_satuan',TRUE),
                 'keterangan' => $this->input->post('keterangan',TRUE),
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
 	    );
 
             $this->Tbl_satuan_barang_model->insert($data);

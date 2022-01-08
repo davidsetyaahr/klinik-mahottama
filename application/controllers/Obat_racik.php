@@ -134,6 +134,8 @@ class Obat_racik extends CI_Controller
                 'kode_obat_racikan'=>$kode_obat_racikan,
                 'nama_obat_racikan' => $this->input->post('nama_obat_racikan',TRUE),
                 'id_kategori_barang' => $this->input->post('id_kategori_barang',TRUE),
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
             );
 
             $this->Tbl_obat_racikan_model->insert($data);
@@ -145,6 +147,8 @@ class Obat_racik extends CI_Controller
                 $data_obat=array(
                     'kode_obat_racikan'   => $id_last->kode_obat_racikan,
                     'kode_barang'   => $kode_barang[$i],
+                    'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                    'dtm_upd' => date("Y-m-d H:i:s",  time()),
                 );
                 $this->Tbl_obat_racikan_model->insert_child('tbl_obat_racikan_child_obat',$data_obat);
             }
@@ -152,6 +156,8 @@ class Obat_racik extends CI_Controller
                 $data_jasa=array(
                     'kode_obat_racikan'   => $id_last->kode_obat_racikan,
                     'kode_jasa'   => $kode_jasa[$i],
+                    'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                    'dtm_upd' => date("Y-m-d H:i:s",  time()),
                 );
                 $this->Tbl_obat_racikan_model->insert_child('tbl_obat_racikan_child_jasa',$data_jasa);
             }

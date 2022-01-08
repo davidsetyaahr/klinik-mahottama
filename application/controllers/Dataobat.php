@@ -358,6 +358,8 @@ class Dataobat extends CI_Controller
                 'etiket' => $this->input->post('etiket'),
                 'foto_barang' => $foto_barang,
                 'barcode' => $this->input->post('barcode'),
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
 	    );
         
         //relasi ke table akuntansi

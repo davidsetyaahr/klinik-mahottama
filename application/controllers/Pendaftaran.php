@@ -50,6 +50,8 @@ class Pendaftaran extends CI_Controller
 				'rw' 		=> $this->input->post('rw'),
 				'nama_orang_tua_atau_istri'      =>  $this->input->post('nama_orangtua_atau_istri'),
 				'nomer_telepon'     =>  $this->input->post('nomor_telepon'),
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
 			);
 			
             $data_pendaftaran = array(

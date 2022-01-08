@@ -94,6 +94,8 @@ class Transaksi_apotek extends CI_Controller
                 'is_receive'=>FALSE,
                 'keterangan' => $this->input->post('keterangan',TRUE),
                 'total_harga' => $this->input->post('totalharga',TRUE),
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
         );
         $insert=$this->Transaksi_obat_model->insert('tbl_purchases',$data);
         if ($insert) {
@@ -106,6 +108,8 @@ class Transaksi_apotek extends CI_Controller
                         'jumlah' => $stok[$i],
                         'harga' => $harga[$i],
                         'diskon' => $diskon[$i],
+                        'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                        'dtm_upd' => date("Y-m-d H:i:s",  time()),
                         // 'tgl_exp' => $tgl_exp[$i],
                     );
                     // print_r($data_detail);

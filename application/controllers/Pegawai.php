@@ -88,6 +88,8 @@ class Pegawai extends CI_Controller
         'id_jabatan' => $this->input->post('id_jabatan',TRUE),
         'tanggal_mulai_tugas' => $this->input->post('tanggal_mulai_tugas',TRUE),
         'id_klinik' => $this->id_klinik,
+        'dtm_crt' => date("Y-m-d H:i:s",  time()),
+        'dtm_upd' => date("Y-m-d H:i:s",  time()),
   //       'id_jenjang_pendidikan' => $this->input->post('id_jenjang_pendidikan',TRUE),
   //       'id_agama' => $this->input->post('id_agama',TRUE),
   //       'tempat_lahir' => $this->input->post('tempat_lahir',TRUE),

@@ -59,6 +59,8 @@ class Kategoribarang extends CI_Controller
         } else {
             $data = array(
 		'nama_kategori' => $this->input->post('nama_kategori',TRUE),
+        'dtm_crt' => date("Y-m-d H:i:s",  time()),
+        'dtm_upd' => date("Y-m-d H:i:s",  time()),
 	    );
 
             $this->Tbl_kategori_barang_model->insert($data);

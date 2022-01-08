@@ -77,6 +77,8 @@ class Pabrik extends CI_Controller
                 'kota' => $this->input->post('kota',TRUE),
                 'telp' => $this->input->post('telp',TRUE),
                 'npwp' => $this->input->post('npwp',TRUE),
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
         );
 
             $this->Tbl_pabrik_model->insert($data);

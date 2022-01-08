@@ -104,6 +104,8 @@ class Gaji extends CI_Controller
                 'cicilan'           => $this->currency($cicilan),
                 'kasbon'            => $this->currency($kasbon),
                 'bulan'             => $this->input->post('bulan'),
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
            );
             $this->Hrms_model->insert_setting('tbl_potongan_gaji', $data);
        }else{
@@ -114,6 +116,7 @@ class Gaji extends CI_Controller
                 'potongan_bpjs'     => $this->currency($potongan),
                 'cicilan'           => $this->currency($cicilan),
                 'kasbon'            => $this->currency($kasbon),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
            );
             $where=array('id_potongan' => $row->id_potongan);
             $update=$this->Hrms_model->update($where, $data, 'tbl_potongan_gaji');

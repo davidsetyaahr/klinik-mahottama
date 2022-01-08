@@ -79,6 +79,8 @@ class Kelolamenu extends CI_Controller
 		'icon' => $this->input->post('icon',TRUE),
 		'is_main_menu' => $this->input->post('is_main_menu',TRUE),
 		'is_aktif' => $this->input->post('is_aktif',TRUE),
+        'dtm_crt' => date("Y-m-d H:i:s",  time()),
+        'dtm_upd' => date("Y-m-d H:i:s",  time()),
 	    );
 
             $this->Menu_model->insert($data);
@@ -122,6 +124,7 @@ class Kelolamenu extends CI_Controller
 		'icon' => $this->input->post('icon',TRUE),
 		'is_main_menu' => $this->input->post('is_main_menu',TRUE),
 		'is_aktif' => $this->input->post('is_aktif',TRUE),
+        'dtm_upd' => date("Y-m-d H:i:s",  time()),
 	    );
 
             $this->Menu_model->update($this->input->post('id_menu', TRUE), $data);
