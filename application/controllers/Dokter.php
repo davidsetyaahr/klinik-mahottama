@@ -101,6 +101,8 @@ class Dokter extends CI_Controller
 	    'komisi_biaya_tindakan' => $this->input->post('komisi_biaya_tindakan', TRUE),
 	    'komisi_biaya_obat' => $this->input->post('komisi_biaya_obat', TRUE),
 	    'id_poli' => $this->input->post('id_poli', TRUE),
+        'dtm_crt' => date("Y-m-d H:i:s",  time()),
+        'dtm_upd' => date("Y-m-d H:i:s",  time()),
 	    );
 
             $this->Tbl_dokter_model->insert($data);
@@ -167,7 +169,7 @@ class Dokter extends CI_Controller
 	    'komisi_biaya_tindakan' => $this->input->post('komisi_biaya_tindakan', TRUE),
 	    'komisi_biaya_obat' => $this->input->post('komisi_biaya_obat', TRUE),
 	    'id_poli' => $this->input->post('id_poli', TRUE),
-            'dtm_upd' => date("Y-m-d H:i:s",  time())
+        'dtm_upd' => date("Y-m-d H:i:s",  time())
 	    );
             $this->Tbl_dokter_model->update($this->input->post('kode_dokter', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');

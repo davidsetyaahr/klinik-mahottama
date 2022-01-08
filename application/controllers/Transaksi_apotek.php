@@ -199,6 +199,8 @@ class Transaksi_apotek extends CI_Controller
                 'kode_purchase' => $kode_purchase,
                 'inv_type'      => 'RECEIPT_ORDER',
                 'id_klinik'     => $this->id_klinik,
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),                
         );
         $insert=$this->Transaksi_obat_model->insert('tbl_inventory',$data);
         $insert=1;
@@ -236,6 +238,8 @@ class Transaksi_apotek extends CI_Controller
                     'harga' => $harga[$i],
                     'diskon' => $diskon[$i],
                     'tgl_exp' => $tgl_exp[$i],
+                    'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                    'dtm_upd' => date("Y-m-d H:i:s",  time()),                    
                 );
                 $insert=$this->Transaksi_obat_model->insert('tbl_inventory_detail',$data_detail);
                 $row=$this->db->where('kode_barang', $barang[$i])->get('tbl_obat_alkes_bhp')->row();
@@ -477,6 +481,8 @@ class Transaksi_apotek extends CI_Controller
                 'kode_purchase' => $no_po,
                 'inv_type'      => $inv_type,
                 'id_klinik'     => $this->id_klinik,
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),                
         );
         $insert=$this->Transaksi_obat_model->insert('tbl_inventory',$data);
         if ($insert) {
@@ -492,6 +498,8 @@ class Transaksi_apotek extends CI_Controller
                         'harga' => $harga[$i],
                         'diskon' => $diskon[$i],
                         'tgl_exp' => $tgl_exp[$i],
+                        'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                        'dtm_upd' => date("Y-m-d H:i:s",  time()),                        
                     );
                     $insert=$this->Transaksi_obat_model->insert('tbl_inventory_detail',$data_detail);
                  } 

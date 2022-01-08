@@ -159,6 +159,8 @@ class Periksamedis extends CI_Controller
                 'inv_type'      => 'TRX_STUFF',
                 'id_periksa_lanjutan' => $getIdPeriksaLanjutan->id_periksa,
                 'id_klinik'     => $this->id_klinik,
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
             );
 
             $insert = $this->Transaksi_obat_model->insert('tbl_inventory', $data);
@@ -187,6 +189,8 @@ class Periksamedis extends CI_Controller
                         'kode_barang' => $post_alkes[$i],
                         'jumlah' => $post_alkes_jml[$i],
                         'harga' => $_POST['harga_alkes'][$i] / $post_alkes_jml[$i],
+                        'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                        'dtm_upd' => date("Y-m-d H:i:s",  time()),
                     );
                     $insert = $this->Transaksi_obat_model->insert('tbl_inventory_detail', $detailInv);
                 }
@@ -224,6 +228,8 @@ class Periksamedis extends CI_Controller
                     'kode_barang' => $kode_barang,
                     'jumlah' => $post_obat_jml[$i],
                     'harga' => $_POST['harga_obat'][$i] / $post_obat_jml[$i],
+                    'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                    'dtm_upd' => date("Y-m-d H:i:s",  time()),
                 );
                 $this->Transaksi_obat_model->insert('tbl_inventory_detail', $data_detail);
                 $total_jual_obat += $_POST['harga_obat'][$i];
@@ -575,6 +581,8 @@ class Periksamedis extends CI_Controller
                 'inv_type'      => 'TRX_STUFF',
                 'id_periksa_lanjutan' => $getIdPeriksaLanjutan->id_periksa,
                 'id_klinik'     => $this->id_klinik,
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
             );
 
             $insert = $this->Transaksi_obat_model->insert('tbl_inventory', $data);
@@ -603,6 +611,8 @@ class Periksamedis extends CI_Controller
                         'kode_barang' => $post_alkes[$i],
                         'jumlah' => $post_alkes_jml[$i],
                         'harga' => $_POST['harga_alkes'][$i] / $post_alkes_jml[$i],
+                        'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                        'dtm_upd' => date("Y-m-d H:i:s",  time()),                        
                     );
                     $insert = $this->Transaksi_obat_model->insert('tbl_inventory_detail', $detailInv);
                 }
@@ -640,6 +650,8 @@ class Periksamedis extends CI_Controller
                     'kode_barang' => $kode_barang,
                     'jumlah' => $post_obat_jml[$i],
                     'harga' => $_POST['harga_obat'][$i] / $post_obat_jml[$i],
+                    'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                    'dtm_upd' => date("Y-m-d H:i:s",  time()),                    
                 );
                 $this->Transaksi_obat_model->insert('tbl_inventory_detail', $data_detail);
                 $total_jual_obat += $_POST['harga_obat'][$i];
@@ -1404,6 +1416,8 @@ class Periksamedis extends CI_Controller
             'inv_type'      => 'TRX_STUFF',
             'id_periksa_lanjutan' => $getIdPeriksaLanjutan->id_periksa,
             'id_klinik'     => $this->id_klinik,
+            'dtm_crt' => date("Y-m-d H:i:s",  time()),
+            'dtm_upd' => date("Y-m-d H:i:s",  time()),            
         );
         $this->Transaksi_obat_model->insert('tbl_inventory', $tb_inv1);
 
@@ -1414,6 +1428,8 @@ class Periksamedis extends CI_Controller
                 'kode_barang' => $value,
                 'jumlah' => $_POST['jml_obat'][$key],
                 'harga' => $_POST['harga_obat'][$key],
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),                
             );
             $this->Transaksi_obat_model->insert('tbl_inventory_detail', $det_inv1);
             
@@ -1435,6 +1451,8 @@ class Periksamedis extends CI_Controller
                 'kode_barang' => $value,
                 'jumlah' => $_POST['jml_alkes'][$key],
                 'harga' => $_POST['harga_alkes'][$key],
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),                
             );
             $this->Transaksi_obat_model->insert('tbl_inventory_detail', $det_inv1);
             
@@ -1659,6 +1677,8 @@ class Periksamedis extends CI_Controller
             'inv_type'      => 'TRX_STUFF',
             'id_periksa_lanjutan' => $getIdPeriksaLanjutan->id_periksa,
             'id_klinik'     => $this->id_klinik,
+            'dtm_crt' => date("Y-m-d H:i:s",  time()),
+            'dtm_upd' => date("Y-m-d H:i:s",  time()),            
         );
         $this->Transaksi_obat_model->insert('tbl_inventory', $tb_inv1);
 
@@ -1669,6 +1689,8 @@ class Periksamedis extends CI_Controller
                 'kode_barang' => $value,
                 'jumlah' => $_POST['jml_obat'][$key],
                 'harga' => $_POST['harga_obat'][$key],
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
             );
             $this->Transaksi_obat_model->insert('tbl_inventory_detail', $det_inv1);
 
@@ -1690,6 +1712,8 @@ class Periksamedis extends CI_Controller
                 'kode_barang' => $value,
                 'jumlah' => $_POST['jml_alkes'][$key],
                 'harga' => $_POST['harga_alkes'][$key],
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
             );
             $this->Transaksi_obat_model->insert('tbl_inventory_detail', $det_inv1);
             
@@ -1927,6 +1951,8 @@ class Periksamedis extends CI_Controller
             'inv_type' => 'TRX_STUFF',
             'id_periksa_lanjutan' => $getIdPeriksaLanjutan->id_periksa,
             'id_klinik' => $this->id_klinik,
+            'dtm_crt' => date("Y-m-d H:i:s",  time()),
+            'dtm_upd' => date("Y-m-d H:i:s",  time()),            
         );
         $this->Transaksi_obat_model->insert('tbl_inventory', $tb_inv1);
         
@@ -1937,6 +1963,8 @@ class Periksamedis extends CI_Controller
                 'kode_barang' => $value,
                 'jumlah' => $_POST['jml_obat'][$key],
                 'harga' => $_POST['harga_obat'][$key],
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),                
             );
         $this->Transaksi_obat_model->insert('tbl_inventory_detail', $det_inv1);
         
@@ -1958,6 +1986,8 @@ class Periksamedis extends CI_Controller
                 'kode_barang' => $value,
                 'jumlah' => $_POST['jml_alkes'][$key],
                 'harga' => $_POST['harga_alkes'][$key],
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),                
             );
         $this->Transaksi_obat_model->insert('tbl_inventory_detail', $det_inv1);
         
@@ -2232,6 +2262,8 @@ class Periksamedis extends CI_Controller
                 'inv_type'      => 'TRX_STUFF',
                 'id_periksa_lanjutan' => $getIdPeriksaLanjutan->id_periksa,
                 'id_klinik'     => $this->id_klinik,
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),                
             );
             $this->Transaksi_obat_model->insert('tbl_inventory', $tb_inv1);
         }
@@ -2250,6 +2282,8 @@ class Periksamedis extends CI_Controller
                     'kode_barang' => $value,
                     'jumlah' => $_POST['jml_obat'][$key],
                     'harga' => $_POST['harga_obat'][$key],
+                    'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                    'dtm_upd' => date("Y-m-d H:i:s",  time()),                    
                 );
                 $this->Transaksi_obat_model->insert('tbl_inventory_detail', $det_inv1);
                 
@@ -2292,6 +2326,8 @@ class Periksamedis extends CI_Controller
                     'kode_barang' => $value,
                     'jumlah' => $_POST['jml_alkes'][$key],
                     'harga' => $_POST['harga_alkes'][$key],
+                    'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                    'dtm_upd' => date("Y-m-d H:i:s",  time()),                    
                 );
                 $this->Transaksi_obat_model->insert('tbl_inventory_detail', $det_inv1);
                 
@@ -2786,6 +2822,8 @@ class Periksamedis extends CI_Controller
             'id_inventory'  => $kode_receipt1,
             'inv_type'      => 'TRX_STUFF',
             'id_klinik'     => $this->id_klinik,
+            'dtm_crt' => date("Y-m-d H:i:s",  time()),
+            'dtm_upd' => date("Y-m-d H:i:s",  time()),            
         );
         $this->Transaksi_obat_model->insert('tbl_inventory', $tb_inv1);
 
@@ -2797,6 +2835,8 @@ class Periksamedis extends CI_Controller
             'harga' => $getObat1->harga,
             'diskon' => $getObat1->diskon,
             'tgl_exp' => $getObat1->tgl_exp,
+            'dtm_crt' => date("Y-m-d H:i:s",  time()),
+            'dtm_upd' => date("Y-m-d H:i:s",  time()),            
         );
         $this->Transaksi_obat_model->insert('tbl_inventory_detail', $det_inv1);
 
@@ -2806,6 +2846,8 @@ class Periksamedis extends CI_Controller
             'id_inventory'  => $kode_receipt2,
             'inv_type'      => 'TRX_STUFF',
             'id_klinik'     => $this->id_klinik,
+            'dtm_crt' => date("Y-m-d H:i:s",  time()),
+            'dtm_upd' => date("Y-m-d H:i:s",  time()),            
         );
         $this->Transaksi_obat_model->insert('tbl_inventory', $tb_inv2);
 
@@ -2819,6 +2861,8 @@ class Periksamedis extends CI_Controller
                 'harga' => $getObat2->harga,
                 'diskon' => $getObat2->diskon,
                 'tgl_exp' => $getObat2->tgl_exp,
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),                
             );
             $this->Transaksi_obat_model->insert('tbl_inventory_detail', $det_inv2);
             $this->db->insert('alkes_kontrol_kehamilan', ['no_periksa' => $periksa['no_periksa'], 'kode_barang' => $value, 'jml_barang' => $det_inv2['jumlah']]);

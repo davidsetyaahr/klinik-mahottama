@@ -112,6 +112,8 @@ class Akun extends CI_Controller
             'id_main_akun'    => $id_main_akun,
             'sifat_debit'     => $row->sifat_debit,
             'sifat_kredit'    => $row->sifat_kredit,
+            'dtm_crt' => date("Y-m-d H:i:s",  time()),
+            'dtm_upd' => date("Y-m-d H:i:s",  time()),
         );
         $this->Tbl_akun_model->insert($data);
         $row=$this->db->select_max('id_akun')->get('tbl_akun')->row();
@@ -121,6 +123,8 @@ class Akun extends CI_Controller
             'turunan1'          => $turunan1,
             'turunan2'          => $turunan2,
             'turunan3'          => $turunan3,
+            'dtm_crt' => date("Y-m-d H:i:s",  time()),
+            'dtm_upd' => date("Y-m-d H:i:s",  time())
         );
         $this->db->insert('tbl_akun_detail', $data_d);
         $this->session->set_flashdata('message', 'Create Record Success 2');
