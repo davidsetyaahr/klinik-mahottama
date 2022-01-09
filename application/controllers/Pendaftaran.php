@@ -116,7 +116,7 @@ class Pendaftaran extends CI_Controller
             else{
                 $this->data['no_id_pasien'] = '000001';
             }
-			$this->data['no_rekam_medis_default'] = $this->Master_sequence_model->set_code_by_master_seq_code("NOREKAMMEDIS");
+			$this->data['no_rekam_medis_default'] = $this->data['no_id_pasien'];
 			$this->data['no_rekam_medis'] = $pasien_existing != null ? $pasien_existing->no_rekam_medis : ($dataPasien != null ? set_value('no_rekam_medis') : $this->data['no_rekam_medis_default']);
 			$this->data['no_id'] = $pasien_existing != null ? $pasien_existing->no_id_pasien : $this->data['no_id_pasien'];
 			$this->data['nama_lengkap'] = $pasien_existing != null ? $pasien_existing->nama_lengkap : set_value('nama_lengkap');
