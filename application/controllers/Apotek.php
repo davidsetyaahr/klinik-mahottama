@@ -177,6 +177,8 @@ class Apotek extends CI_Controller
                     'id_inventory'  => $kode_receipt,
                     'inv_type'      => 'TRX_STUFF',
                     'id_klinik'     => $this->id_klinik,
+                    'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                    'dtm_upd' => date("Y-m-d H:i:s",  time()),
             );
             $getDiskon=$this->db->where('bulan', date('Y-m'))->get('tbl_diskon_trx')->result_array();
             $insert=$this->Transaksi_obat_model->insert('tbl_inventory',$data);
@@ -210,6 +212,8 @@ class Apotek extends CI_Controller
                         'jumlah' => $post_obat_jml[$i],
                         'harga' => $harga_jual,
                         'tgl_exp' => $tgl_exp,
+                        'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                        'dtm_upd' => date("Y-m-d H:i:s",  time()),
                     );
                     $total=$post_obat_jml[$i]*$harga_jual;
                     $total_jual+=$total;

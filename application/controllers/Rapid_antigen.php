@@ -183,6 +183,8 @@ class Rapid_antigen extends CI_Controller
                     'id_inventory'  => $kode_receipt1,
                     'inv_type'      => 'TRX_STUFF',
                     'id_klinik'     => $this->id_klinik,
+                    'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                    'dtm_upd' => date("Y-m-d H:i:s",  time()),                    
             );
             $this->Transaksi_obat_model->insert('tbl_inventory',$tb_inv1);
         
@@ -196,6 +198,8 @@ class Rapid_antigen extends CI_Controller
                     'harga' => $getObat1->harga,
                     'diskon' => $getObat1->diskon,
                     'tgl_exp' => $getObat1->tgl_exp,
+                    'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                    'dtm_upd' => date("Y-m-d H:i:s",  time()),                    
                 );
                 $this->Transaksi_obat_model->insert('tbl_inventory_detail',$det_inv1);
                 $this->db->insert('alkes_periksa_rapid',['no_sampel' => $getNoSampel->no_sampel,'kode_barang' => $value,'jml_barang' => $det_inv1['jumlah']]);

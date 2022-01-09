@@ -58,6 +58,8 @@ class Klinik extends CI_Controller
             'id_klinik' => set_value('id_klinik'),
             'nama_klinik' => set_value('nama_klinik'),
             'alamat_klinik' => set_value('alamat_klinik'),
+            'dtm_crt' => date("Y-m-d H:i:s",  time()),
+            'dtm_upd' => date("Y-m-d H:i:s",  time()),
     );
         $this->template->load('template','master_data/klinik/tbl_klinik_create', $data);
     }

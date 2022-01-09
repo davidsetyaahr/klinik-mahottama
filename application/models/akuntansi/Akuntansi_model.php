@@ -204,7 +204,7 @@ class Akuntansi_model extends CI_Model
       $this->datatables->where('tipe', 'DEBIT');
       $this->datatables->where('d.keterangan', 'akun');
       $this->datatables->like('a.no_akun', '5', 'after');
-      $this->db->group_by('t.id_trx_akun');
+      $this->datatables->group_by('t.id_trx_akun');
       $this->datatables->add_column('action',anchor('','<span class="fa fa-table"></span> Detail','data-total="$1" data-id="$2" class="btn btn-default btn-detail btn-sm"'),'jumlah,id_trx_akun');
 
       // $this->db->order_by('a.nama_akun','asc');

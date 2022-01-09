@@ -69,6 +69,8 @@ class Lokasibarang extends CI_Controller
             $data = array(
                 // 'id_lokasi_barang' => $id_lokasi_barang,
                 'lokasi' => $this->input->post('lokasi',TRUE),
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
         );
 
             $this->Tbl_lokasi_barang_model->insert($data);

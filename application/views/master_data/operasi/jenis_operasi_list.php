@@ -39,6 +39,7 @@
                                 <tr>
                                     <th width="30px">No</th>
                             		<th>Jenis Operasi</th>
+                            		<th>Biaya OK</th>
                             		<th width="100px">Action</th>
                                 </tr>
                             </thead>
@@ -89,7 +90,7 @@
                 {
                     "data": "id_jenis_operasi",
                     "orderable": false
-                },{"data": "nama_jenis_operasi"},
+                },{"data": "nama_jenis_operasi"},{"data": "biaya_ok", render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp. ' )},
                 {
                     "data" : "action",
                     "orderable": false,

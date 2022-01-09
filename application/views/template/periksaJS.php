@@ -3,6 +3,12 @@
             var getNo = thisParam.closest('.loop-biaya').attr('data-no')
             $(".loop-biaya[data-no='" + getNo + "'] .biaya").val(biaya)
         }
+        function getOk(thisParam){
+            var biaya = thisParam.find(":selected").attr('data-biaya-ok')
+            $(".opr .ok").val(biaya)
+            $("#totalBiayaOk").val(biaya)
+            console.log(biaya)
+        }
         function subTotalBiaya(dataNo) {
             var qty_biaya = parseInt($(".loop-biaya[data-no='" + dataNo + "'] .qty_biaya").val())
             var biaya = parseInt($(".loop-biaya[data-no='" + dataNo + "'] .biaya").val())
@@ -33,6 +39,10 @@
 
         $(".getBiaya").change(function() {
             getBiaya($(this))
+        })
+
+        $(".getOk").change(function() {
+            getOk($(this))
         })
 
         function subTotalBiayaOpr() {

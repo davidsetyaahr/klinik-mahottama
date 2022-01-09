@@ -75,6 +75,8 @@ class Gudang extends CI_Controller
                 'alamat_gudang' => $this->input->post('alamat_gudang',TRUE),
                 'kota' => $this->input->post('kota',TRUE),
                 'telp' => $this->input->post('telp',TRUE),
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
         );
 
             $this->Tbl_gudang_model->insert($data);

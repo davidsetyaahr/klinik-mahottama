@@ -71,6 +71,8 @@ class Golonganbarang extends CI_Controller
                 // 'id_golongan_barang' => $id_golongan_barang,
                 'nama_golongan_barang' => $this->input->post('nama_golongan_barang',TRUE),
                 'keterangan' => $this->input->post('keterangan',TRUE),
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
         );
 
             $this->Tbl_golongan_barang_model->insert($data);
@@ -107,7 +109,7 @@ class Golonganbarang extends CI_Controller
 		        // 'id_golongan_barang'       => $this->input->post('id_golongan_barang'),
 				'nama_golongan_barang'		=> $this->input->post('nama_golongan_barang'),
 				'keterangan'              => $this->input->post('keterangan'),
-                'dtm_upd'           => date("Y-m-d H:i:s")
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
 	        );
 
             $this->Tbl_golongan_barang_model->update($this->input->post('id_golongan_barang', TRUE), $data);

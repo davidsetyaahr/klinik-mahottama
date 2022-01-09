@@ -18,7 +18,7 @@ class Tbl_jenis_operasi_model extends CI_Model
 
     public function json()
     {
-        $this->datatables->select('id_jenis_operasi, nama_jenis_operasi');
+        $this->datatables->select('id_jenis_operasi, nama_jenis_operasi, biaya_ok');
         $this->datatables->from($this->table);
         $this->datatables->add_column('action', 
                 anchor(site_url('jenis_operasi/edit/$1'),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>', array('class' => 'btn btn-success btn-sm'))." 

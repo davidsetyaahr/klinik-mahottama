@@ -2,6 +2,18 @@
     <section class="content">
         <div class="row">
             <div class="col-md-12">
+            <?php 
+            if($this->session->flashdata('message')){
+                if($this->session->flashdata('message_type') == 'danger')
+                    echo alert('alert-danger', 'Perhatian', $this->session->flashdata('message'));
+                else if($this->session->flashdata('message_type') == 'success')
+                    echo alert('alert-success', 'Sukses', $this->session->flashdata('message')); 
+                else
+                    echo alert('alert-info', 'Info', $this->session->flashdata('message')); 
+            }
+            ?>
+            </div>
+            <div class="col-md-12">
                 <div class="box box-warning box-solid">
                     <div class="box-header with-border">
                         <h3 class="box-title">PERIKSA LAB</h3>
@@ -130,7 +142,7 @@
                                 <div class="col-md-12">
                                     <div class="pull-right">
                                         <button type="reset" class="btn btn-default"><span class="fa fa-times"></span> Batal</button>
-                                        <button type="submit" class="btn btn-warning"><span class="fa fa-save"></span> Periksa</button>
+                                        <button type="submit" class="btn btn-warning" onclick="confirm('Yakin Simpan?')"><span class="fa fa-save"></span> Periksa</button>
                                     </div>
                                 </div>
                             </div>

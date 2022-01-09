@@ -94,6 +94,8 @@ class Pegawai extends CI_Controller
                 'nilai_index' => $this->input->post('nilai_index',TRUE),
                 // 'id_shift' => $this->input->post('id_shift',TRUE),
                 'id_klinik' => $this->id_klinik,
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
 	       );
 
             $this->Tbl_pegawai_model->insert($data);

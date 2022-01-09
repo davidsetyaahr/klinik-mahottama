@@ -104,6 +104,8 @@ class Set_gaji extends CI_Controller
             'uang_lembur' => $this->currency($uang_lembur),
             'potongan_telat' => $this->currency($potongan_telat),
             'tunjangan' => $this->currency($tunjangan),
+            'dtm_crt' => date("Y-m-d H:i:s",  time()),
+            'dtm_upd' => date("Y-m-d H:i:s",  time()),
         );
             $check=$this->db->where('id_pegawai', $this->input->post('id_pegawai'))->get('Tbl_setting_gaji')->num_rows();
             if ($check < 1) {

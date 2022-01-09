@@ -82,6 +82,8 @@ class Apoteker extends CI_Controller
         'no_sik_sipa' => $this->input->post('no_sik_sipa',TRUE),
         'no_stra' => $this->input->post('no_stra',TRUE),
         'tanggal_mulai_tugas' => $this->input->post('tanggal_mulai_tugas',TRUE),
+        'dtm_crt' => date("Y-m-d H:i:s",  time()),
+        'dtm_upd' => date("Y-m-d H:i:s",  time()),
 	    );
 
             $this->Tbl_apoteker_model->insert($data);

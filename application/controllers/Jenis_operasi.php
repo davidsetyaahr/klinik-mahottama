@@ -24,6 +24,7 @@ class Jenis_operasi extends CI_Controller
     public function _rules() 
     {
         $this->form_validation->set_rules('nama_jenis_operasi', 'nama_jenis_operasi', 'trim|required');
+        $this->form_validation->set_rules('biaya_ok', 'biaya_ok', 'trim|required');
         $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
     public function create() 
@@ -33,6 +34,7 @@ class Jenis_operasi extends CI_Controller
             'action' => site_url('jenis_operasi/create_action'),
             'id_jenis_operasi' => set_value('id_jenis_operasi'),
             'nama_jenis_operasi' => set_value('nama_jenis_operasi'),
+            'biaya_ok' => set_value('biaya_ok'),
         );
         $this->template->load('template','master_data/operasi/tbl_jenis_operasi_form', $data);
     }
@@ -45,6 +47,7 @@ class Jenis_operasi extends CI_Controller
         } else {
             $data = array(
                 'nama_jenis_operasi' => $this->input->post('nama_jenis_operasi', TRUE),
+                'biaya_ok' => $this->input->post('biaya_ok', TRUE),
             );
             $this->Tbl_jenis_operasi_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
@@ -62,6 +65,7 @@ class Jenis_operasi extends CI_Controller
                 'action' => site_url('jenis_operasi/update'),
                 'id_jenis_operasi' => set_value('id_jenis_operasi',$row->id_jenis_operasi),
                 'nama_jenis_operasi' => set_value('nama_jenis_operasi',$row->nama_jenis_operasi),
+                'biaya_ok' => set_value('biaya_ok',$row->biaya_ok),
             );
             $this->template->load('template','master_data/operasi/tbl_jenis_operasi_form', $data);
         } else {
@@ -79,6 +83,7 @@ class Jenis_operasi extends CI_Controller
         } else {
             $data = array(
                 'nama_jenis_operasi' => $this->input->post('nama_jenis_operasi', TRUE),
+                'biaya_ok' => $this->input->post('biaya_ok', TRUE),
             );
             $this->Tbl_jenis_operasi_model->update($this->input->post('id_jenis_operasi', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');

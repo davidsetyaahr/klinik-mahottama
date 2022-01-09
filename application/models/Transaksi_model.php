@@ -169,7 +169,7 @@ class Transaksi_model extends CI_Model
         // }
         $this->datatables->where($where);
         $this->db->order_by('tbl_pendaftaran.no_pendaftaran','desc');
-        $this->db->group_by('tbl_pendaftaran.no_pendaftaran');
+        $this->datatables->group_by('tbl_pendaftaran.no_pendaftaran');
 
         $this->datatables->add_column('action',anchor(site_url('pembayaran/bayar/$1?tab=pemeriksaan'),'Bayar','class="btn btn-danger btn-sm"'),'no_pendaftaran');
             
@@ -202,7 +202,7 @@ class Transaksi_model extends CI_Model
         //     $this->datatables->where('tbl_pendaftaran.tipe_periksa', $tipe);
         // }
         $this->db->order_by('tbl_pendaftaran.no_pendaftaran','asc');
-        $this->db->group_by('tbl_pendaftaran.no_pendaftaran');
+        $this->datatables->group_by('tbl_pendaftaran.no_pendaftaran');
             
         return $this->datatables->generate();
     }
@@ -376,7 +376,7 @@ class Transaksi_model extends CI_Model
         $this->datatables->like('td.deskripsi', $dprks);
         $this->datatables->add_column('action', anchor('#show','<i class="fa fa-eye" aria-hidden="true"></i>', array('class' => 'btn btn-info btn-sm', 'data-toggle' => 'modal')));
         // $this->datatables->like('td.deskripsi', 'Pembayaran Biaya Pemeriksaan');
-        $this->db->group_by('pe.no_pendaftaran');
+        $this->datatables->group_by('pe.no_pendaftaran');
         // $this->db->group_by('l.tipe_periksa');
         return $this->datatables->generate();
     }
@@ -416,7 +416,7 @@ class Transaksi_model extends CI_Model
         // $this->datatables->add_column('action', anchor('#','<i class="fa fa-eye" aria-hidden="true"></i>',"class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal'"));
         // $this->datatables->like('td.deskripsi', 'Pembayaran Biaya Pemeriksaan');
         
-        $this->db->group_by('pe.no_pendaftaran');
+        $this->datatables->group_by('pe.no_pendaftaran');
         return $this->datatables->generate();
     }
 

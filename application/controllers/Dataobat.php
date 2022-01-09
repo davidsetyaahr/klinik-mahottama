@@ -169,6 +169,8 @@ class Dataobat extends CI_Controller
             'id_inventory'  => $kode_receipt,
             'inv_type'      => 'MANUFAKTUR_IN',
             'id_klinik'     => $this->id_klinik,
+            'dtm_crt' => date("Y-m-d H:i:s",  time()),  
+            'dtm_upd' => date("Y-m-d H:i:s",  time()),
         );
         $this->db->insert("tbl_inventory",$inventoryBJadi);
         
@@ -179,7 +181,9 @@ class Dataobat extends CI_Controller
             "harga" => $_POST['harga'],
             "kode_gudang" => "",
             "id_lokasi_barang" => 0,
-            "tgl_exp" => $_POST['tgl_exp']
+            "tgl_exp" => $_POST['tgl_exp'],
+            'dtm_crt' => date("Y-m-d H:i:s",  time()),
+            'dtm_upd' => date("Y-m-d H:i:s",  time()),
         );
         $this->db->insert("tbl_inventory_detail",$detailInventoryBJadi);
         
@@ -190,6 +194,8 @@ class Dataobat extends CI_Controller
             'id_inventory'  => $kode_receipt2,
             'inv_type'      => 'MANUFAKTUR_OUT',
             'id_klinik'     => $this->id_klinik,
+            'dtm_crt' => date("Y-m-d H:i:s",  time()),
+            'dtm_upd' => date("Y-m-d H:i:s",  time()),
         );
         $this->db->insert("tbl_inventory",$inventoryBBerkurang);
         
@@ -202,7 +208,9 @@ class Dataobat extends CI_Controller
                 "harga" => $_POST['m_harga'][$key],
                 "kode_gudang" => "",
                 "id_lokasi_barang" => 0,
-                "tgl_exp" => $_POST['tgl_exp'][$key]
+                "tgl_exp" => $_POST['tgl_exp'][$key],
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
             );
             $this->db->insert("tbl_inventory_detail",$detailInventoryBJadi);
     
@@ -350,6 +358,8 @@ class Dataobat extends CI_Controller
                 'etiket' => $this->input->post('etiket'),
                 'foto_barang' => $foto_barang,
                 'barcode' => $this->input->post('barcode'),
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
 	    );
         
         //relasi ke table akuntansi
@@ -921,6 +931,8 @@ class Dataobat extends CI_Controller
             'id_inventory' => $_POST['id_inventory'],
             'inv_type' => $_POST['inv_type'],
             'id_klinik'     => $_POST['id_klinik'],
+            'dtm_crt' => date("Y-m-d H:i:s",  time()),
+            'dtm_upd' => date("Y-m-d H:i:s",  time()),
         );
         $this->db->insert('tbl_inventory', $inventory);
         
@@ -939,6 +951,8 @@ class Dataobat extends CI_Controller
                 'id_inventory' => $_POST['id_inventory'],
                 'kode_barang' => $value,
                 'jumlah' => $selisihStok,
+                'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                'dtm_upd' => date("Y-m-d H:i:s",  time()),
             );
             $this->db->insert('tbl_inventory_detail',$detailInventory);
 
