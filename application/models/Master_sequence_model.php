@@ -19,14 +19,16 @@ class Master_sequence_model extends CI_Model
 		$this->db->where('master_seq_code', $master_seq_code);
         $row = $this->db->get($this->table)->row();
 		
-		$seq_no = $row->seq_no;
+		$seq_no = $row->seq_no+1;
 		$length_no = $row->length_no;
 		
-		$code = "";
-		for($i = strlen((string)$seq_no); $i<$length_no; $i++){
-			$code .= "0";
-		}
-		$code .= (string)($seq_no+1);
+		$code = sprintf("%0".$length_no."s",$seq_no);		
+
+		// $code = "";
+		// for($i = strlen((string)$seq_no); $i<$length_no; $i++){
+		// 	$code .= "0";
+		// }
+		// $code .= (string)($seq_no+1);
 		
 		if($is_save){
 			$sql = "UPDATE tbl_master_sequence SET seq_no = ". ($seq_no+1) .", dtm_upd = NOW() 
