@@ -42,17 +42,28 @@ class Transaksi_model extends CI_Model
     
     function get_detail_by_h_id($h_id)
     {
-        $this->db->select('td.*, l.tipe_periksa, p.no_pendaftaran');
+        $this->db->select('td.*, l.tipe_periksa, p.no_pendaftaran,t.no_transaksi');
         $this->db->join('tbl_transaksi t','td.id_transaksi = t.id_transaksi');
         $this->db->join('tbl_periksa_lanjutan l','t.id_periksa_lanjutan = l.id_periksa');
         $this->db->join('tbl_pendaftaran p','l.no_pendaftaran = p.no_pendaftaran');
+        // $this->db->join('tbl_periksa_d_biaya db','db.no_periksa = t.no_transaksi');
+        // $this->db->join('tbl_biaya b','b.id_biaya = db.id_biaya');
         $this->db->where('p.no_pendaftaran', $h_id);
+        // $this->db->group_by('db.id_periksa_d_biaya');
         return $this->db->get('tbl_transaksi_d td')->result();
+    }
+
+    function get_detail_biaya($no_periksa)
+    {
+        $this->db->select('db.*, b.nama_biaya');
+        $this->db->join('tbl_biaya b','b.id_biaya = db.id_biaya');
+        $this->db->where('db.no_periksa', $no_periksa);
+        return $this->db->get('tbl_periksa_d_biaya db')->result();
     }
 
     function get_detail_by_n_id($h_id)
     {
-        $this->db->select('td.*, t.no_transaksi');
+        $this->db->select('td.*, t.no_transaksi, b.nama_biaya');
         $this->db->join('tbl_transaksi t','td.id_transaksi = t.id_transaksi');
         $this->db->where('t.no_transaksi', $h_id);
         return $this->db->get('tbl_transaksi_d td')->result();

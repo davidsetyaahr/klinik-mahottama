@@ -86,10 +86,29 @@
                     }
                     $tipe = $caption[$data->tipe_periksa];
                     ?>
-                        <div class="form-group">
-                            <div class="col-sm-3"><?php echo $data->deskripsi;?></div>
-							<div class="col-sm-3"><?php echo $data->dc == 'd' ? number_format($data->amount_transaksi,2,',','.') : ($data->amount_transaksi != 0 ? '-'.number_format($data->amount_transaksi,2,',','.') : number_format(0,2,',','.'));?></div>
-						</div>
+                            <!-- <div class="col-sm-3"><?php echo $data->deskripsi;?></div> -->
+                        <?php if($data->deskripsi == "Biaya Lainnya"){
+                           $biaya_d = $this->Transaksi_model->get_detail_biaya($data->no_transaksi);                            
+                            foreach ($biaya_d as $db){
+                        ?>
+                            <div class="form-group">
+                                <div class="col-sm-3"><?= $db->nama_biaya ?></div>
+                                <div class="col-sm-3"><?= number_format($db->biaya,2,',','.'); ?></div>
+                            </div>
+                        <?php
+                            // $total_biaya += $db->biaya;
+                            }
+                        }else{
+                            ?>
+                           <div class="form-group">
+                                <div class="col-sm-3">
+                                    <?= $data->deskripsi; ?>
+                                </div>
+                                <div class="col-sm-3">
+                                    <?= number_format($data->amount_transaksi,2,',','.') ?>
+                                </div>
+                            </div>
+                            <?php } ?>
                     <?php
                         if($data->dc == 'd')
                             $total_transaksi += $data->amount_transaksi;
@@ -101,7 +120,7 @@
                         <!-- <div class="form-group">
 							<div class="col-sm-3">Biaya Administrasi</div>
     						<div class="col-sm-3">
-    							<?php// echo form_input(array('id'=>'biaya_administrasi','name'=>'biaya_administrasi','type'=>'text','value'=>'','class'=>'form-control','style'=>'text-align:right;','placeholder'=>'0','onchange'=>'hitung_total()','onkeyup' => 'formatRupiah(this)'));?>
+    							// echo form_input(array('id'=>'biaya_administrasi','name'=>'biaya_administrasi','type'=>'text','value'=>'','class'=>'form-control','style'=>'text-align:right;','placeholder'=>'0','onchange'=>'hitung_total()','onkeyup' => 'formatRupiah(this)'));?>
     						</div>
 						</div>  -->
                         <div class="form-group">
