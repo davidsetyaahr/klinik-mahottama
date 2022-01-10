@@ -257,6 +257,9 @@ class Pembayaran extends CI_Controller
             $this->data['getSubsidi'] = $this->Transaksi_model->cekSubsidi($data_transaksi->no_pendaftaran);
             $this->data['cekSubsidi'] = count((array)$this->data['getSubsidi']);
             $this->data['isPasien'] = $status_pasien->is_pasien;
+            // echo "<pre>";
+            // print_r($this->data['biaya_d']);
+            // echo "</pre>";
 
             
             if($this->input->post('total_transaksi')){
