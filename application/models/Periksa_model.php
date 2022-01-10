@@ -221,7 +221,7 @@ class Periksa_model extends CI_Model
         return $this->db->get_where('tbl_periksa_d_alkes pda',['pda.no_pendaftaran' => $noPendaftaran,'pda.tipe_periksa' => $tipePeriksa])->result();
     }
     public function countPeriksaLanjutan($noPendaftaran,$tipePeriksa){
-        return $this->db->get_where('tbl_periksa_lanjutan',['no_pendaftaran' => $noPendaftaran,'tipe_periksa' => $tipePeriksa, 'is_periksa' => '0'])->num_rows(); 
+        return $this->db->get_where('tbl_periksa_lanjutan',['no_pendaftaran' => $noPendaftaran,'tipe_periksa' => $tipePeriksa, 'is_periksa' => '0'])->num_rows();
     }
     public function getIdPeriksaLanjutan($noPendaftaran,$tipePeriksa)
     {

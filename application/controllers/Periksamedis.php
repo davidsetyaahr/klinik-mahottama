@@ -1612,6 +1612,7 @@ class Periksamedis extends CI_Controller
             }
         } else {
             $updatePendaftaran['is_closed'] = '1';
+            $this->updateStatusKamar($this->no_pendaftaran);
         }
 
         $this->Pendaftaran_model->update($this->no_pendaftaran, $updatePendaftaran);
@@ -1893,6 +1894,7 @@ class Periksamedis extends CI_Controller
             }
         } else {
             $updatePendaftaran['is_closed'] = '1';
+            $this->updateStatusKamar($this->no_pendaftaran);
         }
 
         $this->Pendaftaran_model->update($this->no_pendaftaran, $updatePendaftaran);
@@ -2158,17 +2160,19 @@ class Periksamedis extends CI_Controller
         
         //d_periksa_biaya
         foreach ($_POST['id_biaya'] as $key => $value) {
-            $periksa_d_biaya = array(
-                'no_pendaftaran' => $this->no_pendaftaran,
-                'no_periksa' => $this->input->post('no_periksa'),
-                'id_biaya' => $value,
-                'jumlah' => $_POST['qty_biaya'][$key],
-                'biaya' => $_POST['biaya'][$key],
-                'tipe_periksa' => '3',
-                'dtm_crt' => date("Y-m-d H:i:s",  time()),
-                'dtm_upd' => date("Y-m-d H:i:s",  time()),
-            );
-        $this->db->insert('tbl_periksa_d_biaya', $periksa_d_biaya);
+            if($_POST['id_biaya'][$key]!='' && ($_POST['qty_biaya'][$key]!=0 || $_POST['qty_biaya'][$key]!='')){
+                $periksa_d_biaya = array(
+                    'no_pendaftaran' => $this->no_pendaftaran,
+                    'no_periksa' => $this->input->post('no_periksa'),
+                    'id_biaya' => $value,
+                    'jumlah' => $_POST['qty_biaya'][$key],
+                    'biaya' => $_POST['biaya'][$key],
+                    'tipe_periksa' => '3',
+                    'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                    'dtm_upd' => date("Y-m-d H:i:s",  time()),
+                );
+                $this->db->insert('tbl_periksa_d_biaya', $periksa_d_biaya);
+            }
         }
 
         $updatePendaftaran = array(
@@ -2191,6 +2195,7 @@ class Periksamedis extends CI_Controller
             }
         } else {
             $updatePendaftaran['is_closed'] = '1';
+            $this->updateStatusKamar($this->no_pendaftaran);
         }
         
         $this->Pendaftaran_model->update($this->no_pendaftaran, $updatePendaftaran);
@@ -2582,30 +2587,31 @@ class Periksamedis extends CI_Controller
             }
         }
 
-        $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '0'], ['no_pendaftaran' => $this->no_pendaftaran]);
+        // $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '0'], ['no_pendaftaran' => $this->no_pendaftaran]);
 
-        $updatePendaftaran = array(
-            'dtm_upd' => date("Y-m-d H:i:s",  time())
-        );
+        // $updatePendaftaran = array(
+        //     'dtm_upd' => date("Y-m-d H:i:s",  time())
+        // );
         
-        if ($_POST['pemeriksaan_selanjutnya'] != '0') {
-            if($_POST['pemeriksaan_selanjutnya']=='2'){ // jika tetap di rawat inap
-                $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '1'], ['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $_POST['pemeriksaan_selanjutnya']]);
-            }
-            else{
-                $periksaLanjutan = array(
-                    'no_pendaftaran' => $this->no_pendaftaran,
-                    'tipe_periksa' => $_POST['pemeriksaan_selanjutnya'],
-                    'tanggal' => date('Y-m-d H:i:s'),
-                    'is_periksa' => '1',
-                );
-                $this->db->insert('tbl_periksa_lanjutan', $periksaLanjutan);
-            }
-        } else {
-            $updatePendaftaran['is_closed'] = '1';
-        }
+        // if ($_POST['pemeriksaan_selanjutnya'] != '0') {
+        //     if($_POST['pemeriksaan_selanjutnya']=='2'){ // jika tetap di rawat inap
+        //         $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '1'], ['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $_POST['pemeriksaan_selanjutnya']]);
+        //     }
+        //     else{
+        //         $periksaLanjutan = array(
+        //             'no_pendaftaran' => $this->no_pendaftaran,
+        //             'tipe_periksa' => $_POST['pemeriksaan_selanjutnya'],
+        //             'tanggal' => date('Y-m-d H:i:s'),
+        //             'is_periksa' => '1',
+        //         );
+        //         $this->db->insert('tbl_periksa_lanjutan', $periksaLanjutan);
+        //     }
+        // } else {
+        //     $updatePendaftaran['is_closed'] = '1';
+        //     $this->updateStatusKamar($this->no_pendaftaran);
+        // }
         
-        $this->Pendaftaran_model->update($this->no_pendaftaran, $updatePendaftaran);
+        // $this->Pendaftaran_model->update($this->no_pendaftaran, $updatePendaftaran);
 
         $data_transaksi_d = array();
 
@@ -2712,6 +2718,7 @@ class Periksamedis extends CI_Controller
             }
         } else {
             $updatePendaftaran['is_closed'] = '1';
+            $this->updateStatusKamar($this->no_pendaftaran);
         }
         
         $this->Pendaftaran_model->update($this->no_pendaftaran, $updatePendaftaran);
@@ -2734,6 +2741,16 @@ class Periksamedis extends CI_Controller
         redirect(site_url('periksamedis'));
 
 
+    }
+    public function updateStatusKamar($noPendaftaran)
+    {
+        $this->db->select('id_kamar');
+        $this->db->join('tbl_periksa_rawat_inap_detail prd','pr.id_periksa_rawat_inap = prd.id_periksa_rawat_inap');
+        $getIdKamar = $this->db->get_where('tbl_periksa_rawat_inap pr',['pr.no_pendaftaran' => $noPendaftaran])->result();
+
+        foreach ($getIdKamar as $key => $value) {
+            $this->db->update('tbl_kamar',['status' => '0'],['id_kamar' => $value->id_kamar]);
+        }
     }
 
     public function newItemRawatInap()
