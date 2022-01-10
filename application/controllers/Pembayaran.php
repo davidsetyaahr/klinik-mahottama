@@ -697,6 +697,70 @@ class Pembayaran extends CI_Controller
         $view = isset($_GET['view']) ? $_GET['view'] : 'cetak_surat_periksa';
         $this->load->view('pembayaran/'.$view, $this->data);
     }
+
+    public function cetak_surat_pembayaran_detail($no_pendaftaran, $tipe_periksa){
+        $no_pendaftaran = $no_pendaftaran;
+        $data_transaksi = $this->Transaksi_model->get_detail_no_pendaftaran($no_pendaftaran);
+        $ambil_pasien = $this->Tbl_pasien_model->get_status($data_transaksi->no_rekam_medis);
+        if(empty($_GET['tab'])){
+            $data_periksa = $this->Periksa_model->get_by_id($data_transaksi->no_transaksi);
+            $data_pasien = $this->Tbl_pasien_model->get_by_id($data_periksa->no_rekam_medis);
+            $this->data['nama_pasien'] = $data_pasien->nama_lengkap;
+            $tanggal = new DateTime($data_pasien->tanggal_lahir);
+
+            // tanggal hari ini
+            $today = new DateTime('today');
+    
+            // tahun
+            $y = $today->diff($tanggal)->y;
+
+            $this->data['umur'] = $y;
+            $this->data['alamat'] = $data_pasien->alamat;
+            $this->data['jk'] = '';
+        }
+        else{
+            if($_GET['tab']=='sks'){
+                $getPasien = $this->Tbl_sksehat_model->getDetail($data_transaksi->no_transaksi,'nama,umur,alamat,sk.jenis_kelamin');
+                $this->data['nama_pasien'] = $getPasien['nama'];
+                $this->data['umur'] = $getPasien['umur'];
+                $this->data['alamat'] = $getPasien['alamat'];
+                $this->data['jk'] = $getPasien['jenis_kelamin'];
+            }
+            else if($_GET['tab']=='rapid'){
+                $this->db->select('nama,tgl_lahir,alamat_domisili,jenis_kelamin');
+                $getPasien = $this->db->get_where('tbl_rapid_antigen',['no_sampel' => $data_transaksi->no_transaksi])->row_array();
+
+                $this->data['nama_pasien'] = $getPasien['nama'];
+                $tanggal = new DateTime($getPasien['tgl_lahir']);
+
+                // tanggal hari ini
+                $today = new DateTime('today');
+        
+                // tahun
+                $y = $today->diff($tanggal)->y;
+        
+                $this->data['umur'] = $y;
+                $this->data['alamat'] = $getPasien['alamat_domisili'];
+                $this->data['jk'] = $getPasien['jenis_kelamin'];
+            }
+        }
+        
+        $this->data['id_transaksi'] = $data_transaksi->no_pendaftaran;
+        $this->data['cekSubsidi'] = $this->Transaksi_model->cekSubsidi($data_transaksi->no_pendaftaran);
+        $this->data['transaksi_d'] = $this->Transaksi_model->get_detail_by_a_id($data_transaksi->no_pendaftaran, $tipe_periksa);
+
+        $this->data['tgl_cetak'] = date("d M Y",  time());
+        $this->data['nama_pegawai'] = 'Kasir';
+        $this->data['atas_nama'] = $data_transaksi->atas_nama;
+        $this->data['no_rm'] = $data_transaksi->no_rekam_medis;
+        $this->data['tgl_masuk'] = $data_transaksi->dtm_crt;
+        $this->data['isPasien'] = $ambil_pasien->is_pasien;
+        $this->data['getSubsidi'] = $this->Transaksi_model->cekSubsidi($data_transaksi->no_pendaftaran);
+        $this->data['cekSubsidi'] = count((array)$this->data['getSubsidi']);
+
+        $view = isset($_GET['view']) ? $_GET['view'] : 'cetak_surat_periksa_detail';
+        $this->load->view('pembayaran/'.$view, $this->data);
+    }
     
     function get_wilayah($kode){
         $this->db->where('kode', $kode);

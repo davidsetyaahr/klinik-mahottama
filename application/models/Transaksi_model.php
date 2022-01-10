@@ -46,10 +46,18 @@ class Transaksi_model extends CI_Model
         $this->db->join('tbl_transaksi t','td.id_transaksi = t.id_transaksi');
         $this->db->join('tbl_periksa_lanjutan l','t.id_periksa_lanjutan = l.id_periksa');
         $this->db->join('tbl_pendaftaran p','l.no_pendaftaran = p.no_pendaftaran');
-        // $this->db->join('tbl_periksa_d_biaya db','db.no_periksa = t.no_transaksi');
-        // $this->db->join('tbl_biaya b','b.id_biaya = db.id_biaya');
         $this->db->where('p.no_pendaftaran', $h_id);
-        // $this->db->group_by('db.id_periksa_d_biaya');
+        return $this->db->get('tbl_transaksi_d td')->result();
+    }
+
+    function get_detail_by_a_id($h_id, $tipe)
+    {
+        $this->db->select('td.*, l.tipe_periksa, p.no_pendaftaran,t.no_transaksi');
+        $this->db->join('tbl_transaksi t','td.id_transaksi = t.id_transaksi');
+        $this->db->join('tbl_periksa_lanjutan l','t.id_periksa_lanjutan = l.id_periksa');
+        $this->db->join('tbl_pendaftaran p','l.no_pendaftaran = p.no_pendaftaran');
+        $this->db->where('p.no_pendaftaran', $h_id);
+        $this->db->where('l.tipe_periksa', $tipe);
         return $this->db->get('tbl_transaksi_d td')->result();
     }
 
@@ -201,9 +209,11 @@ class Transaksi_model extends CI_Model
 
         $this->datatables->add_column('cetak_struk',anchor(site_url('pembayaran/cetak_surat/$1?view=cetak_struk_periksa'),'Cetak Struk',array('class' => 'btn btn-info btn-sm','target'=>'_blank')),'no_pendaftaran');
         $this->datatables->add_column('cetak_pembayaran',anchor(site_url('pembayaran/cetak_surat_pembayaran/$1'),'Cetak Laporan Periksa',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran');
+        $this->datatables->add_column('cetak_pembayaran_poli',anchor(site_url('pembayaran/cetak_surat_pembayaran_detail/$1/$2'),'Poli',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran, 1');
+        $this->datatables->add_column('cetak_pembayaran_rai',anchor(site_url('pembayaran/cetak_surat_pembayaran_detail/$1/$2'),'Rawat Inap',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran, 2');
         $this->datatables->add_column('action',anchor(site_url('pembayaran/cetak_surat/$1'),'Cetak Kwitansi',array('class' => 'btn btn-warning btn-sm','target'=>'_blank')),'no_pendaftaran');
 
-        // if($tipe==1 || $tipe==4){
+        // if($tipe==1 || $tipe==4){ 
         //     $this->datatables->where('tbl_pendaftaran.tipe_periksa', '1');
         //     $this->datatables->or_where('tbl_pendaftaran.tipe_periksa', '4');
         //     $this->datatables->add_column('cetak', anchor(site_url('pembayaran/cetak-sksakit?id=$1'),'Cetak SK Sakit','class="btn btn-danger btn-sm"'),'no_periksa');
