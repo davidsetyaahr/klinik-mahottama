@@ -125,11 +125,27 @@
                 }
                 $tipe = $caption[$data->tipe_periksa];
     ?>
-                    <tr style="border-bottom:1px solid black; border-bottom:1px solid black">
-                      <td align="left"><?php echo $data->deskripsi;?></td>
-                      <!-- <br> -->
-                        <td align="right">Rp.<?php echo $data->dc == 'd' ? number_format($data->amount_transaksi,2,',','.') : ($data->amount_transaksi != 0 ? '-'.number_format($data->amount_transaksi,2,',','.') : number_format(0,2,',','.'));?></td>
-                    </tr>
+              <?php if($data->deskripsi == "Biaya Lainnya"){
+                  $biaya_d = $this->Transaksi_model->get_detail_biaya($data->no_transaksi);                            
+                  foreach ($biaya_d as $db){
+              ?>
+              <tr style="border-bottom:1px solid black; border-bottom:1px solid black">
+                  <td align="left"><?= $db->nama_biaya ?></td>
+                  <td align="right">Rp.<?= number_format($db->biaya,2,',','.'); ?></td>
+              <tr></tr>
+              <?php
+                  }
+              }else{
+                  ?>
+                  <tr style="border-bottom:1px solid black; border-bottom:1px solid black">
+                    <td align="left">
+                        <?= $data->deskripsi; ?>
+                    </td>
+                    <td align="right">
+                        Rp.<?= number_format($data->amount_transaksi,2,',','.') ?>
+                    </td>
+                  </tr>
+                  <?php } ?>
                 <?php 
                     $i++;
                 }
