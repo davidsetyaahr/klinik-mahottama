@@ -150,7 +150,7 @@
                 {
                     "render" : function(data,type,row){
                         var cetak = row.is_surat_ket_sakit=='1' ? row.cetak : ''
-                        return row.cetak_struk+"&nbsp;"+row.action+"&nbsp;"+cetak+"&nbsp;"+row.cetak_pembayaran+"&nbsp;"+row.cetak_pembayaran_poli+"&nbsp;"+row.cetak_pembayaran_rai
+                        return row.cetak_struk+"&nbsp;"+row.action+"&nbsp;"+cetak+"&nbsp;"+row.cetak_pembayaran+"&nbsp;"+row.cetak_pembayaran_poli+"&nbsp;"+row.cetak_pembayaran_rai+"&nbsp;"+row.cetak_pembayaran_opr+"&nbsp;"+row.cetak_pembayaran_lab+"&nbsp;"+row.cetak_pembayaran_rad
                     },
                     "orderable": false,
                     "className" : "text-center"

@@ -211,6 +211,9 @@ class Transaksi_model extends CI_Model
         $this->datatables->add_column('cetak_pembayaran',anchor(site_url('pembayaran/cetak_surat_pembayaran/$1'),'Cetak Laporan Periksa',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran');
         $this->datatables->add_column('cetak_pembayaran_poli',anchor(site_url('pembayaran/cetak_surat_pembayaran_detail/$1/$2'),'Poli',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran, 1');
         $this->datatables->add_column('cetak_pembayaran_rai',anchor(site_url('pembayaran/cetak_surat_pembayaran_detail/$1/$2'),'Rawat Inap',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran, 2');
+        $this->datatables->add_column('cetak_pembayaran_opr',anchor(site_url('pembayaran/cetak_surat_pembayaran_detail/$1/$2'),'Operasi',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran, 3');
+        $this->datatables->add_column('cetak_pembayaran_lab',anchor(site_url('pembayaran/cetak_surat_pembayaran_detail/$1/$2'),'Laboratorium',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran, 4');
+        $this->datatables->add_column('cetak_pembayaran_rad',anchor(site_url('pembayaran/cetak_surat_pembayaran_detail/$1/$2'),'Radiologi',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran, 5');
         $this->datatables->add_column('action',anchor(site_url('pembayaran/cetak_surat/$1'),'Cetak Kwitansi',array('class' => 'btn btn-warning btn-sm','target'=>'_blank')),'no_pendaftaran');
 
         // if($tipe==1 || $tipe==4){ 
