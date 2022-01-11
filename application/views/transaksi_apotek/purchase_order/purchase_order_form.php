@@ -198,10 +198,10 @@ $(document).ready(function(){
         var input_diskon = '<input type="number" class="form-control" id="diskon[]" placeholder="Diskon" name="diskon[]" onkeyup="hitungHarga()"/>';
         var input_total = '<input type="text" class="form-control" id="total[]" placeholder="subtotal" name="total[]" readonly />';
         
-        if(y < max_fields){ //max input box allowed
-            y++; //text box increment
+        // if(y < max_fields){ //max input box allowed
+            // y++; //text box increment
             $(wrapper_obat).append('<div class="form-group"><br><br><div class="col-sm-4"><div class="input-group"><span class="input-group-addon"><a href="#" class="remove_field_obat" id="remove_field_obat">X</a></span>'+input_obat+'</div></div><div class="col-sm-2">'+input_harga_obat+'</div><div class="col-sm-2">'+input_jumlah+'</div><div class="col-sm-2">'+input_diskon+'</div><div class="col-sm-2">'+input_total+'</div>'); //add input box
-        }
+        // }
         $('.select2').select2(); 
     });
     

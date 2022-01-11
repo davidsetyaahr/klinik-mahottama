@@ -64,6 +64,8 @@ class Periksamedis extends CI_Controller
 
         $periksaLanjutan = $this->db->get_where('tbl_periksa_lanjutan', ['no_pendaftaran' => $this->no_pendaftaran,'is_periksa' => '1'])->row();
         if(count((array)$periksaLanjutan)==0){
+            $this->session->set_flashdata('message', 'Data pemeriksaan berhasil disimpan, No Pendaftaran ' . $this->no_pendaftaran);
+            $this->session->set_flashdata('message_type', 'success');
             redirect(base_url() . "periksamedis/antrian");
         }
         else{                
@@ -1067,7 +1069,7 @@ class Periksamedis extends CI_Controller
     {
         if($isEdit==null){
             $data_trx = array(
-                'deskripsi'     => 'Penjualan Biaya OK dari Nomor Pemeriksaan '.$no_periksa,
+                'deskripsi'     => 'Pendapatan Biaya OK dari Nomor Pemeriksaan '.$no_periksa,
                 'tanggal'       => date('Y-m-d'),
             );
             $insert = $this->Transaksi_akuntansi_model->insert('tbl_trx_akuntansi', $data_trx);
@@ -1081,7 +1083,7 @@ class Periksamedis extends CI_Controller
 
                 $data = array(
                     'id_trx_akun'   => $id_last->id_trx_akun,
-                    'id_akun'       => 59,
+                    'id_akun'       => 0,
                     'jumlah'        => $biaya_ok,
                     'tipe'          => 'KREDIT',
                     'keterangan'    => 'akun',
@@ -2252,7 +2254,7 @@ class Periksamedis extends CI_Controller
         if ($_POST['totalBiaya'] != 0) {
             $data_transaksi_d[] = array(
                 'id_transaksi' => $lastIdOpr->id_transaksi,
-                'deskripsi' => 'Biaya Lainnya',
+                'deskripsi' => 'Biaya Operasi',
                 'amount_transaksi' => $_POST['totalBiaya'],
                 'dc' => 'd',
                 'dtm_crt' => date("Y-m-d H:i:s",  time()),

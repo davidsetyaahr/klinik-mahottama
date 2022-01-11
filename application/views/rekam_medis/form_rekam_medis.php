@@ -938,10 +938,10 @@ $(document).ready(function() {
     var x = 1; //initlal text box count
     $(add_button_cek_fisik).click(function(e){ //on add input button click
         e.preventDefault();
-        if(x < max_fields){ //max input box allowed
-            x++; //text box increment
+        // if(x < max_fields){ //max input box allowed
+            // x++; //text box increment
             $(wrapper_cek_fisik).append('<div class="form-group"><div class="col-sm-2"><input type="text" name="cek_fisik[]" class="form-control"></div><div class="col-sm-4"><input type="text" name="cek_fisik_value[]" class="form-control"></div><div class="col-sm-2"><input type="text" name="cek_fisik[]" class="form-control"></div><div class="col-sm-4"><div class="input-group"><input type="text" name="cek_fisik_value[]" class="form-control"><span class="input-group-addon"><a href="#" class="remove_field_cek_fisik">X</a></span></div></div></div>'); //add input box
-        }
+        // }
     });
     
     $(wrapper_cek_fisik).on("click",".remove_field_cek_fisik", function(e){ //user click on remove text
@@ -963,10 +963,10 @@ $(document).ready(function() {
         var input_jml_alkes = '<select id="jml_alat_kesehatan[]" name="jml_alat_kesehatan[]" class="form-control" onchange="get_alkes(this, true)"><option value="">Pilih Jumlah</option></select>';
         var input_harga_alkes = '<input id="harga_alkes[]" name="harga_alkes[]" type="hidden" value="" class="form-control" readonly="readonly" style="text-align:right;" />';
         
-        if(z < max_fields){ //max input box allowed
-            z++; //text box increment
+        // if(z < max_fields){ //max input box allowed
+            // z++; //text box increment
             $(wrapper_alkes).append('<div class="form-group"><div class="col-sm-6"><div class="input-group"><span class="input-group-addon"><a href="#" class="remove_field_alkes">X</a></span>'+input_alkes+'</div></div><div class="col-sm-6">'+input_jml_alkes+'</div><div class="col-sm-2">'+input_harga_alkes+'</div></div>'); //add input box
-        }
+        // }
         $('select').select2({
             // dropdownAutoWidth : false,
             width: '100%'
@@ -1002,11 +1002,11 @@ $(document).ready(function() {
         // var input_harga_obat_real = '<input id="harga_obat_real[]" name="harga_obat_real[]" type="text" value="" class="form-control" readonly="readonly" style="text-align:right;" />';
         var input_kegunaan_obat = '<input id="kegunaan_obat[]" name="kegunaan_obat[]" type="text" value="" class="form-control" />';
         
-        if(y < max_fields){ //max input box allowed
-            y++; //text box increment
+        // if(y < max_fields){ //max input box allowed
+            // y++; //text box increment
             $(wrapper_obat).append('<div class="form-group"><div class="col-sm-3"><div class="input-group"><span class="input-group-addon"><a href="#" class="remove_field_obat">X</a></span>'+input_alkes+'</div></div><div class="col-sm-2">'+input_ket_obat+'</div><div class="col-sm-2">'+input_jml_obat+'</div><div class="col-sm-2">'+input_anjuran_obat+'</div><div class="col-sm-3">'+input_kegunaan_obat+'</div><div class="col-sm-2">'
                 +input_harga_obat+'</div>'); //add input box
-        }
+        // }
         $('select').select2({
             // dropdownAutoWidth : false,
             width: '100%'

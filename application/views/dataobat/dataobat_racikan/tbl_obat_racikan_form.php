@@ -153,10 +153,10 @@ $(document).ready(function(){
         var input_anjuran_obat = '<input type="text" class="form-control" id="pabrik[]" name="pabrik[]" placeholder="Pabrik" readonly/>';
         var input_harga_obat = '<input type="text" class="form-control" id="ket[]" placeholder="Deskripsi" readonly/>';
         
-        if(y < max_fields){ //max input box allowed
-            y++; //text box increment
+        // if(y < max_fields){ //max input box allowed
+            // y++; //text box increment
             $(wrapper_obat).append('<div class="form-group"><br><br><div class="col-sm-3"><div class="input-group"><span class="input-group-addon"><a href="#" class="remove_field_obat" id="remove_field_obat">X</a></span>'+input_kode+'</div></div><div class="col-sm-3">'+input_obat+'</div><div class="col-sm-3">'+input_anjuran_obat+'</div><div class="col-sm-3">'+input_harga_obat+'</div>'); //add input box
-        }
+        // }
     });
     
     $(wrapper_obat).on("click","#remove_field_obat", function(e){ //user click on remove text
@@ -183,10 +183,10 @@ $(document).ready(function(){
         var input_jml_obat = '<select id="jasa[]" name="jasa[]" class="form-control select2" onchange="get_jasa(this)">'+option_jasa+'</select>';
         var input_anjuran_obat = '<input type="text" class="form-control" id="hna[]" name="hna[]" placeholder="HNA" />';
         
-        if(v < max_fields){ //max input box allowed
-            v++; //text box increment
+        // if(v < max_fields){ //max input box allowed
+            // v++; //text box increment
             $(wrapper_jasa).append('<div class="form-group"><br><br><div class="col-sm-4"><div class="input-group"><span class="input-group-addon"><a href="#" class="remove_field_jasa" id="remove_field_jasa">X</a></span>'+input_alkes+'</div></div><div class="col-sm-4">'+input_jml_obat+'</div><div class="col-sm-4">'+input_anjuran_obat+'</div>'); //add input box
-        }
+        // }
     });
     
     $(wrapper_jasa).on("click","#remove_field_jasa", function(e){ //user click on remove text

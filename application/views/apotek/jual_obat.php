@@ -101,10 +101,10 @@
             var input_harga_satuan = '<input id="harga_satuan[]" name="harga_satuan[]" type="text" value="" class="form-control" readonly="readonly" style="text-align:right;" />';
             var input_harga_obat = '<input id="harga_obat[]" name="harga_obat[]" type="text" value="" class="form-control" readonly="readonly" style="text-align:right;" />';
             
-            if(y < max_fields){ //max input box allowed
-                y++; //text box increment
+            // if(y < max_fields){ //max input box allowed
+                // y++; //text box increment
                 $(wrapper_obat).append('<div class="form-group"><div class="col-sm-2"></div><div class="col-sm-4"><div class="input-group"><span class="input-group-addon"><a href="#" class="remove_field_obat">X</a></span>'+input_alkes+'</div></div><div class="col-sm-2">'+input_jml_obat+'</div><div class="col-sm-2">'+input_harga_satuan+'</div><div class="col-sm-2">'+input_harga_obat+'</div></div>'); //add input box
-            }
+            // }
             $('.select2').select2({
                 width : '100%'
             }); 
