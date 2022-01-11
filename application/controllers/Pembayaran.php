@@ -32,8 +32,13 @@ class Pembayaran extends CI_Controller
 
     public function index()
     {
-        $this->template->load('template','pembayaran/pembayaran_list');
+       $this->template->load('template','pembayaran/pembayaran_list');
     } 
+    public function getPeriksaLanjutan()
+    {
+        header('Content-Type: application/json');
+        echo json_encode($this->Transaksi_model->getPeriksaLanjutan($_GET['no_pendaftaran']));
+    }
     
     public function jsonSksehat() {
         header('Content-Type: application/json');
@@ -633,7 +638,6 @@ class Pembayaran extends CI_Controller
         $view = isset($_GET['view']) ? $_GET['view'] : 'cetak_surat';
         $this->load->view('pembayaran/'.$view, $this->data);
     }
-
     public function cetak_surat_pembayaran($no_pendaftaran){
         $no_pendaftaran = $no_pendaftaran;
         $data_transaksi = $this->Transaksi_model->get_detail_no_pendaftaran($no_pendaftaran);

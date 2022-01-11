@@ -194,6 +194,14 @@ class Transaksi_model extends CI_Model
             
         return $this->datatables->generate();
     }
+
+    public function getPeriksaLanjutan($no_pendaftaran)
+    {
+        $this->db->select('tipe_periksa');
+        $this->db->group_by('tipe_periksa');
+        $this->db->order_by('id_periksa','asc');
+        return $this->db->get_where('tbl_periksa_lanjutan',['no_pendaftaran' => $no_pendaftaran])->result();
+    }
     
     function json2($id_klinik = null,$tipe) {
         $this->db->query("SET sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''));");        
@@ -208,12 +216,12 @@ class Transaksi_model extends CI_Model
             $this->datatables->where('tbl_transaksi.id_klinik', $id_klinik);
 
         $this->datatables->add_column('cetak_struk',anchor(site_url('pembayaran/cetak_surat/$1?view=cetak_struk_periksa'),'Cetak Struk',array('class' => 'btn btn-info btn-sm','target'=>'_blank')),'no_pendaftaran');
-        $this->datatables->add_column('cetak_pembayaran',anchor(site_url('pembayaran/cetak_surat_pembayaran/$1'),'Cetak Laporan Periksa',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran');
-        $this->datatables->add_column('cetak_pembayaran_poli',anchor(site_url('pembayaran/cetak_surat_pembayaran_detail/$1/$2'),'Poli',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran, 1');
-        $this->datatables->add_column('cetak_pembayaran_rai',anchor(site_url('pembayaran/cetak_surat_pembayaran_detail/$1/$2'),'Rawat Inap',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran, 2');
-        $this->datatables->add_column('cetak_pembayaran_opr',anchor(site_url('pembayaran/cetak_surat_pembayaran_detail/$1/$2'),'Operasi',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran, 3');
-        $this->datatables->add_column('cetak_pembayaran_lab',anchor(site_url('pembayaran/cetak_surat_pembayaran_detail/$1/$2'),'Laboratorium',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran, 4');
-        $this->datatables->add_column('cetak_pembayaran_rad',anchor(site_url('pembayaran/cetak_surat_pembayaran_detail/$1/$2'),'Radiologi',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran, 5');
+        // $this->datatables->add_column('cetak_pembayaran_poli',anchor(site_url('pembayaran/cetak_surat_pembayaran_detail/$1/$2'),'Poli',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran, 1');
+        // $this->datatables->add_column('cetak_pembayaran_rai',anchor(site_url('pembayaran/cetak_surat_pembayaran_detail/$1/$2'),'Rawat Inap',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran, 2');
+        // $this->datatables->add_column('cetak_pembayaran_opr',anchor(site_url('pembayaran/cetak_surat_pembayaran_detail/$1/$2'),'Operasi',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran, 3');
+        // $this->datatables->add_column('cetak_pembayaran_lab',anchor(site_url('pembayaran/cetak_surat_pembayaran_detail/$1/$2'),'Laboratorium',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran, 4');
+        // $this->datatables->add_column('cetak_pembayaran_rad',anchor(site_url('pembayaran/cetak_surat_pembayaran_detail/$1/$2'),'Radiologi',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_pendaftaran, 5');
+
         $this->datatables->add_column('action',anchor(site_url('pembayaran/cetak_surat/$1'),'Cetak Kwitansi',array('class' => 'btn btn-warning btn-sm','target'=>'_blank')),'no_pendaftaran');
 
         // if($tipe==1 || $tipe==4){ 
@@ -225,7 +233,7 @@ class Transaksi_model extends CI_Model
         //     $this->datatables->add_column('cetak', anchor(site_url('pembayaran/cetak-sklab?id=$1'),'Cetak SK LAB','class="btn btn-danger btn-sm"'),'no_periksa');
         //     $this->datatables->where('tbl_pendaftaran.tipe_periksa', $tipe);
         // }
-        $this->db->order_by('tbl_pendaftaran.no_pendaftaran','asc');
+        $this->db->order_by('tbl_pendaftaran.no_pendaftaran','desc');
         $this->datatables->group_by('tbl_pendaftaran.no_pendaftaran');
             
         return $this->datatables->generate();
