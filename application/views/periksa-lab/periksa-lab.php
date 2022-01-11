@@ -142,7 +142,7 @@
                                 <div class="col-md-12">
                                     <div class="pull-right">
                                         <button type="reset" class="btn btn-default"><span class="fa fa-times"></span> Batal</button>
-                                        <button type="submit" class="btn btn-warning" onclick="confirm('Yakin Simpan?')"><span class="fa fa-save"></span> Periksa</button>
+                                        <button type="submit" class="btn btn-warning" onclick="return confirm('Yakin Simpan?')"><span class="fa fa-save"></span> Periksa</button>
                                     </div>
                                 </div>
                             </div>

@@ -525,7 +525,7 @@
                                             document.getElementById("tab1").style.display="block";
                                         }
                                     </script>
-                                    <button type="submit" class="btn btn-success"  onclick="confirm('Yakin Simpan?')"><i class="fa fa-floppy-o"></i> Simpan Pemeriksaan Medis</button> 
+                                    <button type="submit" class="btn btn-success"  onclick="return confirm('Yakin Simpan?')"><i class="fa fa-floppy-o"></i> Simpan Pemeriksaan Medis</button> 
 								</div>
 							</div>
 						</div>                            

@@ -73,7 +73,7 @@ class Periksamedis extends CI_Controller
                 //poli
                 $this->session->set_flashdata('message', 'Data pemeriksaan berhasil disimpan, No Pendaftaran ' . $this->no_pendaftaran);
                 $this->session->set_flashdata('message_type', 'success');
-                redirect(base_url() . "periksamedis/poli");
+                redirect(base_url() . "periksamedis/poli?tipe=1");
             } else if ($_SESSION['id_user_level']=='11' && $periksaLanjutan->tipe_periksa == '2') {
                 //rawat inap
                 $this->session->set_flashdata('message', 'Data pemeriksaan berhasil disimpan, No Pendaftaran ' . $this->no_pendaftaran);
@@ -94,11 +94,11 @@ class Periksamedis extends CI_Controller
                 $this->session->set_flashdata('message', 'Data pemeriksaan berhasil disimpan, No Pendaftaran ' . $this->no_pendaftaran);
                 $this->session->set_flashdata('message_type', 'success');
                 redirect(site_url('periksamedis/periksa_radiologi/'));
-            } else if ($_SESSION['id_user_level']=='' && $periksaLanjutan->tipe_periksa == '13'){
+            } else if ($_SESSION['id_user_level']=='13' && $periksaLanjutan->tipe_periksa == '6'){
                 // UGD
                 $this->session->set_flashdata('message', 'Data pemeriksaan berhasil disimpan, No Pendaftaran ' . $this->no_pendaftaran);
                 $this->session->set_flashdata('message_type', 'success');
-                redirect(base_url() . "periksamedis/ugd");
+                redirect(base_url() . "periksamedis/ugd?tipe=6");
             }
             else{
                 $this->session->set_flashdata('message', 'Data pemeriksaan berhasil disimpan, No Pendaftaran ' . $this->no_pendaftaran);
@@ -111,8 +111,8 @@ class Periksamedis extends CI_Controller
     function poli()
     {
         $data_pendaftaran = $this->Pendaftaran_model->get_by_id($this->no_pendaftaran);
-
-        $getIdPeriksaLanjutan = $this->Periksa_model->getIdPeriksaLanjutan($this->no_pendaftaran,'1');
+        $tipePeriksa = $this->uri->segment(2)=='poli' ? '1' : '6'; 
+        $getIdPeriksaLanjutan = $this->Periksa_model->getIdPeriksaLanjutan($this->no_pendaftaran,$tipePeriksa);
         $data_pasien = $this->Tbl_pasien_model->get_by_id($data_pendaftaran->no_rekam_medis);
         $date_now = date('Ymd', time());
         $data_antrian = $this->Pendaftaran_model->get_next_antrian($this->id_dokter);
@@ -153,7 +153,7 @@ class Periksamedis extends CI_Controller
                 'dtm_upd' => date("Y-m-d H:i:s",  time())
             );
 
-            $getIdPeriksaLanjutan = $this->Periksa_model->getIdPeriksaLanjutan($this->no_pendaftaran,'1');
+            $getIdPeriksaLanjutan = $this->Periksa_model->getIdPeriksaLanjutan($this->no_pendaftaran,$tipePeriksa);
             //input inventory barang
             $kode_receipt = 'RCP' . time();
             $data = array(
@@ -183,7 +183,7 @@ class Periksamedis extends CI_Controller
                         'kode_barang' => $post_alkes[$i],
                         'jumlah' => $post_alkes_jml[$i],
                         'harga_satuan' => $_POST['harga_alkes'][$i] / $post_alkes_jml[$i],
-                        'tipe_periksa' => '1',
+                        'tipe_periksa' => $tipePeriksa,
                         'dtm_crt' => date("Y-m-d H:i:s",  time()),
                         'dtm_upd' => date("Y-m-d H:i:s",  time()),
                     );
@@ -224,7 +224,7 @@ class Periksamedis extends CI_Controller
                     'anjuran' => $post_obat_anjuran[$i],
                     'keterangan' => $post_obat_ket[$i],
                     'penggunaan_obat' => $post_obat_penggunaan[$i],
-                    'tipe_periksa' =>'1',
+                    'tipe_periksa' =>$tipePeriksa,
                     'dtm_crt' => date("Y-m-d H:i:s",  time()),
                     'dtm_upd' => date("Y-m-d H:i:s",  time()),
                 );
@@ -299,7 +299,7 @@ class Periksamedis extends CI_Controller
                     'kode_tindakan' => $value,
                     'jumlah' =>$_POST['qty_tindakan'][$key],
                     'biaya' => $_POST['biaya_tindakan'][$key],
-                    'tipe_periksa' =>'1',
+                    'tipe_periksa' =>$tipePeriksa,
                     'dtm_crt' => date("Y-m-d H:i:s",  time()),
                     'dtm_upd' => date("Y-m-d H:i:s",  time()),
                 );
@@ -314,7 +314,7 @@ class Periksamedis extends CI_Controller
                     'id_biaya' => $value,
                     'jumlah' => $_POST['qty_biaya'][$key],
                     'biaya' => $_POST['biaya'][$key],
-                    'tipe_periksa' => '1',
+                    'tipe_periksa' => $tipePeriksa,
                     'dtm_crt' => date("Y-m-d H:i:s",  time()),
                     'dtm_upd' => date("Y-m-d H:i:s",  time()),
                 );
@@ -397,8 +397,8 @@ class Periksamedis extends CI_Controller
                 'dtm_upd' => date("Y-m-d H:i:s",  time())
             );
 
+            $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '0'], ['no_pendaftaran' => $data_pendaftaran->no_pendaftaran]);
             if ($_POST['pemeriksaan_selanjutnya'] != '0') {
-                $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '0'], ['no_pendaftaran' => $data_pendaftaran->no_pendaftaran]);
                 $periksaLanjutan = array(
                     'no_pendaftaran' => $data_pendaftaran->no_pendaftaran,
                     'tipe_periksa' => $_POST['pemeriksaan_selanjutnya'],
@@ -422,9 +422,10 @@ class Periksamedis extends CI_Controller
             }
             
             //TRANSAKSI
+            $kodeSegment = $this->uri->segment(2)=='poli' ? 'PRKSPLI' : 'PRKSUGD';
             $date_now_trx = date('Y-m-d', time());
             $data_transkasi = array(
-                'kode_transaksi' => 'PRKSPLI',
+                'kode_transaksi' => $kodeSegment,
                 'id_klinik' => $data_pendaftaran->id_klinik,
                 'no_transaksi' => $this->input->post('no_periksa'),
                 'id_periksa_lanjutan' => $getIdPeriksaLanjutan->id_periksa,
@@ -499,7 +500,8 @@ class Periksamedis extends CI_Controller
 
             redirect(site_url('periksamedis'));
         } else {
-            $this->data['no_periksa'] = 'PRKSPLI' . '/' . $data_pendaftaran->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran->no_rekam_medis;
+            $kode = $_GET['tipe']==1 ? 'PRKSPLI' : 'PRKSUGD';
+            $this->data['no_periksa'] = $kode . '/' . $data_pendaftaran->no_pendaftaran . '/' . $date_now . '/' . $data_pendaftaran->no_rekam_medis;
             if (isset($data_pasien)) {
                 $this->data['nama_lengkap'] = $data_pasien->nama_lengkap;
                 $this->data['alamat'] = $data_pasien->alamat . ' ' . $data_pasien->kabupaten . ' ' . 'RT ' . $data_pasien->rt . ' ' . 'RW ' . $data_pasien->rw;
@@ -545,6 +547,8 @@ class Periksamedis extends CI_Controller
             if ($this->input->post('no_periksa')) {
                 $this->session->set_flashdata('message', 'Terdapat error input, silahkan cek ulang');
                 $this->session->set_flashdata('message_type', 'danger');
+                $urlRedirect = $_GET['tipe']==1 ? 'poli?tipe=1' : 'ugd?tipe=6'; 
+                redirect(base_url()."periksamedis/".$urlRedirect);
             }
         }
         $nomor = 1;
@@ -560,7 +564,7 @@ class Periksamedis extends CI_Controller
         $this->template->load('template', 'rekam_medis/form_rekam_medis', $this->data);
     }
 
-    function ugd()
+/*     function ugd()
     {
         $data_pendaftaran = $this->Pendaftaran_model->get_by_id($this->no_pendaftaran);
 
@@ -997,7 +1001,7 @@ class Periksamedis extends CI_Controller
 
         $this->template->load('template', 'rekam_medis/form_rekam_medis', $this->data);
     }
-
+ */
     public function addItemBiaya()
     {
         $this->data['biaya'] = $this->Tbl_biaya_model->getBiaya();
@@ -1338,7 +1342,7 @@ class Periksamedis extends CI_Controller
             $this->session->set_userdata(['no_pendaftaran' => $no_pend]);
         }
         if ($_GET['tipe'] == '1') {
-            redirect(site_url('periksamedis/poli'));
+            redirect(site_url('periksamedis/poli?tipe=1'));
         } else if ($_GET['tipe'] == '2') {
             redirect(site_url('periksamedis/rawat_inap/'));
         } else if ($_GET['tipe'] == '3') {
@@ -1349,7 +1353,7 @@ class Periksamedis extends CI_Controller
         } else if ($_GET['tipe'] == '5') {
             redirect(site_url('periksamedis/periksa_radiologi/'));
         } else if ($_GET['tipe'] == '6') {
-            redirect(site_url('periksamedis/ugd'));
+            redirect(site_url('periksamedis/ugd?tipe=6'));
         }
     }
     public function periksa_jasa()
