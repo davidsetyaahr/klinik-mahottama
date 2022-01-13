@@ -794,13 +794,19 @@ class Periksamedis extends CI_Controller
 
     public function riwayat()
     {
-        $this->template->load('template', 'rekam_medis/riwayat_periksamedis');
+        $this->template->load('template', 'rekam_medis/riwayat_periksa_medis');
     }
 
     public function riwayat_detail($no_rekam_medis)
     {
         $data['no_rekam_medis'] = $no_rekam_medis;
         $this->template->load('template', 'rekam_medis/riwayat_periksamedis_detail', $data);
+    }
+
+    public function history_detail($no_pendaftaran)
+    {
+        $data['no_rekam_medis'] = $no_pendaftaran;
+        $this->template->load('template', 'rekam_medis/riwayat_periksa_medis_detail', $data);
     }
 
     public function sksehat()
@@ -2856,6 +2862,12 @@ class Periksamedis extends CI_Controller
         header('Content-Type: application/json');
         // echo $this->Periksa_model->json_riwayat($this->id_dokter);
         echo json_encode($this->Periksa_model->json_riwayat($this->id_dokter));
+    }
+
+    public function json_history()
+    {
+        header('Content-Type: application/json');
+        echo $this->Periksa_model->json_history();
     }
 
     public function json_riwayat_detail($no_rekam_medis)

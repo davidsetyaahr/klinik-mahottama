@@ -190,6 +190,28 @@ class Periksa_model extends CI_Model
         return $this->datatables->generate();
     }
 
+    function json_history()
+    {
+        $this->datatables->select('tbl_pendaftaran.no_pendaftaran,nik,tbl_pasien.no_rekam_medis,no_id_pasien,nama_lengkap,golongan_darah,status_menikah,pekerjaan,alamat,kabupaten,nama_orang_tua_atau_istri,nomer_telepon,riwayat_alergi_obat');
+        $this->datatables->from('tbl_pasien');
+        $this->datatables->join('tbl_pendaftaran','tbl_pendaftaran.no_rekam_medis=tbl_pasien.no_rekam_medis','left');
+        $this->datatables->where('tbl_pendaftaran.is_bayar', '1');
+        $this->datatables->add_column('action', anchor(site_url('periksamedis/history_detail/$1'),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-info btn-sm"'), 'no_pendaftaran');
+            
+        return $this->datatables->generate();
+    }
+
+    function json_history_detail($no_pendaftaran)
+    {
+        $this->datatables->select('');
+        $this->datatables->from('tbl_pendaftaran pe');
+        $this->datatables->join('tbl_pendaftaran','tbl_pendaftaran.no_rekam_medis=tbl_pasien.no_rekam_medis','left');
+        $this->datatables->where('tbl_pendaftaran.is_bayar', '1');
+        $this->datatables->add_column('action', anchor(site_url('periksamedis/history_detail/$1'),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-info btn-sm"'), 'no_pendaftaran');
+            
+        return $this->datatables->generate();
+    }
+
     public function oldKamarRawatInap($noPendaftaran)
     {
         $this->db->select('rid.id_detail,k.id_kategori_kamar,rid.id_kamar,k.no_kamar,rid.biaya_per_hari,rid.jml_hari,kk.nama nama_kategori');
