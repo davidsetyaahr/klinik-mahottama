@@ -5,7 +5,7 @@
             <?php 
                 if(!isset($selected)){
             ?>
-                <option value="">---Pilih Alkes---</option>
+                <option value="">---Pilih BMHP---</option>
             <?php 
             }
             if(isset($selected)){

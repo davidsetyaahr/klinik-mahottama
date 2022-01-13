@@ -21,12 +21,12 @@
                     <div class="box-body">
                         <div class="row col-md-12">
                         <form action="<?= base_url()."periksamedis/save_periksa_lab" ?>" method="post">
-                            <div class="form-group row">
+                            <!-- <div class="form-group row">
                                 <div class="col-md-2">No Periksa </div>
                                 <div class="col-md-10">
                                     <input type="text" name="no_periksa" value="<?= $no_periksa ?>" readonly id="" class="form-control">
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="form-group row">
                                 <div class="col-md-2">Nama Lengkap</div>
                                 <div class="col-md-10">
@@ -41,7 +41,14 @@
                             </div>
                             <div class="form-group" id="row-lab" data-row='0'>
                                 <?php 
-                                    $this->load->view('periksa-lab/loop-pilihan-lab',['no' => 0])
+                                    if(validation_errors()!=""){
+                                        for ($i=0; $i < count($_POST['periksa_lab']) ; $i++) { 
+                                            $this->load->view('periksa-lab/loop-pilihan-lab',['no' => $i]);
+                                        }
+                                    }
+                                    else{
+                                        $this->load->view('periksa-lab/loop-pilihan-lab',['no' => 0]);
+                                    }
                                 ?>
                             </div>
                             <div class="form-group row">
