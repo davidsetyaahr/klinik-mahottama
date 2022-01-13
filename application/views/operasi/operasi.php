@@ -41,6 +41,9 @@
                                 </div>
                                 <div class="form-group row opr">
                                     <div class="col-md-2">Pilih Jenis Operasi</div>
+                                    <div>
+                                        <?= form_error("periksa_operasi[]"); ?>
+                                    </div>
                                     <div class="col-md-10">
                                         <select name="periksa_operasi[]" id="jenis_operasi" data-row="0" class="form-control select2 periksaLab selectOpr getOk" style="width:100%">
                                             <option value="">---Pilih Jenis Operasi---</option>
@@ -56,6 +59,9 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-2">Pilih Ruangan Operasi</div>
+                                    <div>
+                                        <?= form_error("ruangan[]"); ?>
+                                    </div>
                                     <div class="col-md-10">
                                         <select name="ruangan[]" id="ruangan" data-row="0" class="form-control select2 " style="width:100%">
                                             <option value="">---Pilih Ruangan Operasi---</option>

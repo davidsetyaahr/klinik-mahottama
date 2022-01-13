@@ -41,7 +41,14 @@
                             </div>
                             <div class="form-group" id="row-radiologi" data-row='0'>
                                 <?php 
-                                    $this->load->view('periksa-radiologi/loop-pilihan-radiologi',['no' => 0])
+                                    if(validation_errors()!=""){
+                                        for ($i=0; $i < count($_POST['periksa_radiologi']) ; $i++) { 
+                                            $this->load->view('periksa-radiologi/loop-pilihan-radiologi',['no' => $i]);
+                                        }
+                                    }
+                                    else{
+                                        $this->load->view('periksa-radiologi/loop-pilihan-radiologi',['no' => 0]);
+                                    }
                                 ?>
                             </div>
                             <div class="form-group row">
