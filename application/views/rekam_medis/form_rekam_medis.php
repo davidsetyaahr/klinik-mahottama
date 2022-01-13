@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-<?php echo form_open(current_url(), array('class' => 'form-horizontal', 'id' => 'form-rekam_medis')); ?>
+<?php echo form_open(current_url()."?tipe=$_GET[tipe]", array('class' => 'form-horizontal', 'id' => 'form-rekam_medis')); ?>
 <div class="content-wrapper"  id="tab1">
     <section class="content-header">
         <h1>
@@ -70,19 +70,19 @@
                         <h3 class="box-title">FORM PEMERIKSAAN MEDIS</h3>
                     </div>
                     <div class="box-body">
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<div class="col-sm-2">No Periksa <?php echo form_error('no_periksa'); ?></div>
 							<div class="col-sm-10">
                                 <?php
-                                    if(isset($no_periksa)) {
-                                        echo form_input(array('id'=>'no_periksa','name'=>'no_periksa','type'=>'text','value'=>$no_periksa,'class'=>'form-control','readonly'=>'readonly'));
-                                    }
-                                    else {
-                                        echo form_input(array('id'=>'no_periksa','name'=>'no_periksa','type'=>'text','value'=>'','class'=>'form-control','readonly'=>'readonly'));
-                                    }
+                                    // if(isset($no_periksa)) {
+                                    //     echo form_input(array('id'=>'no_periksa','name'=>'no_periksa','type'=>'text','value'=>$no_periksa,'class'=>'form-control','readonly'=>'readonly'));
+                                    // }
+                                    // else {
+                                    //     echo form_input(array('id'=>'no_periksa','name'=>'no_periksa','type'=>'text','value'=>'','class'=>'form-control','readonly'=>'readonly'));
+                                    // }
                                 ?>
 							</div>
-                        </div>
+                        </div> -->
                         <div class="form-group">
 							<div class="col-sm-2">Nama Lengkap</div>
 							<div class="col-sm-10">
@@ -112,7 +112,8 @@
 						<div class="form-group">
 							<div class="col-sm-2">Anamnesi <?php echo form_error('anamnesi'); ?></div>
 							<div class="col-sm-10">
-                                <?php echo form_textarea(array('id'=>'anamnesi','name'=>'anamnesi','type'=>'textarea','value'=>'','rows'=>'4','class'=>'form-control'));?>
+                                <textarea name="anamnesi" id="anamnesi" rows="4" class="form-control"><?= set_value('anamnesi') ?></textarea>
+                                <!-- <?php echo form_textarea(array('id'=>'anamnesi','name'=>'anamnesi','type'=>'textarea','value'=>set_value('anamnesi'),'rows'=>'4','class'=>'form-control'));?> -->
                             </div>
 						</div>
 						<div class="form-group">
@@ -123,7 +124,7 @@
                                         echo form_textarea(array('id'=>'riwayat_alergi_obat','name'=>'riwayat_alergi_obat','type'=>'textarea','value'=>$riwayat_alergi_obat,'rows'=>'4','class'=>'form-control','onchange'=>'riwayat_alergi()'));
                                     }
                                     else {
-                                        echo form_textarea(array('id'=>'riwayat_alergi_obat','name'=>'riwayat_alergi_obat','type'=>'textarea','value'=>'','rows'=>'4','class'=>'form-control','onchange'=>'riwayat_alergi()'));
+                                        echo form_textarea(array('id'=>'riwayat_alergi_obat','name'=>'riwayat_alergi_obat','type'=>'textarea','value'=> set_value('riwayat_alergi_obat'),'rows'=>'4','class'=>'form-control','onchange'=>'riwayat_alergi()'));
                                     }
                                 ?>
                             </div>
@@ -132,21 +133,21 @@
 						<div class="form-group">
 							<div class="col-sm-2">Berat Badan</div>
 							<div class="col-sm-4">
-                                <?php echo form_input(array('id'=>'berat_badan','name'=>'berat_badan','type'=>'text','value'=>'','class'=>'form-control'));?>
+                                <?php echo form_input(array('id'=>'berat_badan','name'=>'berat_badan','type'=>'text','value'=>set_value('berat_badan'),'class'=>'form-control'));?>
                             </div>
 							<div class="col-sm-2">Tekanan Darah</div>
 							<div class="col-sm-4">
-                                <?php echo form_input(array('id'=>'tekanan_darah','name'=>'tekanan_darah','type'=>'text','value'=>'','class'=>'form-control'));?>
+                                <?php echo form_input(array('id'=>'tekanan_darah','name'=>'tekanan_darah','type'=>'text','value'=>set_value('tekanan_darah'),'class'=>'form-control'));?>
                             </div>
 						</div>
 						<div class="form-group">
 							<div class="col-sm-2">Tinggi Badan</div>
 							<div class="col-sm-4">
-                                <?php echo form_input(array('id'=>'tinggi_badan','name'=>'tinggi_badan','type'=>'text','value'=>'','class'=>'form-control'));?>
+                                <?php echo form_input(array('id'=>'tinggi_badan','name'=>'tinggi_badan','type'=>'text','value'=>set_value('tinggi_badan'),'class'=>'form-control'));?>
                             </div>
 							<div class="col-sm-2">Suhu Tubuh</div>
 							<div class="col-sm-4">
-                                <?php echo form_input(array('id'=>'suhu_tubuh','name'=>'suhu_tubuh','type'=>'text','value'=>'','class'=>'form-control'));?>
+                                <?php echo form_input(array('id'=>'suhu_tubuh','name'=>'suhu_tubuh','type'=>'text','value'=>set_value('suhu_tubuh'),'class'=>'form-control'));?>
                             </div>
 						</div>
 						<div id="input_fields_wrap_cek_fisik">
@@ -172,7 +173,7 @@
 						<div class="form-group">
 							<div class="col-sm-2">Diagnosa <?php echo form_error('diagnosa'); ?></div>
 							<div class="col-sm-10">
-                                <?php echo form_textarea(array('id'=>'diagnosa','name'=>'diagnosa','type'=>'textarea','value'=>'','rows'=>'4','class'=>'form-control'));?>
+                                <?php echo form_textarea(array('id'=>'diagnosa','name'=>'diagnosa','type'=>'textarea','value'=>set_value('diagnosa'),'rows'=>'4','class'=>'form-control'));?>
                             </div>
 						</div>
 						<div class="form-group">
@@ -181,7 +182,12 @@
                                 <select name="id_diagnosa[]" class="form-control select2" multiple="multiple" id="selectICD10">
                                     <?php
                                         foreach ($diagnosa_icd10 as $value) {
-                                            echo "<option value='".$value->id_diagnosa."'>".$value->code." - ".$value->diagnosa."</option>";
+                                            $selected = "";
+
+                                            if(in_array($value->id_diagnosa,set_value('id_diagnosa'))){
+                                                $selected = "selected";
+                                            }
+                                            echo "<option value='".$value->id_diagnosa."' $selected>".$value->code." - ".$value->diagnosa."</option>";
                                         }
                                     ?>
                                 </select>
