@@ -40,30 +40,36 @@
                                     </div>
                                 </div>
                                 <div class="form-group row opr">
-                                    <div class="col-md-2">Pilih Jenis Operasi</div>
-                                    <div>
-                                        <?= form_error("periksa_operasi[]"); ?>
-                                    </div>
+                                    <div class="col-md-2">Pilih Jenis Operasi <?= form_error("periksa_operasi"); ?></div>
                                     <div class="col-md-10">
-                                        <select name="periksa_operasi[]" id="jenis_operasi" data-row="0" class="form-control select2 periksaLab selectOpr getOk" style="width:100%">
+                                        <select name="periksa_operasi" id="jenis_operasi" data-row="0" class="form-control select2 periksaLab selectOpr getOk" style="width:100%">
                                             <option value="">---Pilih Jenis Operasi---</option>
-                                            <?php 
-                                                foreach ($jenis as $key => $value) {
-                                                    echo "<option data-id-jenis-opr='".$value->id_jenis_operasi."' data-biaya-ok='".$value->biaya_ok."' value='".$value->id_jenis_operasi."'>".$value->nama_jenis_operasi."</option>";
+                                            
+                                                <?php 
+                                                    foreach ($jenis as $key => $value) {
+                                                    if(validation_errors()!=""){
+                                                        $selected = set_value("periksa_operasi")==$value->id_jenis_operasi ? 'selected' : '';
+                                                        echo "<option data-id-jenis-opr='".$value->id_jenis_operasi."' data-biaya-ok='".$value->biaya_ok."' value='".$value->id_jenis_operasi."' $selected>".$value->nama_jenis_operasi."</option>";
+                                                    }
+                                                    else{
+                                                        echo "<option data-id-jenis-opr='".$value->id_jenis_operasi."' data-biaya-ok='".$value->biaya_ok."' value='".$value->id_jenis_operasi."'>".$value->nama_jenis_operasi."</option>";
+                                                    }
                                                 }
                                                 ?>
+
+                                                
                                         </select>
                                     </div>
                                     <div class="col-md-2"><input type="hidden" class="form-control biayaopr"></div>
                                     <div class="col-md-2"><input name="biaya_ok" type="hidden" class="form-control ok"></div>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-md-2">Pilih Ruangan Operasi</div>
+                                    <div class="col-md-2">Pilih Ruangan Operasi <?= form_error("ruangan"); ?></div>
                                     <div>
-                                        <?= form_error("ruangan[]"); ?>
+                                        
                                     </div>
                                     <div class="col-md-10">
-                                        <select name="ruangan[]" id="ruangan" data-row="0" class="form-control select2 " style="width:100%">
+                                        <select name="ruangan" id="ruangan" data-row="0" class="form-control select2 " style="width:100%">
                                             <option value="">---Pilih Ruangan Operasi---</option>
                                             <?php 
                                                 foreach ($ruangan as $key => $value) {
@@ -74,9 +80,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="row-alat" data-row='0'>
-                                    <?php
-                                    $this->load->view('loop/loop-pilihan-alat-operasi', ['no' => 0])
-                                    ?>
+                                <?php 
+                                    if(validation_errors()!=""){
+                                        for ($i=0; $i < count($_POST['id_alat']) ; $i++) { 
+                                            $this->load->view('loop/loop-pilihan-alat-operasi',['no' => $i]);
+                                        }
+                                    }
+                                    else{
+                                        $this->load->view('loop/loop-pilihan-alat-operasi',['no' => 0]);
+                                    }
+                                ?>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-4">
@@ -84,9 +97,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="row-biaya" data-row='1'>
-                                    <?php
-                                        $this->load->view('rawat-inap/loop-pilihan-biaya', ['no' => 1])
-                                    ?>
+                                <?php 
+                                    if(validation_errors()!=""){
+                                        for ($i=0; $i < count($_POST['id_biaya']) ; $i++) { 
+                                            $this->load->view('rawat-inap/loop-pilihan-biaya',['no' => $i]);
+                                        }
+                                    }
+                                    else{
+                                        $this->load->view('rawat-inap/loop-pilihan-biaya',['no' => 1]);
+                                    }
+                                ?>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-4">
@@ -95,7 +115,14 @@
                                 </div>
                                 <div class="form-group" id="row-obat" data-row='0'>
                                     <?php
-                                    $this->load->view('loop/loop-pilihan-obat', ['no' => 0])
+                                    if(validation_errors()!=""){
+                                        for ($i=0; $i < count($_POST['kode_obat']) ; $i++) { 
+                                            $this->load->view('loop/loop-pilihan-obat',['no' => $i]);
+                                        }
+                                    }
+                                    else{
+                                        $this->load->view('loop/loop-pilihan-obat',['no' => 0]);
+                                    }
                                     ?>
                                 </div>
                                 <div class="form-group row">

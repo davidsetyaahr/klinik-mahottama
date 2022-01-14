@@ -14,7 +14,8 @@
             }
             else{
                 foreach ($biaya as $key => $value) {
-                    echo "<option data-biaya='".$value->biaya."' value='".$value->id_biaya."'>".$value->nama_biaya."</option>";
+                    $s_biaya = set_value("id_biaya[$no]")==$value->id_biaya ? 'selected' : '';
+                    echo "<option data-biaya='".$value->biaya."' value='".$value->id_biaya."' $s_biaya>".$value->nama_biaya."</option>";
                 }
             }
         ?>

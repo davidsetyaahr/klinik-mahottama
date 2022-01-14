@@ -13,6 +13,7 @@
             }
             else{
                 foreach ($alkes as $key => $value) {
+                    $s = set_value("kode_alkes[$no]")==$value->kode_barang ? 'selected' : '';
                     echo "<option data-stok='".$value->stok_barang."' data-harga='".$value->harga."' value='".$value->kode_barang."'>".$value->nama_barang."</option>";
                 }
             }

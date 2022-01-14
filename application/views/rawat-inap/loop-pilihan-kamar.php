@@ -1,6 +1,7 @@
 <div class="row loop-kamar" id="<?= $no ?>" data-no="<?= $no ?>" <?= isset($selected) ? "data-idDetail='".$selected['value']->id_detail."'" : '' ?>>
 <br>
     <div class="col-md-4">
+        <?= form_error("id_kategori_kamar[$no]"); ?>
         <!-- <input type="text" name="edit_id_kamar" id="edit_id_kamar"> -->
         <div id="container"></div>
         <select name="<?= isset($selected) ? 'old_' : '' ?>id_kategori_kamar[]" class="form-control <?= !isset($selected) ? 'select2' : '' ?> getHarga tipe-kamar" style="width:100%" <?= isset($selected) ? 'readonly' : '' ?>>
@@ -22,6 +23,7 @@
         </select>
     </div>
     <div class="col-md-4">
+    <?= form_error("id_kamar[$no]"); ?>
         <select name="<?= isset($selected) ? 'old_' : '' ?>id_kamar[]" class="form-control select2 idKamar <?= isset($selected) ? 'oldChangeKamar' : '' ?>" style="width:100%" <?= isset($selected) ? "data-idkamar='".$selected['value']->id_kamar."'" : ''  ?> >
             <?php 
                 if(isset($selected)){
@@ -34,6 +36,7 @@
         </select>
     </div>
     <div class='<?= $no!=0 ? 'col-md-3' : 'col-md-4' ?>'>
+    <?= form_error("hari[$no]"); ?>
         <!-- <br> -->
         <input type="number" value="<?= isset($selected) ? $selected['value']->jml_hari : ''; ?>" name="<?= isset($selected) ? 'old_' : '' ?>hari[]" placeholder="Jumlah Hari" class="form-control hari <?= isset($selected) ? 'oldChangeQtyHari' : ''  ?>" <?= isset($selected) ? "data-hari='".$selected['value']->jml_hari."'" : ''  ?> id="hari">
     </div>

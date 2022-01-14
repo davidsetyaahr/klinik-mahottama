@@ -14,7 +14,8 @@
             }
             else{
                 foreach ($obat as $key => $value) {
-                    echo "<option data-stok='".$value->stok_barang."' data-harga='".$value->harga."' value='".$value->kode_barang."'>".$value->nama_barang."</option>";
+                    $s = set_value("kode_obat[$no]")==$value->kode_barang ? 'selected' : '';
+                    echo "<option data-stok='".$value->stok_barang."' data-harga='".$value->harga."' value='".$value->kode_barang."' $s>".$value->nama_barang."</option>";
                 }
             }
         ?>

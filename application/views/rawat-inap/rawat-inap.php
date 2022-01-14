@@ -48,9 +48,18 @@
                                             <input type="hidden" name="isEdit" value="true">
                                         <?php
                                                 foreach ($getKamar as $key => $value) {
-                                                    $data['value'] = $value;
-                                                    $data['getKamarByKategori'] = $this->db->get_where('tbl_kamar',['id_kategori_kamar' => $value->id_kategori_kamar,'status' => '0'])->result();
-                                                    $this->load->view('rawat-inap/loop-pilihan-kamar', ['no' => $key,'selected' => $data]);
+                                                    if(validation_errors()!=""){
+                                                        for ($i=0; $i < count($_POST['id_kategori_kamar']) ; $i++) { 
+                                                            $data['value'] = $value;
+                                                            $data['getKamarByKategori'] = $this->db->get_where('tbl_kamar',['id_kategori_kamar' => $value->id_kategori_kamar,'status' => '0'])->result();
+                                                            $this->load->view('rawat-inap/loop-pilihan-kamar', ['no' => $i,'selected' => $data]);
+                                                        }
+                                                    }
+                                                    else{
+                                                        $data['value'] = $value;
+                                                        $data['getKamarByKategori'] = $this->db->get_where('tbl_kamar',['id_kategori_kamar' => $value->id_kategori_kamar,'status' => '0'])->result();
+                                                        $this->load->view('rawat-inap/loop-pilihan-kamar', ['no' => $key,'selected' => $data]);
+                                                    }
                                                 }
                                             }
                                             else{

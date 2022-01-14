@@ -29,14 +29,22 @@
                         <h3 class="box-title">DETAIL REKAM MEDIS</h3>
                     </div>
                     <div class="box-body">
-                        <div style="padding-bottom: 10px;">
+                        <div class="row" style="margin-bottom: 10px">
+                            <div class="col-md-4">
+                                <?php echo anchor(site_url('periksamedis/riwayat'), '<i class="fa fa-sign-out" aria-hidden="true"></i> Kembali', 'class="btn btn-info btn-sm"'); ?>
+                            </div>
+                            <div class="col-md-1 text-right">
+                            </div>
+                            <div class="col-md-3 text-right">
+
+                            </div>
                         </div>
                         <table class="table table-bordered table-striped" id="mytable">
                             <thead>
                                 <tr>
                                     <th width="30px">No</th>
-                                    <th>No Pendaftaran</th>
                                     <th>Pemeriksaaan</th>
+                                    <th>No Pendaftaran</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

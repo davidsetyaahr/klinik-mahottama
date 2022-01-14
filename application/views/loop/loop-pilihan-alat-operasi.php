@@ -6,7 +6,9 @@
             <option value="">---Pilih Alat Operasi---</option>
         <?php 
                 foreach ($alat as $key => $value) {
-                    echo "<option data-stok='".$value->stok_tidak_terpakai."' value='".$value->id."'>".$value->nama."</option>";
+                    $selected = set_value("id_alat[$no]")==$value->id ? 'selected' : '';
+                    echo "<option data-stok='".$value->stok_tidak_terpakai."' value='".$value->id."' $selected>".$value->nama."</option>";
+                    // echo "<option data-stok='".$value->stok_tidak_terpakai."' value='".$value->id."'>".$value->nama."</option>";
                 }
         ?>
         </select>
@@ -15,6 +17,9 @@
         <select name="qty_alat[]" id="qty_alat" class="form-control select2 stokAlat">
             <?php
             for ($i = 1; $i <= $stok[0]->stok_barang; $i++) {
+                // $selected = set_value("qty_alat[$no]")==$value->stok ? 'selected' : '';
+                // $selected = $i==$value->jumlah ? 'selected' : '';
+                // echo "<option'".$selected."'>$i</option>";
                 echo "<option>$i</option>";
             }
             ?>
