@@ -114,6 +114,14 @@ class Periksa_model extends CI_Model
             $this->db->insert('tbl_periksa_d_biaya',$data_d_biaya[$i]);
         }
     }
+
+
+    function insert_d_obat($data_d_obat){
+        for($i = 0; $i < count($data_d_obat); $i++){
+            $this->db->insert('tbl_periksa_d_obat',$data_d_obat[$i]);
+        }
+    }
+
     public function getLastNomor()
     {
         $this->db->select('nomor_skt');

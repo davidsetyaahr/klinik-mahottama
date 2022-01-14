@@ -1148,7 +1148,7 @@ class Periksamedis extends CI_Controller
                         'kode_barang' => $post_obat[$i],
                         'jumlah' => $_POST['jml_obat'][$i],
                         'harga_satuan' => $_POST['harga_obat'][$i],
-                        'tipe_periksa' =>'5',
+                        'tipe_periksa' =>'3',
                         'dtm_crt' => date("Y-m-d H:i:s",  time()),
                         'dtm_upd' => date("Y-m-d H:i:s",  time()),
                     );
@@ -1177,7 +1177,7 @@ class Periksamedis extends CI_Controller
                         'kode_barang' => $post_alkes[$i],
                         'jumlah' => $_POST['jml_alkes'][$i],
                         'harga_satuan' => $$_POST['harga_alkes'][$i],
-                        'tipe_periksa' => '5',
+                        'tipe_periksa' => '3',
                         'dtm_crt' => date("Y-m-d H:i:s",  time()),
                         'dtm_upd' => date("Y-m-d H:i:s",  time()),
                     );
@@ -1205,7 +1205,7 @@ class Periksamedis extends CI_Controller
                     'kode_tindakan' => $post_tindakan,
                     'jumlah' => $_POST['qty_tindakan'][$i],
                     'biaya' => $_POST['biaya_tindakan'][$i],
-                    'tipe_periksa' => '5',
+                    'tipe_periksa' => '3',
                     'dtm_crt' => date("Y-m-d H:i:s",  time()),
                     'dtm_upd' => date("Y-m-d H:i:s",  time())
                     );
@@ -1224,7 +1224,7 @@ class Periksamedis extends CI_Controller
                         'id_biaya' => $post_biaya,
                         'jumlah' => $_POST['qty_biaya'][$i],
                         'biaya' => $_POST['biaya'][$i],
-                        'tipe_periksa' => '5',
+                        'tipe_periksa' => '3',
                         'dtm_crt' => date("Y-m-d H:i:s",  time()),
                         'dtm_upd' => date("Y-m-d H:i:s",  time()),
                     );
@@ -1388,6 +1388,7 @@ class Periksamedis extends CI_Controller
         $this->data['tindakan'] = $this->db->get('tbl_tindakan')->result();
         $this->data['alkes'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 2);
         $this->data['obat'] = $this->Tbl_obat_alkes_bhp_model->get_all_obat($this->id_klinik, false, 1);
+        var_dump($this->data['obat']);
 
         $this->template->load('template', 'periksa-radiologi/periksa-radiologi', $this->data);
     }
@@ -1462,33 +1463,38 @@ class Periksamedis extends CI_Controller
         }
 
             // periksa d_obat
-            $post_obat = $_POST['kode_obat'];
+            $post_obat = $this->input->post('kode_obat');
+            $post_obat_jml = $this->input->post('jml_obat');
             $data_periksa_d_obat = array();
             for ($i = 0; $i < count($post_obat); $i++) {
                 $kode_barang = $post_obat[$i];
-                echo $kode_barang;
                 if($kode_barang!="" && $kode_barang!=null){
                     $data_periksa_d_obat[] = array(
                         'no_pendaftaran' => $this->no_pendaftaran,
                         'no_periksa' => $this->input->post('no_periksa'),
                         'kode_barang' => $post_obat[$i],
-                        'jumlah' => $_POST['jml_obat'][$i],
-                        'harga_satuan' => $_POST['harga_obat'][$i],
+                        'jumlah' => $post_obat_jml[$i],
+                        'harga_satuan' => $_POST['harga_obat'][$i] / $post_obat_jml[$i],
                         'tipe_periksa' =>'5',
                         'dtm_crt' => date("Y-m-d H:i:s",  time()),
                         'dtm_upd' => date("Y-m-d H:i:s",  time()),
                     );
-                    
-                    $this->db->insert('tbl_periksa_d_obat',$data_periksa_d_obat);
+                    $this->Periksa_model->insert_d_obat($data_periksa_d_obat);
+                    // print_r($data_periksa_d_obat[$i]);
+                    // return;
                     $data_detail = array(
                         'id_inventory' => $kode_receipt1,
-                        'kode_barang' => $post_obat[$i],
-                        'jumlah' => $_POST['jml_obat'][$i],
-                        'harga' => $_POST['harga_obat'][$i],
+                        'kode_barang' => $kode_barang,
+                        'jumlah' =>  $post_obat_jml[$i],
+                        // 'jumlah' =>  $this->input->post('jml_obat'),
+                        'harga' => $_POST['harga_obat'][$i] / $post_obat_jml[$i],
                         'dtm_crt' => date("Y-m-d H:i:s",  time()),
                         'dtm_upd' => date("Y-m-d H:i:s",  time()),
                     );
+                    // print_r($data_detail);
+                    // return;
                     $this->Transaksi_obat_model->insert('tbl_inventory_detail', $data_detail);
+                    
                 }
             }
 
@@ -1511,8 +1517,8 @@ class Periksamedis extends CI_Controller
                     $detailInv = array(
                         'id_inventory' => $kode_receipt1,
                         'kode_barang' => $post_alkes[$i],
-                        'jumlah' => $_POST['jml_alkes'][$i],
-                        'harga' => $_POST['harga_alkes'][$i],
+                        'jumlah' => $_POST['jml_alkes'],
+                        'harga' => $_POST['harga_alkes'],
                         'dtm_crt' => date("Y-m-d H:i:s",  time()),
                         'dtm_upd' => date("Y-m-d H:i:s",  time()),
                     );
@@ -2206,7 +2212,7 @@ class Periksamedis extends CI_Controller
                             'kode_barang' => $post_obat[$i],
                             'jumlah' => $_POST['jml_obat'][$i],
                             'harga_satuan' => $_POST['harga_obat'][$i],
-                            'tipe_periksa' =>'5',
+                            'tipe_periksa' =>'2',
                             'dtm_crt' => date("Y-m-d H:i:s",  time()),
                             'dtm_upd' => date("Y-m-d H:i:s",  time()),
                         );
@@ -2256,7 +2262,7 @@ class Periksamedis extends CI_Controller
                             'kode_barang' => $post_alkes[$i],
                             'jumlah' => $_POST['jml_alkes'][$i],
                             'harga_satuan' => $$_POST['harga_alkes'][$i],
-                            'tipe_periksa' => '5',
+                            'tipe_periksa' => '2',
                             'dtm_crt' => date("Y-m-d H:i:s",  time()),
                             'dtm_upd' => date("Y-m-d H:i:s",  time()),
                         );
@@ -2306,7 +2312,7 @@ class Periksamedis extends CI_Controller
                         'kode_tindakan' => $post_tindakan,
                         'jumlah' => $_POST['qty_tindakan'][$i],
                         'biaya' => $_POST['biaya_tindakan'][$i],
-                        'tipe_periksa' => '5',
+                        'tipe_periksa' => '2',
                         'dtm_crt' => date("Y-m-d H:i:s",  time()),
                         'dtm_upd' => date("Y-m-d H:i:s",  time())
                         );
@@ -2342,7 +2348,7 @@ class Periksamedis extends CI_Controller
                             'id_biaya' => $post_biaya,
                             'jumlah' => $_POST['qty_biaya'][$i],
                             'biaya' => $_POST['biaya'][$i],
-                            'tipe_periksa' => '5',
+                            'tipe_periksa' => '2',
                             'dtm_crt' => date("Y-m-d H:i:s",  time()),
                             'dtm_upd' => date("Y-m-d H:i:s",  time()),
                         );

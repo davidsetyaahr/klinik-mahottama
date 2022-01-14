@@ -14,7 +14,7 @@
             else{
                 foreach ($alkes as $key => $value) {
                     $s = set_value("kode_alkes[$no]")==$value->kode_barang ? 'selected' : '';
-                    echo "<option data-stok='".$value->stok_barang."' data-harga='".$value->harga."' value='".$value->kode_barang."'>".$value->nama_barang."</option>";
+                    echo "<option data-stok='".$value->stok_barang."' data-harga='".$value->harga."' value='".$value->kode_barang."' $s>".$value->nama_barang."</option>";
                 }
             }
         ?>
@@ -25,6 +25,11 @@
         <?php 
                 if(isset($selected)){
                     for ($i=1; $i <= $stok[0]->stok_barang;$i++) { 
+                        $s = $i==$selected->jumlah ? 'selected' : '';
+                        echo "<option $s>$i</option>";
+                    }
+                }else{
+                    for ($i=1; $i <= $stok[0]->stok_barang;$i++) {
                         $s = $i==$selected->jumlah ? 'selected' : '';
                         echo "<option $s>$i</option>";
                     }

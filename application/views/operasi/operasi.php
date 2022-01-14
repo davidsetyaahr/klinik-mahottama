@@ -132,7 +132,14 @@
                                 </div>
                                 <div class="form-group" id="row-alkes" data-row='0'>
                                     <?php
-                                    $this->load->view('loop/loop-pilihan-alkes', ['no' => 0])
+                                    if(validation_errors()!=""){
+                                        for ($i=0; $i < count($_POST['kode_alkes']) ; $i++) { 
+                                            $this->load->view('loop/loop-pilihan-alkes',['no' => $i]);
+                                        }
+                                    }
+                                    else{
+                                        $this->load->view('loop/loop-pilihan-alkes',['no' => 0]);
+                                    }
                                     ?>
                                 </div>
                                 <div class="form-group row">
