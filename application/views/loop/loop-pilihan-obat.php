@@ -2,8 +2,8 @@
 <br>
 <div class="col-md-6">
 <div id="container_biaya"></div>
-        <select name="<?= isset($selected) ? 'old_' : '' ?>kode_obat[]" class="form-control <?= !isset($selected) ? 'select2' : '' ?> selectObat obat" <?= isset($selected) ? 'readonly' : '' ?>>
-        <?php 
+        <select name="<?= isset($selected) ? 'old_' : '' ?>kode_obat[]" class="form-control <?= !isset($selected) ? 'select2' : '' ?> selectObat obat" <?= isset($selected) ? 'readonly' : '' ?> data-selectedqty="<?= set_value("jml_obat[$no]") ?>">
+        <?php
             if(!isset($selected)){
         ?>
             <option value="">---Pilih Obat---</option>
@@ -34,11 +34,15 @@
         </select>
         <!-- <input type="text" name="hasil[]" class="form-control" placeholder="Hasil" id="" style="<?php echo ($no!=0) ? 'margin-right:10px' : '' ?>"> -->
     </div>
+    <?php 
+        $defaultHargaObat = set_value("harga_obat[$no]")=="" ? 0 : set_value("harga_obat[$no]");
+        $defaultQtyObat = set_value("jml_obat[$no]")=="" ? 0 : set_value("jml_obat[$no]");
+    ?>
     <!-- <div class="col-md-2"> -->
-        <input type="hidden" class="form-control harga" value="<?= isset($selected) ? $selected->harga_satuan : '' ?>" name="<?= isset($selected) ? 'old_' : '' ?>harga_obat[]" placeholder="Harga Obat" readonly>
+        <input type="hidden" class="form-control harga" value="<?= isset($selected) ? $selected->harga_satuan : $defaultHargaObat ?>" name="<?= isset($selected) ? 'old_' : '' ?>harga_obat[]" placeholder="Harga Obat" readonly>
     <!-- </div> -->
     <!-- <div class="<?= $no!=0 ? 'col-md-2' : 'col-md-3' ?>"> -->
-    <input type="hidden" class="form-control total" value="<?= isset($selected) ? $selected->harga_satuan * $selected->jumlah : '' ?>" name="<?= isset($selected) ? 'old_' : '' ?>subtotal_obat[]" placeholder="Sub Total" readonly>
+    <input type="hidden" class="form-control total" value="<?= isset($selected) ? $selected->harga_satuan * $selected->jumlah : $defaultHargaObat * $defaultQtyObat ?>" name="<?= isset($selected) ? 'old_' : '' ?>subtotal_obat[]" placeholder="Sub Total" readonly>
     <!-- </div> -->
     <?php 
         if($no!=0){

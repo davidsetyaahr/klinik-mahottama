@@ -1,7 +1,7 @@
 <div class="row loop-alkes" data-no="<?= $no ?>" <?= isset($selected) ? "data-idDetail='".$selected->id_periksa_d_alkes."'" : '' ?>>
 <br>
 <div class="col-md-6">
-        <select name="<?= isset($selected) ? 'old_' : '' ?>kode_alkes[]" class="form-control <?= !isset($selected) ? 'select2' : '' ?> selectAlkes alkes" <?= isset($selected) ? 'readonly' : '' ?>>
+        <select name="<?= isset($selected) ? 'old_' : '' ?>kode_alkes[]" class="form-control <?= !isset($selected) ? 'select2' : '' ?> selectAlkes alkes" <?= isset($selected) ? 'readonly' : '' ?> data-selectedqty="<?= set_value("jml_alkes[$no]") ?>">
             <?php 
                 if(!isset($selected)){
             ?>
@@ -39,10 +39,14 @@
         <!-- <input type="text" name="hasil[]" class="form-control" placeholder="Hasil" id="" style="<?php echo ($no!=0) ? 'margin-right:10px' : '' ?>"> -->
     </div>
     <!-- <div class="col-md-2"> -->
-        <input type="hidden" name="<?= isset($selected) ? 'old_' : '' ?>harga_alkes[]" value="<?= isset($selected) ? $selected->harga_satuan : '' ?>" class="form-control harga" placeholder="Harga alkes" readonly>
+    <?php 
+        $defaultHargaAlkes = set_value("harga_alkes[$no]")=="" ? 0 : set_value("harga_alkes[$no]");
+        $defaultQtyAlkes = set_value("jml_alkes[$no]")=="" ? 0 : set_value("jml_alkes[$no]");
+    ?>
+        <input type="hidden" name="<?= isset($selected) ? 'old_' : '' ?>harga_alkes[]" value="<?= isset($selected) ? $selected->harga_satuan : $defaultHargaAlkes ?>" class="form-control harga" placeholder="Harga alkes" readonly>
     <!-- </div> -->
     <!-- <div class="<?= $no!=0 ? 'col-md-2' : 'col-md-3' ?>"> -->
-        <input type="hidden" name="<?= isset($selected) ? 'old_' : '' ?>subtotal_alkes[]" class="form-control total" value="<?= isset($selected) ? $selected->harga_satuan * $selected->jumlah : '' ?>" placeholder="Sub Total" readonly>
+        <input type="hidden" name="<?= isset($selected) ? 'old_' : '' ?>subtotal_alkes[]" class="form-control total" value="<?= isset($selected) ? $selected->harga_satuan * $selected->jumlah : $defaultHargaAlkes * $defaultQtyAlkes ?>" placeholder="Sub Total" readonly>
     <!-- </div> -->
     <?php 
         if($no!=0){

@@ -141,6 +141,32 @@
             grandTotal()
         }
 
+        <?php 
+            if(validation_errors()!=""){
+        ?>
+            $(".selectObat").each(function(){
+                var getStok = $(this).find(':selected').data('stok')
+                var dataId = $(this).closest('.loop-obat').attr('data-no')
+                var defaultStok = parseInt($(this).data('selectedqty'))
+                for(var i = 1;i<=parseInt(getStok);i++){
+                    var selected = i==defaultStok ? 'selected' : ''
+                    $(".loop-obat[data-no='"+dataId+"'] .stokObat").append(`<option ${selected}>${i}</option>`)
+                }
+            })
+
+            $(".selectAlkes").each(function(){
+                var getStok = $(this).find(':selected').data('stok')
+                var dataId = $(this).closest('.loop-alkes').attr('data-no')
+                var defaultStok = parseInt($(this).data('selectedqty'))
+                for(var i = 1;i<=parseInt(getStok);i++){
+                    var selected = i==defaultStok ? 'selected' : ''
+                    $(".loop-alkes[data-no='"+dataId+"'] .stokAlkes").append(`<option ${selected}>${i}</option>`)
+                }
+            })
+        <?php
+            }
+        ?>
+
         function selectObat(thisAttr){
             var stok = thisAttr.find(':selected').data('stok')
             var harga = thisAttr.find(':selected').data('harga')

@@ -2,7 +2,7 @@
 <br>
     <div class="col-md-6">
         <div id="container_biaya"></div>
-        <select name="<?= isset($selected) ? 'old_' : '' ?>id_biaya[]" class="form-control <?= !isset($selected) ? 'select2' : '' ?> getBiaya tipe-biaya" style="width:100%" <?= isset($selected) ? 'readonly' : '' ?>>
+        <select name="<?= isset($selected) ? 'old_' : '' ?>id_biaya[]" class="form-control <?= !isset($selected) ? 'select2' : '' ?> getBiaya tipe-biaya" style="width:100%" <?= isset($selected) ? 'readonly' : '' ?> data-selectedqty="<?= set_value("qty_biaya[$no]") ?>">
         <?php 
             if(!isset($selected)){
         ?>
@@ -23,14 +23,27 @@
     </div>
     <div class="<?= $no!=0 ? 'col-md-5' : 'col-md-6' ?>">
         <!-- <br> -->
-        <input id="qty" name="<?= isset($selected) ? 'old_' : '' ?>qty_biaya[]" value="<?= isset($selected) ? $selected->jumlah : '1' ?>" type="number" class="form-control qty_biaya  <?= isset($selected) ? 'oldChangeQtyBiaya' : ''  ?>" <?= isset($selected) ? "data-qty='".$selected->jumlah."'" : ''  ?> placeholder="Kuantitas">
+        <?php 
+            $defaultBiaya = set_value("biaya[$no]")=="" ? 0 : set_value("biaya[$no]");
+            $defaultQtyBiaya = set_value("qty_biaya[$no]")=="" ? 0 : set_value("qty_biaya[$no]");
+            if(isset($selected)){
+                $qty = $selected->jumlah;
+            }
+            else if(set_value("qty_biaya[$no]")!=''){
+                $qty = set_value("qty_biaya[$no]");
+            }
+            else{
+                $qty = 1;
+            }
+        ?>
+        <input id="qty" name="<?= isset($selected) ? 'old_' : '' ?>qty_biaya[]" value="<?=  $qty ?>" type="number" class="form-control qty_biaya  <?= isset($selected) ? 'oldChangeQtyBiaya' : ''  ?>" <?= isset($selected) ? "data-qty='".$selected->jumlah."'" : ''  ?> placeholder="Kuantitas">
     </div>
     <!-- <div class="col-md-2"> -->
-    <?php echo form_input(array('id'=>'biaya','name'=> isset($selected) ? 'old_biaya[]' : 'biaya[]','type'=>'hidden','value'=>isset($selected) ? $selected->biaya : '','class'=>'form-control biaya', 'readonly'=>'readonly','placeholder'=>'Harga Biaya','style'=>'text-align:left;'));?>    
+    <?php echo form_input(array('id'=>'biaya','name'=> isset($selected) ? 'old_biaya[]' : 'biaya[]','type'=>'hidden','value'=>isset($selected) ? $selected->biaya : $defaultBiaya,'class'=>'form-control biaya', 'readonly'=>'readonly','placeholder'=>'Harga Biaya','style'=>'text-align:left;'));?>    
     <!-- <br> -->
     <!-- </div> -->
     <!-- <div class="<?= $no!=0 ? 'col-md-2' : 'col-md-3' ?>">   -->
-        <?php echo form_input(array('id'=>'total_biaya','name'=> isset($selected) ? 'old_subtotal_biaya[]' : 'subtotal_biaya[]','type'=>'hidden','value'=>isset($selected) ? $selected->biaya * $selected->jumlah : '','class'=>'form-control total_biaya', 'readonly'=>'readonly','placeholder'=>'Sub Total','style'=>'text-align:left;'));?>
+        <?php echo form_input(array('id'=>'total_biaya','name'=> isset($selected) ? 'old_subtotal_biaya[]' : 'subtotal_biaya[]','type'=>'hidden','value'=>isset($selected) ? $selected->biaya * $selected->jumlah : $defaultBiaya * $defaultQtyBiaya,'class'=>'form-control total_biaya', 'readonly'=>'readonly','placeholder'=>'Sub Total','style'=>'text-align:left;'));?>
     <!--  -->
     <!-- </div> -->
     <?php 

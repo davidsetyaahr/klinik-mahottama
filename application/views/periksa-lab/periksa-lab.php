@@ -49,7 +49,7 @@
                                     else{
                                         $this->load->view('periksa-lab/loop-pilihan-lab',['no' => 0]);
                                     }
-                                ?>
+                                    ?>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-4">
@@ -58,7 +58,14 @@
                             </div>
                             <div class="form-group" id="row-obat" data-row='0'>
                                 <?php 
-                                    $this->load->view('loop/loop-pilihan-obat',['no' => 0])
+                                    if(validation_errors()!=""){
+                                        for ($i=0; $i < count($_POST['kode_obat']) ; $i++) { 
+                                            $this->load->view('loop/loop-pilihan-obat',['no' => $i]);
+                                        }
+                                    }
+                                    else{
+                                        $this->load->view('loop/loop-pilihan-obat',['no' => 0]);
+                                    }
                                 ?>
                             </div>
                             <div class="form-group row">
@@ -68,7 +75,14 @@
                             </div>
                             <div class="form-group" id="row-alkes" data-row='0'>
                                 <?php 
-                                    $this->load->view('loop/loop-pilihan-alkes',['no' => 0])
+                                    if(validation_errors()!=""){
+                                        for ($i=0; $i < count($_POST['kode_alkes']) ; $i++) { 
+                                            $this->load->view('loop/loop-pilihan-alkes',['no' => $i]);;
+                                        }
+                                    }
+                                    else{
+                                        $this->load->view('loop/loop-pilihan-alkes',['no' => 0]);
+                                    }
                                 ?>
                             </div>
                             <div class="form-group row">
@@ -78,7 +92,14 @@
                             </div>
                             <div class="form-group" id="row-biaya" data-row='0'>
                                     <?php
-                                    $this->load->view('rawat-inap/loop-pilihan-biaya', ['no' => 0])
+                                    if(validation_errors()!=""){
+                                        for ($i=0; $i < count($_POST['id_biaya']) ; $i++) { 
+                                            $this->load->view('rawat-inap/loop-pilihan-biaya', ['no' => $i]);
+                                        }
+                                    }
+                                    else{
+                                        $this->load->view('rawat-inap/loop-pilihan-biaya', ['no' => 0]);
+                                    }
                                     ?>
                             </div>
                             <div class="form-group row">
@@ -88,7 +109,14 @@
                             </div>
                             <div class="form-group" id="row-tindakan" data-row='0'>
                                 <?php 
-                                    $this->load->view('loop/loop-pilihan-tindakan',['no' => 0])
+                                    if(validation_errors()!=""){
+                                        for ($i=0; $i < count($_POST['tindakan']) ; $i++) { 
+                                            $this->load->view('loop/loop-pilihan-tindakan',['no' => $i]);
+                                        }
+                                    }
+                                    else{
+                                        $this->load->view('loop/loop-pilihan-tindakan',['no' => 0]);
+                                    }
                                 ?>
                             </div>
                             <div class="form-group row">
