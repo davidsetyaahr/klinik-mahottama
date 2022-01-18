@@ -26,7 +26,7 @@
             <div class="col-md-12">
                 <div class="box box-warning box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">DETAIL REKAM MEDIS</h3>
+                        <h3 class="box-title">DETAIL REKAM MEDIS <?= $no_pendaftaran ?></h3>
                     </div>
                     <div class="box-body">
                         <div class="row" style="margin-bottom: 10px">
@@ -48,7 +48,6 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-
                         </table>
                     </div>
                 </div>
@@ -89,14 +88,19 @@
             },
             processing: true,
             serverSide: true,
-            ajax: {"url": "../../periksamedis/json_riwayat_detail/<?php echo $no_rekam_medis;?>", "type": "POST"},
+            ajax: {"url": "<?= base_url() ?>periksamedis/json_history_detail/<?= $no_pendaftaran ?>", "type": "POST"},
             columns: [
                 {
-                    "data": "no_periksa",
+                    "data": "id_periksa",
                     "orderable": false
-                },{"data": "tgl_periksa"},{"data": "anamnesi"},{"data": "diagnosa"},{"data": "obat_detail"},{"data": "nama_dokter"},{"data": "klinik"},{"data": "action","className" : "text-center"}
+                },{"data": "tipe"},{"data": "no_pendaftaran"}
+                ,{
+                    "data" : "action",
+                    "orderable": false,
+                    "className" : "text-center"
+                }
             ],
-            order: [[1, 'asc']],
+            order: [[0, 'asc']],
             rowCallback: function(row, data, iDisplayIndex) {
                 var info = this.fnPagingInfo();
                 var page = info.iPage;
@@ -105,5 +109,6 @@
                 $('td:eq(0)', row).html(index);
             }
         });
+        
     });
 </script>

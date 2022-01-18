@@ -204,18 +204,33 @@ class Periksa_model extends CI_Model
         $this->datatables->from('tbl_pasien');
         $this->datatables->join('tbl_pendaftaran','tbl_pendaftaran.no_rekam_medis=tbl_pasien.no_rekam_medis','left');
         $this->datatables->where('tbl_pendaftaran.is_bayar', '1');
-        $this->datatables->add_column('action', anchor(site_url('periksamedis/history_detail/$1'),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-info btn-sm"'), 'no_pendaftaran');
+        $this->datatables->group_by('tbl_pasien.no_rekam_medis');
+        $this->datatables->add_column('action', anchor(site_url('periksamedis/history_detail/$1'),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-info btn-sm"'), 'no_rekam_medis');
             
         return $this->datatables->generate();
     }
 
     function json_history_detail($no_pendaftaran)
     {
-        $this->datatables->select('');
-        $this->datatables->from('tbl_pendaftaran pe');
-        $this->datatables->join('tbl_pendaftaran','tbl_pendaftaran.no_rekam_medis=tbl_pasien.no_rekam_medis','left');
-        $this->datatables->where('tbl_pendaftaran.is_bayar', '1');
-        $this->datatables->add_column('action', anchor(site_url('periksamedis/history_detail/$1'),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-info btn-sm"'), 'no_pendaftaran');
+        $this->datatables->select('pl.id_periksa,pe.no_pendaftaran, (CASE WHEN pl.tipe_periksa = 1 THEN "POLI" WHEN pl.tipe_periksa = 2 THEN "RAWAT INAP" WHEN pl.tipe_periksa = 3 THEN "OPERASI" WHEN pl.tipe_periksa = 4 THEN "LABORATORIUM" WHEN pl.tipe_periksa = 5 THEN "RADIOLOGI" END) as tipe');
+        $this->datatables->from('tbl_periksa_lanjutan pl');
+        $this->datatables->join('tbl_pendaftaran pe','pe.no_pendaftaran=pl.no_pendaftaran');
+        $this->datatables->where('pe.no_pendaftaran', $no_pendaftaran);
+        $this->datatables->where('pe.is_bayar', '1');
+        // $this->datatables->group_by('pe.no_pendaftaran');
+        $this->datatables->add_column('action', anchor(site_url('periksamedis/detail_history/$1'),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-info btn-sm"'), 'no_pendaftaran');
+            
+        return $this->datatables->generate();
+    }
+
+    function json_detail_history($no_pendaftaran)
+    {
+        $this->datatables->select('po.no_periksa, ob.nama_barang, po.tipe_periksa');
+        $this->datatables->from('tbl_periksa_d_obat po');
+        // $this->datatables->join('tbl_periksa_d_alkes pa','pa.no_pendaftaran = po.no_pendaftaran');
+        $this->datatables->join('tbl_obat_alkes_bhp ob','ob.kode_barang = po.kode_barang');
+        $this->datatables->where('po.no_pendaftaran', $no_pendaftaran);
+        $this->datatables->where('po.tipe_periksa', '1');
             
         return $this->datatables->generate();
     }
