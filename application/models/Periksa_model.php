@@ -210,17 +210,22 @@ class Periksa_model extends CI_Model
         return $this->datatables->generate();
     }
 
-    function json_history_detail($no_pendaftaran)
+    function json_history_detail($no_rekam_medis)
     {
-        $this->datatables->select('pl.id_periksa,pe.no_pendaftaran, (CASE WHEN pl.tipe_periksa = 1 THEN "POLI" WHEN pl.tipe_periksa = 2 THEN "RAWAT INAP" WHEN pl.tipe_periksa = 3 THEN "OPERASI" WHEN pl.tipe_periksa = 4 THEN "LABORATORIUM" WHEN pl.tipe_periksa = 5 THEN "RADIOLOGI" END) as tipe');
-        $this->datatables->from('tbl_periksa_lanjutan pl');
-        $this->datatables->join('tbl_pendaftaran pe','pe.no_pendaftaran=pl.no_pendaftaran');
-        $this->datatables->where('pe.no_pendaftaran', $no_pendaftaran);
-        $this->datatables->where('pe.is_bayar', '1');
-        // $this->datatables->group_by('pe.no_pendaftaran');
-        $this->datatables->add_column('action', anchor(site_url('periksamedis/detail_history/$1'),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-info btn-sm"'), 'no_pendaftaran');
+        $this->datatables->select('pe.no_periksa, pe.dtm_crt, pe.no_pendaftaran, pe.no_rekam_medis');
+        $this->datatables->from('tbl_periksa pe');
+        $this->datatables->where('pe.no_rekam_medis', $no_rekam_medis);
+        $this->datatables->add_column('action', anchor('#','<i class="fa fa-eye" aria-hidden="true"></i>',"class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal' onClick='javasciprt: cekDetail(\"$1\")'"), 'no_rekam_medis');
             
         return $this->datatables->generate();
+    }
+    
+    function json_detail_check($no_rekam_medis)
+    {
+        $this->db->select('no_periksa');
+        $this->db->from('tbl_periksa');
+        $this->db->where('no_rekam_medis', $no_rekam_medis);
+        return $this->db->get()->result_array();
     }
 
     function json_detail_history($no_pendaftaran)

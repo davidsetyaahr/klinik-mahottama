@@ -26,7 +26,7 @@
             <div class="col-md-12">
                 <div class="box box-warning box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">DETAIL REKAM MEDIS <?= $no_pendaftaran ?></h3>
+                        <h3 class="box-title">DETAIL REKAM MEDIS <?= $no_rekam_medis ?></h3>
                     </div>
                     <div class="box-body">
                         <div class="row" style="margin-bottom: 10px">
@@ -43,8 +43,8 @@
                             <thead>
                                 <tr>
                                     <th width="30px">No</th>
-                                    <th>Pemeriksaaan</th>
                                     <th>No Pendaftaran</th>
+                                    <th>Tanggal Periksa</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -55,6 +55,44 @@
         </div>
     </section>
 </div>
+
+<!-- MODAL -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" id="title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <h3>Riwayat Periksa Medis</h3>
+        <table class="table table-bordered table-striped" id="detailPeriksa">
+            <thead>
+                <tr>
+                    <th width="30px">No</th>
+                    <th>No Periksa</th>
+                    <th>Pos Periksa</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>asd</td>
+                    <td>asd</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+  </div>
+  </div>
+</div>
+<!-- MODAL -->
+
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 <script type="text/javascript">
@@ -88,12 +126,12 @@
             },
             processing: true,
             serverSide: true,
-            ajax: {"url": "<?= base_url() ?>periksamedis/json_history_detail/<?= $no_pendaftaran ?>", "type": "POST"},
+            ajax: {"url": "<?= base_url() ?>periksamedis/json_history_detail/<?= $no_rekam_medis ?>", "type": "POST"},
             columns: [
                 {
-                    "data": "id_periksa",
+                    "data": "no_pendaftaran",
                     "orderable": false
-                },{"data": "tipe"},{"data": "no_pendaftaran"}
+                },{"data": "no_periksa"},{"data": "dtm_crt"}
                 ,{
                     "data" : "action",
                     "orderable": false,
@@ -111,4 +149,27 @@
         });
         
     });
+
+        function cekDetail(no_rekam_medis){
+        $('#myModal').show();
+        $('#detailPeriksa td').remove();
+        var no = 1;
+        $.ajax({
+            type: "GET",
+            url: "<?= base_url('periksamedis/json_history_check?no_rekam_medis=')?>"+no_rekam_medis, //json get site
+            dataType : 'json',
+            success: function(response){
+                arrData = response;
+                $('#title').html('Nomor Rekam Medis : '+no_rekam_medis)
+                for(i = 0; i < arrData.length; i++){
+                    var table = 
+                        '<tr><td><div class="text-center">'+no+++'</div></td>'+
+                        '<td><div class="text-center">'+arrData[i].no_periksa+'</div></td>'+
+                        '<td><a class="text-center">'+arrData[i].no_periksa+'</a></td>'+'</tr>';
+                    $('#detailPeriksa tbody').append(table);
+                }
+            }
+        });
+
+    }
 </script>
