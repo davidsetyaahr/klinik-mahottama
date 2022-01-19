@@ -77,11 +77,26 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>asd</td>
-                    <td>asd</td>
-                </tr>
+            <tr class="header">
+                <td>1</td>
+                <td>123</td>
+                <td>123</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>data</td>
+                <td>data</td>
+            </tr>
+            <tr class="header">
+                <td>1</td>
+                <td>123</td>
+                <td>123</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>data</td>
+                <td>data</td>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -146,28 +161,44 @@
                 var index = page * length + (iDisplayIndex + 1);
                 $('td:eq(0)', row).html(index);
             }
-        });
+        });    
         
     });
 
-        function cekDetail(no_rekam_medis){
+        function cekDetail(no_pendaftaran){
         $('#myModal').show();
         $('#detailPeriksa td').remove();
         var no = 1;
         $.ajax({
             type: "GET",
-            url: "<?= base_url('periksamedis/json_history_check?no_rekam_medis=')?>"+no_rekam_medis, //json get site
+            // url: "<?= base_url('periksamedis/json_history_check?no_pendaftaran=')?>"+no_pendaftaran,
+            url: "<?= base_url('periksamedis/json_check?no_pendaftaran=')?>"+no_pendaftaran,
             dataType : 'json',
             success: function(response){
                 arrData = response;
-                $('#title').html('Nomor Rekam Medis : '+no_rekam_medis)
+                $('#title').html('Detail Riwayat')
                 for(i = 0; i < arrData.length; i++){
                     var table = 
-                        '<tr><td><div class="text-center">'+no+++'</div></td>'+
-                        '<td><div class="text-center">'+arrData[i].no_periksa+'</div></td>'+
-                        '<td><a class="text-center">'+arrData[i].no_periksa+'</a></td>'+'</tr>';
+                        '<tr class="header">'
+                        +'<td><div class="text-center">'+no+++'</div></td>'+
+                        '<td><div>'+arrData[i].no_periksa+'</div></td>'+
+                        '<td><div>'+arrData[i].pos+'</div></td>'+
+                        '</tr>'+
+                        <?php foreach ($obat_1 as $key => $value) { ?>  
+                        '<tr>'
+                            +'<td></td>'+
+                            '<td><?= $value->nama_barang?></td>'+
+                            '<td><?= $value->jumlah?></td>'+
+                        '</tr>'+
+                        '<tr>'
+                    <?php } ?>
                     $('#detailPeriksa tbody').append(table);
                 }
+            $('tr.header').nextUntil('tr.header').slideToggle(100);
+            $('tr.header').click(function(){
+                $(this).nextUntil('tr.header').slideToggle(100, function(){
+                });
+            });
             }
         });
 

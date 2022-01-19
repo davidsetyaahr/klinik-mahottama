@@ -836,13 +836,16 @@ class Periksamedis extends CI_Controller
 
     public function history_detail($no_rekam_medis)
     {
+        $no_pendaftaran = $this->Periksa_model->get_no_periksa($no_rekam_medis)->no_periksa;
         $data['no_rekam_medis'] = $no_rekam_medis;
+        $data['no_periksa'] = $this->Periksa_model->get_no_periksa($no_rekam_medis)->no_periksa;
+        $data['obat_1'] = $this->Periksa_model->get_detail_obat($no_pendaftaran);
+        $data['alkes'] = $this->Periksa_model->get_detail_alkes($no_pendaftaran);
         $this->template->load('template', 'rekam_medis/riwayat_periksa_medis_detail', $data);
     }
 
     public function detail_history($no_pendaftaran)
     {
-        $data['no_pendaftaran'] = $no_pendaftaran;
         $this->template->load('template', 'rekam_medis/riwayat_detail', $data);
     }
 
@@ -3036,13 +3039,17 @@ class Periksamedis extends CI_Controller
 
     public function json_history_check() {
         header('Content-Type: application/json');
-        echo json_encode($this->Periksa_model->json_detail_check($_GET['no_rekam_medis']));
+        echo json_encode($this->Periksa_model->json_detail_check($_GET['no_pendaftaran']));
+    }
+    public function json_check() {
+        header('Content-Type: application/json');
+        echo json_encode($this->Periksa_model->json_check($_GET['no_pendaftaran']));
     }
 
-    public function json_history_detail($no_rekam_medis)
+    public function json_history_detail($no_pendaftaran)
     {
         header('Content-Type: application/json');
-        echo $this->Periksa_model->json_history_detail($no_rekam_medis);
+        echo $this->Periksa_model->json_history_detail($no_pendaftaran);
     }
 
     public function json_detail_history($no_pendaftaran)
