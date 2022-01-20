@@ -270,6 +270,22 @@ class Periksa_model extends CI_Model
         return $this->db->get('tbl_periksa_d_alkes da')->result();
     }
 
+    function get_detail_tindakan($no_periksa)
+    {
+        $this->db->select('tn.tindakan, dt.jumlah');
+        $this->db->join('tbl_tindakan tn', 'tn.kode_tindakan=dt.kode_tindakan');
+        $this->db->where('dt.no_periksa', $no_periksa);
+        return $this->db->get('tbl_periksa_d_tindakan dt')->result();
+    }
+    
+    function get_detail_biaya($no_periksa)
+    {
+        $this->db->select('b.nama_biaya, db.jumlah');
+        $this->db->join('tbl_biaya b','b.id_biaya = db.id_biaya');
+        $this->db->where('db.no_periksa', $no_periksa);
+        return $this->db->get('tbl_periksa_d_biaya db')->result();
+    }
+
     function json_detail_history($no_pendaftaran)
     {
         $this->datatables->select('po.no_periksa, ob.nama_barang, po.tipe_periksa');

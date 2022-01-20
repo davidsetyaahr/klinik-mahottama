@@ -839,8 +839,10 @@ class Periksamedis extends CI_Controller
         $no_pendaftaran = $this->Periksa_model->get_no_periksa($no_rekam_medis)->no_periksa;
         $data['no_rekam_medis'] = $no_rekam_medis;
         $data['no_periksa'] = $this->Periksa_model->get_no_periksa($no_rekam_medis)->no_periksa;
-        $data['obat_1'] = $this->Periksa_model->get_detail_obat($no_pendaftaran);
+        $data['obat'] = $this->Periksa_model->get_detail_obat($no_pendaftaran);
         $data['alkes'] = $this->Periksa_model->get_detail_alkes($no_pendaftaran);
+        $data['tindakan'] = $this->Periksa_model->get_detail_tindakan($no_pendaftaran);
+        $data['biaya'] = $this->Periksa_model->get_detail_biaya($no_pendaftaran);
         $this->template->load('template', 'rekam_medis/riwayat_periksa_medis_detail', $data);
     }
 

@@ -184,14 +184,34 @@
                         '<td><div>'+arrData[i].no_periksa+'</div></td>'+
                         '<td><div>'+arrData[i].pos+'</div></td>'+
                         '</tr>'+
-                        <?php foreach ($obat_1 as $key => $value) { ?>  
+                        <?php foreach ($obat as $key => $value) { ?>  
                         '<tr>'
                             +'<td></td>'+
                             '<td><?= $value->nama_barang?></td>'+
                             '<td><?= $value->jumlah?></td>'+
                         '</tr>'+
+                        <?php } ?>
+                        <?php foreach ($alkes as $key => $value) { ?>  
                         '<tr>'
-                    <?php } ?>
+                            +'<td></td>'+
+                            '<td><?= $value->nama_barang?></td>'+
+                            '<td><?= $value->jumlah?></td>'+
+                        '</tr>'+
+                        <?php } ?>
+                        <?php foreach ($tindakan as $key => $value) { ?>  
+                        '<tr>'
+                            +'<td></td>'+
+                            '<td><?= $value->tindakan?></td>'+
+                            '<td><?= $value->jumlah?></td>'+
+                        '</tr>'+
+                        <?php } ?>
+                        <?php foreach ($biaya as $key => $value) { ?>  
+                        '<tr>'
+                            +'<td></td>'+
+                            '<td><?= $value->nama_biaya?></td>'+
+                            '<td><?= $value->jumlah?></td>'+
+                        '</tr>'
+                        <?php } ?>
                     $('#detailPeriksa tbody').append(table);
                 }
             $('tr.header').nextUntil('tr.header').slideToggle(100);
