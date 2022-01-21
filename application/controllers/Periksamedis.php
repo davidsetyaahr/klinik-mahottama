@@ -3043,6 +3043,27 @@ class Periksamedis extends CI_Controller
         header('Content-Type: application/json');
         echo json_encode($this->Periksa_model->json_detail_check($_GET['no_pendaftaran']));
     }
+    
+    public function json_history_check_obat() {
+        header('Content-Type: application/json');
+        echo json_encode($this->Periksa_model->get_detail_obat($_GET['no_periksa']));
+    }
+
+    public function json_history_check_alkes() {
+        header('Content-Type: application/json');
+        echo json_encode($this->Periksa_model->get_detail_alkes($_GET['no_periksa']));
+    }
+
+    public function json_history_check_tindakan() {
+        header('Content-Type: application/json');
+        echo json_encode($this->Periksa_model->get_detail_tindakan($_GET['no_periksa']));
+    }
+
+    public function json_history_check_biaya() {
+        header('Content-Type: application/json');
+        echo json_encode($this->Periksa_model->get_detail_biaya($_GET['no_periksa']));
+    }
+    
     public function json_check() {
         header('Content-Type: application/json');
         echo json_encode($this->Periksa_model->json_check($_GET['no_pendaftaran']));

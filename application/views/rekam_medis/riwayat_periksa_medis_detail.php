@@ -76,7 +76,7 @@
                     <th>Pos Periksa</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="accordion">
             <tr class="header">
                 <td>1</td>
                 <td>123</td>
@@ -146,7 +146,7 @@
                 {
                     "data": "no_pendaftaran",
                     "orderable": false
-                },{"data": "no_periksa"},{"data": "dtm_crt"}
+                },{"data": "no_pendaftaran"},{"data": "dtm_crt"}
                 ,{
                     "data" : "action",
                     "orderable": false,
@@ -171,56 +171,122 @@
         var no = 1;
         $.ajax({
             type: "GET",
-            // url: "<?= base_url('periksamedis/json_history_check?no_pendaftaran=')?>"+no_pendaftaran,
             url: "<?= base_url('periksamedis/json_check?no_pendaftaran=')?>"+no_pendaftaran,
             dataType : 'json',
             success: function(response){
                 arrData = response;
-                $('#title').html('Detail Riwayat')
+                $('#title').html('Detail Riwayat '+no_pendaftaran)
                 for(i = 0; i < arrData.length; i++){
                     var table = 
-                        '<tr class="header">'
+                        '<tr class="header" data-toggle="collapse" data-parent="#accordion" data-target="#detail'+i+'" data-noperiksa="'+arrData[i].no_periksa+'">'
                         +'<td><div class="text-center">'+no+++'</div></td>'+
                         '<td><div>'+arrData[i].no_periksa+'</div></td>'+
                         '<td><div>'+arrData[i].pos+'</div></td>'+
                         '</tr>'+
-                        <?php foreach ($obat as $key => $value) { ?>  
-                        '<tr>'
-                            +'<td></td>'+
-                            '<td><?= $value->nama_barang?></td>'+
-                            '<td><?= $value->jumlah?></td>'+
-                        '</tr>'+
-                        <?php } ?>
-                        <?php foreach ($alkes as $key => $value) { ?>  
-                        '<tr>'
-                            +'<td></td>'+
-                            '<td><?= $value->nama_barang?></td>'+
-                            '<td><?= $value->jumlah?></td>'+
-                        '</tr>'+
-                        <?php } ?>
-                        <?php foreach ($tindakan as $key => $value) { ?>  
-                        '<tr>'
-                            +'<td></td>'+
-                            '<td><?= $value->tindakan?></td>'+
-                            '<td><?= $value->jumlah?></td>'+
-                        '</tr>'+
-                        <?php } ?>
-                        <?php foreach ($biaya as $key => $value) { ?>  
-                        '<tr>'
-                            +'<td></td>'+
-                            '<td><?= $value->nama_biaya?></td>'+
-                            '<td><?= $value->jumlah?></td>'+
-                        '</tr>'
-                        <?php } ?>
+                        '<tr class="collapse" id="detail'+i+'">'+
+                        '<td colspan="3">'+
+                            '<h4 style="margin-top:0" class="info-obat"></h4>'+
+                            '<div class="list-obat"></div>'+
+                            '<h4 style="margin-top:0" class="info-alkes"></h4>'+
+                            '<div class="list-alkes"></div>'+
+                            '<h4 style="margin-top:0" class="info-biaya"></h4>'+
+                            '<div class="list-biaya"></div>'+
+                            '<h4 style="margin-top:0" class="info-tindakan"></h4>'+
+                            '<div class="list-tindakan"></div>'+
+                        '</td>'+
+                        '</tr>';
                     $('#detailPeriksa tbody').append(table);
                 }
-            $('tr.header').nextUntil('tr.header').slideToggle(100);
-            $('tr.header').click(function(){
-                $(this).nextUntil('tr.header').slideToggle(100, function(){
-                });
-            });
+
+                $(".header").click(function(){
+                        var noPeriksa = $(this).attr('data-noperiksa')
+                        var target = $(this).attr('data-target')
+                        target+=" td"
+                        $.ajax({
+                            type: "GET",
+                            url: "<?= base_url('periksamedis/json_history_check_obat?no_periksa=')?>"+noPeriksa,
+                            dataType: 'json',
+                            success: function(respon){
+                            dataObat = respon;
+                            $.each(respon,function(key,val){
+                                $(target).append(`
+                                    <h4 style="margin-top:0">${key}</h4>
+                                `)
+
+                                $.each(val,function(i,v){
+                                    $(target).append(`
+                                        <b>${v.item}</b>
+                                        :
+                                        ${v.jumlah}
+                                        <br>
+                                    `)
+                                })
+                            })
+                                //foreach
+                                for(i = 0; i < dataObat.length; i++){
+                                }
+                            }
+                        });
+                    })
+
+
+                $(".header").click(function(){
+                    var noPeriksa = $(this).attr('data-noperiksa')
+                    $.ajax({
+                        type: "GET",
+                        url: "<?= base_url('periksamedis/json_history_check_alkes?no_periksa=')?>"+noPeriksa,
+                        dataType: 'json',
+                        success: function(respon){
+                        dataAlkes = respon;
+                            for(i = 0; i < dataAlkes.length; i++){
+                                console.log(dataAlkes[i].nama_barang)
+                            }
+                        }
+                    });
+                })
+
+                $(".header").click(function(){
+                    var noPeriksa = $(this).attr('data-noperiksa')
+                    $.ajax({
+                        type: "GET",
+                        url: "<?= base_url('periksamedis/json_history_check_tindakan?no_periksa=')?>"+noPeriksa,
+                        dataType: 'json',
+                        success: function(respon){
+                        dataTindakan = respon;
+                            for(i = 0; i < dataTindakan.length; i++){
+                                console.log(dataTindakan[i].tindakan)
+                            }
+                        }
+                    });
+                })
+
+                $(".header").click(function(){
+                    var noPeriksa = $(this).attr('data-noperiksa')
+                    $.ajax({
+                        type: "GET",
+                        url: "<?= base_url('periksamedis/json_history_check_biaya?no_periksa=')?>"+noPeriksa,
+                        dataType: 'json',
+                        success: function(respon){
+                        dataBiaya = respon;
+                            for(i = 0; i < dataBiaya.length; i++){
+                                console.log(dataBiaya[i].nama_biaya)
+                            }
+                        }
+                    });
+                })
+
+                
+                // $('tr.header').nextUntil('tr.header').slideToggle(100);
+                // $('tr.header').click(function(){
+                // $(this).nextUntil('tr.header').slideToggle(100, function(){
+                //     });
+                // });
             }
         });
 
+    }
+
+    function cobaBisa(){
+        console.log("Bisa");
     }
 </script>
