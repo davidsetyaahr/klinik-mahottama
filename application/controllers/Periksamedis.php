@@ -3039,29 +3039,15 @@ class Periksamedis extends CI_Controller
         echo $this->Periksa_model->json_history();
     }
 
-    public function json_history_check() {
+    public function json_history_check_multiverse() {
         header('Content-Type: application/json');
-        echo json_encode($this->Periksa_model->json_detail_check($_GET['no_pendaftaran']));
-    }
-    
-    public function json_history_check_obat() {
-        header('Content-Type: application/json');
-        echo json_encode($this->Periksa_model->get_detail_obat($_GET['no_periksa']));
-    }
-
-    public function json_history_check_alkes() {
-        header('Content-Type: application/json');
-        echo json_encode($this->Periksa_model->get_detail_alkes($_GET['no_periksa']));
-    }
-
-    public function json_history_check_tindakan() {
-        header('Content-Type: application/json');
-        echo json_encode($this->Periksa_model->get_detail_tindakan($_GET['no_periksa']));
-    }
-
-    public function json_history_check_biaya() {
-        header('Content-Type: application/json');
-        echo json_encode($this->Periksa_model->get_detail_biaya($_GET['no_periksa']));
+        $detail = array(
+            'Obat' => $this->Periksa_model->get_detail_obat($_GET['no_periksa']),
+            'Alkes' => $this->Periksa_model->get_detail_alkes($_GET['no_periksa']),
+            'Biaya' => $this->Periksa_model->get_detail_biaya($_GET['no_periksa']),
+            'Tindakan' => $this->Periksa_model->get_detail_tindakan($_GET['no_periksa']),
+        );
+        echo json_encode($detail);
     }
     
     public function json_check() {
@@ -3075,11 +3061,6 @@ class Periksamedis extends CI_Controller
         echo $this->Periksa_model->json_history_detail($no_pendaftaran);
     }
 
-    public function json_detail_history($no_pendaftaran)
-    {
-        header('Content-Type: application/json');
-        echo $this->Periksa_model->json_detail_history($no_pendaftaran);
-    }
 
     public function json_riwayat_detail($no_rekam_medis)
     {

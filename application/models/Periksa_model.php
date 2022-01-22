@@ -256,7 +256,7 @@ class Periksa_model extends CI_Model
 
     function get_detail_obat($no_periksa)
     {
-        $this->db->select('ob.nama_barang, do.jumlah');
+        $this->db->select('ob.nama_barang as item, do.jumlah');
         $this->db->join('tbl_obat_alkes_bhp ob','ob.kode_barang = do.kode_barang');
         $this->db->where('do.no_periksa', $no_periksa);
         return $this->db->get('tbl_periksa_d_obat do')->result();
@@ -264,7 +264,7 @@ class Periksa_model extends CI_Model
 
     function get_detail_alkes($no_periksa)
     {
-        $this->db->select('ob.nama_barang, da.jumlah');
+        $this->db->select('ob.nama_barang as item, da.jumlah');
         $this->db->join('tbl_obat_alkes_bhp ob','ob.kode_barang = da.kode_barang');
         $this->db->where('da.no_periksa', $no_periksa);
         return $this->db->get('tbl_periksa_d_alkes da')->result();
@@ -272,7 +272,7 @@ class Periksa_model extends CI_Model
 
     function get_detail_tindakan($no_periksa)
     {
-        $this->db->select('tn.tindakan, dt.jumlah');
+        $this->db->select('tn.tindakan as item, dt.jumlah');
         $this->db->join('tbl_tindakan tn', 'tn.kode_tindakan=dt.kode_tindakan');
         $this->db->where('dt.no_periksa', $no_periksa);
         return $this->db->get('tbl_periksa_d_tindakan dt')->result();
@@ -280,23 +280,12 @@ class Periksa_model extends CI_Model
     
     function get_detail_biaya($no_periksa)
     {
-        $this->db->select('b.nama_biaya, db.jumlah');
+        $this->db->select('b.nama_biaya as item, db.jumlah');
         $this->db->join('tbl_biaya b','b.id_biaya = db.id_biaya');
         $this->db->where('db.no_periksa', $no_periksa);
         return $this->db->get('tbl_periksa_d_biaya db')->result();
     }
 
-    function json_detail_history($no_pendaftaran)
-    {
-        $this->datatables->select('po.no_periksa, ob.nama_barang, po.tipe_periksa');
-        $this->datatables->from('tbl_periksa_d_obat po');
-        // $this->datatables->join('tbl_periksa_d_alkes pa','pa.no_pendaftaran = po.no_pendaftaran');
-        $this->datatables->join('tbl_obat_alkes_bhp ob','ob.kode_barang = po.kode_barang');
-        $this->datatables->where('po.no_pendaftaran', $no_pendaftaran);
-        $this->datatables->where('po.tipe_periksa', '1');
-            
-        return $this->datatables->generate();
-    }
 
     public function oldKamarRawatInap($noPendaftaran)
     {

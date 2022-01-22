@@ -185,108 +185,38 @@
                         '</tr>'+
                         '<tr class="collapse" id="detail'+i+'">'+
                         '<td colspan="3">'+
-                            '<h4 style="margin-top:0" class="info-obat"></h4>'+
-                            '<div class="list-obat"></div>'+
-                            '<h4 style="margin-top:0" class="info-alkes"></h4>'+
-                            '<div class="list-alkes"></div>'+
-                            '<h4 style="margin-top:0" class="info-biaya"></h4>'+
-                            '<div class="list-biaya"></div>'+
-                            '<h4 style="margin-top:0" class="info-tindakan"></h4>'+
-                            '<div class="list-tindakan"></div>'+
                         '</td>'+
                         '</tr>';
                     $('#detailPeriksa tbody').append(table);
                 }
 
                 $(".header").click(function(){
-                        var noPeriksa = $(this).attr('data-noperiksa')
-                        var target = $(this).attr('data-target')
-                        target+=" td"
-                        $.ajax({
-                            type: "GET",
-                            url: "<?= base_url('periksamedis/json_history_check_obat?no_periksa=')?>"+noPeriksa,
-                            dataType: 'json',
-                            success: function(respon){
-                            dataObat = respon;
-                            $.each(respon,function(key,val){
+                    var noPeriksa = $(this).attr('data-noperiksa')
+                    var target = $(this).attr('data-target')
+                    target+=" td"
+                    $.ajax({
+                        type: "GET",
+                        url: "<?= base_url('periksamedis/json_history_check_multiverse?no_periksa=')?>"+noPeriksa,
+                        dataType: 'json',
+                        success: function(respon){
+                        dataObat = respon;
+                        $.each(respon,function(key,val){
+                            $(target).append(`
+                                <h4 style="margin-top:10px"><b>${key}</b></h4>
+                            `)
+
+                            $.each(val,function(i,v){
                                 $(target).append(`
-                                    <h4 style="margin-top:0">${key}</h4>
+                                    <p>Item : ${v.item}</p>
+                                    <p>Jumlah : ${v.jumlah}</p>
                                 `)
-
-                                $.each(val,function(i,v){
-                                    $(target).append(`
-                                        <b>${v.item}</b>
-                                        :
-                                        ${v.jumlah}
-                                        <br>
-                                    `)
-                                })
                             })
-                                //foreach
-                                for(i = 0; i < dataObat.length; i++){
-                                }
-                            }
-                        });
-                    })
-
-
-                $(".header").click(function(){
-                    var noPeriksa = $(this).attr('data-noperiksa')
-                    $.ajax({
-                        type: "GET",
-                        url: "<?= base_url('periksamedis/json_history_check_alkes?no_periksa=')?>"+noPeriksa,
-                        dataType: 'json',
-                        success: function(respon){
-                        dataAlkes = respon;
-                            for(i = 0; i < dataAlkes.length; i++){
-                                console.log(dataAlkes[i].nama_barang)
-                            }
+                        })
                         }
                     });
                 })
-
-                $(".header").click(function(){
-                    var noPeriksa = $(this).attr('data-noperiksa')
-                    $.ajax({
-                        type: "GET",
-                        url: "<?= base_url('periksamedis/json_history_check_tindakan?no_periksa=')?>"+noPeriksa,
-                        dataType: 'json',
-                        success: function(respon){
-                        dataTindakan = respon;
-                            for(i = 0; i < dataTindakan.length; i++){
-                                console.log(dataTindakan[i].tindakan)
-                            }
-                        }
-                    });
-                })
-
-                $(".header").click(function(){
-                    var noPeriksa = $(this).attr('data-noperiksa')
-                    $.ajax({
-                        type: "GET",
-                        url: "<?= base_url('periksamedis/json_history_check_biaya?no_periksa=')?>"+noPeriksa,
-                        dataType: 'json',
-                        success: function(respon){
-                        dataBiaya = respon;
-                            for(i = 0; i < dataBiaya.length; i++){
-                                console.log(dataBiaya[i].nama_biaya)
-                            }
-                        }
-                    });
-                })
-
-                
-                // $('tr.header').nextUntil('tr.header').slideToggle(100);
-                // $('tr.header').click(function(){
-                // $(this).nextUntil('tr.header').slideToggle(100, function(){
-                //     });
-                // });
             }
         });
 
-    }
-
-    function cobaBisa(){
-        console.log("Bisa");
     }
 </script>
