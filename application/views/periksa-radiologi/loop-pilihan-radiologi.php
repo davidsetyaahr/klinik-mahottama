@@ -15,7 +15,7 @@
         </select>
     </div>
     <!-- <div class="col-md-2"> -->
-        <input type="hidden" name="harga_periksa_radiologi[]" class="form-control total" placeholder="Harga" id="" readonly>
+        <input type="hidden" name="harga_periksa_radiologi[]" class="form-control total" value="<?= form_error("harga_periksa_radiologi[$no]")=="" ? 0 : form_error("harga_periksa_radiologi[$no]") ?>" placeholder="Harga" id="" readonly>
     <!-- </div> -->
     <div class="<?= $no!=0 ? 'col-md-5' : 'col-md-6' ?>">
         <div>
