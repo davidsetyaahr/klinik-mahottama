@@ -5,15 +5,13 @@
                 <div class="box box-warning box-solid">
 
                     <div class="box-header">
-                        <h3 class="box-title">REKAM MEDIS</h3>
+                        <h3 class="box-title">DETAIL REKAM MEDIS</h3>
                     </div>
 
                     <div class="box-body">
                         <div class="row" style="margin-bottom: 10px">
-                            <div class="col-md-4 text-center">
-                                <div style="margin-top: 8px" id="message">
-                                    <?php echo $this->session->userdata('message') <> '' ? $this->session->userdata('message') : ''; ?>
-                                </div>
+                            <div class="col-md-4">
+                                <?php echo anchor(site_url('periksamedis/history_detail/'.$no_pendaftaran), '<i class="fa fa-sign-out" aria-hidden="true"></i> Kembali', 'class="btn btn-info btn-sm"'); ?>
                             </div>
                             <div class="col-md-1 text-right">
                             </div>
@@ -25,16 +23,7 @@
                             <thead>
                                 <tr>
                                     <th width="30px">No</th>
-                                    <th>No Rekam Medis</th>
-                                    <th>No ID Pasien</th>
-                                    <th>No Pendaftaran</th>
-                                    <th>Nama Pasien</th>
-                                    <th>Golongan Darah</th>
-                                    <th>Status Menikah</th>
-                                    <th>Pekerjaan</th>
-                                    <th>Nama Orang Tua / Istri</th>
-                                    <th>Nomor Telpon</th>
-                                    <th width="100px">Action</th>
+                                    <th>Nama Barang</th>
                                 </tr>
                             </thead>
                         </table>
@@ -79,17 +68,12 @@
             },
             processing: true,
             serverSide: true,
-            ajax: {"url": "json_history", "type": "POST"},
+            ajax: {"url": "<?= base_url() ?>periksamedis/json_detail_history/<?= $no_pendaftaran ?>", "type": "POST"},
             columns: [
                 {
-                    "data": "no_rekam_medis",
+                    "data": "no_periksa",
                     "orderable": false
-                },{"data": "no_rekam_medis"},{"data": "no_id_pasien"},{"data": "no_pendaftaran"},{"data": "nama_lengkap"},{"data": "golongan_darah"},{"data": "status_menikah"},{"data": "pekerjaan"},{"data": "nama_orang_tua_atau_istri"},{"data": "nomer_telepon"},
-                {
-                    "data" : "action",
-                    "orderable": false,
-                    "className" : "text-center"
-                }
+                },{"data": "nama_barang"}
             ],
             order: [[0, 'asc']],
             rowCallback: function(row, data, iDisplayIndex) {

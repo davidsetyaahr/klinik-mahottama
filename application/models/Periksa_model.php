@@ -204,21 +204,88 @@ class Periksa_model extends CI_Model
         $this->datatables->from('tbl_pasien');
         $this->datatables->join('tbl_pendaftaran','tbl_pendaftaran.no_rekam_medis=tbl_pasien.no_rekam_medis','left');
         $this->datatables->where('tbl_pendaftaran.is_bayar', '1');
-        $this->datatables->add_column('action', anchor(site_url('periksamedis/history_detail/$1'),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-info btn-sm"'), 'no_pendaftaran');
+        $this->datatables->group_by('tbl_pasien.no_rekam_medis');
+        $this->datatables->add_column('action', anchor(site_url('periksamedis/history_detail/$1'),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-info btn-sm"'), 'no_rekam_medis');
             
         return $this->datatables->generate();
     }
 
-    function json_history_detail($no_pendaftaran)
+    function json_history_detail($no_rekam_medis)
     {
-        $this->datatables->select('');
-        $this->datatables->from('tbl_pendaftaran pe');
-        $this->datatables->join('tbl_pendaftaran','tbl_pendaftaran.no_rekam_medis=tbl_pasien.no_rekam_medis','left');
-        $this->datatables->where('tbl_pendaftaran.is_bayar', '1');
-        $this->datatables->add_column('action', anchor(site_url('periksamedis/history_detail/$1'),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-info btn-sm"'), 'no_pendaftaran');
+        $this->datatables->select('pe.no_periksa, pe.dtm_crt, pe.no_pendaftaran, pe.no_rekam_medis, pe.no_pendaftaran');
+        $this->datatables->from('tbl_periksa pe');
+        $this->datatables->where('pe.no_rekam_medis', $no_rekam_medis);
+        $this->datatables->add_column('action', anchor('#','<i class="fa fa-eye" aria-hidden="true"></i>',"class='btn btn-info btn-sm' data-toggle='modal' data-target='#myModal' onClick='javasciprt: cekDetail(\"$1\")'"), 'no_pendaftaran');
             
         return $this->datatables->generate();
     }
+    
+    function json_detail_check($no_pendaftaran)
+    {
+        $this->db->select('pe.no_rekam_medis,pl.no_pendaftaran, pe.no_periksa, (CASE WHEN pl.tipe_periksa = 1 THEN "POLI" WHEN pl.tipe_periksa = 2 THEN "RAWAT INAP" WHEN pl.tipe_periksa = 3 THEN "OPERASI" WHEN pl.tipe_periksa = 4 THEN "LABORATORIUM" WHEN pl.tipe_periksa = 5 THEN "RADIOLOGI" ELSE "UGD" END) as pos');
+        $this->db->from('tbl_periksa_lanjutan pl');
+        $this->db->join('tbl_periksa pe','pe.no_pendaftaran = pl.no_pendaftaran');
+        $this->db->where('pl.no_pendaftaran', $no_pendaftaran);
+        return $this->db->get()->result_array();
+    }
+
+    function json_check($no_pendaftaran)
+    {
+        $this->db->select('t.no_transaksi as no_periksa, (CASE WHEN l.tipe_periksa = 1 THEN "POLI" WHEN l.tipe_periksa = 2 THEN "RAWAT INAP" WHEN l.tipe_periksa = 3 THEN "OPERASI" WHEN l.tipe_periksa = 4 THEN "LABORATORIUM" WHEN l.tipe_periksa = 5 THEN "RADIOLOGI" ELSE "UGD" END) as pos');
+        $this->db->from('tbl_transaksi t');
+        $this->db->join('tbl_transaksi_d td','t.id_transaksi = td.id_transaksi');
+        $this->db->join('tbl_periksa_lanjutan l','t.id_periksa_lanjutan = l.id_periksa');
+        $this->db->join('tbl_pendaftaran p','l.no_pendaftaran = p.no_pendaftaran');
+        $this->db->where('p.no_pendaftaran', $no_pendaftaran);
+        $this->db->group_by('l.tipe_periksa');
+        $this->db->order_by('l.tipe_periksa','asc');
+        return $this->db->get()->result_array();
+    }
+
+    function get_no_periksa($no_rekam_medis){
+        $this->db->select('t.no_transaksi as no_periksa');
+        $this->db->from('tbl_transaksi t');
+        $this->db->join('tbl_transaksi_d td','t.id_transaksi = td.id_transaksi');
+        $this->db->join('tbl_periksa_lanjutan l','t.id_periksa_lanjutan = l.id_periksa');
+        $this->db->join('tbl_pendaftaran p','l.no_pendaftaran = p.no_pendaftaran');
+        $this->db->where('p.no_rekam_medis', $no_rekam_medis);
+        $this->db->where('l.tipe_periksa', '1');
+        $this->db->group_by('l.tipe_periksa');
+        return $this->db->get()->row();
+    }
+
+    function get_detail_obat($no_periksa)
+    {
+        $this->db->select('ob.nama_barang as item, do.jumlah');
+        $this->db->join('tbl_obat_alkes_bhp ob','ob.kode_barang = do.kode_barang');
+        $this->db->where('do.no_periksa', $no_periksa);
+        return $this->db->get('tbl_periksa_d_obat do')->result();
+    }
+
+    function get_detail_alkes($no_periksa)
+    {
+        $this->db->select('ob.nama_barang as item, da.jumlah');
+        $this->db->join('tbl_obat_alkes_bhp ob','ob.kode_barang = da.kode_barang');
+        $this->db->where('da.no_periksa', $no_periksa);
+        return $this->db->get('tbl_periksa_d_alkes da')->result();
+    }
+
+    function get_detail_tindakan($no_periksa)
+    {
+        $this->db->select('tn.tindakan as item, dt.jumlah');
+        $this->db->join('tbl_tindakan tn', 'tn.kode_tindakan=dt.kode_tindakan');
+        $this->db->where('dt.no_periksa', $no_periksa);
+        return $this->db->get('tbl_periksa_d_tindakan dt')->result();
+    }
+    
+    function get_detail_biaya($no_periksa)
+    {
+        $this->db->select('b.nama_biaya as item, db.jumlah');
+        $this->db->join('tbl_biaya b','b.id_biaya = db.id_biaya');
+        $this->db->where('db.no_periksa', $no_periksa);
+        return $this->db->get('tbl_periksa_d_biaya db')->result();
+    }
+
 
     public function oldKamarRawatInap($noPendaftaran)
     {

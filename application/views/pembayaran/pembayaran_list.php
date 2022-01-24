@@ -151,38 +151,38 @@
                     "render" : function(data,type,row){
                         var cetak = row.is_surat_ket_sakit=='1' ? row.cetak : ''
                         btnPeriksaLanjutan = "";
-                        // $.ajax({
-                        //     type : 'get',
-                        //     async : false,
-                        //     url : 'pembayaran/getPeriksaLanjutan',
-                        //     data : {no_pendaftaran : row.no_pendaftaran},
-                        //     success : function(res){
-                        //         $.each(res,function(k,v){
-                        //             var pos = ""
-                        //             switch (v.tipe_periksa) {
-                        //                 case '1':
-                        //                    pos = 'Poli' 
-                        //                 break;
-                        //                 case '2':
-                        //                    pos = 'Rawat Inap' 
-                        //                 break;
-                        //                 case '3':
-                        //                    pos = 'Operasi' 
-                        //                 break;
-                        //                 case '4':
-                        //                    pos = 'Laboratorium' 
-                        //                 break;
-                        //                 case '5':
-                        //                    pos = 'Radiologi' 
-                        //                 break;
-                        //                 case '6':
-                        //                    pos = 'UGD' 
-                        //                 break;
-                        //             }
-                        //             btnPeriksaLanjutan+=`<li><a href='<?= site_url('pembayaran/cetak_surat_pembayaran_detail/') ?>${row.no_pendaftaran}/${v.tipe_periksa}' target='_blank'>${pos}</a></li>`
-                        //         })
-                        //     }
-                        // })
+                        $.ajax({
+                            type : 'get',
+                            async : false,
+                            url : 'pembayaran/getPeriksaLanjutan',
+                            data : {no_pendaftaran : row.no_pendaftaran},
+                            success : function(res){
+                                $.each(res,function(k,v){
+                                    var pos = ""
+                                    switch (v.tipe_periksa) {
+                                        case '1':
+                                           pos = 'Poli' 
+                                        break;
+                                        case '2':
+                                           pos = 'Rawat Inap' 
+                                        break;
+                                        case '3':
+                                           pos = 'Operasi' 
+                                        break;
+                                        case '4':
+                                           pos = 'Laboratorium' 
+                                        break;
+                                        case '5':
+                                           pos = 'Radiologi' 
+                                        break;
+                                        case '6':
+                                           pos = 'UGD' 
+                                        break;
+                                    }
+                                    btnPeriksaLanjutan+=`<li><a href='<?= site_url('pembayaran/cetak_surat_pembayaran_detail/') ?>${row.no_pendaftaran}/${v.tipe_periksa}' target='_blank'>${pos}</a></li>`
+                                })
+                            }
+                        })
                         var btn = `<div class='dropdown'>
                             <button class='btn btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>Cetak Laporan Periksa
                             <span class='caret'></span></button>

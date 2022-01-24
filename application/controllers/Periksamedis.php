@@ -834,10 +834,21 @@ class Periksamedis extends CI_Controller
         $this->template->load('template', 'rekam_medis/riwayat_periksamedis_detail', $data);
     }
 
-    public function history_detail($no_pendaftaran)
+    public function history_detail($no_rekam_medis)
     {
-        $data['no_rekam_medis'] = $no_pendaftaran;
+        $no_pendaftaran = $this->Periksa_model->get_no_periksa($no_rekam_medis)->no_periksa;
+        $data['no_rekam_medis'] = $no_rekam_medis;
+        $data['no_periksa'] = $this->Periksa_model->get_no_periksa($no_rekam_medis)->no_periksa;
+        $data['obat'] = $this->Periksa_model->get_detail_obat($no_pendaftaran);
+        $data['alkes'] = $this->Periksa_model->get_detail_alkes($no_pendaftaran);
+        $data['tindakan'] = $this->Periksa_model->get_detail_tindakan($no_pendaftaran);
+        $data['biaya'] = $this->Periksa_model->get_detail_biaya($no_pendaftaran);
         $this->template->load('template', 'rekam_medis/riwayat_periksa_medis_detail', $data);
+    }
+
+    public function detail_history($no_pendaftaran)
+    {
+        $this->template->load('template', 'rekam_medis/riwayat_detail', $data);
     }
 
     public function sksehat()
@@ -3028,6 +3039,29 @@ class Periksamedis extends CI_Controller
         header('Content-Type: application/json');
         echo $this->Periksa_model->json_history();
     }
+
+    public function json_history_check_multiverse() {
+        header('Content-Type: application/json');
+        $detail = array(
+            'Obat' => $this->Periksa_model->get_detail_obat($_GET['no_periksa']),
+            'Alkes' => $this->Periksa_model->get_detail_alkes($_GET['no_periksa']),
+            'Biaya' => $this->Periksa_model->get_detail_biaya($_GET['no_periksa']),
+            'Tindakan' => $this->Periksa_model->get_detail_tindakan($_GET['no_periksa']),
+        );
+        echo json_encode($detail);
+    }
+    
+    public function json_check() {
+        header('Content-Type: application/json');
+        echo json_encode($this->Periksa_model->json_check($_GET['no_pendaftaran']));
+    }
+
+    public function json_history_detail($no_pendaftaran)
+    {
+        header('Content-Type: application/json');
+        echo $this->Periksa_model->json_history_detail($no_pendaftaran);
+    }
+
 
     public function json_riwayat_detail($no_rekam_medis)
     {
