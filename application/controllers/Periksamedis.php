@@ -2066,7 +2066,7 @@ class Periksamedis extends CI_Controller
         else{
             $this->data['edit'] = false;
         }
-        $this->data['no_periksa'] = 'PRKSRAI' . '/' . $xa[1];
+        // $this->data['no_periksa'] = 'PRKSRAI' . '/' . $xa[1];
 
         $this->data['biaya'] = $this->Tbl_biaya_model->getBiaya();
         $this->data['kamar'] = $this->db->get('tbl_kategori_kamar')->result();
@@ -2079,16 +2079,24 @@ class Periksamedis extends CI_Controller
     {
         $data_pendaftaran = $this->Pendaftaran_model->get_by_id($this->no_pendaftaran);
         $date_now = date('Ymd', time());
+        $getPeriksaRawatInap = $this->Periksa_model->countPeriksaLanjutan($this->no_pendaftaran,'2');
+        $newPeriksaRawatInap = $getPeriksaRawatInap+1;
         $nop = $this->Periksa_model->getId($data_pendaftaran->no_pendaftaran);
-        $no_rm = 'PRKSRAI' . '/' . $nop->no_periksa;
-        $this->_rules_rawat_inap(count($_POST['id_kategori_kamar']));
-        // $this->_rules_rawat_inap(count(isset($_POST['id_kategori_kamar'])));
+        $xa = explode("/", $nop->no_periksa, 2);
+        $kodePrks = $getPeriksaRawatInap==0 ? 'PRKSRAI' : 'PRKSRAI'.$newPeriksaRawatInap; 
+        $no_periksa = $kodePrks. '/' . $xa[1];
+        
+        $old = isset($_POST['isEdit']) ? "old_" : "";
+        $this->_rules_rawat_inap(count($_POST[$old.'id_kategori_kamar']),$old);
+        if(isset($_POST['isEdit']) && isset($_POST['id_kategori_kamar'])){
+            $this->_rules_rawat_inap([count($_POST['old_id_kategori_kamar']),count($_POST['old_id_kategori_kamar'])+count($_POST['id_kategori_kamar'])],"");
+        }
         if ($this->form_validation->run() == TRUE) {
             if(empty($_POST['isEdit'])){
                 //insert periksa lab
                 $periksaRawatInap = array(
                     'no_pendaftaran' => $this->no_pendaftaran,
-                    'no_periksa' => $this->input->post('no_periksa'),
+                    'no_periksa' => $no_periksa,
                 );
                 $this->db->insert('tbl_periksa_rawat_inap', $periksaRawatInap);
 
@@ -2107,7 +2115,7 @@ class Periksamedis extends CI_Controller
             $data_transaksi = array(
                 'kode_transaksi' => 'PRKSRAI',
                 'id_klinik' => $this->id_klinik,
-                'no_transaksi' => $this->input->post('no_periksa'),
+                'no_transaksi' => $no_periksa,
                 'id_periksa_lanjutan' => $getIdPeriksaLanjutan->id_periksa,
                 'tgl_transaksi' => date('Y-m-d', time()),
                 'status_transaksi' => 0,
@@ -2147,6 +2155,9 @@ class Periksamedis extends CI_Controller
             //delete rawat inap detail  (old only)
             if(isset($_POST['del_id_detail_rawat_inap'])){
                 foreach ($_POST['del_id_detail_rawat_inap'] as $key => $value) {
+                    $this->db->select("id_kamar");
+                    $getIdKamar = $this->db->get_where("tbl_periksa_rawat_inap_detail",['id_detail' => $value])->row();
+                    $this->db->update("tbl_kamar",['status' => '0'],['id_kamar' => $getIdKamar->id_kamar]);
                     $this->db->delete('tbl_periksa_rawat_inap_detail',['id_detail' => $value]);
                 }
             }
@@ -2170,16 +2181,16 @@ class Periksamedis extends CI_Controller
             }
             if(empty($_POST['isEdit'])){
                 if($isInsertRcp){
-                $kode_receipt1 = 'RCP' . time();
-                $tb_inv1 = array(
-                    'id_inventory'  => $kode_receipt1,
-                    'inv_type'      => 'TRX_STUFF',
-                    'id_periksa_lanjutan' => $getIdPeriksaLanjutan->id_periksa,
-                    'id_klinik'     => $this->id_klinik,
-                    'dtm_crt' => date("Y-m-d H:i:s",  time()),
-                    'dtm_upd' => date("Y-m-d H:i:s",  time()),                
-                );
-                $this->Transaksi_obat_model->insert('tbl_inventory', $tb_inv1);
+                    $kode_receipt1 = 'RCP' . time();
+                    $tb_inv1 = array(
+                        'id_inventory'  => $kode_receipt1,
+                        'inv_type'      => 'TRX_STUFF',
+                        'id_periksa_lanjutan' => $getIdPeriksaLanjutan->id_periksa,
+                        'id_klinik'     => $this->id_klinik,
+                        'dtm_crt' => date("Y-m-d H:i:s",  time()),
+                        'dtm_upd' => date("Y-m-d H:i:s",  time()),                
+                    );
+                    $this->Transaksi_obat_model->insert('tbl_inventory', $tb_inv1);
                 }
             }
             else{
@@ -2197,7 +2208,7 @@ class Periksamedis extends CI_Controller
                     if($kode_barang!="" && $kode_barang!=null){
                         $data_periksa_d_obat = array(
                             'no_pendaftaran' => $this->no_pendaftaran,
-                            'no_periksa' => $this->input->post('no_periksa'),
+                            'no_periksa' => $no_periksa,
                             'kode_barang' => $post_obat[$i],
                             'jumlah' => $_POST['jml_obat'][$i],
                             'harga_satuan' => $_POST['harga_obat'][$i],
@@ -2245,7 +2256,7 @@ class Periksamedis extends CI_Controller
                 for ($i = 0; $i < count($post_alkes); $i++) {
                     if ($post_alkes[$i] != null || $post_alkes[$i] != '') {
                         $data_periksa_d_alkes = array(
-                            'no_periksa' => $this->input->post('no_periksa'),
+                            'no_periksa' => $no_periksa,
                             'no_pendaftaran' => $this->no_pendaftaran,
                             'kode_barang' => $post_alkes[$i],
                             'jumlah' => $_POST['jml_alkes'][$i],
@@ -2295,7 +2306,7 @@ class Periksamedis extends CI_Controller
                     if ($post_tindakan[$i] != null || $post_tindakan[$i] != '') {
                         $data_periksa_d_tindakan = array(
                         'no_pendaftaran' => $this->no_pendaftaran,
-                        'no_periksa' => $this->input->post('no_periksa'),
+                        'no_periksa' => $no_periksa,
                         'kode_tindakan' => $post_tindakan[$i],
                         'jumlah' => $_POST['qty_tindakan'][$i],
                         'biaya' => $_POST['biaya_tindakan'][$i],
@@ -2330,7 +2341,7 @@ class Periksamedis extends CI_Controller
                     if ($post_biaya[$i] != null || $post_biaya[$i] != '') {
                         $data_periksa_d_biaya = array(
                             'no_pendaftaran' => $this->no_pendaftaran,
-                            'no_periksa' => $this->input->post('no_periksa'),
+                            'no_periksa' => $no_periksa,
                             'id_biaya' => $post_biaya[$i],
                             'jumlah' => $_POST['qty_biaya'][$i],
                             'biaya' => $_POST['biaya'][$i],
@@ -2356,32 +2367,6 @@ class Periksamedis extends CI_Controller
                     $this->db->delete('tbl_periksa_d_biaya',['id_periksa_d_biaya' => $value]);
                 }
             }
-
-            // $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '0'], ['no_pendaftaran' => $this->no_pendaftaran]);
-
-            // $updatePendaftaran = array(
-            //     'dtm_upd' => date("Y-m-d H:i:s",  time())
-            // );
-            
-            // if ($_POST['pemeriksaan_selanjutnya'] != '0') {
-            //     if($_POST['pemeriksaan_selanjutnya']=='2'){ // jika tetap di rawat inap
-            //         $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '1'], ['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $_POST['pemeriksaan_selanjutnya']]);
-            //     }
-            //     else{
-            //         $periksaLanjutan = array(
-            //             'no_pendaftaran' => $this->no_pendaftaran,
-            //             'tipe_periksa' => $_POST['pemeriksaan_selanjutnya'],
-            //             'tanggal' => date('Y-m-d H:i:s'),
-            //             'is_periksa' => '1',
-            //         );
-            //         $this->db->insert('tbl_periksa_lanjutan', $periksaLanjutan);
-            //     }
-            // } else {
-            //     $updatePendaftaran['is_closed'] = '1';
-            //     $this->updateStatusKamar($this->no_pendaftaran);
-            // }
-            
-            // $this->Pendaftaran_model->update($this->no_pendaftaran, $updatePendaftaran);
 
             $data_transaksi_d = array();
 
@@ -2530,8 +2515,16 @@ class Periksamedis extends CI_Controller
 
     public function newItemRawatInap()
     {
-        $this->data['no'] = $_GET['no'];
-        $this->data['kamar'] = $this->db->get('tbl_kategori_kamar')->result();
+        $no = $_GET['no'];
+        $this->data = array(
+            'no' => $no,
+            'nameIdKategoriKamar' => "id_kategori_kamar[$no]",
+            'nameIdKamar' => "id_kamar[$no]",
+            'nameHari' => "hari[$no]",
+            'nameHargaKamar' => "harga_kamar[$no]",
+            'nameSubtotalKamar' => "subtotal_kamar[$no]",
+            'kamar' => $this->db->get('tbl_kategori_kamar')->result()
+        );
         $this->load->view('rawat-inap/loop-pilihan-kamar', $this->data);
     }
 
@@ -2976,12 +2969,20 @@ class Periksamedis extends CI_Controller
         $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
 
-    function _rules_rawat_inap($count)
+    function _rules_rawat_inap($count,$old)
     {
-        for ($i=0; $i < $count ; $i++) { 
-            $this->form_validation->set_rules("id_kategori_kamar[$i]", 'Kategori Kamar', 'trim|required');
-            $this->form_validation->set_rules("id_kamar[$i]", 'Kamar', 'trim|required');
-            $this->form_validation->set_rules("hari[$i]", 'Hari', 'trim|required');
+        if(is_array($count)){
+            $start = $count[0];
+            $end = $count[1];
+        }
+        else{
+            $start = 0;
+            $end = $count;
+        }
+        for ($i=$start; $i < $end ; $i++) { 
+            $this->form_validation->set_rules($old."id_kategori_kamar[$i]", 'Kategori Kamar', 'trim|required');
+            $this->form_validation->set_rules($old."id_kamar[$i]", 'Kamar', 'trim|required');
+            $this->form_validation->set_rules($old."hari[$i]", 'Hari', 'trim|required');
         }
         $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }

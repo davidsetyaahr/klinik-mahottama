@@ -22,12 +22,6 @@
                         <div class="row col-md-12">
                             <form action="<?= base_url() . "periksamedis/save_rawat_inap" ?>" method="post">
                                 <div class="form-group row">
-                                    <div class="col-md-2">No Periksa </div>
-                                    <div class="col-md-10">
-                                        <input type="text" name="no_periksa" value="<?= $no_periksa ?>" readonly id="" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
                                     <div class="col-md-2">Nama Lengkap</div>
                                     <div class="col-md-10">
                                         <input type="text" name="nama_lengkap" value="<?= isset($nama_lengkap) ? $nama_lengkap : '' ?>" readonly id="" class="form-control">
@@ -41,29 +35,98 @@
                                 </div>
                                 <!-- START: input kamar -->
                                 <div id="input_fields_wrap_kamar">
-                                    <div class="form-group" id="row-kamar" data-row='<?= $edit ?  count((array)$getKamar) : 0 ?>'>
+                                <?php 
+                                    function cekCount($name,$addLoop=false)
+                                    {
+                                        $plus = $addLoop ? 1 : 0;
+                                        $count = isset($_POST[$name]) ? count($_POST[$name]) : 0+$plus;
+                                        return $count;
+                                    }
+
+                                    if($edit){
+                                        if(validation_errors()!=""){
+                                            $dataRowKamar = count((array)$getKamar) + cekCount('id_kategori_kamar') - 1;
+                                            $dataRowBiaya = count((array)$getBiaya) + cekCount('id_biaya') - 1;
+                                            $dataRowObat = count((array)$getObat) + cekCount('kode_obat') - 1;
+                                            $dataRowAlkes = count((array)$getAlkes) + cekCount('kode_alkes') - 1;
+                                            $dataRowTindakan = count((array)$getTindakan) + cekCount('tindakan') - 1;
+                                        }
+                                        else{
+                                            $dataRowKamar = count((array)$getKamar) - 1;
+                                            $dataRowBiaya = count((array)$getBiaya) - 1;
+                                            $dataRowObat = count((array)$getObat) - 1;
+                                            $dataRowAlkes = count((array)$getAlkes) - 1;
+                                            $dataRowTindakan = count((array)$getTindakan) - 1;
+                                        }
+                                        
+                                    }
+                                    else{
+                                        if(validation_errors()!=""){
+                                            $dataRowKamar = count($_POST['id_kategori_kamar'])-1;
+                                            $dataRowBiaya = count($_POST['id_biaya'])-1;
+                                            $dataRowObat = count($_POST['kode_obat'])-1;
+                                            $dataRowAlkes = count($_POST['kode_alkes'])-1;
+                                            $dataRowTindakan = count($_POST['tindakan'])-1;
+                                        }
+                                        else{
+                                            $dataRowKamar = 0;
+                                            $dataRowBiaya = 0;
+                                            $dataRowObat = 0;
+                                            $dataRowAlkes = 0;
+                                            $dataRowTindakan = 0;
+                                        }
+                                    }
+                                ?>
+                                    <div class="form-group" id="row-kamar" data-row='<?= $dataRowKamar ?>'>
                                         <?php
-                                            if($edit){
-                                        ?>
-                                            <input type="hidden" name="isEdit" value="true">
-                                        <?php
-                                                foreach ($getKamar as $key => $value) {
+                                            $GLOBALS['totalBiayaKamar'] = 0;
+                                            function loopKamar($start,$end){
+                                                $ci = get_instance();
+                                                for ($i=$start; $i < $end ; $i++) { 
+                                                    $param = array(
+                                                        'no' => $i,
+                                                        'nameIdKategoriKamar' => "id_kategori_kamar[$i]",
+                                                        'nameIdKamar' => "id_kamar[$i]",
+                                                        'nameHari' => "hari[$i]",
+                                                        'nameHargaKamar' => "harga_kamar[$i]",
+                                                        'nameSubtotalKamar' => "subtotal_kamar[$i]",
+                                                    );
+
                                                     if(validation_errors()!=""){
-                                                        for ($i=0; $i < count($_POST['id_kategori_kamar']) ; $i++) { 
-                                                            $data['value'] = $value;
-                                                            $data['getKamarByKategori'] = $this->db->get_where('tbl_kamar',['id_kategori_kamar' => $value->id_kategori_kamar,'status' => '0'])->result();
-                                                            $this->load->view('rawat-inap/loop-pilihan-kamar', ['no' => $i,'selected' => $data]);
-                                                        }
+                                                        $GLOBALS['totalBiayaKamar']+=set_value("subtotal_kamar[$i]");
+                                                        $param['getKamarByKategori'] = $ci->db->get_where('tbl_kamar',['id_kategori_kamar' => set_value("id_kategori_kamar[$i]"),'status' => '0'])->result();
                                                     }
                                                     else{
-                                                        $data['value'] = $value;
-                                                        $data['getKamarByKategori'] = $this->db->get_where('tbl_kamar',['id_kategori_kamar' => $value->id_kategori_kamar,'status' => '0'])->result();
-                                                        $this->load->view('rawat-inap/loop-pilihan-kamar', ['no' => $key,'selected' => $data]);
+                                                        $param['getKamarByKategori'] = [];
                                                     }
+                                                    $ci->load->view('rawat-inap/loop-pilihan-kamar', $param);
                                                 }
                                             }
+
+                                            if($edit){
+                                                echo '<input type="hidden" name="isEdit" value="true">';
+                                                foreach ($getKamar as $key => $value) {
+                                                    $param = array(
+                                                        'no' => $key,
+                                                        'nameIdKategoriKamar' => "old_id_kategori_kamar[$key]",
+                                                        'nameIdKamar' => "old_id_kamar[$key]",
+                                                        'nameHari' => "old_hari[$key]",
+                                                        'nameHargaKamar' => "old_harga_kamar[$key]",
+                                                        'nameSubtotalKamar' => "old_subtotal_kamar[$key]",
+                                                        'selected' => array(
+                                                            'value' => $value,
+                                                            'getKamarByKategori' => $this->db->get_where('tbl_kamar',['id_kategori_kamar' => $value->id_kategori_kamar,'status' => '0'])->result()
+                                                        ),
+                                                    );
+                                                    $this->load->view('rawat-inap/loop-pilihan-kamar', $param);
+                                                }
+
+                                                loopKamar(count((array)$getKamar),count((array)$getKamar) + cekCount('id_kategori_kamar'));
+
+
+                                            }
                                             else{
-                                                $this->load->view('rawat-inap/loop-pilihan-kamar', ['no' => 0]);
+                                                loopKamar(0,cekCount('id_kategori_kamar',true));
                                             }
                                         ?>
                                     </div>
@@ -75,33 +138,56 @@
                                     </div>
                                 </div>
                                 <!-- END: input kamar -->
-                                <div class="form-group" id="row-biaya" data-row='<?= $edit ? count((array)$getBiaya) : 0 ?>'>
+                                <div class="form-group" id="row-biaya" data-row='<?= $dataRowBiaya ?>'>
                                     <?php
+                                        $GLOBALS['totalBiayaLainnya'] = 0;
+                                        
+                                        function loopBiaya($start,$end){
+                                            $ci = get_instance();
+                                            for ($i=$start; $i < $end ; $i++) {
+                                                $plusSubtotal = set_value("subtotal_biaya[$i]")!='' ? set_value("subtotal_biaya[$i]") : 0;
+                                                $GLOBALS['totalBiayaLainnya']+=$plusSubtotal;
+                                                $ci->load->view('rawat-inap/loop-pilihan-biaya', ['no' => $i]);
+                                            }
+                                        }
                                         if($edit){
                                             foreach ($getBiaya as $key => $value) {
                                                 $this->load->view('rawat-inap/loop-pilihan-biaya', ['no' => $key,'selected' => $value]);
                                             }
+                                            loopBiaya(count((array)$getBiaya),count((array)$getBiaya) + cekCount('id_biaya'));
                                         }
                                         else{
-                                            $this->load->view('rawat-inap/loop-pilihan-biaya', ['no' => 0]);
+                                            loopBiaya(0,cekCount('id_biaya',true));
                                         }
-                                    ?>
+                                        ?>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-4">
                                         <a href="" class="btn btn-info btn-sm" id="addItemBiaya"><span class="fa fa-plus"></span> Tambah Item</a>
                                     </div>
                                 </div>
-                                <div class="form-group" id="row-obat" data-row='<?= $edit ? count((array)$getObat) : 0 ?>'>
+                                <div class="form-group" id="row-obat" data-row='<?= $dataRowObat ?>'>
                                     <?php
+                                        $GLOBALS['totalBiayaObat'] = 0;
+                                        
+                                        function loopObat($start,$end){
+                                            $ci = get_instance();
+                                            for ($i=$start; $i < $end ; $i++) { 
+                                                $plusSubtotal = set_value("subtotal_obat[$i]")!='' ? set_value("subtotal_obat[$i]") : 0;
+                                                $GLOBALS['totalBiayaObat']+=$plusSubtotal;
+                                                $getStok = $ci->Tbl_obat_alkes_bhp_model->get_all_obat(null,false,1,set_value("kode_obat[$i]"));
+                                                $ci->load->view('loop/loop-pilihan-obat',['no' => $i,'stok' => $getStok]);
+                                            }
+                                        }
                                         if($edit){
                                             foreach ($getObat as $key => $value) {
                                                 $getStok = $this->Tbl_obat_alkes_bhp_model->get_all_obat(null,false,1,$value->kode_barang);
                                                 $this->load->view('loop/loop-pilihan-obat', ['no' => $key,'selected' => $value,'stok' => $getStok]);
                                             }
+                                            loopObat(count((array)$getObat),count((array)$getObat) + cekCount('kode_obat'));
                                         }
                                         else{
-                                            $this->load->view('loop/loop-pilihan-obat', ['no' => 0]);
+                                            loopObat(0,cekCount('kode_obat',true));
                                         }
                                     ?>
                                 </div>
@@ -110,16 +196,28 @@
                                         <a href="" class="btn btn-info btn-sm" id="addItemObat"><span class="fa fa-plus"></span> Tambah Item</a>
                                     </div>
                                 </div>
-                                <div class="form-group" id="row-alkes" data-row='<?= $edit ? count((array)$getAlkes) : 0 ?>'>
+                                <div class="form-group" id="row-alkes" data-row='<?= $dataRowAlkes ?>'>
                                     <?php
+                                        $GLOBALS['totalBiayaAlkes'] = 0;
+                                        function loopAlkes($start,$end)
+                                        {
+                                            $ci = get_instance();
+                                            for ($i=$start; $i < $end ; $i++) { 
+                                                $plusSubtotal = set_value("subtotal_alkes[$i]")!='' ? set_value("subtotal_alkes[$i]") : 0;
+                                                $getStok = $ci->Tbl_obat_alkes_bhp_model->get_all_obat(null,false,2,set_value("kode_alkes[$i]"));
+                                                $GLOBALS['totalBiayaAlkes']+=$plusSubtotal;
+                                                $ci->load->view('loop/loop-pilihan-alkes',['no' => $i,'stok' => $getStok]);;
+                                            }
+                                        }
                                         if($edit){
                                             foreach ($getAlkes as $key => $value) {
                                                 $getStok = $this->Tbl_obat_alkes_bhp_model->get_all_obat(null,false,2,$value->kode_barang);
                                                 $this->load->view('loop/loop-pilihan-alkes', ['no' => $key,'selected' => $value,'stok' => $getStok]);
                                             }
+                                            loopAlkes(count((array)$getAlkes),count((array)$getAlkes) + cekCount('kode_alkes'));
                                         }
                                         else{
-                                            $this->load->view('loop/loop-pilihan-alkes', ['no' => 0]);
+                                            loopAlkes(0,cekCount('kode_alkes',true));
                                         }
                                     ?>
                                 </div>
@@ -128,16 +226,25 @@
                                         <a href="" class="btn btn-info btn-sm" id="addItemAlkes"><span class="fa fa-plus"></span> Tambah Item</a>
                                     </div>
                                 </div>
-                                <div class="form-group" id="row-tindakan" data-row='<?= $edit ? count((array)$getTindakan) : 0 ?>'>
+                                <div class="form-group" id="row-tindakan" data-row='<?= $dataRowTindakan ?>'>
                                     <?php
-                                        if($edit){
-                                            // $totalBiayaTindakan = array_sum(array_column($getTindakan, 'biaya'));
-                                             foreach ($getTindakan as $key => $value) {
-                                                $this->load->view('loop/loop-pilihan-tindakan', ['no' => $key,'selected' => $value]);
+                                        $GLOBALS['totalBiayaTindakan'] = 0;
+                                        function loopTindakan($start,$end){
+                                            $ci = get_instance();
+                                            for ($i=$start; $i < $end ; $i++) { 
+                                                $plusSubtotal = set_value("subtotal_tindakan[$i]")!='' ? set_value("subtotal_tindakan[$i]") : 0;
+                                                $GLOBALS['totalBiayaTindakan']+=$plusSubtotal;
+                                                $ci->load->view('loop/loop-pilihan-tindakan',['no' => $i]);
                                             }
                                         }
+                                        if($edit){
+                                            foreach ($getTindakan as $key => $value) {
+                                                $this->load->view('loop/loop-pilihan-tindakan', ['no' => $key,'selected' => $value]);
+                                            }
+                                            loopTindakan(count((array)$getTindakan),count((array)$getTindakan) + cekCount('tindakan'));
+                                        }
                                         else{
-                                            $this->load->view('loop/loop-pilihan-tindakan', ['no' => 0]);
+                                            loopTindakan(0,cekCount('tindakan',true));
                                         }
                                     ?>
                                 </div>
@@ -149,31 +256,31 @@
                                 <!-- <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya Kamar</div>
                                     <div class="col-sm-10"> -->
-                                        <input type="hidden" id="totalKamar" name="totalKamar" class="form-control" value='0' readonly>
+                                        <input type="hidden" id="totalKamar" name="totalKamar" class="form-control" value='<?= $GLOBALS['totalBiayaKamar'] ?>' readonly>
                                     <!-- </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya</div>
                                     <div class="col-sm-10"> -->
-                                        <input type="hidden" id="totalBiaya" name="totalBiaya" class="form-control" value='0' readonly>
+                                        <input type="hidden" id="totalBiaya" name="totalBiaya" class="form-control" value='<?= $GLOBALS['totalBiayaLainnya'] ?>' readonly>
                                     <!-- </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya Obat</div>
                                     <div class="col-sm-10"> -->
-                                        <input type="hidden" id="totalObat" name="totalObat" class="form-control" value='0' readonly>
+                                        <input type="hidden" id="totalObat" name="totalObat" class="form-control" value='<?= $GLOBALS['totalBiayaObat'] ?>' readonly>
                                     <!-- </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya BMHP</div>
                                     <div class="col-sm-10"> -->
-                                        <input type="hidden" id="totalAlkes" name="totalAlkes" class="form-control" value='0' readonly>
+                                        <input type="hidden" id="totalAlkes" name="totalAlkes" class="form-control" value='<?= $GLOBALS['totalBiayaAlkes'] ?>' readonly>
                                     <!-- </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya Tindakan</div>
                                     <div class="col-sm-10"> -->
-                                        <input type="hidden" id="totalTindakan" name="totalTindakan" class="form-control" value='0' readonly>
+                                        <input type="hidden" id="totalTindakan" name="totalTindakan" class="form-control" value='<?= $GLOBALS['totalBiayaTindakan'] ?>' readonly>
                                     <!-- </div>
                                 </div>
                                 <div class="form-group row">
@@ -218,6 +325,7 @@
 <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
 <script>
     $(document).ready(function() {
+        grandTotal()
         <?php 
             if($edit){    
         ?>

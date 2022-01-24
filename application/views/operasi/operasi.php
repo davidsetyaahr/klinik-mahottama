@@ -44,17 +44,10 @@
                                     <div class="col-md-10">
                                         <select name="periksa_operasi" id="jenis_operasi" data-row="0" class="form-control select2 periksaLab selectOpr getOk" style="width:100%">
                                             <option value="">---Pilih Jenis Operasi---</option>
-                                            
                                                 <?php 
                                                     foreach ($jenis as $key => $value) {
-                                                    if(validation_errors()!=""){
-                                                        $selected = set_value("periksa_operasi")==$value->id_jenis_operasi ? 'selected' : '';
-                                                        echo "<option data-id-jenis-opr='".$value->id_jenis_operasi."' data-biaya-ok='".$value->biaya_ok."' value='".$value->id_jenis_operasi."' $selected>".$value->nama_jenis_operasi."</option>";
-                                                    }
-                                                    else{
                                                         echo "<option data-id-jenis-opr='".$value->id_jenis_operasi."' data-biaya-ok='".$value->biaya_ok."' value='".$value->id_jenis_operasi."'>".$value->nama_jenis_operasi."</option>";
                                                     }
-                                                }
                                                 ?>
 
                                                 

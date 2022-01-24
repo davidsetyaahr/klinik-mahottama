@@ -1,3 +1,9 @@
+<?php 
+    if(!empty(set_value("kode_alkes[$no]")) && isset($selected)){
+        unset($selected);
+    }
+    $old = isset($selected) ? 'old_' : '';
+?>
 <div class="row loop-alkes" data-no="<?= $no ?>" <?= isset($selected) ? "data-idDetail='".$selected->id_periksa_d_alkes."'" : '' ?>>
 <br>
 <div class="col-md-6">
@@ -23,14 +29,10 @@
     <div class="<?= $no!=0 ? 'col-md-5' : 'col-md-6' ?>">
         <select name="<?= isset($selected) ? 'old_' : '' ?>jml_alkes[]" class="form-control stokAlkes qty <?= isset($selected) ? 'oldChangeQtyAlkes' : ''  ?>"  <?= isset($selected) ? "data-qty='".$selected->jumlah."'" : ''  ?>>
         <?php 
-                if(isset($selected)){
+                if(isset($selected) || validation_errors()!=''){
                     for ($i=1; $i <= $stok[0]->stok_barang;$i++) { 
-                        $s = $i==$selected->jumlah ? 'selected' : '';
-                        echo "<option $s>$i</option>";
-                    }
-                }else{
-                    for ($i=1; $i <= $stok[0]->stok_barang;$i++) {
-                        $s = $i==$selected->jumlah ? 'selected' : '';
+                        $val = validation_errors()!='' ? set_value($old."jml_alkes[$no]") : $selected->jumlah;
+                        $s = $i==$val ? 'selected' : '';
                         echo "<option $s>$i</option>";
                     }
                 }
@@ -40,13 +42,19 @@
     </div>
     <!-- <div class="col-md-2"> -->
     <?php 
-        $defaultHargaAlkes = set_value("harga_alkes[$no]")=="" ? 0 : set_value("harga_alkes[$no]");
-        $defaultQtyAlkes = set_value("jml_alkes[$no]")=="" ? 0 : set_value("jml_alkes[$no]");
+        if(isset($selected) && validation_errors()==""){
+            $defaultHargaAlkes = $selected->harga_satuan;
+            $defaultQtyAlkes = $selected->jumlah;
+        }
+        else{
+            $defaultHargaAlkes = set_value($old."harga_alkes[$no]",0);
+            $defaultQtyAlkes = set_value($old."jml_alkes[$no]",1);
+        }
     ?>
-        <input type="hidden" name="<?= isset($selected) ? 'old_' : '' ?>harga_alkes[]" value="<?= isset($selected) ? $selected->harga_satuan : $defaultHargaAlkes ?>" class="form-control harga" placeholder="Harga alkes" readonly>
+        <input type="hidden" name="<?= isset($selected) ? 'old_' : '' ?>harga_alkes[]" value="<?= $defaultHargaAlkes ?>" class="form-control harga" placeholder="Harga alkes" readonly>
     <!-- </div> -->
     <!-- <div class="<?= $no!=0 ? 'col-md-2' : 'col-md-3' ?>"> -->
-        <input type="hidden" name="<?= isset($selected) ? 'old_' : '' ?>subtotal_alkes[]" class="form-control total" value="<?= isset($selected) ? $selected->harga_satuan * $selected->jumlah : $defaultHargaAlkes * $defaultQtyAlkes ?>" placeholder="Sub Total" readonly>
+        <input type="hidden" name="<?= isset($selected) ? 'old_' : '' ?>subtotal_alkes[]" class="form-control total" value="<?= $defaultHargaAlkes * $defaultQtyAlkes ?>" placeholder="Sub Total" readonly>
     <!-- </div> -->
     <?php 
         if($no!=0){
