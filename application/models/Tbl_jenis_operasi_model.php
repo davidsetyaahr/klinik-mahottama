@@ -62,7 +62,7 @@ class Tbl_jenis_operasi_model extends CI_Model
 
     function getIdOperasi($j_id)
     {
-        $this->db->select("b.nama_biaya, b.tipe_biaya, b.id_biaya_presentase, b.presentase, case when b.tipe_biaya = '1' then b.biaya else b.presentase / 100 * (select biaya from tbl_biaya where id_biaya = b.id_biaya_presentase) end as biaya");
+        $this->db->select("b.id_biaya,b.nama_biaya, b.tipe_biaya, b.id_biaya_presentase, b.presentase, case when b.tipe_biaya = '1' then b.biaya else b.presentase / 100 * (select biaya from tbl_biaya where id_biaya = b.id_biaya_presentase) end as biaya");
         $this->db->from('tbl_biaya_jenis_operasi bj');
         $this->db->join('tbl_jenis_operasi jo', 'jo.id_jenis_operasi = bj.id_jenis_operasi');
         $this->db->join('tbl_biaya b', 'b.id_biaya = bj.id_biaya');

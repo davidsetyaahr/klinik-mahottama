@@ -22,12 +22,6 @@
                         <div class="row col-md-12">
                             <form action="<?= base_url() . "periksamedis/save_periksa_operasi" ?>" method="post">
                                 <div class="form-group row">
-                                    <div class="col-md-2">No Periksa </div>
-                                    <div class="col-md-10">
-                                        <input type="text" name="no_periksa" value="<?= $no_periksa ?>" readonly id="" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
                                     <div class="col-md-2">Nama Lengkap</div>
                                     <div class="col-md-10">
                                         <input type="text" name="nama_lengkap" value="<?= isset($nama_lengkap) ? $nama_lengkap : '' ?>" readonly id="" class="form-control">
@@ -46,7 +40,8 @@
                                             <option value="">---Pilih Jenis Operasi---</option>
                                                 <?php 
                                                     foreach ($jenis as $key => $value) {
-                                                        echo "<option data-id-jenis-opr='".$value->id_jenis_operasi."' data-biaya-ok='".$value->biaya_ok."' value='".$value->id_jenis_operasi."'>".$value->nama_jenis_operasi."</option>";
+                                                        $s = set_value("periksa_operasi")!="" && set_value("periksa_operasi")==$value->id_jenis_operasi ? 'selected' : '';
+                                                        echo "<option data-id-jenis-opr='".$value->id_jenis_operasi."' data-biaya-ok='".$value->biaya_ok."' value='".$value->id_jenis_operasi."' $s>".$value->nama_jenis_operasi."</option>";
                                                     }
                                                 ?>
 
@@ -66,13 +61,14 @@
                                             <option value="">---Pilih Ruangan Operasi---</option>
                                             <?php 
                                                 foreach ($ruangan as $key => $value) {
-                                                    echo "<option value='".$value->id."'>".$value->nama."</option>";
+                                                    $s = set_value("ruangan")!="" && set_value("ruangan")==$value->id ? 'selected' : '';
+                                                    echo "<option value='".$value->id."' $s>".$value->nama."</option>";
                                                 }
                                                 ?>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group" id="row-alat" data-row='0'>
+                                <div class="form-group" id="row-alat" data-row='<?= validation_errors()!="" ? count($_POST['id_alat'])-1 : 0 ?>'>
                                 <?php 
                                     if(validation_errors()!=""){
                                         for ($i=0; $i < count($_POST['id_alat']) ; $i++) { 
@@ -89,15 +85,17 @@
                                         <a href="" class="btn btn-info btn-sm" id="addItemAlat"><span class="fa fa-plus"></span> Tambah Item</a>
                                     </div>
                                 </div>
-                                <div class="form-group" id="row-biaya" data-row='1'>
+                                <div class="form-group" id="row-biaya" data-row='<?= validation_errors()!="" ? count($_POST['id_biaya'])-1 : 0 ?>'>
                                 <?php 
+                                    $totalBiayaLainnya = 0;
                                     if(validation_errors()!=""){
                                         for ($i=0; $i < count($_POST['id_biaya']) ; $i++) { 
-                                            $this->load->view('rawat-inap/loop-pilihan-biaya',['no' => $i]);
+                                            $totalBiayaLainnya+=$_POST['subtotal_biaya'][$i];
+                                            $this->load->view('rawat-inap/loop-pilihan-biaya', ['no' => $i]);
                                         }
                                     }
                                     else{
-                                        $this->load->view('rawat-inap/loop-pilihan-biaya',['no' => 1]);
+                                        $this->load->view('rawat-inap/loop-pilihan-biaya',['no' => 0,'operasi' => true]);
                                     }
                                 ?>
                                 </div>
@@ -106,10 +104,12 @@
                                         <a href="" class="btn btn-info btn-sm" id="addItemBiaya"><span class="fa fa-plus"></span> Tambah Item</a>
                                     </div>
                                 </div>
-                                <div class="form-group" id="row-obat" data-row='0'>
+                                <div class="form-group" id="row-obat" data-row='<?= validation_errors()!="" ? count($_POST['kode_obat'])-1 : 0 ?>'>
                                     <?php
+                                    $totalBiayaObat = 0;
                                     if(validation_errors()!=""){
                                         for ($i=0; $i < count($_POST['kode_obat']) ; $i++) { 
+                                            $totalBiayaObat+=$_POST['subtotal_obat'][$i];
                                             $this->load->view('loop/loop-pilihan-obat',['no' => $i]);
                                         }
                                     }
@@ -123,11 +123,13 @@
                                         <a href="" class="btn btn-info btn-sm" id="addItemObat"><span class="fa fa-plus"></span> Tambah Item</a>
                                     </div>
                                 </div>
-                                <div class="form-group" id="row-alkes" data-row='0'>
+                                <div class="form-group" id="row-alkes" data-row='<?= validation_errors()!="" ? count($_POST['kode_alkes'])-1 : 0 ?>'>
                                     <?php
+                                    $totalBiayaAlkes = 0;
                                     if(validation_errors()!=""){
                                         for ($i=0; $i < count($_POST['kode_alkes']) ; $i++) { 
-                                            $this->load->view('loop/loop-pilihan-alkes',['no' => $i]);
+                                            $totalBiayaAlkes+=$_POST['subtotal_alkes'][$i];
+                                            $this->load->view('loop/loop-pilihan-alkes',['no' => $i]);;
                                         }
                                     }
                                     else{
@@ -143,25 +145,26 @@
                                 <!-- <div class="form-group row">
                                 <div class="col-md-2">Biaya OK</div>
                                     <div class="col-md-10"> -->
-                                        <input type="hidden" id="totalBiayaOk" value="0" name="totalBiayaOk" class="form-control" readonly>
+                                    <?php $totalBiayaOk = isset($_POST['totalBiayaOk']) ? $_POST['totalBiayaOk'] : 0; ?>
+                                        <input type="hidden" id="totalBiayaOk" value="<?= $totalBiayaOk ?>" name="totalBiayaOk" class="form-control" readonly>
                                     <!-- </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya</div>
                                     <div class="col-sm-10"> -->
-                                        <input type="hidden" name="totalBiaya" id="totalBiaya" class="form-control" value='0' readonly>
+                                        <input type="hidden" name="totalBiaya" id="totalBiaya" class="form-control" value='<?= $totalBiayaLainnya ?>' readonly>
                                     <!-- </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya Obat</div>
                                     <div class="col-sm-10"> -->
-                                        <input type="hidden" name="totalObat" id="totalObat" class="form-control" value='0' readonly>
+                                        <input type="hidden" name="totalObat" id="totalObat" class="form-control" value='<?= $totalBiayaObat ?>' readonly>
                                     <!-- </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-2">Total Biaya BMHP</div>
                                     <div class="col-sm-10"> -->
-                                        <input type="hidden" name="totalAlkes" id="totalAlkes" class="form-control" value='0' readonly>
+                                        <input type="hidden" name="totalAlkes" id="totalAlkes" class="form-control" value='<?= $totalBiayaAlkes ?>' readonly>
                                     <!-- </div>
                                 </div>
                                 <div class="form-group row">
@@ -277,6 +280,7 @@
         //     $(this).val()
         //     grandTotal()
         // });
+        grandTotal()
 
         function grandTotal() {
             var totalObat = parseInt($("#totalObat").val())

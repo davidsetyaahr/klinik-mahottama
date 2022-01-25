@@ -2,7 +2,7 @@
 <br>
 <div class="col-md-6">
 <div id="container_alat"></div>
-        <select name="id_alat[]" class="form-control select2 selectAlat">
+        <select name="id_alat[]" class="form-control select2 selectAlat" data-selectedqty="<?= set_value("qty_alat[$no]") ?>">
             <option value="">---Pilih Alat Operasi---</option>
         <?php 
                 foreach ($alat as $key => $value) {
@@ -14,7 +14,7 @@
         </select>
     </div>
     <div class="<?= $no != 0 ? 'col-md-5' : 'col-md-6' ?>">
-        <select name="qty_alat[]" id="qty_alat" class="form-control select2 stokAlat">
+        <select name="qty_alat[]" id="qty_alat" class="form-control stokAlat">
             <?php
             for ($i = 1; $i <= $stok[0]->stok_barang; $i++) {
                 $selected = set_value("qty_alat[$no]")==$stok[0] ? 'selected' : '';

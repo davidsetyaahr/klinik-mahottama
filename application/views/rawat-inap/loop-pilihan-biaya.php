@@ -26,9 +26,10 @@
         ?>
         </select>
     </div>
-    <div class="<?= $no!=0 ? 'col-md-5' : 'col-md-6' ?>">
+    <div class="<?= isset($operasi) || $no!=0 ? 'col-md-5' : 'col-md-6' ?>">
         <!-- <br> -->
         <?php 
+        
             $old = isset($selected) ? 'old_' : '';
             // $defaultBiaya = set_value($old."biaya[$no]")=="" ? 0 : set_value($old."biaya[$no]");
             // $defaultQtyBiaya = set_value($old."qty_biaya[$no]")=="" ? 0 : set_value($old."qty_biaya[$no]");
@@ -52,7 +53,7 @@
     <!--  -->
     <!-- </div> -->
     <?php 
-        if($no!=0){
+        if(isset($operasi) || $no!=0){
     ?>
         <div class="col-md-1">
             <!-- <br> -->

@@ -54,7 +54,7 @@
 
         $("#jenis_operasi").change(function(){
             var id_jenis = $(this).val()
-            var dataNo =  $("#row-biaya").attr('data-row')
+            var dataNo =  0
             $.ajax({
                 type : 'GET',
                 url : '<?php echo base_url().'periksamedis/jenisOpr' ?>',
@@ -65,24 +65,24 @@
                     $(".biaya-auto").remove()
                     $.each(data, function(k, v) {
                         no++
-                    $("#row-biaya").prepend(`
-                        <div class="loop-biaya row biaya-auto" data-no="${no}">
-                        <br>
-                            <div class="col-md-6">
-                                <select name="id_biaya[]" class="form-control getBiaya tipe-biaya" style="width:100%" readonly>
-                                    <option value="${v.id_biaya}">${v.nama_biaya}</option>
-                                </select>
-                            </div>
-                            <div class='col-md-6'">
-                                <input id="qty" name="qty_biaya[]" value="1" type="number" class="form-control qty_biaya" placeholder="Kuantitas">
-                            </div>
-                            <!-- <div class="col-md-2"> -->
-                                <input id="biaya" name="biaya[]" value="${v.biaya}" type="hidden" class="form-control biaya" placeholder="Harga Biaya" style="text-align:left;" value="" readonly> 
-                            <!-- </div> -->
-                            <!-- <div class="col-md-3">   -->
-                                <input id="total_biaya" name="subtotal_biaya[]" value="${v.biaya}" type="hidden" class="form-control total_biaya" placeholder="Sub Total" style="text-align:left;" value="" readonly> 
-                            <!-- </div> -->
-                    `)
+                        $("#row-biaya").append(`
+                            <div class="loop-biaya row biaya-auto" data-no="${no}">
+                            <br>
+                                <div class="col-md-6">
+                                    <select name="id_biaya[]" class="form-control getBiaya tipe-biaya" style="width:100%" readonly>
+                                        <option value="${v.id_biaya}">${v.nama_biaya}</option>
+                                    </select>
+                                </div>
+                                <div class='col-md-6'">
+                                    <input id="qty" name="qty_biaya[]" value="1" type="number" class="form-control qty_biaya" placeholder="Kuantitas">
+                                </div>
+                                <!-- <div class="col-md-2"> -->
+                                    <input id="biaya" name="biaya[]" value="${v.biaya}" type="hidden" class="form-control biaya" placeholder="Harga Biaya" style="text-align:left;" value="" readonly> 
+                                <!-- </div> -->
+                                <!-- <div class="col-md-3">   -->
+                                    <input id="total_biaya" name="subtotal_biaya[]" value="${v.biaya}" type="hidden" class="form-control total_biaya" placeholder="Sub Total" style="text-align:left;" value="" readonly> 
+                                <!-- </div> -->
+                        `)
                 });
                 $("#row-biaya").attr('data-row',no)
                 $(".qty_biaya").keyup(function() {
@@ -163,6 +163,16 @@
                     $(".loop-alkes[data-no='"+dataId+"'] .stokAlkes").append(`<option ${selected}>${i}</option>`)
                 }
             })
+
+            $(".selectAlat").each(function(){
+                var getStok = $(this).find(':selected').data('stok')
+                var dataId = $(this).closest('.loop-alat').attr('data-no')
+                var defaultStok = parseInt($(this).data('selectedqty'))
+                for(var i = 1;i<=parseInt(getStok);i++){
+                    var selected = i==defaultStok ? 'selected' : ''
+                    $(".loop-alat[data-no='"+dataId+"'] .stokAlat").append(`<option ${selected}>${i}</option>`)
+                }
+            })
         <?php
             }
         ?>
@@ -186,7 +196,7 @@
         }
 
         $(".selectObat").change(function(){
-            selectObat($(this))            
+            selectObat($(this))
         })
 
         function subTotalObat(dataNo){

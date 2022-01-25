@@ -30,7 +30,8 @@
     <div class="<?= $no!=0 ? 'col-md-5' : 'col-md-6' ?>">
         <select name="<?= isset($selected) ? 'old_' : '' ?>jml_obat[]" id="qty_obat" class="form-control stokObat qty <?= isset($selected) ? 'oldChangeQtyObat' : ''  ?>" <?= isset($selected) ? "data-qty='".$selected->jumlah."'" : ''  ?>>
             <?php
-                if(isset($selected) || validation_errors()!=''){
+                // if(isset($selected) || validation_errors()!=''){
+                if(isset($selected)){
                     for ($i=1; $i <= $stok[0]->stok_barang;$i++) { 
                         $val = validation_errors()!='' ? set_value($old."jml_obat[$no]") : $selected->jumlah;
                         $s = $i==$val ? 'selected' : '';
