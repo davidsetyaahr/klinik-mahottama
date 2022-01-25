@@ -2115,7 +2115,6 @@ class Periksamedis extends CI_Controller
                 $lastIdRawatInap = $getIdPeriksaRawatInap->id_periksa_rawat_inap;
             }
             $getIdPeriksaLanjutan = $this->Periksa_model->getIdPeriksaLanjutan($this->no_pendaftaran,'2'); 
-
             $data_transaksi = array(
                 'kode_transaksi' => 'PRKSRAI',
                 'id_klinik' => $this->id_klinik,
@@ -2166,24 +2165,25 @@ class Periksamedis extends CI_Controller
                 }
             }
 
-            // input inventory barang
-            $isInsertRcp = false;
-            foreach ($_POST['kode_obat'] as $key => $value) {
-                if($value!=''){
-                    $isInsertRcp = true;
-                    break;
-                }
-            }
-            
-            if($isInsertRcp==false){
-                foreach ($_POST['kode_alkes'] as $key => $value) {
+            if(empty($_POST['isEdit'])){
+                // input inventory barang
+                $isInsertRcp = false;
+                foreach ($_POST['kode_obat'] as $key => $value) {
                     if($value!=''){
                         $isInsertRcp = true;
                         break;
                     }
                 }
-            }
-            if(empty($_POST['isEdit'])){
+                
+                if($isInsertRcp==false){
+                    foreach ($_POST['kode_alkes'] as $key => $value) {
+                        if($value!=''){
+                            $isInsertRcp = true;
+                            break;
+                        }
+                    }
+                }
+
                 if($isInsertRcp){
                     $kode_receipt1 = 'RCP' . time();
                     $tb_inv1 = array(

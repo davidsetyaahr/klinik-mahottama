@@ -89,9 +89,18 @@
                                 <?php 
                                     $totalBiayaLainnya = 0;
                                     if(validation_errors()!=""){
+                                        $selectedBiaya = [];
+                                        if(set_value('periksa_operasi')!=''){
+                                            $this->db->select('id_biaya');
+                                            $jenisBiayaSelected = $this->db->get_where('tbl_biaya_jenis_operasi',['id_jenis_operasi' => set_value('periksa_operasi')])->result();
+                                            foreach ($jenisBiayaSelected as $key => $value) {
+                                                array_push($selectedBiaya,$value->id_biaya);
+                                            }
+                                        }
                                         for ($i=0; $i < count($_POST['id_biaya']) ; $i++) { 
                                             $totalBiayaLainnya+=$_POST['subtotal_biaya'][$i];
-                                            $this->load->view('rawat-inap/loop-pilihan-biaya', ['no' => $i]);
+                                            $classBiaya = in_array($_POST['id_biaya'][$i],$selectedBiaya) ? "biaya-auto" : "";
+                                            $this->load->view('rawat-inap/loop-pilihan-biaya', ['no' => $i,"classBiaya" => $classBiaya]);
                                         }
                                     }
                                     else{

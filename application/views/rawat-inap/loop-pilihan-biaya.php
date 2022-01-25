@@ -3,11 +3,11 @@
         unset($selected);
     }
 ?>
-<div class="row loop-biaya" data-no="<?= $no ?>"  <?= isset($selected) ? "data-idDetail='".$selected->id_periksa_d_biaya."'" : '' ?>>
+<div class="row loop-biaya <?= isset($classBiaya) ? $classBiaya : '' ?> " data-no="<?= $no ?>"  <?= isset($selected) ? "data-idDetail='".$selected->id_periksa_d_biaya."'" : '' ?>>
 <br>
     <div class="col-md-6">
         <div id="container_biaya"></div>
-        <select name="<?= isset($selected) ? 'old_' : '' ?>id_biaya[]" class="form-control <?= !isset($selected) ? 'select2' : '' ?> getBiaya tipe-biaya" style="width:100%" <?= isset($selected) ? 'readonly' : '' ?> data-selectedqty="<?= set_value("qty_biaya[$no]") ?>">
+        <select name="<?= isset($selected) ? 'old_' : '' ?>id_biaya[]" class="form-control <?= !isset($selected) && empty($classBiaya) ? 'select2' : '' ?> getBiaya tipe-biaya" style="width:100%" <?= isset($selected) || (isset($classBiaya) && $classBiaya!="") ? 'readonly' : '' ?> data-selectedqty="<?= set_value("qty_biaya[$no]") ?>">
         <?php 
             if(!isset($selected)){
         ?>
