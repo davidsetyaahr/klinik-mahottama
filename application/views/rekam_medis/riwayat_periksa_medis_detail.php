@@ -166,8 +166,8 @@
     });
 
         function cekDetail(no_pendaftaran){
+        $('#detailPeriksa tbody tr').remove();
         $('#myModal').show();
-        $('#detailPeriksa td').remove();
         var no = 1;
         $.ajax({
             type: "GET",
@@ -199,7 +199,7 @@
                         url: "<?= base_url('periksamedis/json_history_check_multiverse?no_periksa=')?>"+noPeriksa,
                         dataType: 'json',
                         success: function(respon){
-                        dataObat = respon;
+                        $(target).empty()
                         $.each(respon,function(key,val){
                             $(target).append(`
                                 <h4 style="margin-top:10px"><b>${key}</b></h4>
