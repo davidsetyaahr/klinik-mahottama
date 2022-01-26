@@ -134,7 +134,6 @@ class Pasien extends CI_Controller
     	$this->form_validation->set_rules('nomor_telepon', 'Nomor Telepon', 'trim|required');
 	    $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
-<<<<<<< Updated upstream
     
     public function cetak_kartu($no_rekam_medis)
     {
@@ -163,11 +162,9 @@ class Pasien extends CI_Controller
         $data['pasien'] = $this->Tbl_pasien_model->get_cetak_id($no_rekam_medis);
         $data['detail'] = $this->Tbl_pasien_model->get_rm($no_rekam_medis);
         $this->load->view('pasien/form_cetak_id', $data);
-=======
     public function map($no_rm)
     {
         $this->load->view("pasien/map");
->>>>>>> Stashed changes
     }
 
 }
