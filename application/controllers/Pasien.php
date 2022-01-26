@@ -162,6 +162,7 @@ class Pasien extends CI_Controller
         $data['pasien'] = $this->Tbl_pasien_model->get_cetak_id($no_rekam_medis);
         $data['detail'] = $this->Tbl_pasien_model->get_rm($no_rekam_medis);
         $this->load->view('pasien/form_cetak_id', $data);
+    }
     public function map($no_rm)
     {
         $this->load->view("pasien/map");
