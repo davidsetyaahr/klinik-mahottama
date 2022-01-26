@@ -61,6 +61,9 @@ class Tbl_pasien_model extends CI_Model
         $this->datatables->from('tbl_pasien');
         $this->datatables->add_column('action', anchor(site_url('pasien/update/$1'),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-success btn-sm"')." 
                 ".anchor(site_url('pasien/delete/$1'),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'), 'no_rekam_medis');
+        // $this->datatables->add_column('cetak_id', anchor(site_url('pasien/cetak_kartu/$1'),'<i class="fa fa-id-card" aria-hidden="true"></i>','class="btn btn-info btn-sm"'), 'no_rekam_medis');
+        $this->datatables->add_column('cetak_id',anchor(site_url('pasien/cetak_kartu/$1'),'<i class="fa fa-id-card" aria-hidden="true"></i>',array('class' => 'btn btn-info btn-sm','target'=>'_blank')),'no_rekam_medis');
+        $this->datatables->add_column('cetak_map',anchor(site_url('pasien/map/$1'),'<i class="fa fa-wpforms" aria-hidden="true"></i>',array('class' => 'btn btn-info btn-sm','target'=>'_blank')),'no_rekam_medis');
             
         return $this->datatables->generate();
     }
@@ -77,6 +80,20 @@ class Tbl_pasien_model extends CI_Model
         $this->db->from('tbl_pasien pa');
         // $this->db->join('tbl_pendaftaran pe','pe.no_rekam_medis = pa.no_rekam_medis','left');
         $this->db->where('pa.no_rekam_medis', $id);
+        return $this->db->get()->row();
+    }
+
+    function get_cetak_id($id){
+        $this->db->select('nama_lengkap,nik,no_rekam_medis');
+        $this->db->from('tbl_pasien');
+        $this->db->where('no_rekam_medis', $id);
+        return $this->db->get()->result();
+    }
+
+    function get_rm($id){
+        $this->db->select('nama_lengkap,nik,no_rekam_medis');
+        $this->db->from('tbl_pasien');
+        $this->db->where('no_rekam_medis', $id);
         return $this->db->get()->row();
     }
 

@@ -134,6 +134,35 @@ class Pasien extends CI_Controller
     	$this->form_validation->set_rules('nomor_telepon', 'Nomor Telepon', 'trim|required');
 	    $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
+    
+    public function cetak_kartu($no_rekam_medis)
+    {
+        $this->load->library('ciqrcode'); //pemanggilan library QR CODE
+
+        $config['cacheable']    = true; //boolean, the default is true
+        $config['cachedir']     = 'assets/'; //string, the default is application/cache/
+        $config['errorlog']     = 'assets/'; //string, the default is application/logs/
+        $config['imagedir']     = 'assets/images/qr_code/'; //direktori penyimpanan qr code
+        $config['quality']      = true; //boolean, the default is true
+        $config['size']         = '1024'; //interger, the default is 1024
+        $config['black']        = array(224,255,255); // array, default is array(255,255,255)
+        $config['white']        = array(70,130,180); // array, default is array(0,0,0)
+        $this->ciqrcode->initialize($config);
+        
+        $getNoRm = $this->Tbl_pasien_model->get_rm($no_rekam_medis);
+        $image_name = str_replace('/','-',$getNoRm->no_rekam_medis).'.png'; //buat name dari qr code sesuai dengan no rekam medis
+    
+        $params['data'] = base_url()."pasien/cetak_kartu/".$getNoRm->no_rekam_medis; //data yang akan di jadikan QR CODE
+        $params['level'] = 'H'; //H=High
+        $params['size'] = 10;
+        $params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/images/
+        $this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
+        $post['qr_code'] = $image_name;
+
+        $data['pasien'] = $this->Tbl_pasien_model->get_cetak_id($no_rekam_medis);
+        $data['detail'] = $this->Tbl_pasien_model->get_rm($no_rekam_medis);
+        $this->load->view('pasien/form_cetak_id', $data);
+    }
 
 }
 

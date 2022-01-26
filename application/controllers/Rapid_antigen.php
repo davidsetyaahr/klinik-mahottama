@@ -157,20 +157,21 @@ class Rapid_antigen extends CI_Controller
             $post['id_dokter'] = $this->session->userdata()['id_dokter'];
             $this->Tbl_rapid_antigen_model->update($post,$id);
             
+            $getLastId = $this->db->get('tbl_transaksi')->row();
             $getNama = $this->Tbl_rapid_antigen_model->detailRapid($id,'nama');
             //insert to transaksi
             //insert transaksi detail
             $tr = array(
                 'kode_transaksi' => "RAPANTIGEN",
 				'id_klinik' => $this->id_klinik,
-                'no_transaksi' => $getNoSampel->no_sampel,
+                'no_transaksi' => $getLastId->id_transaksi,
                 'tgl_transaksi' => date('Y-m-d'),
                 'status_transaksi' => 0,
                 'atas_nama' => $getNama->nama,
             );
             $trDetail = array(
                 [
-                'no_transaksi' => $getNoSampel->no_sampel,
+                'id_transaksi' => $getLastId->id_transaksi,
                 'deskripsi' => 'Biaya Pemeriksaan',
                 'amount_transaksi' => biayaSK('rapid_antigen'),
                 'dc' => 'd']
