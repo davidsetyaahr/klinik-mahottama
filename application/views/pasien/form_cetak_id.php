@@ -10,60 +10,54 @@
 
 <style>
     .box{
-        width: 1028px;
-        height: 663px;
+        width: 342px;
+        height: 220px;
         position: relative;
     }
 
     .box-back{
         margin-top: 5%;
-        width: 1028px;
-        height: 663px;
+        width: 342px;
+        height: 220px;
         position: relative;
     }
 
     .text{
         bottom: 35%;
-        left: 8%;
+        left: 5%;
         position: absolute;
         color: #000000;
     }
 
-    .text-old{
-        bottom: 35%;
-        left: 8%;
+    .text-back{
+        bottom: 4%;
+        left: 11%;
         position: absolute;
         color: #000000;
     }
 
     .title-rm{
         color: #332C2B;
-        font-size: 33px;
+        font-size: 12px;
         font-family: Consolas,monaco,monospace; 
     }
 
     .no-rm{
-        font-size: 30px;
+        font-size: 11px;
         font-weight: bold;
         font-family: Consolas,monaco,monospace; 
     }
 
     .name{
-        font-size: 30px;
+        font-size: 11px;
         font-weight: bold;
         font-family: Consolas,monaco,monospace; 
     }
 
     .nik{
-        font-size: 30px;
+        font-size: 11px;
         font-weight: bold;
         font-family: Consolas,monaco,monospace; 
-    }
-
-    .box-belakang{
-        left: 30%;
-        /* top: 0%; */
-        position: relative;
     }
 
     .buttonDownload{
@@ -93,8 +87,19 @@
     }
     
     .qr{
-        width:15%;
-        margin-left:800px;
+        width:16%;
+        margin-left:80%;
+    }
+
+    .title-header{
+        font-family: Consolas,monaco,monospace; 
+        font-size: 10px;
+    }
+
+    .title-content{
+        font-family: Consolas,monaco,monospace; 
+        font-size: 8px;
+        text-align: justify;
     }
 </style>
 
@@ -118,6 +123,21 @@
         <img src="<?php echo base_url() ?>assets/images/kartu_id_pasien/id_pasien_belakang.png" alt="">
         <div class="qr-code">
             <img src="<?= base_url()."assets/images/qr_code/".$detail->no_rekam_medis.".png" ?>" alt="" srcset="" class="qr">
+        </div>
+        <div class="text-back">
+            <div class="title-header">Perhatian : </div>
+            <div class="title-content">
+                Kartu ini adalah milik <b><i>MAHOTTAMA KLINIK UTAMA BEDAH</i></b> dan harus<br>
+                dikembalikan jika sewaktu waktu diminta/dipinjam.  Bila kartu<br>
+                ini ditemukan harap dikembalikan ke Management <b><i>MAHOTTAMA KLINIK<br> 
+                UTAMA BEDAH.</i></b><br>
+                Setiap melakukan transaksi, yang bersangkutan harus menunjukkan<br>
+                Kartu medis ini dan management tidak bisa melayani semua <br>
+                bentuk transaksi bila tidak ada. <br/>
+                <br>
+                <center>TTD</center>
+                <center>Management</center>
+            </div>
         </div>
     </div>
 
