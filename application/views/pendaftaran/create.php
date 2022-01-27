@@ -114,16 +114,18 @@
                                 <select name="id_kabupaten" class="form-control select2" id="kabupaten">
                                     <option value="">---Pilih Kabupaten--</option>
                                     <?php 
-                                        foreach ($allKabupaten as $key => $value) {
-                                            $k = $value->id == $id_kabupaten ? 'selected' : '';
-                                            echo "<option value='".$value->id."' $k>".$value->kabupaten."</option>";
+                                        if($id_kabupaten!=""){
+                                            foreach ($allKabupaten as $key => $value) {
+                                                $s = $value->id==$id_kabupaten ? 'selected' : '';
+                                                echo "<option value='".$value->id."' $s>".$value->kabupaten."</option>";
+                                            }
                                         }
                                     ?>
                                 </select>
                                 <?php //echo form_input(array('id'=>'kabupaten','name'=>'kabupaten','type'=>'text','value'=>$kabupaten,'class'=>'form-control'));?>
                                 <?php // echo form_dropdown('kabupaten',$kabupaten_opt,$kabupaten,array('id'=>'kabupaten','class'=>'form-1o style="padding-left:0px"ntrol select2','onchange'=>'get_kecamatan(this)'));?>
                             </div>
-                            <div class="col-sm-1" style="padding-left:0px"><a href="" class="btn btn-default"><span class="fa fa-plus"></span></a></div>
+                            <div class="col-sm-1" style="padding-left:0px"><a href="" class="btn btn-default" data-toggle="modal" data-target="#kabModal"><span class="fa fa-plus"></span></a></div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-4">Kecamatan <?php echo form_error('id_kecamatan') ?></div>
@@ -149,6 +151,15 @@
                             <div class="col-sm-7">
                                 <select name="id_desa" class="form-control select2" id="desa">
                                     <option value="">---Pilih Desa--</option>
+                                    <?php 
+                                        if($id_desa!=""){
+                                            $getDesa = $this->db->get_where("tbl_desa",['id_kecamatan' => $id_kecamatan])->result();
+                                            foreach ($getDesa as $key => $value) {
+                                                $s = $value->id==$id_desa ? 'selected' : '';
+                                                echo "<option value='".$value->id."' $s>".$value->desa."</option>";
+                                            }
+                                        }
+                                    ?>
                                 </select>
                                 <?php //echo form_input(array('id'=>'desa','name'=>'desa','type'=>'text','value'=>$desa,'class'=>'form-control'));?>
                             </div>
@@ -159,6 +170,15 @@
                             <div class="col-sm-7">
                                 <select name="id_dusun" class="form-control select2" id="dusun">
                                     <option value="">---Pilih Dusun--</option>
+                                    <?php 
+                                        if($id_dusun!=""){
+                                            $getDusun = $this->db->get_where("tbl_dusun",['id_desa' => $id_desa])->result();
+                                            foreach ($getDusun as $key => $value) {
+                                                $s = $value->id==$id_dusun ? 'selected' : '';
+                                                echo "<option value='".$value->id."' $s>".$value->nama_dusun."</option>";
+                                            }
+                                        }
+                                    ?>
                                 </select>
                                 <?php //echo form_input(array('id'=>'dusun','name'=>'dusun','type'=>'text','value'=>$dusun,'class'=>'form-control'));?>
                             </div>
@@ -271,6 +291,25 @@
             </div>
         </div>
     </section>
+</div>
+<!-- Modal -->
+<div id="kabModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Tambah Kabupaten</h4>
+                </div>
+                <div class="modal-body">
+                    <label for="">Kabupaten</label>
+                    <input type="text" id="kabupaten" class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-info" id="addKab">Tambah</button>
+                </div>
+        </div>
+    </div>
 </div>
 <style>
 select[readonly].select2+.select2-container {
@@ -400,6 +439,28 @@ select[readonly].select2+.select2-container .select2-selection {
             } else{
                 $("#select-poli").remove()
             }
+        })
+        $("#addKab").click(function(e){
+            e.preventDefault()
+            var kabupaten = $("#kabupaten").val()
+
+            $.ajax({
+                type : "post",
+                data : {kabupaten : kabupaten},
+                url : 'Pendaftaran/addKab',
+                beforeSend : function(){
+                    $(this).prop('disabled','true')
+                },
+                success : function(id){
+                    $(this).prop('disabled','false')
+                    $("#kabModal").modal('hide')
+                    alert('Kabupaten Berhasil Ditambahkan')
+                    var newOption = new Option(diagnosa, id, false, false);
+                    // $('#selectKab').append(newOption).trigger('change');        
+                    $("#kabupaten").val('')
+
+                }
+            })
         })
         // $("#tipe_dokter_umum").change(function(){
         //     var thisVal = $(this).val()
