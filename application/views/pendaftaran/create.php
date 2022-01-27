@@ -330,7 +330,7 @@ select[readonly].select2+.select2-container .select2-selection {
                     $("#dusun").removeAttr('disabled')
                     $("#dusun option[value!='']").remove()
                     $.each(res,function(i,v){
-                        $("#dusun").append(`<option value='${v.id}'>${v.dusun}</option>`)
+                        $("#dusun").append(`<option value='${v.id}'>${v.nama_dusun}</option>`)
                     })
                     $(".select2").select2()
                 }
