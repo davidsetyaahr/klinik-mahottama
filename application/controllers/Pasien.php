@@ -134,13 +134,13 @@ class Pasien extends CI_Controller
     $this->form_validation->set_rules('no_rekam_medis', 'No Rekam Medis', 'trim|required');
     	$this->form_validation->set_rules('no_id', 'No ID Pasien', 'trim|required');
     	$this->form_validation->set_rules('nama_lengkap', 'Nama Lengkap', 'trim|required');
-    	$this->form_validation->set_rules('golongan_darah', 'Golongan Darah', 'trim|required');
+    	// $this->form_validation->set_rules('golongan_darah', 'Golongan Darah', 'trim|required');
     	$this->form_validation->set_rules('status_menikah', 'Status Menikah', 'trim|required');
     	$this->form_validation->set_rules('pekerjaan', 'Pekerjaan', 'trim|required');
-    	$this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
-    	$this->form_validation->set_rules('kabupaten', 'Kabupaten', 'trim|required');
-    	$this->form_validation->set_rules('kecamatan', 'Kecamatan', 'trim|required');
-    	$this->form_validation->set_rules('kelurahan', 'Kelurahan', 'trim|required');
+    	// $this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
+    	$this->form_validation->set_rules('id_kabupaten', 'Kabupaten', 'trim|required');
+    	$this->form_validation->set_rules('id_kecamatan', 'Kecamatan', 'trim|required');
+    	$this->form_validation->set_rules('id_desa', 'Desa', 'trim|required');
     	$this->form_validation->set_rules('nama_orangtua_atau_istri', 'Nama Orantua atau Istri', 'trim|required');
     	$this->form_validation->set_rules('nomor_telepon', 'Nomor Telepon', 'trim|required');
 	    $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');

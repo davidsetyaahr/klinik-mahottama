@@ -130,6 +130,15 @@
                             <div class="col-sm-7">
                                 <select name="id_kecamatan" class="form-control select2" id="kecamatan">
                                     <option value="">---Pilih Kecamatan--</option>
+                                    <?php 
+                                        if($id_kecamatan!=""){
+                                            $getKecamatan = $this->db->get_where("tbl_kecamatan",['id_kabupaten' => $id_kabupaten])->result();
+                                            foreach ($getKecamatan as $key => $value) {
+                                                $s = $value->id==$id_kecamatan ? 'selected' : '';
+                                                echo "<option value='".$value->id."' $s>".$value->kecamatan."</option>";
+                                            }
+                                        }
+                                    ?>
                                 </select>
                                 <?php //echo form_input(array('id'=>'kecamatan','name'=>'kecamatan','type'=>'text','value'=>$kecamatan,'class'=>'form-control'));?>
                             </div>
