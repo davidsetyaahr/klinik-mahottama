@@ -28,8 +28,8 @@
 
     public function _rules() 
     {
-        $this->form_validation->set_rules('id_kecamatan', 'id_kecamatan', 'trim|required');
-        $this->form_validation->set_rules('dusun', 'dusun', 'trim|required');
+        $this->form_validation->set_rules('id_desa', 'id_desa', 'trim|required');
+        $this->form_validation->set_rules('nama_dusun', 'nama_dusun', 'trim|required');
         $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
     public function create() 
@@ -38,10 +38,9 @@
             'button' => 'Create',
             'action' => site_url('dusun/create_action'),
             'id' => set_value('id'),
-            'id_kecamatan' => set_value('id_kecamatan'),
-            'dusun' => set_value('dusun'),
-            'kabupaten' => $this->Tbl_kabupaten_model->get_all(),
-            'kecamatan' => $this->Tbl_kecamatan_model->get_all()
+            'id_desa' => set_value('id_desa'),
+            'nama_dusun' => set_value('nama_dusun'),
+            'desa' => $this->Tbl_desa_model->get_all()
         );
         $this->template->load('template','master_data/dusun/tbl_dusun_form', $data);
     }
@@ -53,8 +52,8 @@
             $this->create();
         } else {
             $data = array(
-                'id_kecamatan' => $this->input->post('id_kecamatan',TRUE),
-                'dusun' => $this->input->post('dusun',TRUE),
+                'id_desa' => $this->input->post('id_desa',TRUE),
+                'nama_dusun' => $this->input->post('nama_dusun',TRUE),
             );
             $this->Tbl_dusun_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
@@ -65,16 +64,15 @@
     public function edit($id)
     {
         $row = $this->Tbl_dusun_model->get_by_id($id);
-        var_dump($row);
 
         if ($row) {
             $data = array(
                 'button' => 'Update',
                 'action' => site_url('dusun/update'),
-                'id_kecamatan' => set_value('id_kecamatan',$row->id_kecamatan),
+                'id_desa' => set_value('id_desa',$row->id_desa),
                 'id' => set_value('id',$row->id),
-                'dusun' => set_value('dusun',$row->dusun),
-                'kecamatan' => $this->Tbl_kecamatan_model->get_all()
+                'nama_dusun' => set_value('nama_dusun',$row->nama_dusun),
+                'desa' => $this->Tbl_desa_model->get_all()
             );
             $this->template->load('template','master_data/dusun/tbl_dusun_form', $data);
         } else {
@@ -91,8 +89,8 @@
             $this->edit($this->input->post('id', TRUE));
         } else {
             $data = array(
-                'id_kecamatan' => $this->input->post('id_kecamatan', TRUE),
-                'dusun' => $this->input->post('dusun', TRUE),
+                'id_desa' => $this->input->post('id_desa', TRUE),
+                'nama_dusun' => $this->input->post('nama_dusun', TRUE),
             );
             $this->Tbl_dusun_model->update($this->input->post('id', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
