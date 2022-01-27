@@ -39,7 +39,7 @@
             'id' => set_value('id'),
             'id_kecamatan' => set_value('id_kecamatan'),
             'desa' => set_value('desa'),
-            'kabupaten' => $this->Tbl_kabupaten_model->get_all(),
+            'kabupaten' => $this->db->get("tbl_kabupaten")->result(),
             'kecamatan' => $this->Tbl_kecamatan_model->get_all()
         );
         $this->template->load('template','master_data/desa/tbl_desa_form', $data);
