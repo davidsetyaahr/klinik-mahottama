@@ -109,7 +109,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-4">Kabupaten/Kota <?php echo form_error('kabupaten') ?></div>
+                            <div class="col-sm-4">Kabupaten/Kota <?php echo form_error('id_kabupaten') ?></div>
                             <div class="col-sm-7">
                                 <select name="id_kabupaten" class="form-control select2" id="kabupaten">
                                     <option value="">---Pilih Kabupaten--</option>
@@ -125,7 +125,7 @@
                             <div class="col-sm-1" style="padding-left:0px"><a href="" class="btn btn-default"><span class="fa fa-plus"></span></a></div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-4">Kecamatan <?php echo form_error('kecamatan') ?></div>
+                            <div class="col-sm-4">Kecamatan <?php echo form_error('id_kecamatan') ?></div>
                             <div class="col-sm-7">
                                 <select name="id_kecamatan" class="form-control select2" id="kecamatan">
                                     <option value="">---Pilih Kecamatan--</option>
@@ -135,7 +135,7 @@
                             <div class="col-sm-1" style="padding-left:0px"><a href="" class="btn btn-default"><span class="fa fa-plus"></span></a></div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-4">Desa <?php echo form_error('desa') ?></div>
+                            <div class="col-sm-4">Desa <?php echo form_error('id_desa') ?></div>
                             <div class="col-sm-7">
                                 <select name="id_desa" class="form-control select2" id="desa">
                                     <option value="">---Pilih Desa--</option>
@@ -145,7 +145,7 @@
                             <div class="col-sm-1" style="padding-left:0px"><a href="" class="btn btn-default"><span class="fa fa-plus"></span></a></div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-4">Dusun <?php echo form_error('dusun') ?></div>
+                            <div class="col-sm-4">Dusun <?php echo form_error('id_dusun') ?></div>
                             <div class="col-sm-7">
                                 <select name="id_dusun" class="form-control select2" id="dusun">
                                     <option value="">---Pilih Dusun--</option>

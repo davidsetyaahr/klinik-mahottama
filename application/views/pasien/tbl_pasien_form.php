@@ -18,7 +18,7 @@
                         <div class="form-group">
                             <div class="col-sm-2">No ID <?php echo form_error('no_id'); ?></div>
                             <div class="col-sm-10">
-                                <?php echo form_input(array('id'=>'no_id','name'=>'no_id','type'=>'text','value'=>$no_id,'class'=>'form-control'));?>
+                                <?php echo form_input(array('id'=>'no_id','name'=>'no_id','type'=>'text','value'=>$no_id,'class'=>'form-control','readonly'=>'readonly'));?>
                             </div>
                         </div>
                         <div class="form-group">
@@ -52,21 +52,71 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-2">Kabupaten/Kota <?php echo form_error('kabupaten') ?></div>
+                            <div class="col-sm-2">Kabupaten/Kota <?php echo form_error('id_kabupaten') ?></div>
                             <div class="col-sm-10">
-                                <?php echo form_input(array('id'=>'kabupaten','name'=>'kabupaten','type'=>'text','value'=>$kabupaten,'class'=>'form-control'));?>
+                                <select name="id_kabupaten" class="form-control select2" id="kabupaten">
+                                    <option value="">---Pilih Kabupaten--</option>
+                                    <?php 
+                                        foreach ($allKabupaten as $key => $value) {
+                                            $s = $value->id==$id_kabupaten ? "selected" : "";
+                                            echo "<option value='".$value->id."' $s>".$value->kabupaten."</option>";
+                                        }
+                                    ?>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-2">Kecamatan <?php echo form_error('kecamatan'); ?></div>
+                            <div class="col-sm-2">Kecamatan <?php echo form_error('id_kecamatan') ?></div>
                             <div class="col-sm-10">
-                                <?php echo form_input(array('id'=>'kecamatan','name'=>'kecamatan','type'=>'text','value'=>$kecamatan,'class'=>'form-control'));?>
+                                <select name="id_kecamatan" class="form-control select2" id="kecamatan">
+                                    <option value="">---Pilih Kecamatan--</option>
+                                    <?php 
+                                        foreach ($getKecamatan as $key => $value) {
+                                            $s = $value->id==$id_kecamatan ? "selected" : "";
+                                            echo "<option value='".$value->id."' $s>".$value->kecamatan."</option>";
+                                        }
+                                    ?>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-2">Kelurahan/Desa <?php echo form_error('kelurahan'); ?></div>
+                            <div class="col-sm-2">Desa <?php echo form_error('id_desa') ?></div>
                             <div class="col-sm-10">
-                                <?php echo form_input(array('id'=>'kelurahan','name'=>'kelurahan','type'=>'text','value'=>$kelurahan,'class'=>'form-control'));?>
+                                <select name="id_desa" class="form-control select2" id="desa">
+                                    <option value="">---Pilih Desa--</option>
+                                    <?php 
+                                        foreach ($getDesa as $key => $value) {
+                                            $s = $value->id==$id_desa ? "selected" : "";
+                                            echo "<option value='".$value->id."' $s>".$value->desa."</option>";
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2">Dusun <?php echo form_error('id_dusun') ?></div>
+                            <div class="col-sm-10">
+                                <select name="id_dusun" class="form-control select2" id="dusun">
+                                    <option value="">---Pilih Dusun--</option>
+                                    <?php 
+                                        foreach ($getDusun as $key => $value) {
+                                            $s = $value->id==$id_dusun ? "selected" : "";
+                                            echo "<option value='".$value->id."' $s>".$value->nama_dusun."</option>";
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2">RT <?php echo form_error('rt') ?></div>
+                            <div class="col-sm-10">
+                                <?php echo form_input(array('id'=>'rt','name'=>'rt','type'=>'text','value'=>$rt,'class'=>'form-control'));?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2">RW <?php echo form_error('rw') ?></div>
+                            <div class="col-sm-10">
+                                <?php echo form_input(array('id'=>'rw','name'=>'rw','type'=>'text','value'=>$rw,'class'=>'form-control'));?>
                             </div>
                         </div>
                         <div class="form-group">
@@ -94,4 +144,70 @@
         </div>
     </section>
 </div>
+<script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
+
+<script>
+    $(document).ready(function(){
+        $("#kabupaten").change(function(){
+            var thisVal = $(this).val()
+            $("#kecamatan").prop('disabled','true')
+
+            $.ajax({
+                type : "get",
+                data : {id_kabupaten:thisVal},
+                url : "<?= base_url()."kecamatan/kecamatanByKab" ?>",
+                dataType : 'json',
+                success : function(res){
+                    $("#kecamatan").removeAttr('disabled')
+                    $("#kecamatan option[value!='']").remove()
+                    $("#desa option[value!='']").remove()
+                    $("#dusun option[value!='']").remove()
+                    $.each(res,function(i,v){
+                        $("#kecamatan").append(`<option value='${v.id}'>${v.kecamatan}</option>`)
+                    })
+                    $(".select2").select2()
+                }
+            })
+        })
+        $("#kecamatan").change(function(){
+            var thisVal = $(this).val()
+            $("#desa").prop('disabled','true')
+
+            $.ajax({
+                type : "get",
+                data : {id_kecamatan:thisVal},
+                url : "<?= base_url()."desa/desaByKec" ?>",
+                dataType : 'json',
+                success : function(res){
+                    $("#desa").removeAttr('disabled')
+                    $("#desa option[value!='']").remove()
+                    $("#dusun option[value!='']").remove()
+                    $.each(res,function(i,v){
+                        $("#desa").append(`<option value='${v.id}'>${v.desa}</option>`)
+                    })
+                    $(".select2").select2()
+                }
+            })
+        })
+        $("#desa").change(function(){
+            var thisVal = $(this).val()
+            $("#dusun").prop('disabled','true')
+
+            $.ajax({
+                type : "get",
+                data : {id_desa:thisVal},
+                url : "<?= base_url()."dusun/dusunByDesa" ?>",
+                dataType : 'json',
+                success : function(res){
+                    $("#dusun").removeAttr('disabled')
+                    $("#dusun option[value!='']").remove()
+                    $.each(res,function(i,v){
+                        $("#dusun").append(`<option value='${v.id}'>${v.nama_dusun}</option>`)
+                    })
+                    $(".select2").select2()
+                }
+            })
+        })
+    })
+</script>
 <?php echo form_close();?>

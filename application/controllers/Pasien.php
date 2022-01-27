@@ -54,6 +54,11 @@ class Pasien extends CI_Controller
         $row = $this->Tbl_pasien_model->get_by_id($id);
 
         if ($row) {
+			$this->data['allKabupaten'] = $this->db->get("tbl_kabupaten")->result();
+			$this->data['getKecamatan'] = $this->db->get_where("tbl_kecamatan",['id_kabupaten' => $row->id_kabupaten])->result();
+			$this->data['getDesa'] = $this->db->get_where("tbl_desa",['id_kecamatan' => $row->id_kecamatan])->result();
+			$this->data['getDusun'] = $this->db->get_where("tbl_dusun",['id_desa' => $row->id_desa])->result();
+
     	    $this->data['action'] = site_url('pasien/update_action');
     	    $this->data['no_rekam_medis'] = set_value('no_rekam_medis', $row->no_rekam_medis);
 			$this->data['no_id'] = set_value('no_id',$row->no_id_pasien);
@@ -62,9 +67,12 @@ class Pasien extends CI_Controller
 			$this->data['status_menikah'] = set_value('status_menikah',$row->status_menikah);
 			$this->data['pekerjaan'] = set_value('pekerjaan',$row->pekerjaan);
 			$this->data['alamat'] = set_value('alamat',$row->alamat);
-			$this->data['kabupaten'] = set_value('kabupaten',$row->kabupaten);
-			$this->data['kecamatan'] = set_value('kecamatan',$row->kecamatan);
-			$this->data['kelurahan'] = set_value('kelurahan',$row->kelurahan);
+			$this->data['id_kabupaten'] = set_value('id_kabupaten',$row->id_kabupaten);
+			$this->data['id_kecamatan'] = set_value('id_kecamatan',$row->id_kecamatan);
+			$this->data['id_desa'] = set_value('id_desa',$row->id_desa);
+			$this->data['id_dusun'] = set_value('id_dusun',$row->id_dusun);
+			$this->data['rt'] = set_value('rt',$row->rt);
+			$this->data['rw'] = set_value('rw',$row->rw);
 			$this->data['nama_orangtua_atau_istri'] = set_value('nama_orangtua_atau_istri',$row->nama_orang_tua_atau_istri);
 			$this->data['nomor_telepon'] = set_value('nomor_telepon',$row->nomer_telepon);
 			
@@ -90,9 +98,12 @@ class Pasien extends CI_Controller
 				'status_menikah'    => $this->input->post('status_menikah'),
 				'pekerjaan'      	=> $this->input->post('pekerjaan'),
 				'alamat'      		=> $this->input->post('alamat'),
-				'kabupaten' 		=> $this->input->post('kabupaten'),
-				'kecamatan' 		=> $this->input->post('kecamatan'),
-				'kelurahan' 		=> $this->input->post('kelurahan'),
+				'id_kabupaten' 		=> $this->input->post('id_kabupaten'),
+				'id_kecamatan' 		=> $this->input->post('id_kecamatan'),
+				'id_desa'    		=> $this->input->post('id_desa'),
+				'id_dusun' 	    	=> $this->input->post('id_dusun'),
+				'rt'     	    	=> $this->input->post('rt'),
+				'rw' 	        	=> $this->input->post('rw'),
 				'nama_orang_tua_atau_istri'      =>  $this->input->post('nama_orangtua_atau_istri'),
 				'nomer_telepon'     =>  $this->input->post('nomor_telepon'),
                 'dtm_upd' => date("Y-m-d H:i:s",  time())
