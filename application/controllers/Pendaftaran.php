@@ -44,8 +44,10 @@ class Pendaftaran extends CI_Controller
 				'golongan_darah'    => $this->input->post('golongan_darah'),
 				'status_menikah'    => $this->input->post('status_menikah'),
 				'pekerjaan'      	=> $this->input->post('pekerjaan'),
-				'alamat'      		=> $this->input->post('alamat'),
-				'kabupaten' 		=> $this->input->post('kabupaten'),
+				'id_kabupaten' 		=> $this->input->post('id_kabupaten'),
+				'id_kecamatan' 		=> $this->input->post('id_kecamatan'),
+				'id_desa' 		=> $this->input->post('id_desa'),
+				'id_dusun' 		=> $this->input->post('id_dusun'),
 				'rt' 		=> $this->input->post('rt'),
 				'rw' 		=> $this->input->post('rw'),
 				'nama_orang_tua_atau_istri'      =>  $this->input->post('nama_orangtua_atau_istri'),
@@ -95,7 +97,6 @@ class Pendaftaran extends CI_Controller
 			//Set session sukses
             $this->session->set_flashdata('message', 'Data pendaftaran berhasil disimpan, No Rekam Medis ' . $this->input->post('no_rekam_medis'));
             $this->session->set_flashdata('message_type', 'success');
-            
 			redirect(site_url('pendaftaran/create'));
         } else {	
             $pasien_existing = null;
@@ -126,12 +127,12 @@ class Pendaftaran extends CI_Controller
 			$this->data['status_menikah'] = $pasien_existing != null ? $pasien_existing->status_menikah : set_value('status_menikah');
 			$this->data['pekerjaan'] = $pasien_existing != null ? $pasien_existing->pekerjaan : set_value('pekerjaan');
 			$this->data['alamat'] = $pasien_existing != null ? $pasien_existing->alamat : set_value('alamat');
-			$this->data['kabupaten'] = $pasien_existing != null ? $pasien_existing->kabupaten : set_value('kabupaten');
+			$this->data['id_kabupaten'] = $pasien_existing != null ? $pasien_existing->id_kabupaten : set_value('id_kabupaten');
 			$this->data['rt'] = $pasien_existing != null ? $pasien_existing->rt : set_value('rt');
 			$this->data['rw'] = $pasien_existing != null ? $pasien_existing->rw : set_value('rw');
-			$this->data['dusun'] = $pasien_existing != null ? $pasien_existing->dusun : set_value('dusun');
-			$this->data['desa'] = $pasien_existing != null ? $pasien_existing->desa : set_value('desa');
-			$this->data['kecamatan'] = $pasien_existing != null ? $pasien_existing->kecamatan : set_value('desa');
+			$this->data['id_dusun'] = $pasien_existing != null ? $pasien_existing->id_dusun : set_value('id_dusun');
+			$this->data['id_desa'] = $pasien_existing != null ? $pasien_existing->id_desa : set_value('id_desa');
+			$this->data['id_kecamatan'] = $pasien_existing != null ? $pasien_existing->id_kecamatan : set_value('id_desa');
 			$this->data['nama_orangtua_atau_istri'] = $pasien_existing != null ? $pasien_existing->nama_orang_tua_atau_istri : set_value('nama_orangtua_atau_istri');
 			$this->data['nomor_telepon'] = $pasien_existing != null ? $pasien_existing->nomer_telepon : set_value('nomor_telepon');
             $this->data['is_pasien'] = $pasien_existing != null ? '0' : '1';
@@ -320,8 +321,10 @@ class Pendaftaran extends CI_Controller
     // 	$this->form_validation->set_rules('golongan_darah', 'Golongan Darah', 'trim|required');
     	$this->form_validation->set_rules('status_menikah', 'Status Menikah', 'trim|required');
     	$this->form_validation->set_rules('pekerjaan', 'Pekerjaan', 'trim|required');
-    	$this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
-    	$this->form_validation->set_rules('kabupaten', 'Kabupaten', 'trim|required');
+    	$this->form_validation->set_rules('id_kabupaten', 'Kabupaten', 'trim|required');
+    	$this->form_validation->set_rules('id_kecamatan', 'Kecamatan', 'trim|required');
+    	$this->form_validation->set_rules('id_desa', 'Desa', 'trim|required');
+    	$this->form_validation->set_rules('id_dusun', 'Dusun', 'trim|required');
     	$this->form_validation->set_rules('rt', 'RT', 'trim|required');
     	$this->form_validation->set_rules('rw', 'RW', 'trim|required');
     	$this->form_validation->set_rules('nama_orangtua_atau_istri', 'Nama Orantua atau Istri', 'trim|required');
