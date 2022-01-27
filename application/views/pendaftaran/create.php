@@ -110,16 +110,49 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-4">Kabupaten/Kota <?php echo form_error('kabupaten') ?></div>
-                            <div class="col-sm-8">
-                                <?php echo form_input(array('id'=>'kabupaten','name'=>'kabupaten','type'=>'text','value'=>$kabupaten,'class'=>'form-control'));?>
-                                <?php // echo form_dropdown('kabupaten',$kabupaten_opt,$kabupaten,array('id'=>'kabupaten','class'=>'form-control select2','onchange'=>'get_kecamatan(this)'));?>
+                            <div class="col-sm-7">
+                                <select name="kabupaten" class="form-control select2" id="kabupaten">
+                                    <option value="">---Pilih Kabupaten--</option>
+                                    <?php 
+                                        foreach ($allKabupaten as $key => $value) {
+                                            echo "<option value='".$value->id."'>".$value->kabupaten."</option>";
+                                        }
+                                    ?>
+                                </select>
+                                <?php //echo form_input(array('id'=>'kabupaten','name'=>'kabupaten','type'=>'text','value'=>$kabupaten,'class'=>'form-control'));?>
+                                <?php // echo form_dropdown('kabupaten',$kabupaten_opt,$kabupaten,array('id'=>'kabupaten','class'=>'form-1o style="padding-left:0px"ntrol select2','onchange'=>'get_kecamatan(this)'));?>
                             </div>
+                            <div class="col-sm-1" style="padding-left:0px"><a href="" class="btn btn-default"><span class="fa fa-plus"></span></a></div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-4">Alamat <?php echo form_error('alamat'); ?></div>
-                            <div class="col-sm-8">
-                                <?php echo form_textarea(array('id'=>'alamat','name'=>'alamat','type'=>'textarea','value'=>$alamat,'rows'=>'2','class'=>'form-control'));?>
+                            <div class="col-sm-4">Kecamatan <?php echo form_error('kecamatan') ?></div>
+                            <div class="col-sm-7">
+                                <select name="kecamatan" class="form-control select2" id="kecamatan">
+                                    <option value="">---Pilih Kecamatan--</option>
+                                </select>
+                                <?php //echo form_input(array('id'=>'kecamatan','name'=>'kecamatan','type'=>'text','value'=>$kecamatan,'class'=>'form-control'));?>
                             </div>
+                            <div class="col-sm-1" style="padding-left:0px"><a href="" class="btn btn-default"><span class="fa fa-plus"></span></a></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4">Desa <?php echo form_error('desa') ?></div>
+                            <div class="col-sm-7">
+                                <select name="desa" class="form-control select2" id="desa">
+                                    <option value="">---Pilih Desa--</option>
+                                </select>
+                                <?php //echo form_input(array('id'=>'desa','name'=>'desa','type'=>'text','value'=>$desa,'class'=>'form-control'));?>
+                            </div>
+                            <div class="col-sm-1" style="padding-left:0px"><a href="" class="btn btn-default"><span class="fa fa-plus"></span></a></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4">Dusun <?php echo form_error('dusun') ?></div>
+                            <div class="col-sm-7">
+                                <select name="dusun" class="form-control select2" id="dusun">
+                                    <option value="">---Pilih Dusun--</option>
+                                </select>
+                                <?php //echo form_input(array('id'=>'dusun','name'=>'dusun','type'=>'text','value'=>$dusun,'class'=>'form-control'));?>
+                            </div>
+                            <div class="col-sm-1" style="padding-left : 0px;"><a href="" class="btn btn-default"><span class="fa fa-plus"></span></a></div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-4">RT <?php echo form_error('rt') ?></div>
@@ -133,6 +166,12 @@
                                 <?php echo form_input(array('id'=>'rw','name'=>'rw','type'=>'text','value'=>$rw,'class'=>'form-control'));?>
                             </div>
                         </div>
+                        <!-- <div class="form-group">
+                            <div class="col-sm-4">Alamat <?php echo form_error('alamat'); ?></div>
+                            <div class="col-sm-8">
+                                <?php echo form_textarea(array('id'=>'alamat','name'=>'alamat','type'=>'textarea','value'=>$alamat,'rows'=>'2','class'=>'form-control'));?>
+                            </div>
+                        </div> -->
                         <!--<div class="form-group">-->
                         <!--    <div class="col-sm-4">Kecamatan <?php echo form_error('kecamatan'); ?></div>-->
                         <!--    <div class="col-sm-8">-->
@@ -148,7 +187,7 @@
                         <!--    </div>-->
                         <!--</div>-->
                         <div class="form-group">
-                            <div class="col-sm-4">Nama Orang Tua / Istri <?php echo form_error('nama_orangtua_atau_istri'); ?></div>
+                            <div class="col-sm-4">Nama Ibu Kandung <?php echo form_error('nama_orangtua_atau_istri'); ?></div>
                             <div class="col-sm-8">
                                 <?php echo form_input(array('id'=>'nama_orangtua_atau_istri','name'=>'nama_orangtua_atau_istri','type'=>'text','value'=>$nama_orangtua_atau_istri,'class'=>'form-control'));?>
                             </div>
@@ -237,6 +276,66 @@ select[readonly].select2+.select2-container .select2-selection {
 <script src="<?php echo base_url('assets/datatables/dataTables.bootstrap.js') ?>"></script>
 <script type="text/javascript">
     $(document).ready(function() {
+        $("#kabupaten").change(function(){
+            var thisVal = $(this).val()
+            $("#kecamatan").prop('disabled','true')
+
+            $.ajax({
+                type : "get",
+                data : {id_kabupaten:thisVal},
+                url : "<?= base_url()."kecamatan/kecamatanByKab" ?>",
+                dataType : 'json',
+                success : function(res){
+                    $("#kecamatan").removeAttr('disabled')
+                    $("#kecamatan option[value!='']").remove()
+                    $("#desa option[value!='']").remove()
+                    $("#dusun option[value!='']").remove()
+                    $.each(res,function(i,v){
+                        $("#kecamatan").append(`<option value='${v.id}'>${v.kecamatan}</option>`)
+                    })
+                    $(".select2").select2()
+                }
+            })
+        })
+        $("#kecamatan").change(function(){
+            var thisVal = $(this).val()
+            $("#desa").prop('disabled','true')
+
+            $.ajax({
+                type : "get",
+                data : {id_kecamatan:thisVal},
+                url : "<?= base_url()."desa/desaByKec" ?>",
+                dataType : 'json',
+                success : function(res){
+                    $("#desa").removeAttr('disabled')
+                    $("#desa option[value!='']").remove()
+                    $("#dusun option[value!='']").remove()
+                    $.each(res,function(i,v){
+                        $("#desa").append(`<option value='${v.id}'>${v.desa}</option>`)
+                    })
+                    $(".select2").select2()
+                }
+            })
+        })
+        $("#desa").change(function(){
+            var thisVal = $(this).val()
+            $("#dusun").prop('disabled','true')
+
+            $.ajax({
+                type : "get",
+                data : {id_desa:thisVal},
+                url : "<?= base_url()."dusun/dusunByDesa" ?>",
+                dataType : 'json',
+                success : function(res){
+                    $("#dusun").removeAttr('disabled')
+                    $("#dusun option[value!='']").remove()
+                    $.each(res,function(i,v){
+                        $("#dusun").append(`<option value='${v.id}'>${v.dusun}</option>`)
+                    })
+                    $(".select2").select2()
+                }
+            })
+        })
         $(".namaDokter").change(function(){
             getPoli()
         })

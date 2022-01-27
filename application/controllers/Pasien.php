@@ -160,12 +160,13 @@ class Pasien extends CI_Controller
         $post['qr_code'] = $image_name;
 
         $data['pasien'] = $this->Tbl_pasien_model->get_cetak_id($no_rekam_medis);
-        $data['detail'] = $this->Tbl_pasien_model->get_rm($no_rekam_medis);
+    $data['detail'] = $this->Tbl_pasien_model->get_rm($no_rekam_medis);
         $this->load->view('pasien/form_cetak_id', $data);
     }
     public function map($no_rm)
     {
-        $this->load->view("pasien/map");
+        $data['pasien'] = $this->db->get_where("tbl_pasien",['no_rekam_medis' => $no_rm])->row();
+        $this->load->view("pasien/map",$data);
     }
 
 }

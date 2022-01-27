@@ -113,5 +113,10 @@
             redirect(site_url('dusun'));
         }
     }
+    public function dusunByDesa()
+    {
+        $data = $this->db->get_where("tbl_dusun",['id_desa' => $_GET['id_desa']])->result();
+        echo json_encode($data);
+    }
 
 }

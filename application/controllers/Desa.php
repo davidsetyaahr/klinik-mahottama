@@ -113,4 +113,10 @@
         }
     }
 
+    public function desaByKec()
+    {
+        $data = $this->db->get_where("tbl_desa",['id_kecamatan' => $_GET['id_kecamatan']])->result();
+        echo json_encode($data);
+    }
+
 }

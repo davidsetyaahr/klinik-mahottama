@@ -129,13 +129,16 @@ class Pendaftaran extends CI_Controller
 			$this->data['kabupaten'] = $pasien_existing != null ? $pasien_existing->kabupaten : set_value('kabupaten');
 			$this->data['rt'] = $pasien_existing != null ? $pasien_existing->rt : set_value('rt');
 			$this->data['rw'] = $pasien_existing != null ? $pasien_existing->rw : set_value('rw');
+			$this->data['dusun'] = $pasien_existing != null ? $pasien_existing->dusun : set_value('dusun');
+			$this->data['desa'] = $pasien_existing != null ? $pasien_existing->desa : set_value('desa');
+			$this->data['kecamatan'] = $pasien_existing != null ? $pasien_existing->kecamatan : set_value('desa');
 			$this->data['nama_orangtua_atau_istri'] = $pasien_existing != null ? $pasien_existing->nama_orang_tua_atau_istri : set_value('nama_orangtua_atau_istri');
 			$this->data['nomor_telepon'] = $pasien_existing != null ? $pasien_existing->nomer_telepon : set_value('nomor_telepon');
             $this->data['is_pasien'] = $pasien_existing != null ? '0' : '1';
 			$this->data['nama_dokter'] = set_value('nama_dokter');	
 			// $this->data['tipe_periksa'] = $pasien_existing != null ? $pasien_existing->tipe_periksa : set_value('tipe_periksa');
             $this->data['poli'] = $this->db->get('tbl_poli')->result();
-			
+			$this->data['allKabupaten'] = $this->db->get("tbl_kabupaten")->result();
 			// $this->data['option_dokter'] = array();
 			// $this->data['option_dokter'][''] = 'Pilih Dokter';
 			// foreach ($this->Tbl_dokter_model->get_all_jaga($this->id_klinik) as $dokter){

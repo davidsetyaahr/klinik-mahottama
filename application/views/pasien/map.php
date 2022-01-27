@@ -47,8 +47,9 @@
         }
         .body .top .left .content .content-top p{
             color : #214193;
-            margin-top : 11px;
-            margin-bottom : 11px;
+            letter-spacing : -1px;
+            margin-top : 5%;
+            margin-bottom : 5%;
             font-weight : 600;
             font-size : 21px;
         }
@@ -76,16 +77,17 @@
             padding-right : 5%;
         }
         .body .top .center .output{
-            margin-top : 7px;
-            margin-bottom : 7px;
+            margin-top : 3%;
+            margin-bottom : 3%;
             display : block;
             background : white;
             transform: skew(-20deg);
             -webkit-transform: skew(-20deg);
             -o-transform: skew(-20deg);
             -moz-transform: skew(-20deg);
-            padding-top : 5px;
-            padding-bottom : 5px;
+            display : flex;
+            align-items : center;
+            height : 30px;
             padding-left : 10px;
             border : 1px solid #ddd;
         }
@@ -250,7 +252,7 @@
                     <div class="content">
                         <div class="content-top">
                             <p style="margin-top :10px">NAMA PASIEN</p>
-                            <p>NAMA KANDUNG</p>
+                            <p>NAMA IBU KANDUNG</p>
                             <p>DUSUN</p>
                             <p>RT/RW</p>
                             <p>DESA</p>
@@ -260,19 +262,19 @@
                         </div>
                         <div class="content-bottom">
                             <p>ALERGI:</p>
-                            <div class="output-alergi">Albapure,Albapure,Albapure,Albapure,Albapure,Albapure,</div>
+                            <div class="output-alergi"><?= $pasien->riwayat_alergi_obat ?></div>
                         </div>
                     </div>
                 </div>
                 <div class="center">
-                    <div class="output" style="margin-top :10px">David Setya Ainu Hakiki Ramadhan</div>
-                    <div class="output">Fulanah</div>
-                    <div class="output">Sekarputih</div>
-                    <div class="output">013/004</div>
-                    <div class="output">Sekarputih</div>
-                    <div class="output">Tegalampel</div>
-                    <div class="output">Bondowoso</div>
-                    <div class="output">082143403501</div>
+                    <div class="output" style="margin-top :10px"><span><?= $pasien->nama_lengkap ?></span></div>
+                    <div class="output"><span><?= $pasien->nama_orang_tua_atau_istri ?></span></div>
+                    <div class="output"><span>Sekarputih</span></div>
+                    <div class="output"><span><?= $pasien->rt ?>/<?= $pasien->rw ?></span></div>
+                    <div class="output"><span>Sekarputih</span></div>
+                    <div class="output"><span>Tegalampel</span></div>
+                    <div class="output"><span><?= $pasien->kabupaten ?></span></div>
+                    <div class="output"><span><?= $pasien->nomer_telepon ?></span></div>
                 </div>
                 <div class="right">
                     <div class="box-tahun">
@@ -280,7 +282,7 @@
                             for ($i=2021; $i <= 2027 ; $i++) { 
                         ?>
                             <div class="tahun">
-                                <div class="check"><?= $i==2022 ? "<img src='".base_url()."assets/images/check.png'>" : "" ?></div>
+                                <div class="check"><?= $i==date('Y') ? "<img src='".base_url()."assets/images/check.png'>" : "" ?></div>
                                 <span><?= $i ?></span>
                             </div>
                         <?php
@@ -292,7 +294,7 @@
             <div class="bottom">
                 <div class="left">
                     <span>RM</span>
-                    <span id="rm">0000001</span>
+                    <span id="rm"><?= $pasien->no_rekam_medis ?></span>
                 </div>
                 <div class="right">
                     <div class="rahasia">

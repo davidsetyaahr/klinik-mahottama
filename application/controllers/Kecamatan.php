@@ -109,5 +109,10 @@
             redirect(site_url('kecamatan'));
         }
     }
+    public function kecamatanByKab()
+    {
+        $data = $this->db->get_where("tbl_kecamatan",['id_kabupaten' => $_GET['id_kabupaten']])->result();
+        echo json_encode($data);
+    }
 
 }
