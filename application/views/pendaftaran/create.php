@@ -111,7 +111,7 @@
                         <div class="form-group">
                             <div class="col-sm-4">Kabupaten/Kota <?php echo form_error('kabupaten') ?></div>
                             <div class="col-sm-7">
-                                <select name="kabupaten" class="form-control select2" id="kabupaten">
+                                <select name="id_kabupaten" class="form-control select2" id="kabupaten">
                                     <option value="">---Pilih Kabupaten--</option>
                                     <?php 
                                         foreach ($allKabupaten as $key => $value) {
@@ -128,7 +128,7 @@
                         <div class="form-group">
                             <div class="col-sm-4">Kecamatan <?php echo form_error('kecamatan') ?></div>
                             <div class="col-sm-7">
-                                <select name="kecamatan" class="form-control select2" id="kecamatan">
+                                <select name="id_kecamatan" class="form-control select2" id="kecamatan">
                                     <option value="">---Pilih Kecamatan--</option>
                                 </select>
                                 <?php //echo form_input(array('id'=>'kecamatan','name'=>'kecamatan','type'=>'text','value'=>$kecamatan,'class'=>'form-control'));?>
@@ -138,7 +138,7 @@
                         <div class="form-group">
                             <div class="col-sm-4">Desa <?php echo form_error('desa') ?></div>
                             <div class="col-sm-7">
-                                <select name="desa" class="form-control select2" id="desa">
+                                <select name="id_desa" class="form-control select2" id="desa">
                                     <option value="">---Pilih Desa--</option>
                                 </select>
                                 <?php //echo form_input(array('id'=>'desa','name'=>'desa','type'=>'text','value'=>$desa,'class'=>'form-control'));?>
@@ -148,7 +148,7 @@
                         <div class="form-group">
                             <div class="col-sm-4">Dusun <?php echo form_error('dusun') ?></div>
                             <div class="col-sm-7">
-                                <select name="dusun" class="form-control select2" id="dusun">
+                                <select name="id_dusun" class="form-control select2" id="dusun">
                                     <option value="">---Pilih Dusun--</option>
                                 </select>
                                 <?php //echo form_input(array('id'=>'dusun','name'=>'dusun','type'=>'text','value'=>$dusun,'class'=>'form-control'));?>
