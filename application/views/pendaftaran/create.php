@@ -115,7 +115,8 @@
                                     <option value="">---Pilih Kabupaten--</option>
                                     <?php 
                                         foreach ($allKabupaten as $key => $value) {
-                                            echo "<option value='".$value->id."'>".$value->kabupaten."</option>";
+                                            $k = $value->id == $id_kabupaten ? 'selected' : '';
+                                            echo "<option value='".$value->id."' $k>".$value->kabupaten."</option>";
                                         }
                                     ?>
                                 </select>
