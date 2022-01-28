@@ -500,7 +500,7 @@ select[readonly].select2+.select2-container .select2-selection {
             $.ajax({
                 type : "get",
                 data : {id_kecamatan:thisVal},
-                url : "<?= base_url()."desa/desaByKec" ?>",
+                url : "<?= base_url()."pendaftaran/changeKecamatan" ?>",
                 dataType : 'json',
                 success : function(res){
                     $(elementStart+" #desa").removeAttr('disabled')
@@ -521,7 +521,7 @@ select[readonly].select2+.select2-container .select2-selection {
             $.ajax({
                 type : "get",
                 data : {id_desa:thisVal},
-                url : "<?= base_url()."dusun/dusunByDesa" ?>",
+                url : "<?= base_url()."pendaftaran/changeDesa" ?>",
                 dataType : 'json',
                 success : function(res){
                     $(elementStart+" #dusun").removeAttr('disabled')

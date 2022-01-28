@@ -62,3 +62,5 @@ $route['pembayaran/cetak-sklab'] = "periksamedis/cetak_surat_ket_lab";
 $route['obat_hampir_habis'] = "dataobat/obat_hampir_habis";
 $route['obat_hampir_habis/json'] = "dataobat/json_obat_hampir_habis";
 $route['pendaftaran/changeKabupaten'] = "kecamatan/kecamatanByKab";
+$route['pendaftaran/changeKecamatan'] = "desa/desaByKec";
+$route['pendaftaran/changeDesa'] = "dusun/dusunByDesa";
