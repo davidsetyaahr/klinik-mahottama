@@ -111,10 +111,15 @@
                         <div class="form-group">
                             <div class="col-sm-4">Kabupaten/Kota <?php echo form_error('id_kabupaten') ?></div>
                             <div class="col-sm-7">
-                                <select name="id_kabupaten" class="form-control select2" id="kabupaten">
+                                <select name="id_kabupaten" class="form-control select2 changeKabupaten" data-elementstart=".box-body" id="kabupaten">
                                     <option value="">---Pilih Kabupaten--</option>
                                     <?php 
                                         if($id_kabupaten!=""){
+                                            foreach ($allKabupaten as $key => $value) {
+                                                $s = $value->id==$id_kabupaten ? 'selected' : '';
+                                                echo "<option value='".$value->id."' $s>".$value->kabupaten."</option>";
+                                            }
+                                        }else{
                                             foreach ($allKabupaten as $key => $value) {
                                                 $s = $value->id==$id_kabupaten ? 'selected' : '';
                                                 echo "<option value='".$value->id."' $s>".$value->kabupaten."</option>";
@@ -130,15 +135,13 @@
                         <div class="form-group">
                             <div class="col-sm-4">Kecamatan <?php echo form_error('id_kecamatan') ?></div>
                             <div class="col-sm-7">
-                                <select name="id_kecamatan" class="form-control select2" id="kecamatan">
+                                <select name="id_kecamatan" class="form-control select2 changeKecamatan" data-elementstart=".box-body" id="kecamatan">
                                     <option value="">---Pilih Kecamatan--</option>
                                     <?php 
-                                        if($id_kecamatan!=""){
-                                            $getKecamatan = $this->db->get_where("tbl_kecamatan",['id_kabupaten' => $id_kabupaten])->result();
-                                            foreach ($getKecamatan as $key => $value) {
-                                                $s = $value->id==$id_kecamatan ? 'selected' : '';
-                                                echo "<option value='".$value->id."' $s>".$value->kecamatan."</option>";
-                                            }
+                                        $getKecamatan = $this->db->get_where("tbl_kecamatan",['id_kabupaten' => $id_kabupaten])->result();
+                                        foreach ($getKecamatan as $key => $value) {
+                                            $s = $value->id==$id_kecamatan ? 'selected' : '';
+                                            echo "<option value='".$value->id."' $s>".$value->kecamatan."</option>";
                                         }
                                     ?>
                                 </select>
@@ -182,7 +185,7 @@
                                 </select>
                                 <?php //echo form_input(array('id'=>'dusun','name'=>'dusun','type'=>'text','value'=>$dusun,'class'=>'form-control'));?>
                             </div>
-                            <div class="col-sm-1" style="padding-left : 0px;"><a href="" class="btn btn-default"><span class="fa fa-plus"></span></a></div>
+                            <div class="col-sm-1" style="padding-left : 0px;"><a href="" class="btn btn-default" data-toggle="modal" data-target="#dusModal"><span class="fa fa-plus"></span></a></div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-4">RT <?php echo form_error('rt') ?></div>
@@ -302,15 +305,13 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Tambah Kabupaten</h4>
             </div>
-            <form action="<?php echo base_url('pendaftaran/addKab')?>" method="post" enctype="multipart/form-data">
-                <div class="modal-body">
-                    <label for="">Kabupaten</label>
-                    <input type="text" id="kabupaten" name="kabupaten" class="form-control">
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-info" id="addKab">Tambah</button>
-                </div>
-            </form>
+            <div class="modal-body">
+                <label for="">Kabupaten</label>
+                <input type="text" id="addkabupaten" name="kabupaten" class="form-control">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-info" id="addKab">Tambah</button>
+            </div>
         </div>
     </div>
 </div>
@@ -324,27 +325,25 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Tambah Kecamatan</h4>
             </div>
-            <form action="<?php echo base_url('')?>" method="post" enctype="multipart/form-data">
-                <div class="modal-body">
-                    <label for="">Kabupaten</label>
-                    <select name="id_kecamatan" class="form-control" id="kecamatan" width="100%">
-                        <option value="">---Pilih Kecamatan--</option>
-                        <?php
-                            $getKabupaten = $this->db->get("tbl_kabupaten")->result();
-                            foreach ($getKabupaten as $key => $value) {
-                                echo "<option value='".$value->id."'>".$value->kabupaten."</option>";
-                            }
-                        ?>
-                    </select>
-                </div>
-                <div class="modal-body">
-                    <label for="">Kecamatan</label>
-                    <input type="text" id="kecamatan" name="kecamatan" class="form-control">
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-info" id="addKab">Tambah</button>
-                </div>
-            </form>
+            <div class="modal-body">
+                <label for="">Kabupaten</label>
+                <select class="form-control select2" name="id_kabupaten" id="addkabupaten" style="width:100%">
+                    <option value="">---Pilih Kabupaten--</option>
+                    <?php
+                        $getKabupaten = $this->db->get("tbl_kabupaten")->result();
+                        foreach ($getKabupaten as $key => $value) {
+                            echo "<option value='".$value->id."'>".$value->kabupaten."</option>";
+                        }
+                    ?>
+                </select>
+            </div>
+            <div class="modal-body">
+                <label for="">Kecamatan</label>
+                <input type="text" id="addkecamatan" name="kecamatan" class="form-control">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-info" id="addKec">Tambah</button>
+            </div>
         </div>
     </div>
 </div>
@@ -358,10 +357,9 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Tambah Desa</h4>
             </div>
-            <form action="<?php echo base_url('')?>" method="post" enctype="multipart/form-data">
             <div class="modal-body">
                 <label for="">Kecamatan</label>
-                <select name="id_kabupaten" class="form-control select2" id="kabupaten">
+                <select name="id_kabupaten" class="form-control select2" id="kabupaten" style="width:100%">
                     <option value="">---Pilih Kabupaten--</option>
                     <?php 
                         $getKabupaten = $this->db->get("tbl_kabupaten")->result();
@@ -374,7 +372,53 @@
             </div>
             <div class="modal-body">
                 <label for="">Kecamatan</label>
-                <select name="id_kecamatan" class="form-control select2" id="kecamatan">
+                <select name="id_kecamatan" class="form-control select2 changeKecamatan" data-elementstart="#desModal" id="kecamatan" style="width:100%">
+                    <option value="">---Pilih Kecamatan--</option>
+                    <?php 
+                        $getKecamatan = $this->db->get_where("tbl_kecamatan",['id_kabupaten' => $id_kabupaten])->result();
+                        foreach ($getKecamatan as $key => $value) {
+                            $s = $value->id==$id_kecamatan ? 'selected' : '';
+                            echo "<option value='".$value->id."' $s>".$value->kecamatan."</option>";
+                        }
+                    ?>
+                </select>
+            </div>
+            <div class="modal-body">
+                <label for="">Desa</label>
+                <input type="text" id="adddesa" name="desa" class="form-control">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-info" id="addDes">Tambah</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Dusun -->
+<div id="dusModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Tambah Desa</h4>
+            </div>
+            <div class="modal-body">
+                <label for="">Kecamatan</label>
+                <select name="id_kabupaten" class="form-control select2" id="kabupaten" style="width:100%">
+                    <option value="">---Pilih Kabupaten--</option>
+                    <?php 
+                        $getKabupaten = $this->db->get("tbl_kabupaten")->result();
+                        foreach ($getKabupaten as $key => $value) {
+                            $s = $value->id==$id_kabupaten ? 'selected' : '';
+                            echo "<option value='".$value->id."' $s>".$value->kabupaten."</option>";
+                        }
+                    ?>
+                </select>
+            </div>
+            <div class="modal-body">
+                <label for="">Kecamatan</label>
+                <select name="id_kecamatan" class="form-control select2" id="kecamatan" style="width:100%">
                     <option value="">---Pilih Kecamatan--</option>
                     <?php 
                             $getKecamatan = $this->db->get_where("tbl_kecamatan",['id_kabupaten' => $id_kabupaten])->result();
@@ -386,7 +430,28 @@
                     ?>
                 </select>
             </div>
-            </form>
+            <div class="modal-body">
+                <label for="">Desa</label>
+                <select name="id_desa" class="form-control select2" id="desa" style="width:100%">
+                    <option value="">---Pilih Desa--</option>
+                    <?php 
+                        if($id_desa!=""){
+                            $getDesa = $this->db->get_where("tbl_desa",['id_kecamatan' => $id_kecamatan])->result();
+                            foreach ($getDesa as $key => $value) {
+                                $s = $value->id==$id_desa ? 'selected' : '';
+                                echo "<option value='".$value->id."' $s>".$value->desa."</option>";
+                            }
+                        }
+                    ?>
+                </select>
+            </div>
+            <div class="modal-body">
+                <label for="">Dusun</label>
+                <input type="text" id="adddusun" name="dusun" class="form-control">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-info" id="addKec">Tambah</button>
+            </div>
         </div>
     </div>
 </div>
@@ -405,9 +470,10 @@ select[readonly].select2+.select2-container .select2-selection {
 <script src="<?php echo base_url('assets/datatables/dataTables.bootstrap.js') ?>"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        $("#kabupaten").change(function(){
+        $(".changeKabupaten").change(function(){
             var thisVal = $(this).val()
-            $("#kecamatan").prop('disabled','true')
+            var elementStart = $(this).data('elementstart')
+            $(elementStart+" #kecamatan").prop('disabled','true')
 
             $.ajax({
                 type : "get",
@@ -415,20 +481,21 @@ select[readonly].select2+.select2-container .select2-selection {
                 url : "<?= base_url()."kecamatan/kecamatanByKab" ?>",
                 dataType : 'json',
                 success : function(res){
-                    $("#kecamatan").removeAttr('disabled')
-                    $("#kecamatan option[value!='']").remove()
-                    $("#desa option[value!='']").remove()
-                    $("#dusun option[value!='']").remove()
+                    $(elementStart+" #kecamatan").removeAttr('disabled')
+                    $(elementStart+" #kecamatan option[value!='']").remove()
+                    $(elementStart+" #desa option[value!='']").remove()
+                    $(elementStart+" #dusun option[value!='']").remove()
                     $.each(res,function(i,v){
-                        $("#kecamatan").append(`<option value='${v.id}'>${v.kecamatan}</option>`)
+                        $(elementStart+" #kecamatan").append(`<option value='${v.id}'>${v.kecamatan}</option>`)
                     })
                     $(".select2").select2()
                 }
             })
         })
-        $("#kecamatan").change(function(){
+        $(".changeKecamatan").change(function(){
             var thisVal = $(this).val()
-            $("#desa").prop('disabled','true')
+            var elementStart = $(this).data('elementstart')
+            $(elementStart+" #desa").prop('disabled','true')
 
             $.ajax({
                 type : "get",
@@ -436,11 +503,11 @@ select[readonly].select2+.select2-container .select2-selection {
                 url : "<?= base_url()."desa/desaByKec" ?>",
                 dataType : 'json',
                 success : function(res){
-                    $("#desa").removeAttr('disabled')
-                    $("#desa option[value!='']").remove()
-                    $("#dusun option[value!='']").remove()
+                    $(elementStart+" #desa").removeAttr('disabled')
+                    $(elementStart+" #desa option[value!='']").remove()
+                    $(elementStart+" #dusun option[value!='']").remove()
                     $.each(res,function(i,v){
-                        $("#desa").append(`<option value='${v.id}'>${v.desa}</option>`)
+                        $(elementStart+" #desa").append(`<option value='${v.id}'>${v.desa}</option>`)
                     })
                     $(".select2").select2()
                 }
@@ -522,12 +589,13 @@ select[readonly].select2+.select2-container .select2-selection {
         })
         $("#addKab").click(function(e){
             e.preventDefault()
-            var kabupaten = $("#kabupaten").val()
+            var kabupaten = $("#kabModal #addkabupaten").val();
 
             $.ajax({
                 type : "post",
-                data : {kabupaten : kabupaten},
-                url : 'addKab',
+                data : {kabupaten : kabupaten,ajax : true},
+                url : '<?= base_url().'kabupaten/create_action' ?>',
+                cache: false,
                 beforeSend : function(){
                     $(this).prop('disabled','true')
                 },
@@ -537,30 +605,98 @@ select[readonly].select2+.select2-container .select2-selection {
                     alert('Kabupaten Berhasil Ditambahkan')
                     var newOption = new Option(kabupaten, false);
                     // $('#selectKab').append(newOption).trigger('change');        
-                    $("#kabupaten").val('')
-
+                    $("#kabModal #addkabupaten").val('')
+                    $("#kabupaten").append(`<option value='${id}'>${kabupaten}</option>`)
                 }
             })
         })
-        $("#addKab").click(function(e){
+        $("#addKec").click(function(e){
             e.preventDefault()
-            var kabupaten = $("#kabupaten").val()
-
+            var kabupaten = $("#kecModal #addkabupaten").val()
+            var kecamatan = $("#kecModal #addkecamatan").val()
             $.ajax({
                 type : "post",
-                data : {kabupaten : kabupaten},
-                url : 'addKab',
+                data : {id_kabupaten : kabupaten, kecamatan:kecamatan, ajax:true},
+                url : '<?= base_url().'kecamatan/create_action' ?>',
                 beforeSend : function(){
                     $(this).prop('disabled','true')
                 },
                 success : function(id){
                     $(this).prop('disabled','false')
-                    $("#kabModal").modal('hide')
-                    alert('Kabupaten Berhasil Ditambahkan')
-                    var newOption = new Option(kabupaten, false);
-                    // $('#selectKab').append(newOption).trigger('change');        
-                    $("#kabupaten").val('')
+                    $("#kecModal").modal('hide')
+                    alert('Kecamatan Berhasil Ditambahkan')
+                    var newOptionKab = new Option(kabupaten, false);       
+                    var newOptionKec = new Option(kecamatan, false);       
+                    $("#kecModal #addkabupaten").val('')
+                    $("#kecModal #addkecamatan").val('')
+                    $("#kecamatan").append(`<option value='${id}'>${kecamatan}</option>`)
+                }
+            })
+        })
 
+        $("#addDes").click(function(e){
+            e.preventDefault()
+            $("#desModal #kabupaten").change(function(){
+            var thisVal = $(this).val()
+            $("#desModal #kecamatan").prop('disabled','true')
+                $.ajax({
+                    type : "get",
+                    data : {id_kabupaten:thisVal},
+                    url : "<?= base_url()."kecamatan/kecamatanByKab" ?>",
+                    dataType : 'json',
+                    success : function(res){
+                        $("#desModal #kecamatan").removeAttr('disabled')
+                        $("#desModal #kecamatan option[value!='']").remove()
+                        $("#desModal #desa option[value!='']").remove()
+                        $.each(res,function(i,v){
+                            $("#desModal #kecamatan").append(`<option value='${v.id}'>${v.kecamatan}</option>`)
+                        })
+                        $(".select2").select2()
+                    }
+                })
+            })
+            var kecamatan = $("#desModal #addkecamatan").val()
+            var desa = $("#desModal #adddesa").val()
+            $.ajax({
+                type : "post",
+                data : {id_kecamatan:kecamatan, desa: desa},
+                url : '<?= base_url().'desa/create_action' ?>',
+                beforeSend : function(){
+                    $(this).prop('disabled','true')
+                },
+                success : function(id){
+                    $(this).prop('disabled','false')
+                    $("#desModal").modal('hide')
+                    alert('Desa Berhasil Ditambahkan')    
+                    var newOptionKec = new Option(kecamatan, false);       
+                    var newOptionDes = new Option(desa, false);
+                    $("#desModal #addkecamatan").val('')
+                    $("#desModal #adddesa").val('')
+                    $("#desa").append(`<option value='${id}'>${desa}</option>`)
+                }
+            })
+        })
+
+        $("#addDus").click(function(e){
+            e.preventDefault()
+            var desa = $("#dusModal #adddesa").val()
+            var dusun = $("#dusModal #addDusun").val()
+            $.ajax({
+                type : "post",
+                data : {id_desa:desa, dusun: dusun},
+                url : '<?= base_url().'dusun/create_action' ?>',
+                beforeSend : function(){
+                    $(this).prop('disabled','true')
+                },
+                success : function(id){
+                    $(this).prop('disabled','false')
+                    $("#dusModal").modal('hide')
+                    alert('Dusun Berhasil Ditambahkan')    
+                    var newOptionDes = new Option(desa, false);
+                    var newOptionDus = new Option(dusun, false);       
+                    $("#dusModal #adddesa").val('')
+                    $("#dusModal #adddusun").val('')
+                    $("#dusun").append(`<option value='${id}'>${dusun}</option>`)
                 }
             })
         })

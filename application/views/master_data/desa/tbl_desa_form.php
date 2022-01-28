@@ -8,7 +8,7 @@
             <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?= $id ?>">
                 <table class='table table-bordered'>  
-                    <tr><td width='200'>Kabupaten <?php echo form_error('id_kecamatan') ?></td><td>
+                    <tr><td width='200'>Kabupaten</td><td>
                     <select name="id_kabupaten" class="form-control select2" id="kabupaten">
                         <option value="">---Pilih Kabupaten--</option>
                         <?php 

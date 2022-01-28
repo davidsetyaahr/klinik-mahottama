@@ -592,11 +592,22 @@ class Pendaftaran extends CI_Controller
          redirect(site_url('pendaftaran/list_pendaftar_online'));
     }
 
-    public function addKab()
+    public function addKab1()
     {
         $this->db->insert('tbl_kabupaten', ['kabupaten' => $_POST['kabupaten']]);
         $insert_id = $this->db->insert_id();
         echo $insert_id;
+    }
+    public function addKab()
+    {
+        $data = array(
+            'kabupaten' => $_POST['kabupaten']
+        );
+        $this->Tbl_kabupaten_model->insert($data);
+        echo json_encode(array(
+            "statusCode"=>200,
+            'Kabupaten' => $data
+        ));
     }
         
 }
