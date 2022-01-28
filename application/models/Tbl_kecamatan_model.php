@@ -16,9 +16,10 @@ class Tbl_kecamatan_model extends CI_Model
 
     public function json()
     {
-        $this->datatables->select("kec.id, kec.kecamatan, kab.kabupaten");
+        $this->datatables->select("kec.id, kec.kecamatan, kab.kabupaten, prov.provinsi");
         $this->datatables->from("tbl_kecamatan kec");
         $this->datatables->join("tbl_kabupaten kab", "kab.id = kec.id_kabupaten");
+        $this->datatables->join("tbl_provinsi prov", "prov.id = kab.id_provinsi");
         $this->datatables->add_column('action', 
                 anchor(site_url('kecamatan/edit/$1'),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>', array('class' => 'btn btn-success btn-sm'))." 
                 ".anchor(site_url('kecamatan/delete/$1'),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'), 'id');

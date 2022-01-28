@@ -38,6 +38,7 @@
                             <thead>
                                 <tr>
                                     <th width="30px">No</th>
+                            		<th>Provinsi</th>
                             		<th>Kabupaten</th>
                             		<th>Kecamatan</th>
                             		<th width="100px">Action</th>
@@ -90,7 +91,7 @@
                 {
                     "data": "id",
                     "orderable": false
-                },{"data": "kabupaten"},{"data": "kecamatan"},
+                },{"data": "provinsi"},{"data": "kabupaten"},{"data": "kecamatan"},
                 {
                     "data" : "action",
                     "orderable": false,

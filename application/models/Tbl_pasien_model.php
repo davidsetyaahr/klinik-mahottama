@@ -104,6 +104,19 @@ class Tbl_pasien_model extends CI_Model
         $this->db->where('no_pendaftaran', $id);
         return $this->db->get()->row();
     }
+
+    function get_by_id_all($id)
+    {
+        // $this->db->select('pa.*, kab.kabupaten, kec.kecamatan, des.desa');
+        $this->db->select('pa.*, kab.kabupaten, kec.kecamatan, des.desa, dus.nama_dusun');
+        $this->db->from('tbl_pasien pa');
+        $this->db->join('tbl_kabupaten kab','kab.id=pa.id_kabupaten', 'left');
+        $this->db->join('tbl_kecamatan kec','kec.id=pa.id_kecamatan', 'left');
+        $this->db->join('tbl_desa des','des.id=pa.id_desa', 'left');
+        $this->db->join('tbl_dusun dus','dus.id=pa.id_dusun', 'left');
+        $this->db->where('pa.no_rekam_medis', $id);
+        return $this->db->get()->row();
+    }
 }
 
 /* End of file Tbl_pasien_model.php */

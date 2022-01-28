@@ -12,6 +12,7 @@
 	    $this->load->library('datatables');
         $this->load->library('form_validation'); 
         $this->load->model('Tbl_kabupaten_model');       
+        $this->load->model('Tbl_provinsi_model');       
     }
     public function index()
     {
@@ -25,6 +26,7 @@
 
     public function _rules() 
     {
+        $this->form_validation->set_rules('id_provinsi', 'provinsi', 'trim|required');
         $this->form_validation->set_rules('kabupaten', 'kabupaten', 'trim|required');
         $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
@@ -35,6 +37,8 @@
             'action' => site_url('kabupaten/create_action'),
             'id' => set_value('id'),
             'kabupaten' => set_value('kabupaten'),
+            'id_provinsi' => set_value('id_provinsi'),
+            'provinsi' => $this->Tbl_provinsi_model->get_all()
         );
         $this->template->load('template','master_data/kabupaten/tbl_kabupaten_form', $data);
     }
@@ -46,6 +50,7 @@
             $this->create();
         } else {
             $data = array(
+                'id_provinsi' => $this->input->post('id_provinsi',TRUE),
                 'kabupaten' => $this->input->post('kabupaten',TRUE),
             );
             $this->Tbl_kabupaten_model->insert($data);
@@ -70,7 +75,9 @@
                 'button' => 'Update',
                 'action' => site_url('kabupaten/update'),
                 'id' => set_value('id',$row->id),
+                'id_provinsi' => set_value('id_provinsi',$row->id_provinsi),
                 'kabupaten' => set_value('kabupaten',$row->kabupaten),
+                'provinsi' => $this->Tbl_provinsi_model->get_all()
             );
             $this->template->load('template','master_data/kabupaten/tbl_kabupaten_form', $data);
         } else {
@@ -87,6 +94,7 @@
             $this->edit($this->input->post('id', TRUE));
         } else {
             $data = array(
+                'id_provinsi' => $this->input->post('id_provinsi', TRUE),
                 'kabupaten' => $this->input->post('kabupaten', TRUE),
             );
             $this->Tbl_kabupaten_model->update($this->input->post('id', TRUE), $data);
