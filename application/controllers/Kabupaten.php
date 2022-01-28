@@ -102,4 +102,12 @@
         }
     }
 
+    public function addKab()
+    {
+        $data = array(
+            'kabupaten' => $this->input->post('kabupaten',TRUE),
+        );
+        $this->Tbl_kabupaten_model->insert($data);
+    }
+
 }

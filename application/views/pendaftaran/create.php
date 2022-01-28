@@ -144,7 +144,7 @@
                                 </select>
                                 <?php //echo form_input(array('id'=>'kecamatan','name'=>'kecamatan','type'=>'text','value'=>$kecamatan,'class'=>'form-control'));?>
                             </div>
-                            <div class="col-sm-1" style="padding-left:0px"><a href="" class="btn btn-default"><span class="fa fa-plus"></span></a></div>
+                            <div class="col-sm-1" style="padding-left:0px"><a href="" class="btn btn-default" data-toggle="modal" data-target="#kecModal"><span class="fa fa-plus"></span></a></div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-4">Desa <?php echo form_error('id_desa') ?></div>
@@ -163,7 +163,7 @@
                                 </select>
                                 <?php //echo form_input(array('id'=>'desa','name'=>'desa','type'=>'text','value'=>$desa,'class'=>'form-control'));?>
                             </div>
-                            <div class="col-sm-1" style="padding-left:0px"><a href="" class="btn btn-default"><span class="fa fa-plus"></span></a></div>
+                            <div class="col-sm-1" style="padding-left:0px"><a href="" class="btn btn-default" data-toggle="modal" data-target="#desModal"><span class="fa fa-plus"></span></a></div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-4">Dusun <?php echo form_error('id_dusun') ?></div>
@@ -292,25 +292,105 @@
         </div>
     </section>
 </div>
-<!-- Modal -->
+
+<!-- Modal Kabupaten -->
 <div id="kabModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Tambah Kabupaten</h4>
-                </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Tambah Kabupaten</h4>
+            </div>
+            <form action="<?php echo base_url('pendaftaran/addKab')?>" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
                     <label for="">Kabupaten</label>
-                    <input type="text" id="kabupaten" class="form-control">
+                    <input type="text" id="kabupaten" name="kabupaten" class="form-control">
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-info" id="addKab">Tambah</button>
                 </div>
+            </form>
         </div>
     </div>
 </div>
+
+<!-- Modal Kecamatan -->
+<div id="kecModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Tambah Kecamatan</h4>
+            </div>
+            <form action="<?php echo base_url('')?>" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <label for="">Kabupaten</label>
+                    <select name="id_kecamatan" class="form-control" id="kecamatan" width="100%">
+                        <option value="">---Pilih Kecamatan--</option>
+                        <?php
+                            $getKabupaten = $this->db->get("tbl_kabupaten")->result();
+                            foreach ($getKabupaten as $key => $value) {
+                                echo "<option value='".$value->id."'>".$value->kabupaten."</option>";
+                            }
+                        ?>
+                    </select>
+                </div>
+                <div class="modal-body">
+                    <label for="">Kecamatan</label>
+                    <input type="text" id="kecamatan" name="kecamatan" class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-info" id="addKab">Tambah</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Desa -->
+<div id="desModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Tambah Desa</h4>
+            </div>
+            <form action="<?php echo base_url('')?>" method="post" enctype="multipart/form-data">
+            <div class="modal-body">
+                <label for="">Kecamatan</label>
+                <select name="id_kabupaten" class="form-control select2" id="kabupaten">
+                    <option value="">---Pilih Kabupaten--</option>
+                    <?php 
+                        $getKabupaten = $this->db->get("tbl_kabupaten")->result();
+                        foreach ($getKabupaten as $key => $value) {
+                            $s = $value->id==$id_kabupaten ? 'selected' : '';
+                            echo "<option value='".$value->id."' $s>".$value->kabupaten."</option>";
+                        }
+                    ?>
+                </select>
+            </div>
+            <div class="modal-body">
+                <label for="">Kecamatan</label>
+                <select name="id_kecamatan" class="form-control select2" id="kecamatan">
+                    <option value="">---Pilih Kecamatan--</option>
+                    <?php 
+                            $getKecamatan = $this->db->get_where("tbl_kecamatan",['id_kabupaten' => $id_kabupaten])->result();
+                            foreach ($getKecamatan as $key => $value) {
+                                $s = $value->id==$id_kecamatan ? 'selected' : '';
+                                echo "<option value='".$value->id."' $s>".$value->kecamatan."</option>";
+                            }
+                        
+                    ?>
+                </select>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <style>
 select[readonly].select2+.select2-container {
   pointer-events: none;
@@ -447,7 +527,7 @@ select[readonly].select2+.select2-container .select2-selection {
             $.ajax({
                 type : "post",
                 data : {kabupaten : kabupaten},
-                url : 'Pendaftaran/addKab',
+                url : 'addKab',
                 beforeSend : function(){
                     $(this).prop('disabled','true')
                 },
@@ -455,7 +535,29 @@ select[readonly].select2+.select2-container .select2-selection {
                     $(this).prop('disabled','false')
                     $("#kabModal").modal('hide')
                     alert('Kabupaten Berhasil Ditambahkan')
-                    var newOption = new Option(diagnosa, id, false, false);
+                    var newOption = new Option(kabupaten, false);
+                    // $('#selectKab').append(newOption).trigger('change');        
+                    $("#kabupaten").val('')
+
+                }
+            })
+        })
+        $("#addKab").click(function(e){
+            e.preventDefault()
+            var kabupaten = $("#kabupaten").val()
+
+            $.ajax({
+                type : "post",
+                data : {kabupaten : kabupaten},
+                url : 'addKab',
+                beforeSend : function(){
+                    $(this).prop('disabled','true')
+                },
+                success : function(id){
+                    $(this).prop('disabled','false')
+                    $("#kabModal").modal('hide')
+                    alert('Kabupaten Berhasil Ditambahkan')
+                    var newOption = new Option(kabupaten, false);
                     // $('#selectKab').append(newOption).trigger('change');        
                     $("#kabupaten").val('')
 
