@@ -16,10 +16,10 @@
     }
 
     .box-back{
-        margin-top: 5%;
         width: 342px;
         height: 220px;
         position: relative;
+        margin-left : 20px;
     }
 
     .text{
@@ -101,10 +101,16 @@
         font-size: 8px;
         text-align: justify;
     }
+    body{
+        display:flex;
+        justify-content : center;
+        align-items : center;
+        height : 100vh;
+    }
 </style>
 
 <body>
-
+    <div>
     <div class="box">
         <img src="<?php echo base_url() ?>assets/images/kartu_id_pasien/id_pasien.png" alt="">
         <!-- <img src="<?php echo base_url() ?>assets/images/kartu_id_pasien/id_pasien_belakang.png" alt="" class="img-back"> -->
@@ -117,8 +123,13 @@
             <?php } ?>
         </div>
     </div>
+    <br>
+    <center>
+        <a href="" id="download" data-rm="<?= $detail->no_rekam_medis ?>"><button>Download</button></a>
+    </center>
+    </div>
     <!-- <a href="<?php echo base_url() ?>assets/images/kartu_id_pasien/id_pasien.png" class="btn btn-primary buttonDownload">Download</a> -->
-
+    <div>
     <div class="box-back">
         <img src="<?php echo base_url() ?>assets/images/kartu_id_pasien/id_pasien_belakang.png" alt="">
         <div class="qr-code">
@@ -140,6 +151,62 @@
             </div>
         </div>
     </div>
+    <br>
+        <center>
+            <a href="" id="download2" data-rm="<?= $detail->no_rekam_medis ?>"><button>Download</button></a>
+        </center>
+    </div>
+    <div id="preview" style="display:none"></div>
+    <div id="preview2" style="display:none"></div>
+    <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
+    <script src="<?php echo base_url('assets/js/canvas.js') ?>"></script>
+
+    <script>
+        $(document).ready(function(){
+            var element = $(".box")
+            var element2 = $(".box-back")
+            var getCanvas;  
+            html2canvas(element, { 
+            onrendered: function(canvas) { 
+                    $("#preview").append(canvas); 
+                    getCanvas = canvas; 
+                } 
+            }); 
+            var getCanvas2;  
+            html2canvas(element2, { 
+            onrendered: function(canvas) { 
+                    $("#preview2").append(canvas); 
+                    getCanvas2 = canvas; 
+                } 
+            }); 
+            $("#download").on('click', function() { 
+                var imgageData =  
+                    getCanvas.toDataURL("image/png",1); 
+                var rm = $(this).data('rm')
+                // Now browser starts downloading  
+                // it instead of just showing it 
+                var newData = imgageData.replace( 
+                /^data:image\/png/, "data:application/octet-stream"); 
+                var fileName = 'ID-RM-'+rm
+                $("#download").attr(
+                "download", fileName+".png").attr( 
+                    "href", newData); 
+            });                     
+            $("#download2").on('click', function() { 
+                var imgageData =  
+                    getCanvas2.toDataURL("image/png",1); 
+                var rm = $(this).data('rm')
+                // Now browser starts downloading  
+                // it instead of just showing it 
+                var newData = imgageData.replace( 
+                /^data:image\/png/, "data:application/octet-stream"); 
+                var fileName = 'ID-RM-'+rm
+                $("#download2").attr(
+                "download", fileName+".png").attr( 
+                    "href", newData); 
+            });                     
+        })
+    </script>
 
 </body>
 

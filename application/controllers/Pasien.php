@@ -176,8 +176,13 @@ class Pasien extends CI_Controller
     }
     public function map($no_rm)
     {
-        $data['pasien'] = $this->db->get_where("tbl_pasien",['no_rekam_medis' => $no_rm])->row();
-        $this->load->view("pasien/map",$data);
+        $this->db->select("p.nama_lengkap,p.nama_orang_tua_atau_istri,du.nama_dusun,p.rt,p.rw,de.desa,kec.kecamatan,kab.kabupaten,p.nomer_telepon,riwayat_alergi_obat,p.no_rekam_medis");
+        $this->db->join("tbl_kabupaten kab","p.id_kabupaten = kab.id",'left');
+        $this->db->join("tbl_kecamatan kec","p.id_kecamatan = kec.id",'left');
+        $this->db->join("tbl_desa de","p.id_desa = de.id",'left');
+        $this->db->join("tbl_dusun du","p.id_dusun = du.id",'left');
+        $data['pasien'] = $this->db->get_where("tbl_pasien p",['p.no_rekam_medis' => $no_rm])->row();
+       $this->load->view("pasien/map",$data);
     }
 
 }
