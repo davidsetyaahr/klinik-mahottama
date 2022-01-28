@@ -152,7 +152,7 @@
                         <div class="form-group">
                             <div class="col-sm-4">Desa <?php echo form_error('id_desa') ?></div>
                             <div class="col-sm-7">
-                                <select name="id_desa" class="form-control select2" id="desa">
+                                <select name="id_desa" class="form-control select2 changeDesa" data-elementstart=".box-body" id="desa">
                                     <option value="">---Pilih Desa--</option>
                                     <?php 
                                         if($id_desa!=""){
@@ -327,7 +327,7 @@
             </div>
             <div class="modal-body">
                 <label for="">Kabupaten</label>
-                <select class="form-control select2" name="id_kabupaten" id="addkabupaten" style="width:100%">
+                <select class="form-control select2 changeKabupaten" data-elementstart="#kecModal" name="id_kabupaten" id="addkabupaten" style="width:100%">
                     <option value="">---Pilih Kabupaten--</option>
                     <?php
                         $getKabupaten = $this->db->get("tbl_kabupaten")->result();
@@ -358,8 +358,8 @@
                 <h4 class="modal-title">Tambah Desa</h4>
             </div>
             <div class="modal-body">
-                <label for="">Kecamatan</label>
-                <select name="id_kabupaten" class="form-control select2" id="kabupaten" style="width:100%">
+                <label for="">Kabupaten</label>
+                <select name="id_kabupaten" class="form-control select2 changeKabupaten" data-elementstart="#desModal" id="kabupaten" style="width:100%">
                     <option value="">---Pilih Kabupaten--</option>
                     <?php 
                         $getKabupaten = $this->db->get("tbl_kabupaten")->result();
@@ -372,7 +372,7 @@
             </div>
             <div class="modal-body">
                 <label for="">Kecamatan</label>
-                <select name="id_kecamatan" class="form-control select2 changeKecamatan" data-elementstart="#desModal" id="kecamatan" style="width:100%">
+                <select name="id_kecamatan" class="form-control select2" id="kecamatan" style="width:100%">
                     <option value="">---Pilih Kecamatan--</option>
                     <?php 
                         $getKecamatan = $this->db->get_where("tbl_kecamatan",['id_kabupaten' => $id_kabupaten])->result();
@@ -401,11 +401,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Tambah Desa</h4>
+                <h4 class="modal-title">Tambah Dusun</h4>
             </div>
             <div class="modal-body">
-                <label for="">Kecamatan</label>
-                <select name="id_kabupaten" class="form-control select2" id="kabupaten" style="width:100%">
+                <label for="">Kabupaten</label>
+                <select name="id_kabupaten" class="form-control select2 changeKabupaten" data-elementstart="#dusModal" id="kabupaten" style="width:100%">
                     <option value="">---Pilih Kabupaten--</option>
                     <?php 
                         $getKabupaten = $this->db->get("tbl_kabupaten")->result();
@@ -418,7 +418,7 @@
             </div>
             <div class="modal-body">
                 <label for="">Kecamatan</label>
-                <select name="id_kecamatan" class="form-control select2" id="kecamatan" style="width:100%">
+                <select name="id_kecamatan" class="form-control select2 changeKecamatan" data-elementstart="#dusModal" id="kecamatan" style="width:100%">
                     <option value="">---Pilih Kecamatan--</option>
                     <?php 
                             $getKecamatan = $this->db->get_where("tbl_kecamatan",['id_kabupaten' => $id_kabupaten])->result();
@@ -450,7 +450,7 @@
                 <input type="text" id="adddusun" name="dusun" class="form-control">
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-info" id="addKec">Tambah</button>
+                <button type="submit" class="btn btn-info" id="addDus">Tambah</button>
             </div>
         </div>
     </div>
@@ -513,9 +513,10 @@ select[readonly].select2+.select2-container .select2-selection {
                 }
             })
         })
-        $("#desa").change(function(){
+        $(".changeDesa").change(function(){
             var thisVal = $(this).val()
-            $("#dusun").prop('disabled','true')
+            var elementStart = $(this).data('elementstart')
+            $(elementStart+" #dusun").prop('disabled','true')
 
             $.ajax({
                 type : "get",
@@ -523,10 +524,10 @@ select[readonly].select2+.select2-container .select2-selection {
                 url : "<?= base_url()."dusun/dusunByDesa" ?>",
                 dataType : 'json',
                 success : function(res){
-                    $("#dusun").removeAttr('disabled')
-                    $("#dusun option[value!='']").remove()
+                    $(elementStart+" #dusun").removeAttr('disabled')
+                    $(elementStart+" #dusun option[value!='']").remove()
                     $.each(res,function(i,v){
-                        $("#dusun").append(`<option value='${v.id}'>${v.nama_dusun}</option>`)
+                        $(elementStart+" #dusun").append(`<option value='${v.id}'>${v.nama_dusun}</option>`)
                     })
                     $(".select2").select2()
                 }
@@ -603,10 +604,9 @@ select[readonly].select2+.select2-container .select2-selection {
                     $(this).prop('disabled','false')
                     $("#kabModal").modal('hide')
                     alert('Kabupaten Berhasil Ditambahkan')
-                    var newOption = new Option(kabupaten, false);
-                    // $('#selectKab').append(newOption).trigger('change');        
                     $("#kabModal #addkabupaten").val('')
-                    $("#kabupaten").append(`<option value='${id}'>${kabupaten}</option>`)
+                    $(".changeKabupaten").append(`<option value='${id}'>${kabupaten}</option>`)
+                    $(".changeKabupaten").val('').change()
                 }
             })
         })
@@ -625,37 +625,16 @@ select[readonly].select2+.select2-container .select2-selection {
                     $(this).prop('disabled','false')
                     $("#kecModal").modal('hide')
                     alert('Kecamatan Berhasil Ditambahkan')
-                    var newOptionKab = new Option(kabupaten, false);       
-                    var newOptionKec = new Option(kecamatan, false);       
                     $("#kecModal #addkabupaten").val('')
                     $("#kecModal #addkecamatan").val('')
-                    $("#kecamatan").append(`<option value='${id}'>${kecamatan}</option>`)
+                    $(".changeKabupaten").val('').change()
                 }
             })
         })
 
         $("#addDes").click(function(e){
             e.preventDefault()
-            $("#desModal #kabupaten").change(function(){
-            var thisVal = $(this).val()
-            $("#desModal #kecamatan").prop('disabled','true')
-                $.ajax({
-                    type : "get",
-                    data : {id_kabupaten:thisVal},
-                    url : "<?= base_url()."kecamatan/kecamatanByKab" ?>",
-                    dataType : 'json',
-                    success : function(res){
-                        $("#desModal #kecamatan").removeAttr('disabled')
-                        $("#desModal #kecamatan option[value!='']").remove()
-                        $("#desModal #desa option[value!='']").remove()
-                        $.each(res,function(i,v){
-                            $("#desModal #kecamatan").append(`<option value='${v.id}'>${v.kecamatan}</option>`)
-                        })
-                        $(".select2").select2()
-                    }
-                })
-            })
-            var kecamatan = $("#desModal #addkecamatan").val()
+            var kecamatan = $("#desModal #kecamatan").val()
             var desa = $("#desModal #adddesa").val()
             $.ajax({
                 type : "post",
@@ -664,39 +643,35 @@ select[readonly].select2+.select2-container .select2-selection {
                 beforeSend : function(){
                     $(this).prop('disabled','true')
                 },
-                success : function(id){
+                success : function(){
                     $(this).prop('disabled','false')
                     $("#desModal").modal('hide')
-                    alert('Desa Berhasil Ditambahkan')    
-                    var newOptionKec = new Option(kecamatan, false);       
-                    var newOptionDes = new Option(desa, false);
-                    $("#desModal #addkecamatan").val('')
+                    alert('Desa Berhasil Ditambahkan')
+                    $("#desModal #kecamatan").val('')
                     $("#desModal #adddesa").val('')
-                    $("#desa").append(`<option value='${id}'>${desa}</option>`)
+                    $(".changeKabupaten").val('').change()
                 }
             })
         })
 
         $("#addDus").click(function(e){
             e.preventDefault()
-            var desa = $("#dusModal #adddesa").val()
-            var dusun = $("#dusModal #addDusun").val()
+            var desa = $("#dusModal #desa").val()
+            var dusun = $("#dusModal #adddusun").val()
             $.ajax({
                 type : "post",
-                data : {id_desa:desa, dusun: dusun},
+                data : {id_desa:desa, nama_dusun: dusun},
                 url : '<?= base_url().'dusun/create_action' ?>',
                 beforeSend : function(){
                     $(this).prop('disabled','true')
                 },
-                success : function(id){
+                success : function(){
                     $(this).prop('disabled','false')
                     $("#dusModal").modal('hide')
                     alert('Dusun Berhasil Ditambahkan')    
-                    var newOptionDes = new Option(desa, false);
-                    var newOptionDus = new Option(dusun, false);       
-                    $("#dusModal #adddesa").val('')
+                    $("#dusModal #desa").val('')
                     $("#dusModal #adddusun").val('')
-                    $("#dusun").append(`<option value='${id}'>${dusun}</option>`)
+                    $(".changeKabupaten").val('').change()
                 }
             })
         })
