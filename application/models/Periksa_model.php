@@ -200,11 +200,15 @@ class Periksa_model extends CI_Model
 
     function json_history()
     {
-        $this->datatables->select('tbl_pendaftaran.no_pendaftaran,nik,tbl_pasien.no_rekam_medis,no_id_pasien,nama_lengkap,golongan_darah,status_menikah,pekerjaan,alamat,kabupaten,nama_orang_tua_atau_istri,nomer_telepon,riwayat_alergi_obat');
-        $this->datatables->from('tbl_pasien');
-        $this->datatables->join('tbl_pendaftaran','tbl_pendaftaran.no_rekam_medis=tbl_pasien.no_rekam_medis','left');
+        $this->datatables->select('tbl_pendaftaran.no_pendaftaran,nik,pa.no_rekam_medis,no_id_pasien,nama_lengkap,golongan_darah,status_menikah,pekerjaan,kab.kabupaten,nama_orang_tua_atau_istri,nomer_telepon,riwayat_alergi_obat');
+        $this->datatables->from('tbl_pasien pa');
+        $this->datatables->join('tbl_pendaftaran','tbl_pendaftaran.no_rekam_medis=pa.no_rekam_medis','left');
+        $this->datatables->join('tbl_kabupaten kab','kab.id=pa.id_kabupaten', 'left');
+        $this->datatables->join('tbl_kecamatan kec','kec.id=pa.id_kecamatan', 'left');
+        $this->datatables->join('tbl_desa des','des.id=pa.id_desa', 'left');
+        $this->datatables->join('tbl_dusun dus','dus.id=pa.id_dusun', 'left');
         $this->datatables->where('tbl_pendaftaran.is_bayar', '1');
-        $this->datatables->group_by('tbl_pasien.no_rekam_medis');
+        $this->datatables->group_by('pa.no_rekam_medis');
         $this->datatables->add_column('action', anchor(site_url('periksamedis/history_detail/$1'),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-info btn-sm"'), 'no_rekam_medis');
             
         return $this->datatables->generate();
