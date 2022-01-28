@@ -49,8 +49,15 @@
                 'kabupaten' => $this->input->post('kabupaten',TRUE),
             );
             $this->Tbl_kabupaten_model->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success');
-            redirect(site_url('kabupaten'));
+            if(isset($_POST['ajax'])){
+                $this->db->select("max(id) id");
+                $get = $this->db->get('tbl_kabupaten')->row();
+                echo $get->id;
+            }
+            else{
+                $this->session->set_flashdata('message', 'Create Record Success');
+                redirect(site_url('kabupaten'));
+            }
         }
     }
 
@@ -99,6 +106,22 @@
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('kabupaten'));
+        }
+    }
+
+    function addKab(){
+        $this->_rules();
+        if ($this->form_validation->run() == FALSE) {
+            $this->create();
+        } else {
+            $data = array(
+                'kabupaten' => $this->input->post('kabupaten',TRUE),
+            );
+            $this->Tbl_kabupaten_model->insert($data);
+            echo json_encode(array(
+                "statusCode"=>200,
+                'Kabupaten' => $data
+            ));
         }
     }
 

@@ -16,6 +16,7 @@ class Pendaftaran extends CI_Controller
 		$this->load->model('Master_sequence_model');
 		$this->load->model('Tbl_dokter_model');
 		$this->load->model('Tbl_pasien_model');
+		$this->load->model('Tbl_kabupaten_model');
 		$this->load->model('User_model');
 		$this->load->model('Tbl_wilayah_model');
 		$this->load->library('form_validation');
@@ -589,6 +590,24 @@ class Pendaftaran extends CI_Controller
          $this->session->set_flashdata('message_type', 'success');
          // $this->template->load('template','pendaftaran/list_pendaftar_online');
          redirect(site_url('pendaftaran/list_pendaftar_online'));
+    }
+
+    public function addKab1()
+    {
+        $this->db->insert('tbl_kabupaten', ['kabupaten' => $_POST['kabupaten']]);
+        $insert_id = $this->db->insert_id();
+        echo $insert_id;
+    }
+    public function addKab()
+    {
+        $data = array(
+            'kabupaten' => $_POST['kabupaten']
+        );
+        $this->Tbl_kabupaten_model->insert($data);
+        echo json_encode(array(
+            "statusCode"=>200,
+            'Kabupaten' => $data
+        ));
     }
         
 }

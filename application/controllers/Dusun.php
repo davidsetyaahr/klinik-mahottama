@@ -40,7 +40,7 @@
             'id' => set_value('id'),
             'id_desa' => set_value('id_desa'),
             'nama_dusun' => set_value('nama_dusun'),
-            'desa' => $this->Tbl_desa_model->get_all()
+            'kabupaten' => $this->Tbl_kabupaten_model->get_all()
         );
         $this->template->load('template','master_data/dusun/tbl_dusun_form', $data);
     }
