@@ -54,15 +54,8 @@
                 'kecamatan' => $this->input->post('kecamatan',TRUE),
             );
             $this->Tbl_kecamatan_model->insert($data);
-            if(isset($_POST['ajax'])){
-                $this->db->select("max(id) id");
-                $get = $this->db->get('tbl_kecamatan')->row();
-                echo $get->id;
-            }
-            else{
-                $this->session->set_flashdata('message', 'Create Record Success');
-                redirect(site_url('kecamatan'));
-            }
+            $this->session->set_flashdata('message', 'Create Record Success');
+            redirect(site_url('kecamatan'));
         }
     }
 
