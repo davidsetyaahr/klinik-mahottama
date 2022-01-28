@@ -47,7 +47,6 @@
         }
         .body .top .left .content .content-top p{
             color : #214193;
-            letter-spacing : -1px;
             margin-top : 5%;
             margin-bottom : 5%;
             font-weight : 600;
@@ -143,18 +142,26 @@
         .body .bottom .left{
             width : 40%;
             padding : 2%;
-            font-size : 40px;
             font-weight : 600;
             display : flex;
             align-items : center;
             justify-content : center;
             color : #032651;
         }
+        .body .bottom .left span:first-child{
+            font-size : 50px;
+            line-height : 0px;
+        }
+
         .body .bottom .left #rm{
+            font-size : 45px;
+            line-height : 0.9;
             color : black;
-            border-top : 2px solid #032651;
-            border-bottom : 2px solid #032651;
+            border-top : 5px solid #032651;
+            border-bottom : 5px solid #032651;
             padding-left : 20px;
+            padding-bottom :5px;
+            margin-top : 10px;
         }
         .body .bottom .right{
             width : 60%;
@@ -167,18 +174,20 @@
         }
         .body .bottom .right .rahasia{
             width : 100%;
-            border : 5px solid #e62028;
+            border : 7px solid #e62028;
             text-align : center;
             color : #e62028;
             font-weight : 600;
             letter-spacing : 1px;
-            font-size : 25px;
+            font-size : 35px;
+            line-height : 1;
             position : relative;
+            padding-bottom : 5px;
         }
         .body .bottom .right .rahasia::before,.body .bottom .right .rahasia::after{
             content : "";
             position : absolute;
-            width : 5px;
+            width : 7px;
             height : 50%;
             top : 50%;
         }
@@ -252,7 +261,7 @@
                     <div class="content">
                         <div class="content-top">
                             <p style="margin-top :10px">NAMA PASIEN</p>
-                            <p>NAMA IBU KANDUNG</p>
+                            <p>IBU KANDUNG</p>
                             <p>DUSUN</p>
                             <p>RT/RW</p>
                             <p>DESA</p>
@@ -269,10 +278,10 @@
                 <div class="center">
                     <div class="output" style="margin-top :10px"><span><?= $pasien->nama_lengkap ?></span></div>
                     <div class="output"><span><?= $pasien->nama_orang_tua_atau_istri ?></span></div>
-                    <div class="output"><span>Sekarputih</span></div>
+                    <div class="output"><span><?= $pasien->nama_dusun ?></span></div>
                     <div class="output"><span><?= $pasien->rt ?>/<?= $pasien->rw ?></span></div>
-                    <div class="output"><span>Sekarputih</span></div>
-                    <div class="output"><span>Tegalampel</span></div>
+                    <div class="output"><span><?= $pasien->desa ?></span></div>
+                    <div class="output"><span><?= $pasien->kecamatan ?></span></div>
                     <div class="output"><span><?= $pasien->kabupaten ?></span></div>
                     <div class="output"><span><?= $pasien->nomer_telepon ?></span></div>
                 </div>
@@ -305,5 +314,39 @@
             </div>
         </div>
     </div>
+    <br>
+    <center>
+        <a href="" id="download" data-rm="<?= $pasien->no_rekam_medis ?>"><button>Download</button></a>
+    </center>
+    <br>
+    <div id="preview" style="display:none"></div>
+    <script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
+    <script src="<?php echo base_url('assets/js/canvas.js') ?>"></script>
+
+    <script>
+        $(document).ready(function(){
+            var element = $(".map-box")
+            var getCanvas;  
+            html2canvas(element, { 
+            onrendered: function(canvas) { 
+                    $("#preview").append(canvas); 
+                    getCanvas = canvas; 
+                } 
+            }); 
+            $("#download").on('click', function() { 
+                var imgageData =  
+                    getCanvas.toDataURL("image/png",1); 
+                var rm = $(this).data('rm')
+                // Now browser starts downloading  
+                // it instead of just showing it 
+                var newData = imgageData.replace( 
+                /^data:image\/png/, "data:application/octet-stream"); 
+                var fileName = 'RM-'+rm
+                $("#download").attr(
+                "download", fileName+".png").attr( 
+                    "href", newData); 
+            });                     
+        })
+    </script>
 </body>
 </html>
