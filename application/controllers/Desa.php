@@ -48,7 +48,6 @@
     public function create_action() 
     {
         $this->_rules();
-        print_r($_POST);
         if ($this->form_validation->run() == FALSE) {
             $this->create();
         } else {
