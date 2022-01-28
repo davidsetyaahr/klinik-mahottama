@@ -478,7 +478,7 @@ select[readonly].select2+.select2-container .select2-selection {
             $.ajax({
                 type : "get",
                 data : {id_kabupaten:thisVal},
-                url : "<?= base_url()."kecamatan/kecamatanByKab" ?>",
+                url : "<?= base_url()."pendaftaran/changeKabupaten" ?>",
                 dataType : 'json',
                 success : function(res){
                     $(elementStart+" #kecamatan").removeAttr('disabled')
