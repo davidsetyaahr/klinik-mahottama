@@ -110,13 +110,15 @@ class Apotek extends CI_Controller
             $this->data['tgl_periksa'] = $data_periksa->dtm_crt;
             
             //Get Data Pasien
-            $data_pasien = $this->Tbl_pasien_model->get_by_id($data_periksa->no_rekam_medis);
+            // $data_pasien = $this->Tbl_pasien_model->get_by_id($data_periksa->no_rekam_medis);
+            $data_pasien = $this->Tbl_pasien_model->get_by_id_all($data_periksa->no_rekam_medis);
             //Data Pasien
             $this->data['no_rekam_medis'] = $data_pasien->no_rekam_medis;
             $this->data['no_id_pasien'] = $data_pasien->no_id_pasien;
             $this->data['nama_pasien'] = $data_pasien->nama_lengkap;
             $this->data['note_apoteker'] = $data_periksa->note_apoteker;
-            $this->data['alamat'] = $data_pasien->alamat.' '.$data_pasien->kabupaten.' '.'RT '.$data_pasien->rt.' '.'RW '.$data_pasien->rw;
+            // $this->data['alamat'] = $data_pasien->alamat.' '.$data_pasien->kabupaten.' '.'RT '.$data_pasien->rt.' '.'RW '.$data_pasien->rw;
+            $this->data['alamat'] = $data_pasien->kabupaten.' '.$data_pasien->kecamatan.' '.$data_pasien->desa.' '.$data_pasien->nama_dusun.' '.'RT '.$data_pasien->rt.' '.'RW '.$data_pasien->rw;
             
             //Get Data Periksa D Fisik
             $data_periksa_d_fisik = $this->Periksa_model->get_d_fisik_by_id($data_periksa->no_periksa);

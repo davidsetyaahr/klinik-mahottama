@@ -3,9 +3,9 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Tbl_kabupaten_model extends CI_Model
+class Tbl_provinsi_model extends CI_Model
 {
-    public $table = 'tbl_kabupaten';
+    public $table = 'tbl_provinsi';
     public $id = 'id';
     public $order = 'DESC';
 
@@ -16,12 +16,11 @@ class Tbl_kabupaten_model extends CI_Model
 
     public function json()
     {
-        $this->datatables->select("kab.id, kab.kabupaten, prov.provinsi");
-        $this->datatables->from("tbl_kabupaten kab");
-        $this->datatables->join("tbl_provinsi prov","prov.id=kab.id_provinsi",'left');
+        $this->datatables->select("id, provinsi");
+        $this->datatables->from("tbl_provinsi");
         $this->datatables->add_column('action', 
-                anchor(site_url('kabupaten/edit/$1'),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>', array('class' => 'btn btn-success btn-sm'))." 
-                ".anchor(site_url('kabupaten/delete/$1'),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'), 'id');
+                anchor(site_url('provinsi/edit/$1'),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>', array('class' => 'btn btn-success btn-sm'))." 
+                ".anchor(site_url('provinsi/delete/$1'),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'), 'id');
             
         return $this->datatables->generate();
     }

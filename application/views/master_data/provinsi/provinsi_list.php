@@ -16,12 +16,12 @@
             <div class="col-xs-12">
                 <div class="box box-warning box-solid">
                     <div class="box-header">
-                        <h3 class="box-title">KELOLA DATA DUSUN</h3>
+                        <h3 class="box-title">KELOLA DATA PROVINSI</h3>
                     </div>
                     <div class="box-body">
                         <div class="row" style="margin-bottom: 10px">
                             <div class="col-md-4">
-                                <?php echo anchor(site_url('dusun/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
+                                <?php echo anchor(site_url('provinsi/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
                             </div>
                             <div class="col-md-4 text-center">
                                 <div style="margin-top: 8px" id="message">
@@ -39,10 +39,6 @@
                                 <tr>
                                     <th width="30px">No</th>
                             		<th>Provinsi</th>
-                            		<th>Kabupaten</th>
-                            		<th>Kecamatan</th>
-                            		<th>Desa</th>
-                            		<th>Dusun</th>
                             		<th width="100px">Action</th>
                                 </tr>
                             </thead>
@@ -88,12 +84,12 @@
             },
             processing: true,
             serverSide: true,
-            ajax: {"url": "dusun/json", "type": "POST"},
+            ajax: {"url": "provinsi/json", "type": "POST"},
             columns: [
                 {
                     "data": "id",
                     "orderable": false
-                },{"data": "provinsi"},{"data": "kabupaten"},{"data": "kecamatan"},{"data": "desa"},{"data": "nama_dusun"},
+                },{"data": "provinsi"},
                 {
                     "data" : "action",
                     "orderable": false,

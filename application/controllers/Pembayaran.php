@@ -583,7 +583,8 @@ class Pembayaran extends CI_Controller
         // }
         if(empty($_GET['tab'])){
             $data_periksa = $this->Periksa_model->get_by_id($data_transaksi->no_transaksi);
-            $data_pasien = $this->Tbl_pasien_model->get_by_id($data_periksa->no_rekam_medis);
+            $data_pasien = $this->Tbl_pasien_model->get_by_id_all($data_periksa->no_rekam_medis);
+            // $data_pasien = $this->Tbl_pasien_model->get_by_id($data_periksa->no_rekam_medis);
             $this->data['nama_pasien'] = $data_pasien->nama_lengkap;
             $tanggal = new DateTime($data_pasien->tanggal_lahir);
 
@@ -594,7 +595,7 @@ class Pembayaran extends CI_Controller
             $y = $today->diff($tanggal)->y;
 
             $this->data['umur'] = $y;
-            $this->data['alamat'] = $data_pasien->alamat;
+            $this->data['alamat'] = $data_pasien->kabupaten.' '.$data_pasien->kecamatan.' '.$data_pasien->desa.' '.$data_pasien->nama_dusun.' '.'RT '.$data_pasien->rt.' '.'RW '.$data_pasien->rw;
             $this->data['jk'] = '';
         }
         else{
@@ -644,7 +645,8 @@ class Pembayaran extends CI_Controller
         $ambil_pasien = $this->Tbl_pasien_model->get_status($data_transaksi->no_pendaftaran);
         if(empty($_GET['tab'])){
             $data_periksa = $this->Periksa_model->get_by_id($data_transaksi->no_transaksi);
-            $data_pasien = $this->Tbl_pasien_model->get_by_id($data_periksa->no_rekam_medis);
+            $data_pasien = $this->Tbl_pasien_model->get_by_id_all($data_periksa->no_rekam_medis);
+            // $data_pasien = $this->Tbl_pasien_model->get_by_id($data_periksa->no_rekam_medis);
             $this->data['nama_pasien'] = $data_pasien->nama_lengkap;
             $tanggal = new DateTime($data_pasien->tanggal_lahir);
 
@@ -655,7 +657,7 @@ class Pembayaran extends CI_Controller
             $y = $today->diff($tanggal)->y;
 
             $this->data['umur'] = $y;
-            $this->data['alamat'] = $data_pasien->alamat;
+            $this->data['alamat'] = $data_pasien->kabupaten.' '.$data_pasien->kecamatan.' '.$data_pasien->desa.' '.$data_pasien->nama_dusun.' '.'RT '.$data_pasien->rt.' '.'RW '.$data_pasien->rw;
             $this->data['jk'] = '';
         }
         else{
@@ -708,7 +710,8 @@ class Pembayaran extends CI_Controller
         $ambil_pasien = $this->Tbl_pasien_model->get_status($data_transaksi->no_pendaftaran);
         if(empty($_GET['tab'])){
             $data_periksa = $this->Periksa_model->get_by_id($data_transaksi->no_transaksi);
-            $data_pasien = $this->Tbl_pasien_model->get_by_id($data_periksa->no_rekam_medis);
+            $data_pasien = $this->Tbl_pasien_model->get_by_id_all($data_periksa->no_rekam_medis);
+            // $data_pasien = $this->Tbl_pasien_model->get_by_id($data_periksa->no_rekam_medis);
             $this->data['nama_pasien'] = $data_pasien->nama_lengkap;
             $tanggal = new DateTime($data_pasien->tanggal_lahir);
 
@@ -719,7 +722,7 @@ class Pembayaran extends CI_Controller
             $y = $today->diff($tanggal)->y;
 
             $this->data['umur'] = $y;
-            $this->data['alamat'] = $data_pasien->alamat;
+            $this->data['alamat'] = $data_pasien->kabupaten.' '.$data_pasien->kecamatan.' '.$data_pasien->desa.' '.$data_pasien->nama_dusun.' '.'RT '.$data_pasien->rt.' '.'RW '.$data_pasien->rw;
             $this->data['jk'] = '';
         }
         else{
@@ -788,12 +791,14 @@ class Pembayaran extends CI_Controller
         $this->data['tgl_periksa'] = $data_periksa->dtm_crt;
         
         //Get Data Pasien
-        $data_pasien = $this->Tbl_pasien_model->get_by_id($data_periksa->no_rekam_medis);
+        // $data_pasien = $this->Tbl_pasien_model->get_by_id($data_periksa->no_rekam_medis);
+        $data_pasien = $this->Tbl_pasien_model->get_by_id_all($data_periksa->no_rekam_medis);
         //Data Pasien
         $this->data['no_rekam_medis'] = $data_pasien->no_rekam_medis;
         $this->data['no_id_pasien'] = $data_pasien->no_id_pasien;
         $this->data['nama_pasien'] = $data_pasien->nama_lengkap;
-        $this->data['alamat'] = $data_pasien->alamat.', '.$data_pasien->kelurahan.', '.$data_pasien->kecamatan.', '.$data_pasien->kabupaten;
+        // $this->data['alamat'] = $data_pasien->alamat.', '.$data_pasien->kelurahan.', '.$data_pasien->kecamatan.', '.$data_pasien->kabupaten;
+        $this->data['alamat'] = $data_pasien->kabupaten.' '.$data_pasien->kecamatan.' '.$data_pasien->desa.' '.$data_pasien->nama_dusun.' '.'RT '.$data_pasien->rt.' '.'RW '.$data_pasien->rw;
         
         //Get Data Periksa D Fisik
         $data_periksa_d_fisik = $this->Periksa_model->get_d_fisik_by_id($data_periksa->no_periksa);
