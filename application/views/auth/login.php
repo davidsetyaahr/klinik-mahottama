@@ -31,7 +31,7 @@
     <body class="hold-transition login-page">
         <div class="login-box">
             <div class="login-logo">
-                <a href="<?php echo base_url(); ?>/adminlte/index2.html"><img src="<?= base_url()."assets/images/".getInfoRS('logo') ?>" alt="" width="50"> <b>SIM HOT </b></a>
+                <a href="<?php echo base_url(); ?>"><img src="<?= base_url()."assets/images/".getInfoRS('logo') ?>" alt="" width="50"> <b>SIM HOT </b></a>
             </div>
             <!-- /.login-logo -->
             <div class="login-box-body">
