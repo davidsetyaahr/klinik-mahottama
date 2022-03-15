@@ -51,6 +51,12 @@ class Pendaftaran extends CI_Controller
 				'id_dusun' 		=> $this->input->post('id_dusun'),
 				'rt' 		=> $this->input->post('rt'),
 				'rw' 		=> $this->input->post('rw'),
+				'jenis_kelamin' 		=> $this->input->post('jenis_kelamin'),
+				'agama' 		=> $this->input->post('agama'),
+				'pendidikan' 		=> $this->input->post('pendidikan'),
+				'umur' 		=> $this->input->post('umur'),
+				'nama_kk' 		=> $this->input->post('nama_kk'),
+				// 'tgl_masuk' 		=> $this->input->post('tgl_masuk'),
 				'nama_orang_tua_atau_istri'      =>  $this->input->post('nama_orangtua_atau_istri'),
 				'nomer_telepon'     =>  $this->input->post('nomor_telepon'),
                 'dtm_crt' => date("Y-m-d H:i:s",  time()),
@@ -64,6 +70,7 @@ class Pendaftaran extends CI_Controller
 				'id_klinik' => $this->id_klinik,
 				'id_poli' => !empty($this->input->post('id_poli')) ? $this->input->post('id_poli') : '0',
                 'is_pasien'     =>  $this->input->post('is_pasien'),
+                'tindakan'     =>  $this->input->post('tindakan'),
                 'dtm_crt' => date("Y-m-d H:i:s",  time()),
                 'dtm_upd' => date("Y-m-d H:i:s",  time())
 	        );
@@ -137,6 +144,13 @@ class Pendaftaran extends CI_Controller
 			$this->data['nama_orangtua_atau_istri'] = $pasien_existing != null ? $pasien_existing->nama_orang_tua_atau_istri : set_value('nama_orangtua_atau_istri');
 			$this->data['nomor_telepon'] = $pasien_existing != null ? $pasien_existing->nomer_telepon : set_value('nomor_telepon');
             $this->data['is_pasien'] = $pasien_existing != null ? '0' : '1';
+            // $this->data['tindakan'] = $pasien_existing != null ? $pasien_existing->tindakan : set_value('tindakan');
+            $this->data['jenis_kelamin'] = $pasien_existing != null ? $pasien_existing->jenis_kelamin : set_value('jenis_kelamin');
+            $this->data['agama'] = $pasien_existing != null ? $pasien_existing->agama : set_value('agama');
+            $this->data['pendidikan'] = $pasien_existing != null ? $pasien_existing->pendidikan : set_value('pendidikan');
+            $this->data['umur'] = $pasien_existing != null ? $pasien_existing->umur : set_value('umur');
+            $this->data['nama_kk'] = $pasien_existing != null ? $pasien_existing->nama_kk : set_value('nama_kk');
+            // $this->data['tgl_masuk'] = $pasien_existing != null ? $pasien_existing->tgl_masuk : set_value('tgl_masuk');
 			$this->data['nama_dokter'] = set_value('nama_dokter');	
 			// $this->data['tipe_periksa'] = $pasien_existing != null ? $pasien_existing->tipe_periksa : set_value('tipe_periksa');
             $this->data['poli'] = $this->db->get('tbl_poli')->result();
@@ -154,7 +168,9 @@ class Pendaftaran extends CI_Controller
                 $this->session->set_flashdata('message_type', 'danger');
             }
 		}
-        
+        // print_r($this->data['tindakan']);
+        // print_r($pasien_existing);
+        // print_r($pasien_existing->tindakan);
         $this->template->load('template','pendaftaran/create', $this->data);
     }
 
