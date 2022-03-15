@@ -1250,7 +1250,9 @@ class Periksamedis extends CI_Controller
 
             $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '0'], ['no_pendaftaran' => $this->no_pendaftaran]);
             if ($_POST['pemeriksaan_selanjutnya'] != '0') {
-                if($_POST['pemeriksaan_selanjutnya']=='4'){ // jika tetap di Laboratorium
+                $cekRawatInap = $this->db->get_where('tbl_periksa_lanjutan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2'])->num_rows();
+
+                if($_POST['pemeriksaan_selanjutnya']=='4' || ($_POST['pemeriksaan_selanjutnya']=='2' && $cekRawatInap==1)){ // jika tetap di Laboratorium
                     $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '1'], ['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $_POST['pemeriksaan_selanjutnya']]);
                 }
                 else{
@@ -1572,7 +1574,9 @@ class Periksamedis extends CI_Controller
 
             $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '0'], ['no_pendaftaran' => $this->no_pendaftaran]);
             if ($_POST['pemeriksaan_selanjutnya'] != '0') {
-                if($_POST['pemeriksaan_selanjutnya']=='5'){ // jika tetap di radiologi
+                $cekRawatInap = $this->db->get_where('tbl_periksa_lanjutan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2'])->num_rows();
+
+                if($_POST['pemeriksaan_selanjutnya']=='5' || ($_POST['pemeriksaan_selanjutnya']=='2' && $cekRawatInap==1)){ // jika tetap di radiologi
                     $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '1'], ['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $_POST['pemeriksaan_selanjutnya']]);
                 }
                 else{
@@ -1928,7 +1932,8 @@ class Periksamedis extends CI_Controller
 
         $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '0'], ['no_pendaftaran' => $this->no_pendaftaran]);
         if ($_POST['pemeriksaan_selanjutnya'] != '0') {
-            if($_POST['pemeriksaan_selanjutnya']=='3'){ // jika tetap di Operasi
+            $cekRawatInap = $this->db->get_where('tbl_periksa_lanjutan',['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => '2'])->num_rows();
+            if($_POST['pemeriksaan_selanjutnya']=='3' || ($_POST['pemeriksaan_selanjutnya']=='2' && $cekRawatInap==1)){ // jika tetap di Operasi atau ke rawat tapi sebelumnya sudah pernah ke rawat inap
                 $this->db->update('tbl_periksa_lanjutan', ['is_periksa' => '1'], ['no_pendaftaran' => $this->no_pendaftaran,'tipe_periksa' => $_POST['pemeriksaan_selanjutnya']]);
             }
             else{

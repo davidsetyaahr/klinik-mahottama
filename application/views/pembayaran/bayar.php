@@ -83,6 +83,7 @@
                         $tipe = "";
                         $caption = ['', '<div style="margin-bottom: 15px"><strong>Poli</strong></div>', '<div style="margin-bottom: 15px"><strong>Rawat Inap</strong></div>', '<div style="margin-bottom: 15px"><strong>Operasi</strong></div>', '<div style="margin-bottom: 15px"><strong>Laboratorium</strong></div>', '<div style="margin-bottom: 15px"><strong>Radiologi</strong></div>', '<div style="margin-bottom: 15px"><strong>UGD</strong></div>'];
                         foreach ($transaksi_d as $data) {
+                            // echo number_format($data->amount_transaksi,0,',','.')."<br>";
                         ?>
                             <?php if ($caption[$data->tipe_periksa] != $tipe) {
                                 echo $caption[$data->tipe_periksa];
