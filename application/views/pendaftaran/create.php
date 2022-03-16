@@ -85,10 +85,34 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <div class="col-sm-4">Nama KK <?php echo form_error('nama_kk'); ?></div>
+                            <div class="col-sm-8">
+                                <?php echo form_input(array('id'=>'nama_kk','name'=>'nama_kk','type'=>'text','value'=>$nama_kk,'class'=>'form-control'));?>
+                            </div>
+                        </div>
+                        <div class="form-group">
 							<div class="col-sm-4">Tanggal Lahir <?php echo form_error('tanggal_lahir'); ?></div>
 							<div class="col-sm-8">
 							    <input type="date" class="form-control" name="tanggal_lahir" id="tanggal_lahir" value="<?php echo $tanggal_lahir;?>" />
 							</div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4">Umur <?php echo form_error('umur'); ?></div>
+                            <div class="col-sm-8">
+                                <?php echo form_input(array('id'=>'umur','name'=>'umur','type'=>'number','value'=>$umur,'class'=>'form-control'));?>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group">
+							<div class="col-sm-4">Tanggal Masuk <?php echo form_error('tgl_masuk'); ?></div>
+							<div class="col-sm-8">
+							    <input type="date" class="form-control" name="tgl_masuk" id="tgl_masuk" value="<?php echo $tgl_masuk;?>" />
+							</div>
+                        </div> -->
+                        <div class="form-group">
+                        <div class="col-sm-4">Jenis Kelamin <?php echo form_error('jenis_kelamin'); ?></div>
+                            <div class="col-sm-8">
+                                <?php echo form_dropdown('jenis_kelamin', array('' => 'Pilih Jenis Kelamin','0'=>'Laki - Laki', '1'=>'Perempuan'),$jenis_kelamin,array('id'=>'jenis_kelamin','class'=>'form-control'));?>
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-4">Golongan Darah <?php echo form_error('golongan_darah'); ?></div>
@@ -229,6 +253,34 @@
                             <div class="col-sm-4">Nomor Telepon <?php echo form_error('nomor_telepon'); ?></div>
                             <div class="col-sm-8">
                                 <?php echo form_input(array('id'=>'nomor_telepon','name'=>'nomor_telepon','type'=>'text','value'=>$nomor_telepon,'class'=>'form-control'));?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4">Pendidikan <?php echo form_error('pendidikan'); ?></div>
+                            <div class="col-sm-8">
+                                <?php echo form_dropdown('pendidikan', array(''=>'Pilih Pendidikan','0'=>'SD','1'=>'SMP','2'=>'SMA','3'=>'S1','4'=>'S2','5'=>'S3'),$pendidikan,array('id'=>'pendidikan','class'=>'form-control'));?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4">Agama <?php echo form_error('agama'); ?></div>
+                            <div class="col-sm-8">
+                                <?php echo form_dropdown('agama', array(''=>'Pilih Agama','0'=>'Islam','1'=>'Kristen','2'=>'Hindu','3'=>'Budha','4'=>'Katholik'),$agama,array('id'=>'agama','class'=>'form-control'));?>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group">
+                            <div class="col-sm-4">Tindakan <?php echo form_error('tindakan'); ?></div>
+                            <div class="col-sm-8">
+                                <?php echo form_dropdown('tindakan', array(''=>'Pilih Tindakan','1'=>'OPERATIF','0'=>'NON OPERATIF'),array('id'=>'tindakan','class'=>'form-control'));?>
+                            </div>
+                        </div> -->
+                        <div class="form-group">
+                            <div class="col-sm-4">Tindakan <?php echo form_error('tindakan'); ?></div>
+                            <div class="col-sm-8">
+                                <select name="tindakan" class="form-control">
+                                    <option value="">Pilih Tindakan</option>
+                                    <option value="1">OPERATIF</option>
+                                    <option value="0">NON OPERATIF</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -500,7 +552,7 @@ select[readonly].select2+.select2-container .select2-selection {
             $.ajax({
                 type : "get",
                 data : {id_kecamatan:thisVal},
-                url : "<?= base_url()."pendaftaran/desaByKec" ?>",
+                url : "<?= base_url()."pendaftaran/changeKecamatan" ?>",
                 dataType : 'json',
                 success : function(res){
                     $(elementStart+" #desa").removeAttr('disabled')
@@ -521,7 +573,7 @@ select[readonly].select2+.select2-container .select2-selection {
             $.ajax({
                 type : "get",
                 data : {id_desa:thisVal},
-                url : "<?= base_url()."pendaftaran/dusunByDesa" ?>",
+                url : "<?= base_url()."pendaftaran/changeDesa" ?>",
                 dataType : 'json',
                 success : function(res){
                     $(elementStart+" #dusun").removeAttr('disabled')
@@ -595,7 +647,7 @@ select[readonly].select2+.select2-container .select2-selection {
             $.ajax({
                 type : "post",
                 data : {kabupaten : kabupaten,ajax : true},
-                url : '<?= base_url().'pendaftaran/kabcreate_action' ?>',
+                url : '<?= base_url().'kabupaten/create_action' ?>',
                 cache: false,
                 beforeSend : function(){
                     $(this).prop('disabled','true')
@@ -617,7 +669,7 @@ select[readonly].select2+.select2-container .select2-selection {
             $.ajax({
                 type : "post",
                 data : {id_kabupaten : kabupaten, kecamatan:kecamatan, ajax:true},
-                url : '<?= base_url().'pendaftaran/keccreate_action' ?>',
+                url : '<?= base_url().'kecamatan/create_action' ?>',
                 beforeSend : function(){
                     $(this).prop('disabled','true')
                 },
@@ -639,7 +691,7 @@ select[readonly].select2+.select2-container .select2-selection {
             $.ajax({
                 type : "post",
                 data : {id_kecamatan:kecamatan, desa: desa},
-                url : '<?= base_url().'pendaftaran/descreate_action' ?>',
+                url : '<?= base_url().'desa/create_action' ?>',
                 beforeSend : function(){
                     $(this).prop('disabled','true')
                 },
@@ -661,7 +713,7 @@ select[readonly].select2+.select2-container .select2-selection {
             $.ajax({
                 type : "post",
                 data : {id_desa:desa, nama_dusun: dusun},
-                url : '<?= base_url().'pendaftaran/duscreate_action' ?>',
+                url : '<?= base_url().'dusun/create_action' ?>',
                 beforeSend : function(){
                     $(this).prop('disabled','true')
                 },

@@ -95,9 +95,9 @@
                     "orderable": false
                 },{"data": "no_rekam_medis"},{"data": "no_id_pasien"},{"data": "nik"},{"data": "nama_pasien"},{"data": "tanggal_lahir"},{"data": "no_hp"},
                 {
-                    "data" : "action",
-                    "orderable": false,
-                    "className" : "text-center"
+                    "render" : function(data,type,row){
+                    return row.action+"&nbsp;"+row.cetak_id+"&nbsp;"+row.cetak_map+"&nbsp;"
+                    }
                 }
             ],
             order: [[0, 'asc']],
