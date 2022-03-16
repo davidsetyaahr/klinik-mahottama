@@ -64,6 +64,7 @@ class Tbl_pasien_model extends CI_Model
         // $this->datatables->add_column('cetak_id', anchor(site_url('pasien/cetak_kartu/$1'),'<i class="fa fa-id-card" aria-hidden="true"></i>','class="btn btn-info btn-sm"'), 'no_rekam_medis');
         $this->datatables->add_column('cetak_id',anchor(site_url('pasien/cetak_kartu/$1'),'<i class="fa fa-id-card" aria-hidden="true"></i>',array('class' => 'btn btn-info btn-sm','target'=>'_blank')),'no_rekam_medis');
         $this->datatables->add_column('cetak_map',anchor(site_url('pasien/map/$1'),'<i class="fa fa-wpforms" aria-hidden="true"></i>',array('class' => 'btn btn-info btn-sm','target'=>'_blank')),'no_rekam_medis');
+        $this->datatables->add_column('cetak_label',anchor(site_url('pasien/label/$1'),'<i class="fa fa-table" aria-hidden="true"></i>',array('class' => 'btn btn-info btn-sm','target'=>'_blank')),'no_rekam_medis');
             
         return $this->datatables->generate();
     }

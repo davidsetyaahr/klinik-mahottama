@@ -23,6 +23,11 @@ class Pasien extends CI_Controller
         header('Content-Type: application/json');
         echo $this->Tbl_pasien_model->json();
     }
+    
+    public function label()
+    {
+        $this->load->view('pasien/label_pasien');
+    }
 
     public function read($id) 
     {
