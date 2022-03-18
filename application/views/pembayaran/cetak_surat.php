@@ -55,9 +55,55 @@
 <!-- <body class="A5 landscape" onload="window.print()"> -->
 
 <body class="A5 landscape" onload="window.print()">
+
+  <?php
+  function penyebut($nilai)
+  {
+    $nilai = abs($nilai);
+    $huruf = array("", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas");
+    $temp = "";
+    if ($nilai < 12) {
+      $temp = " " . $huruf[$nilai];
+    } else if ($nilai < 20) {
+      $temp = penyebut($nilai - 10) . " Belas";
+    } else if ($nilai < 100) {
+      $temp = penyebut($nilai / 10) . " Puluh" . penyebut($nilai % 10);
+    } else if ($nilai < 200) {
+      $temp = " Seratus" . penyebut($nilai - 100);
+    } else if ($nilai < 1000) {
+      $temp = penyebut($nilai / 100) . " Ratus" . penyebut($nilai % 100);
+    } else if ($nilai < 2000) {
+      $temp = " Seribu" . penyebut($nilai - 1000);
+    } else if ($nilai < 1000000) {
+      $temp = penyebut($nilai / 1000) . " Ribu" . penyebut($nilai % 1000);
+    } else if ($nilai < 1000000000) {
+      $temp = penyebut($nilai / 1000000) . " Juta" . penyebut($nilai % 1000000);
+    } else if ($nilai < 1000000000000) {
+      $temp = penyebut($nilai / 1000000000) . " Milyar" . penyebut(fmod($nilai, 1000000000));
+    } else if ($nilai < 1000000000000000) {
+      $temp = penyebut($nilai / 1000000000000) . " Trilyun" . penyebut(fmod($nilai, 1000000000000));
+    }
+    return $temp;
+  }
+
+  function terbilang($nilai)
+  {
+    if ($nilai < 0) {
+      $hasil = "Minus " . trim(penyebut($nilai));
+    } else {
+      $hasil = trim(penyebut($nilai));
+    }
+    return $hasil;
+  }
+
+
+
+  ?>
+
   <!-- Each sheet element should have the class "sheet" -->
   <!-- "padding-**mm" is optional: you can set 10, 15, 20 or 25 -->
   <section class="sheet padding-10mm">
+
 
     <div class="header">
       <div class="left">
@@ -223,6 +269,20 @@
                 <!-- <td width="85%"><b>Amount</b></td>
                 <td width="10%"><b>Rp</b></td>
                 <td width="35%"><b><?php echo number_format($total_transaksi + $admin - $subsidi, 2, ',', '.'); ?></b></td> -->
+              </tr>
+              <tr>
+                <td><b>Terbilang</b></td>
+                <td width="20%">
+                  <b>
+                    <i>
+                      <?php
+                      // $angka = number_format($total_transaksi + $admin - $subsidi, 2, ',', '.');
+                      $angka = $total_transaksi + $admin - $subsidi;
+                      echo terbilang($angka) . " Rupiah";
+                      ?>
+                    </i>
+                  </b>
+                </td>
               </tr>
             </table>
           </td>
