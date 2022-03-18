@@ -146,12 +146,12 @@
                 <?php if ($isPasien == 1) {
                   echo "<td>Pasien Baru</td>";
                   $admin = 45000;
-                  echo "<td>:</td>";
+                  // echo "<td>:</td>";
                   echo "<td>" . "Rp." . number_format($admin, 2, ',', '.') . "</td>";
                 } else {
                   echo "<td>Pasien Lama</td>";
                   $admin = 25000;
-                  echo "<td>:</td>";
+                  // echo "<td>:</td>";
                   echo "<td>" . "Rp." . number_format($admin, 2, ',', '.') . "</td>";
                 }
                 ?>
@@ -175,7 +175,7 @@
                     ?>
                         <tr>
                           <td><?= $db->nama_biaya ?></td>
-                          <td>:</td>
+                          <!-- <td>:</td> -->
                           <td>Rp.<?= number_format($db->biaya, 2, ',', '.'); ?></td>
                         </tr>
                       <?php
@@ -186,7 +186,7 @@
                         <td>
                           <?= $data->deskripsi; ?>
                         </td>
-                        <td>:</td>
+                        <!-- <td>:</td> -->
                         <td>
                           Rp.<?= number_format($data->amount_transaksi, 2, ',', '.') ?>
                         </td>
@@ -207,7 +207,7 @@
                   if ($cekSubsidi == 1) {
                     $subsidi = $getSubsidi->amount_transaksi;
                     echo "<td>Subsidi</td>";
-                    echo "<td>:</td>";
+                    // echo "<td>:</td>";
                     echo "<td>Rp." . number_format($subsidi, 2, '.', '.') . "</td>";
                     // $cekSubsidi->;
                   }
@@ -218,29 +218,36 @@
                 </td>
               </tr>
               <tr>
-                <td width="85%"><b>Amount</b></td>
+                <td><b>Amount</b></td>
+                <td><b>Rp.<?php echo number_format($total_transaksi + $admin - $subsidi, 2, ',', '.'); ?></b></td>
+                <!-- <td width="85%"><b>Amount</b></td>
                 <td width="10%"><b>Rp</b></td>
-                <td width="35%"><b><?php echo number_format($total_transaksi + $admin - $subsidi, 2, ',', '.'); ?></b></td>
+                <td width="35%"><b><?php echo number_format($total_transaksi + $admin - $subsidi, 2, ',', '.'); ?></b></td> -->
               </tr>
             </table>
           </td>
-          <td width="10%"></td>
-          <td width="45%">
+          <!-- <td width="10%"></td> -->
+          <!-- <td width="45%">
             <table width="100%">
               <tr>
                 <td><span style="margin-left:50px"></span> Banyuwangi, <?php echo $tgl_cetak; ?></td>
               </tr>
             </table>
-          </td>
+          </td> -->
         </tr>
       </table>
       <br>
     </center>
-    <div style="width:40%;margin-left:auto">
-      <span>(<?= $this->session->userdata('full_name'); ?>)</span>
-      <!-- <span style="margin-left:100px">(<?= $atas_nama ?>)</span> -->
-      <span style="margin-left:80px">(............................)</span>
-    </div>
+    <br>
+    <div class="" style="float:right">
+      <div class="" style="margin-bottom:80px;">
+        Banyuwangi, <?php echo $tgl_cetak; ?>
+      </div>
+      <div style="width:100%;margin-left:auto">
+        <span>(<?= $this->session->userdata('full_name'); ?>)</span>
+        <!-- <span style="margin-left:100px">(<?= $atas_nama ?>)</span> -->
+        <span style="margin-left:80px">(............................)</span>
+      </div>
     </div>
   </section>
 
