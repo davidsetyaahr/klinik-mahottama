@@ -27,7 +27,7 @@
                         </div>
                         <div class="col-sm-6">
                             <label>Jenis Barang <?php echo form_error('jenis_barang') ?></label>    
-                            <?php echo form_dropdown('jenis_barang', array('1'=>'Obat','2'=>'Alat Kesehatan'),$jenis_barang,array('id'=>'jenis_barang','class'=>'select2 form-control', 'onchange'=>'cek(this.value)'));?>
+                            <?php echo form_dropdown('jenis_barang', array('1'=>'Obat','2'=>'BMHP'),$jenis_barang,array('id'=>'jenis_barang','class'=>'select2 form-control', 'onchange'=>'cek(this.value)'));?>
                             <br>
                         </div>
                         <div class="col-sm-6">
