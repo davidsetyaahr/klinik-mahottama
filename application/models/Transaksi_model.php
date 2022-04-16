@@ -71,7 +71,7 @@ class Transaksi_model extends CI_Model
 
     function get_detail_by_n_id($h_id)
     {
-        $this->db->select('td.*, t.no_transaksi, b.nama_biaya');
+        $this->db->select('td.*, t.no_transaksi');
         $this->db->join('tbl_transaksi t', 'td.id_transaksi = t.id_transaksi');
         $this->db->where('t.no_transaksi', $h_id);
         return $this->db->get('tbl_transaksi_d td')->result();

@@ -150,24 +150,7 @@ class Apotek extends CI_Controller
             //TRANSAKSI
             $date_now_trx = date('Y-m-d', time());
             $no_transaksi='TRXOBAT'.$this->Master_sequence_model->set_code_by_master_seq_code("NOTRANSAKSIOBAT", true);
-            $data_transkasi = array(
-                'kode_transaksi' => 'TRXOBAT',
-                'id_klinik' => $this->id_klinik,
-                // 'no_transaksi' => 'TRXOBAT'.$this->Master_sequence_model->set_code_by_master_seq_code("NOTRANSAKSIOBAT", true),
-                'no_transaksi' => $no_transaksi,
-                'tgl_transaksi' => $date_now_trx,
-                'status_transaksi' => 0,
-                'atas_nama' => $this->input->post('atas_nama')
-            );
-            
-            $data_transaksi_d = array(
-                array(
-                    'no_transaksi' => $this->input->post('no_transaksi'),
-                    'deskripsi' => 'Total Obat-obatan',
-                    'amount_transaksi' => $this->input->post('total_harga'),
-                    'dc' => 'd'
-                ),
-            );
+
             
             $post_obat = $this->input->post('obat');
             $post_obat_jml = $this->input->post('jml_obat');
@@ -226,13 +209,13 @@ class Apotek extends CI_Controller
                     $insert=$this->Transaksi_obat_model->insert('tbl_inventory_detail',$data_detail);
             }
 
-            $this->jurnal_otomatis(39, $total_jual, count($getDiskon)==0 ? 0 : $getDiskon[0]['diskon'], $total_beli, $no_transaksi);//jurnal otomatis akuntansi untuk pendapatan penjualan obat
+            // $this->jurnal_otomatis(39, $total_jual, count($getDiskon)==0 ? 0 : $getDiskon[0]['diskon'], $total_beli, $no_transaksi);//jurnal otomatis akuntansi untuk pendapatan penjualan obat
 
             $data_transaksi_d_obat = array();
             for($i = 0; $i < count($post_obat); $i++){
                 if($post_obat[$i] != null || $post_obat[$i] != ''){
                     $data_transaksi_d_obat[] = array(
-                        'no_transaksi' => $this->input->post('no_transaksi'),
+                        'no_transaksi' => $no_transaksi,
                         'kode_barang' => $post_obat[$i],
                         'jumlah' => $post_obat_jml[$i],
                         'harga' => $post_obat_harga[$i]
@@ -253,10 +236,29 @@ class Apotek extends CI_Controller
             }
             
             //Insert into tbl_transaksi
-            $this->Transaksi_model->insert($data_transkasi,$data_transaksi_d);
+            $data_transkasi = array(
+                'kode_transaksi' => 'TRXOBAT',
+                'id_klinik' => $this->id_klinik,
+                'no_transaksi' => $no_transaksi,
+                'tgl_transaksi' => $date_now_trx,
+                'status_transaksi' => 0,
+                'atas_nama' => $this->input->post('atas_nama')
+            );
+            $this->db->insert('tbl_transaksi',$data_transkasi);
+            $lastIdTrans = $this->db->select_max('id_transaksi')->from('tbl_transaksi')->get()->row();
+            
+            $data_transaksi_d = array(
+                    'id_transaksi' => $lastIdTrans->id_transaksi,
+                    'deskripsi' => 'Total Obat-obatan',
+                    'amount_transaksi' => $this->input->post('total_harga'),
+                    'dc' => 'd'
+            );
+            $this->db->insert('tbl_transaksi_d',$data_transaksi_d);
+
+            // $this->Transaksi_model->insert($data_transkasi,$data_transaksi_d);
             $this->Transaksi_model->insert_transaksi_d_obat($data_transaksi_d_obat);
              
-            redirect('apotek');
+            redirect('apotek/jual_obat');
         } else {
         
             $this->data['no_transaksi'] = 'TRXOBAT'.$this->Master_sequence_model->set_code_by_master_seq_code("NOTRANSAKSIOBAT");
