@@ -647,7 +647,7 @@ select[readonly].select2+.select2-container .select2-selection {
             $.ajax({
                 type : "post",
                 data : {kabupaten : kabupaten,ajax : true},
-                url : '<?= base_url().'kabupaten/create_action' ?>',
+                url : '<?= base_url().'pendaftaran/kabcreate_action' ?>',
                 cache: false,
                 beforeSend : function(){
                     $(this).prop('disabled','true')
@@ -669,7 +669,7 @@ select[readonly].select2+.select2-container .select2-selection {
             $.ajax({
                 type : "post",
                 data : {id_kabupaten : kabupaten, kecamatan:kecamatan, ajax:true},
-                url : '<?= base_url().'kecamatan/create_action' ?>',
+                url : '<?= base_url().'pendaftaran/keccreate_action' ?>',
                 beforeSend : function(){
                     $(this).prop('disabled','true')
                 },
@@ -691,7 +691,7 @@ select[readonly].select2+.select2-container .select2-selection {
             $.ajax({
                 type : "post",
                 data : {id_kecamatan:kecamatan, desa: desa},
-                url : '<?= base_url().'desa/create_action' ?>',
+                url : '<?= base_url().'pendaftaran/descreate_action' ?>',
                 beforeSend : function(){
                     $(this).prop('disabled','true')
                 },
@@ -713,7 +713,7 @@ select[readonly].select2+.select2-container .select2-selection {
             $.ajax({
                 type : "post",
                 data : {id_desa:desa, nama_dusun: dusun},
-                url : '<?= base_url().'dusun/create_action' ?>',
+                url : '<?= base_url().'pendaftaran/duscreate_action' ?>',
                 beforeSend : function(){
                     $(this).prop('disabled','true')
                 },
