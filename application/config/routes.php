@@ -68,3 +68,4 @@ $route['pendaftaran/kabcreate_action'] = "kabupaten/create_action";
 $route['pendaftaran/keccreate_action'] = "kecamatan/create_action";
 $route['pendaftaran/descreate_action'] = "desa/create_action";
 $route['pendaftaran/duscreate_action'] = "dusun/create_action";
+$route['pendaftaran/label-pasien/(:any)'] = "pasien/label/$1";

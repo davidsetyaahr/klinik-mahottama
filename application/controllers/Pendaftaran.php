@@ -105,7 +105,7 @@ class Pendaftaran extends CI_Controller
 			//Set session sukses
             $this->session->set_flashdata('message', 'Data pendaftaran berhasil disimpan, No Rekam Medis ' . $this->input->post('no_rekam_medis'));
             $this->session->set_flashdata('message_type', 'success');
-			redirect(site_url('pasien/label/'.$this->input->post('no_rekam_medis')));
+			redirect(site_url('pendaftaran/label-pasien/'.$this->input->post('no_rekam_medis')));
         } else {	
             $pasien_existing = null;
             if($this->session->flashdata('no_rekam_medis') != null)
