@@ -625,5 +625,14 @@ class Pendaftaran extends CI_Controller
             'Kabupaten' => $data
         ));
     }
+
+    public function getSelectedInputDusun()
+    {
+        $data['kecamatan'] = $this->db->get_where("tbl_kecamatan",['id_kabupaten' => $_GET['id_kabupaten']])->result();
+        $data['desa'] = $this->db->get_where("tbl_desa",['id_kecamatan' => $_GET['id_kecamatan']])->result();
+        $data['dusun'] = $this->db->get_where("tbl_dusun",['id_desa' => $_GET['id_desa']])->result();
+
+        echo json_encode($data);
+    }    
         
 }

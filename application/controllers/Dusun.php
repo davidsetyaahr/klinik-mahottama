@@ -56,8 +56,13 @@
                 'nama_dusun' => $this->input->post('nama_dusun',TRUE),
             );
             $this->Tbl_dusun_model->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success');
-            redirect(site_url('dusun'));
+            if(isset($_POST['ajax'])){
+                echo $this->db->insert_id();
+            }
+            else{
+                $this->session->set_flashdata('message', 'Create Record Success');
+                redirect(site_url('dusun'));
+            }
         }
     }
 

@@ -135,7 +135,7 @@
                         <div class="form-group">
                             <div class="col-sm-4">Kabupaten/Kota <?php echo form_error('id_kabupaten') ?></div>
                             <div class="col-sm-7">
-                                <select name="id_kabupaten" class="form-control select2 changeKabupaten" data-elementstart=".box-body" id="kabupaten">
+                                <select name="id_kabupaten" class="form-control select2 changeKabupaten formKabupaten" data-elementstart=".box-body" id="kabupaten">
                                     <option value="">---Pilih Kabupaten--</option>
                                     <?php 
                                         if($id_kabupaten!=""){
@@ -159,7 +159,7 @@
                         <div class="form-group">
                             <div class="col-sm-4">Kecamatan <?php echo form_error('id_kecamatan') ?></div>
                             <div class="col-sm-7">
-                                <select name="id_kecamatan" class="form-control select2 changeKecamatan" data-elementstart=".box-body" id="kecamatan">
+                                <select name="id_kecamatan" class="form-control select2 changeKecamatan formKecamatan" data-elementstart=".box-body" id="kecamatan">
                                     <option value="">---Pilih Kecamatan--</option>
                                     <?php 
                                         $getKecamatan = $this->db->get_where("tbl_kecamatan",['id_kabupaten' => $id_kabupaten])->result();
@@ -176,7 +176,7 @@
                         <div class="form-group">
                             <div class="col-sm-4">Desa <?php echo form_error('id_desa') ?></div>
                             <div class="col-sm-7">
-                                <select name="id_desa" class="form-control select2 changeDesa" data-elementstart=".box-body" id="desa">
+                                <select name="id_desa" class="form-control select2 changeDesa formDesa" data-elementstart=".box-body" id="desa">
                                     <option value="">---Pilih Desa--</option>
                                     <?php 
                                         if($id_desa!=""){
@@ -195,7 +195,7 @@
                         <div class="form-group">
                             <div class="col-sm-4">Dusun <?php echo form_error('id_dusun') ?></div>
                             <div class="col-sm-7">
-                                <select name="id_dusun" class="form-control select2" id="dusun">
+                                <select name="id_dusun" class="form-control select2 formDusun" id="dusun">
                                     <option value="">---Pilih Dusun--</option>
                                     <?php 
                                         if($id_dusun!=""){
@@ -708,22 +708,49 @@ select[readonly].select2+.select2-container .select2-selection {
 
         $("#addDus").click(function(e){
             e.preventDefault()
+            var kabupaten = $("#dusModal #kabupaten").val()
+            var kecamatan = $("#dusModal #kecamatan").val()
             var desa = $("#dusModal #desa").val()
             var dusun = $("#dusModal #adddusun").val()
             $.ajax({
                 type : "post",
-                data : {id_desa:desa, nama_dusun: dusun},
+                data : {id_desa:desa, nama_dusun: dusun,ajax:true},
                 url : '<?= base_url().'pendaftaran/duscreate_action' ?>',
                 beforeSend : function(){
                     $(this).prop('disabled','true')
                 },
-                success : function(){
+                success : function(idDusun){
                     $(this).prop('disabled','false')
                     $("#dusModal").modal('hide')
                     alert('Dusun Berhasil Ditambahkan')    
                     $("#dusModal #desa").val('')
                     $("#dusModal #adddusun").val('')
-                    $(".changeKabupaten").val('').change()
+                    $(".formKabupaten").val(kabupaten).trigger('change')
+                    $.ajax({
+                        type : "get",
+                        data : {id_kabupaten:kabupaten,id_kecamatan:kecamatan,id_desa:desa},
+                        url : "<?= base_url()."pendaftaran/getSelectedInputDusun" ?>",
+                        dataType : 'json',
+                        success : function(res){
+                            $(".box-body #kecamatan").removeAttr('disabled')
+                            $(".box-body #kecamatan option[value!='']").remove()
+                            $(".box-body #desa option[value!='']").remove()
+                            $(".box-body #dusun option[value!='']").remove()
+                            $.each(res.kecamatan,function(i,v){
+                                var s = v.id == kecamatan ? 'selected' : ''
+                                $(".box-body #kecamatan").append(`<option value='${v.id}' ${s}>${v.kecamatan}</option>`)
+                            })
+                            $.each(res.desa,function(i,v){
+                                var s = v.id == desa ? 'selected' : ''
+                                $(".box-body #desa").append(`<option value='${v.id}' ${s}>${v.desa}</option>`)
+                            })
+                            $.each(res.dusun,function(i,v){
+                                var s = v.id == idDusun ? 'selected' : ''
+                                $(".box-body #dusun").append(`<option value='${v.id}' ${s}>${v.nama_dusun}</option>`)
+                            })
+                            $(".select2").select2()
+                        }
+                    })
                 }
             })
         })
