@@ -117,7 +117,7 @@ class Pendaftaran extends CI_Controller
 			$this->db->where('no_id_pasien', set_value('no_id'));
 			$dataPasien = $this->db->get('tbl_pasien')->row();
             $lastNoId = $this->Tbl_pasien_model->lastNoId();
-            if(count($lastNoId)==1){
+            if(count((array)$lastNoId)==1){
                 $id = (int)$lastNoId['no_id_pasien'];
                 $nextId = $id+1;
                 $this->data['no_id_pasien'] = sprintf('%06s',$nextId);
