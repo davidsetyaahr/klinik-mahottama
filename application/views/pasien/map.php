@@ -11,6 +11,36 @@
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap');
         body{
             font-family: "Poppins", sans-serif;
+        }
+        /* Create two unequal columns that floats next to each other */
+        .column {
+            float: left;
+            /* padding: 10px; */
+            height: 1141.9653543px; /* Should be removed. Only for demonstration */
+        }
+
+        .left {
+            width: 50%;
+        }
+
+        .right {
+            width: 50%;
+        }
+        .box-paper{
+            width : 1.632.5px;
+            height : 1141.9653543px;
+        }
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+            margin: auto;
+            width : 1632.5px;
+            background-color: white;
+            justify-content: center;
+            justify-items: center;
+        /* height : 1141.9653543px; */
         }    
         .map-box{
             margin : auto;
@@ -18,7 +48,24 @@
             height : 1141.9653543px;
             background : url('<?= base_url()."assets/images/map-rm-bg.png" ?>');
             background-size : cover;
-            position : relative;
+            position : absolute;
+        }
+
+        .img-back{
+            position: absolute; 
+            margin: auto;
+            bottom: 0; 
+            right: 0;
+            width : 816.2px;
+            height : 476.31px;
+        }
+        .map-box-back{
+            margin : auto;
+            width : 816.20409449px;
+            height : 1141.9653543px;
+            right: 50%;
+            position: absolute;
+            background-color: white;
         }
         .body{
             width : 100%;
@@ -251,69 +298,80 @@
             -moz-transform : translate(-50%,-60%);
         }
     </style>
-    <div class="map-box">
-        <div class="body">
-            <div class="top">
-                <div class="bg-left">
-                    <div class="border-left"></div>
-                </div>
-                <div class="left">
-                    <div class="content">
-                        <div class="content-top">
-                            <p style="margin-top :10px">NAMA PASIEN</p>
-                            <p>IBU KANDUNG</p>
-                            <p>DUSUN</p>
-                            <p>RT/RW</p>
-                            <p>DESA</p>
-                            <p>KEC.</p>
-                            <p>KABUPATEN</p>
-                            <p>TELEPON</p>
-                        </div>
-                        <div class="content-bottom">
-                            <p>ALERGI:</p>
-                            <div class="output-alergi"><?= $pasien->riwayat_alergi_obat ?></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="center">
-                    <div class="output" style="margin-top :10px"><span><?= $pasien->nama_lengkap ?></span></div>
-                    <div class="output"><span><?= $pasien->nama_orang_tua_atau_istri ?></span></div>
-                    <div class="output"><span><?= $pasien->nama_dusun ?></span></div>
-                    <div class="output"><span><?= $pasien->rt ?>/<?= $pasien->rw ?></span></div>
-                    <div class="output"><span><?= $pasien->desa ?></span></div>
-                    <div class="output"><span><?= $pasien->kecamatan ?></span></div>
-                    <div class="output"><span><?= $pasien->kabupaten ?></span></div>
-                    <div class="output"><span><?= $pasien->nomer_telepon ?></span></div>
-                </div>
-                <div class="right">
-                    <div class="box-tahun">
-                        <?php 
-                            for ($i=2021; $i <= 2027 ; $i++) { 
-                        ?>
-                            <div class="tahun">
-                                <div class="check"><?= $i==date('Y') ? "<img src='".base_url()."assets/images/check.png'>" : "" ?></div>
-                                <span><?= $i ?></span>
-                            </div>
-                        <?php
-                            }
-                        ?>
-                    </div>
-                </div>
+    <div class="row" class="box-paper">
+        <div class="column left">
+            <div class="map-box-back">
+                <img class="img-back"
+                    src="<?php echo base_url(); ?>assets/images/map-rm-bg-back.png" alt="">
             </div>
-            <div class="bottom">
-                <div class="left">
-                    <span>RM</span>
-                    <span id="rm"><?= $pasien->no_rekam_medis ?></span>
-                </div>
-                <div class="right">
-                    <div class="rahasia">
-                        RAHASIA <br> MEDIS
+        </div>
+        <div class="column right">
+            <div class="map-box">
+                <div class="body">
+                    <div class="top">
+                        <div class="bg-left">
+                            <div class="border-left"></div>
+                        </div>
+                        <div class="left">
+                            <div class="content">
+                                <div class="content-top">
+                                    <p style="margin-top :10px">NAMA PASIEN</p>
+                                    <p>IBU KANDUNG</p>
+                                    <p>DUSUN</p>
+                                    <p>RT/RW</p>
+                                    <p>DESA</p>
+                                    <p>KEC.</p>
+                                    <p>KABUPATEN</p>
+                                    <p>TELEPON</p>
+                                </div>
+                                <div class="content-bottom">
+                                    <p>ALERGI:</p>
+                                    <div class="output-alergi"><?= $pasien->riwayat_alergi_obat ?></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="center">
+                            <div class="output" style="margin-top :10px"><span><?= $pasien->nama_lengkap ?></span></div>
+                            <div class="output"><span><?= $pasien->nama_orang_tua_atau_istri ?></span></div>
+                            <div class="output"><span><?= $pasien->nama_dusun ?></span></div>
+                            <div class="output"><span><?= $pasien->rt ?>/<?= $pasien->rw ?></span></div>
+                            <div class="output"><span><?= $pasien->desa ?></span></div>
+                            <div class="output"><span><?= $pasien->kecamatan ?></span></div>
+                            <div class="output"><span><?= $pasien->kabupaten ?></span></div>
+                            <div class="output"><span><?= $pasien->nomer_telepon ?></span></div>
+                        </div>
+                        <div class="right">
+                            <div class="box-tahun">
+                                <?php 
+                                    for ($i=2021; $i <= 2027 ; $i++) { 
+                                ?>
+                                    <div class="tahun">
+                                        <div class="check"><?= $i==date('Y') ? "<img src='".base_url()."assets/images/check.png'>" : "" ?></div>
+                                        <span><?= $i ?></span>
+                                    </div>
+                                <?php
+                                    }
+                                ?>
+                            </div>
+                        </div>
                     </div>
-                    <p style="margin-top : 0px;margin-bottom : 0">SK. MEN.KES. NO.749a/ MEN.KES.PER/ XII/ 1998</p>
+                    <div class="bottom">
+                        <div class="left">
+                            <span>RM</span>
+                            <span id="rm"><?= $pasien->no_rekam_medis ?></span>
+                        </div>
+                        <div class="right">
+                            <div class="rahasia">
+                                RAHASIA <br> MEDIS
+                            </div>
+                            <p style="margin-top : 0px;margin-bottom : 0">SK. MEN.KES. NO.749a/ MEN.KES.PER/ XII/ 1998</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    
     <br>
     <center>
         <a href="" id="download" data-rm="<?= $pasien->no_rekam_medis ?>"><button>Download</button></a>
@@ -325,7 +383,7 @@
 
     <script>
         $(document).ready(function(){
-            var element = $(".map-box")
+            var element = $(".row")
             var getCanvas;  
             html2canvas(element, { 
             onrendered: function(canvas) { 
