@@ -22,6 +22,17 @@
                                 ?>
                             </select>
                         </td></tr>
+                        <tr><td width='200'>User <?php echo form_error('kode_user') ?></td><td>
+                            <select name="kode_user" id="kode_user" class="form-control select2">
+                                <option value="0">Pilih User</option>
+                                <?php 
+                                    foreach ($user as $key => $value) {
+                                        $t = $value->id_users == $kode_user ? 'selected' : '';
+                                        echo "<option  value='".$value->id_users."' $t>".$value->full_name."</option>";
+                                    }
+                                ?>
+                            </select>
+                        </td></tr>
                         <tr><td></td><td>
                             <button type="submit" class="btn btn-danger"><i class="fa fa-floppy-o"></i> <?php echo $button ?></button> 
                             <a href="<?php echo site_url('tindakan') ?>" class="btn btn-info"><i class="fa fa-sign-out"></i> Kembali</a></td></tr>

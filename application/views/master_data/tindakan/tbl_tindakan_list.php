@@ -42,6 +42,7 @@
                             		<th>Tindakan</th>
                             		<th>Biaya</th>
                             		<th>Tipe</th>
+                            		<th>User</th>
                             		<th width="100px">Action</th>
                                 </tr>
                             </thead>
@@ -92,7 +93,7 @@
                 {
                     "data": "kode_tindakan",
                     "orderable": false
-                },{"data": "kode_tindakan"},{"data": "tindakan"},{"data": "biaya",  render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp. ' )},{"data": "item"},
+                },{"data": "kode_tindakan"},{"data": "tindakan"},{"data": "biaya",  render: $.fn.dataTable.render.number( ',', '.', 2, 'Rp. ' )},{"data": "item"},{"data": "user"},
                 // {"render": function(data,type,row){
                 //     return (row.tipe==1) ? 'Umum' : 'Gigi'
                 // }

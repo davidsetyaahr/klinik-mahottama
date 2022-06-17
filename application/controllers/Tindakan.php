@@ -11,6 +11,7 @@ class Tindakan extends CI_Controller
         is_login();
 	    $this->load->library('datatables');
         $this->load->model('Tbl_tindakan_model');
+        $this->load->model('User_model');
         $this->load->model('Tbl_tipe_kategori_tindakan_model');
         $this->load->library('form_validation');        
 
@@ -29,6 +30,7 @@ class Tindakan extends CI_Controller
         $this->form_validation->set_rules('tindakan', 'Tindakan', 'trim|required');
         $this->form_validation->set_rules('biaya', 'Biaya', 'trim|required');
         $this->form_validation->set_rules('id_kategori', 'kategori', 'trim|required');
+        $this->form_validation->set_rules('kode_user', 'User', 'trim|required');
         $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
     public function create() 
@@ -40,7 +42,9 @@ class Tindakan extends CI_Controller
             'tindakan' => set_value('tindakan'),
             'biaya' => set_value('biaya'),
             'id_kategori' => set_value('id_kategori'),
-            'item' => $this->Tbl_tipe_kategori_tindakan_model->get_all()
+            'kode_user' => set_value('kode_user'),
+            'item' => $this->Tbl_tipe_kategori_tindakan_model->get_all(),
+            'user' => $this->User_model->get_all()
         );
         // var_dump($item);
         $this->template->load('template','master_data/tindakan/tbl_tindakan_form', $data);
@@ -57,6 +61,7 @@ class Tindakan extends CI_Controller
                 'tindakan' => $this->input->post('tindakan',TRUE),
                 'biaya' => $this->input->post('biaya',TRUE),
                 'id_kategori' => $this->input->post('id_kategori',TRUE),
+                'id_user' => $this->input->post('kode_user',TRUE),
             );
             $this->Tbl_tindakan_model->insert($data);
             
@@ -77,7 +82,9 @@ class Tindakan extends CI_Controller
                 'tindakan' => set_value('tindakan',$row->tindakan),
                 'biaya' => set_value('biaya',$row->biaya),
                 'id_kategori' => set_value('kategori',$row->id_kategori),
-                'item' => $this->Tbl_tipe_kategori_tindakan_model->get_all()
+                'kode_user' => set_value('kode_user', $row->id_user),
+                'item' => $this->Tbl_tipe_kategori_tindakan_model->get_all(),
+                'user' => $this->User_model->get_all()
             );
             $this->template->load('template','master_data/tindakan/tbl_tindakan_form', $data);
         } else {
@@ -96,6 +103,7 @@ class Tindakan extends CI_Controller
                 'tindakan' => $this->input->post('tindakan',TRUE),
                 'biaya' => $this->input->post('biaya',TRUE),
                 'id_kategori' => $this->input->post('id_kategori',TRUE),
+                'id_user' => $this->input->post('kode_user',TRUE),
             );
             $this->Tbl_tindakan_model->update($this->input->post('kode_tindakan', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
