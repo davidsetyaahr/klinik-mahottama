@@ -26,7 +26,7 @@ class Tindakan extends CI_Controller
     }
     public function _rules() 
     {
-        $this->form_validation->set_rules('kode_tindakan', 'Kode Tindakan', 'trim|required');
+        $this->form_validation->set_rules('kode_tindakan', 'Kode Tindakan', 'trim|required|is_unique[tbl_tindakan.kode_tindakan]');
         $this->form_validation->set_rules('tindakan', 'Tindakan', 'trim|required');
         $this->form_validation->set_rules('biaya', 'Biaya', 'trim|required');
         $this->form_validation->set_rules('id_kategori', 'kategori', 'trim|required');
