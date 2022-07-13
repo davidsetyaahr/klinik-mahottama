@@ -94,7 +94,18 @@ class Tindakan extends CI_Controller
     }
     public function update() 
     {
-        $this->_rules();
+        if($this->input->post('kode_tindakan') != $this->input->post('kode_tindakan')) {
+            $is_unique =  '|is_unique[tbl_tindakan.kode_tindakan]';
+        } else {
+            $is_unique =  '';
+        }
+
+        $this->form_validation->set_rules('kode_tindakan', 'Kode Tindakan', 'trim|required'.$is_unique);
+        $this->form_validation->set_rules('tindakan', 'Tindakan', 'trim|required');
+        $this->form_validation->set_rules('biaya', 'Biaya', 'trim|required');
+        $this->form_validation->set_rules('id_kategori', 'kategori', 'trim|required');
+        $this->form_validation->set_rules('kode_user', 'User', 'trim|required');
+        $this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
 
         if ($this->form_validation->run() == FALSE) {
             $this->edit($this->input->post('kode_tindakan', TRUE));
