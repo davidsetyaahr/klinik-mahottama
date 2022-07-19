@@ -373,7 +373,7 @@
                         <span>RM</span>
                         <span id="rm"><?= $pasien->no_rekam_medis ?></span>
                         
-                        <p id="tgl-daftar" style="margin-top : 0px;margin-bottom : 0"><?= date('d-m-Y H:i:s', strtotime($pasien->dtm_crt)) ?></p>
+                        <span id="tgl-daftar"><?= date('d-m-Y H:i:s', strtotime($pasien->dtm_crt)) ?></span>
                     </div>
                     <div class="right">
                         <div class="rahasia">
