@@ -30,6 +30,7 @@ class Pasien extends CI_Controller
         $this->data['pasien'] = $this->Tbl_pasien_model->get_by_id($id);
         $desa = $this->db->get_where('tbl_desa',['id' => $this->data['pasien']->id_desa])->row();
         $kecamatan = $this->db->get_where('tbl_kecamatan',['id' => $this->data['pasien']->id_kecamatan])->row();
+        $this->data['pendaftaran'] = $this->db->query("select dtm_crt from tbl_pendaftaran where no_rekam_medis = '$id' order by id_pendaftaran desc limit 1 ")->row();
         $this->data['alamat'] = $desa->desa." ".$kecamatan->kecamatan;
         // $data = $this->Tbl_pasien_model->get_by_id($id);
         // var_dump($data);
