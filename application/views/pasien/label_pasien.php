@@ -57,7 +57,7 @@
         }
         .row .label p{
             font-weight:bold;
-            padding:3px 10px;
+            padding:3px 15px;
         }
         .row .label:last-child {
             margin-right:0px;
@@ -111,7 +111,7 @@
         }
         .row .label p{
             font-weight:bold;
-            padding:3px 10px;
+            padding:3px 15px;
         }
         .row .label:last-child {
             margin-right:0px;
