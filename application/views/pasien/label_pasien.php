@@ -22,6 +22,8 @@
             width: 793.7007874px; */
             background: yellow;
             margin: auto;
+            width:737.00787402px;
+            height:514.01574803px;
             /* padding: 4px; */
             display:inline-block;
             padding:4.8px;
@@ -36,10 +38,12 @@
         }
 
         .row .label {
-            height: 115.2px;
+            /* height: 115.2px;
+            width: 238.11023622px; */
+            height: calc(514.01574803px / 4 - 4.8px);
+            width: calc(100%/3);
             font-size: 15px;
             /* width: 204.09448819px; */
-            width: 238.11023622px;
             background: white;
             display: inline-block;
             margin-right:4.8px;
@@ -57,9 +61,6 @@
         }
         .row .label:last-child {
             margin-right:0px;
-        }
-        .row:last-child .label {
-            margin-bottom:0px;
         }
     </style>
     <style media="print">
@@ -75,6 +76,8 @@
             width: 793.7007874px; */
             background: yellow;
             margin: auto;
+            width:737.00787402px;
+            height:514.01574803px;
             /* padding: 4px; */
             display:inline-block;
             padding:4.8px;
@@ -89,10 +92,12 @@
         }
 
         .row .label {
-            height: 115.2px;
+            /* height: 115.2px;
+            width: 238.11023622px; */
+            height: calc(514.01574803px / 4 - 4.8px);
+            width: calc(100%/3);
             font-size: 15px;
             /* width: 204.09448819px; */
-            width: 238.11023622px;
             background: white;
             display: inline-block;
             margin-right:4.8px;
@@ -110,9 +115,6 @@
         }
         .row .label:last-child {
             margin-right:0px;
-        }
-        .row:last-child .label {
-            margin-bottom:0px;
         }
     </style>
     <div class="a5">
