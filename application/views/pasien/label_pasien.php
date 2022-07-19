@@ -24,7 +24,7 @@
             margin: auto;
             /* padding: 4px; */
             display:inline-block;
-            padding:3.7795275591px;
+            padding:4.8px;
         }
 
         .row {
@@ -42,8 +42,8 @@
             width: 238.11023622px;
             background: white;
             display: inline-block;
-            margin-right:3.7795275591px;
-            margin-bottom:3.7795275591px;
+            margin-right:4.8px;
+            margin-bottom:4.8px;
             display:flex;
             flex-direction:column;
             justify-content:center;
@@ -77,7 +77,7 @@
             margin: auto;
             /* padding: 4px; */
             display:inline-block;
-            padding:3.7795275591px;
+            padding:4.8px;
         }
 
         .row {
@@ -89,14 +89,14 @@
         }
 
         .row .label {
-            height: 117.16535433px;
+            height: 115.2px;
             font-size: 15px;
             /* width: 204.09448819px; */
             width: 238.11023622px;
             background: white;
             display: inline-block;
-            margin-right:3.7795275591px;
-            margin-bottom:3.7795275591px;
+            margin-right:4.8px;
+            margin-bottom:4.8px;
             display:flex;
             flex-direction:column;
             justify-content:center;
