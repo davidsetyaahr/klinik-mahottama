@@ -113,6 +113,7 @@ class Kasir extends CI_Controller
                     $total_beli+=($post_obat_jml[$i]*$harga_beli);
                     
                     $insert=$this->Transaksi_obat_model->insert('tbl_inventory_detail',$data_detail);
+                    $this->db->query('update tbl_obat_alkes_bhp set stok_barang=stok_barang - '.$post_obat_jml[$i].' where kode_barang="'.$kode_barang.'"');
             }
 
             $this->jurnal_otomatis(39, $total_jual, count($getDiskon)==0 ? 0 : $getDiskon[0]['diskon'], $total_beli, $no_transaksi);//jurnal otomatis akuntansi untuk pendapatan penjualan obat

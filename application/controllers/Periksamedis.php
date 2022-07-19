@@ -261,6 +261,7 @@ class Periksamedis extends CI_Controller
                         'dtm_crt' => date("Y-m-d H:i:s",  time()),
                         'dtm_upd' => date("Y-m-d H:i:s",  time()),
                     );
+                    $this->db->query('update tbl_obat_alkes_bhp set stok_barang=stok_barang - '.$post_obat_jml[$i].' where kode_barang="'.$kode_barang.'"');
                     $this->Transaksi_obat_model->insert('tbl_inventory_detail', $data_detail);
                     $total_jual_obat += $_POST['harga_obat'][$i];
                 }
@@ -1178,6 +1179,7 @@ class Periksamedis extends CI_Controller
                         'dtm_upd' => date("Y-m-d H:i:s",  time()),
                     );
                     $this->Transaksi_obat_model->insert('tbl_inventory_detail', $data_detail);
+                    $this->db->query('update tbl_obat_alkes_bhp set stok_barang=stok_barang - '.$_POST['jml_obat'][$i].' where kode_barang="'.$post_obat[$i].'"');
                 }
             }
 
@@ -1205,6 +1207,7 @@ class Periksamedis extends CI_Controller
                         'dtm_upd' => date("Y-m-d H:i:s",  time()),
                     );
                     $this->Transaksi_obat_model->insert('tbl_inventory_detail', $detailInv);
+                    $this->db->query('update tbl_obat_alkes_bhp set stok_barang=stok_barang - '.$_POST['jml_alkes'][$i].' where kode_barang="'.$post_alkes[$i].'"');
                 }
             }
 
@@ -1502,6 +1505,7 @@ class Periksamedis extends CI_Controller
                         'dtm_upd' => date("Y-m-d H:i:s",  time()),
                     );
                     $this->Transaksi_obat_model->insert('tbl_inventory_detail', $data_detail);
+                    $this->db->query('update tbl_obat_alkes_bhp set stok_barang=stok_barang - '.$post_obat_jml[$i].' where kode_barang="'.$post_obat[$i].'"');
                 }
             }
 
@@ -1529,6 +1533,7 @@ class Periksamedis extends CI_Controller
                         'dtm_upd' => date("Y-m-d H:i:s",  time()),
                     );
                     $this->Transaksi_obat_model->insert('tbl_inventory_detail', $detailInv);
+                    $this->db->query('update tbl_obat_alkes_bhp set stok_barang=stok_barang - '.$_POST['jml_alkes'][$i].' where kode_barang="'.$post_alkes[$i].'"');
                 }
             }
 
@@ -1845,6 +1850,7 @@ class Periksamedis extends CI_Controller
                     'dtm_upd' => date("Y-m-d H:i:s",  time()),
                 );
                 $this->Transaksi_obat_model->insert('tbl_inventory_detail', $data_detail);
+                $this->db->query('update tbl_obat_alkes_bhp set stok_barang=stok_barang - '.$_POST['jml_obat'][$i].' where kode_barang="'.$post_obat[$i].'"');
             }
         }
         
@@ -1872,6 +1878,7 @@ class Periksamedis extends CI_Controller
                     'dtm_upd' => date("Y-m-d H:i:s",  time()),
                 );
                 $this->Transaksi_obat_model->insert('tbl_inventory_detail', $detailInv);
+                $this->db->query('update tbl_obat_alkes_bhp set stok_barang=stok_barang - '.$_POST['jml_alkes'][$i].' where kode_barang="'.$post_alkes[$i].'"');
             }
         }
         
@@ -2248,6 +2255,7 @@ class Periksamedis extends CI_Controller
                             'dtm_upd' => date("Y-m-d H:i:s",  time()),
                         );
                         $this->Transaksi_obat_model->insert('tbl_inventory_detail', $data_detail);
+                        $this->db->query('update tbl_obat_alkes_bhp set stok_barang=stok_barang - '.$_POST['jml_obat'][$i].' where kode_barang="'.$post_obat[$i].'"');
                     }
                 }
             }
@@ -2296,6 +2304,7 @@ class Periksamedis extends CI_Controller
                             'dtm_upd' => date("Y-m-d H:i:s",  time()),
                         );
                         $this->Transaksi_obat_model->insert('tbl_inventory_detail', $detailInv);
+                        $this->db->query('update tbl_obat_alkes_bhp set stok_barang=stok_barang - '.$_POST['jml_alkes'][$i].' where kode_barang="'.$post_alkes[$i].'"');
                     }
                 }
             }
