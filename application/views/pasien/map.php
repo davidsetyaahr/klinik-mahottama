@@ -12,6 +12,14 @@
         body{
             font-family: "Poppins", sans-serif;
         }
+        .row{
+            display:flex;
+        }
+        .row .item{
+            width : 816.20409449px;
+            height : 1141.9653543px;
+            position:relative;
+        }
         /* Create two unequal columns that floats next to each other */
         .column {
             float: left;
@@ -31,17 +39,13 @@
             height : 1141.9653543px;
         }
         /* Clear floats after the columns */
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
-            margin: auto;
-            width : 1632.5px;
-            background-color: white;
-            justify-content: center;
-            justify-items: center;
-        /* height : 1141.9653543px; */
-        }    
+    
+        .map-bottom{
+            width : 816.20409449px;
+            height : 1141.9653543px;
+            display:flex;
+            align-items:end;
+        }
         .map-box{
             margin : auto;
             width : 816.20409449px;
@@ -298,78 +302,85 @@
             -moz-transform : translate(-50%,-60%);
         }
     </style>
-    <div class="row" class="box-paper">
+    <!-- <div class="row" class="box-paper">
         <div class="column left">
             <div class="map-box-back">
-                <img class="img-back"
-                    src="<?php echo base_url(); ?>assets/images/map-rm-bg-back.png" alt="">
             </div>
         </div>
         <div class="column right">
-            <div class="map-box">
-                <div class="body">
-                    <div class="top">
-                        <div class="bg-left">
-                            <div class="border-left"></div>
-                        </div>
-                        <div class="left">
-                            <div class="content">
-                                <div class="content-top">
-                                    <p style="margin-top :10px">NAMA PASIEN</p>
-                                    <p>IBU KANDUNG</p>
-                                    <p>DUSUN</p>
-                                    <p>RT/RW</p>
-                                    <p>DESA</p>
-                                    <p>KEC.</p>
-                                    <p>KABUPATEN</p>
-                                    <p>TELEPON</p>
-                                </div>
-                                <div class="content-bottom">
-                                    <p>ALERGI:</p>
-                                    <div class="output-alergi"><?= $pasien->riwayat_alergi_obat ?></div>
-                                </div>
+        </div>
+    </div> -->
+    <div class="row">
+    <div class="item">
+        <div class="map-bottom">
+            <img src="<?php echo base_url(); ?>assets/images/map-rm-bg-back.png" style="width:100%" alt="">
+        </div>
+    </div>
+    <div class="item" style="margin-left:75.590551181px">
+        <div class="map-box">
+            <div class="body">
+                <div class="top">
+                    <div class="bg-left">
+                        <div class="border-left"></div>
+                    </div>
+                    <div class="left">
+                        <div class="content">
+                            <div class="content-top">
+                                <p style="margin-top :10px">NAMA PASIEN</p>
+                                <p>IBU KANDUNG</p>
+                                <p>DUSUN</p>
+                                <p>RT/RW</p>
+                                <p>DESA</p>
+                                <p>KEC.</p>
+                                <p>KABUPATEN</p>
+                                <p>TELEPON</p>
                             </div>
-                        </div>
-                        <div class="center">
-                            <div class="output" style="margin-top :10px"><span><?= $pasien->nama_lengkap ?></span></div>
-                            <div class="output"><span><?= $pasien->nama_orang_tua_atau_istri ?></span></div>
-                            <div class="output"><span><?= $pasien->nama_dusun ?></span></div>
-                            <div class="output"><span><?= $pasien->rt ?>/<?= $pasien->rw ?></span></div>
-                            <div class="output"><span><?= $pasien->desa ?></span></div>
-                            <div class="output"><span><?= $pasien->kecamatan ?></span></div>
-                            <div class="output"><span><?= $pasien->kabupaten ?></span></div>
-                            <div class="output"><span><?= $pasien->nomer_telepon ?></span></div>
-                        </div>
-                        <div class="right">
-                            <div class="box-tahun">
-                                <?php 
-                                    for ($i=2021; $i <= 2027 ; $i++) { 
-                                ?>
-                                    <div class="tahun">
-                                        <div class="check"><?= $i==date('Y') ? "<img src='".base_url()."assets/images/check.png'>" : "" ?></div>
-                                        <span><?= $i ?></span>
-                                    </div>
-                                <?php
-                                    }
-                                ?>
+                            <div class="content-bottom">
+                                <p>ALERGI:</p>
+                                <div class="output-alergi"><?= $pasien->riwayat_alergi_obat ?></div>
                             </div>
                         </div>
                     </div>
-                    <div class="bottom">
-                        <div class="left">
-                            <span>RM</span>
-                            <span id="rm"><?= $pasien->no_rekam_medis ?></span>
+                    <div class="center">
+                        <div class="output" style="margin-top :10px"><span><?= $pasien->nama_lengkap ?></span></div>
+                        <div class="output"><span><?= $pasien->nama_orang_tua_atau_istri ?></span></div>
+                        <div class="output"><span><?= $pasien->nama_dusun ?></span></div>
+                        <div class="output"><span><?= $pasien->rt ?>/<?= $pasien->rw ?></span></div>
+                        <div class="output"><span><?= $pasien->desa ?></span></div>
+                        <div class="output"><span><?= $pasien->kecamatan ?></span></div>
+                        <div class="output"><span><?= $pasien->kabupaten ?></span></div>
+                        <div class="output"><span><?= $pasien->nomer_telepon ?></span></div>
+                    </div>
+                    <div class="right">
+                        <div class="box-tahun">
+                            <?php 
+                                for ($i=2021; $i <= 2027 ; $i++) { 
+                            ?>
+                                <div class="tahun">
+                                    <div class="check"><?= $i==date('Y') ? "<img src='".base_url()."assets/images/check.png'>" : "" ?></div>
+                                    <span><?= $i ?></span>
+                                </div>
+                            <?php
+                                }
+                            ?>
                         </div>
-                        <div class="right">
-                            <div class="rahasia">
-                                RAHASIA <br> MEDIS
-                            </div>
-                            <p style="margin-top : 0px;margin-bottom : 0">SK. MEN.KES. NO.749a/ MEN.KES.PER/ XII/ 1998</p>
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div class="left">
+                        <span>RM</span>
+                        <span id="rm"><?= $pasien->no_rekam_medis ?></span>
+                    </div>
+                    <div class="right">
+                        <div class="rahasia">
+                            RAHASIA <br> MEDIS
                         </div>
+                        <p style="margin-top : 0px;margin-bottom : 0">SK. MEN.KES. NO.749a/ MEN.KES.PER/ XII/ 1998</p>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     
     <br>
