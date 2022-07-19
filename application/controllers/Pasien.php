@@ -28,6 +28,9 @@ class Pasien extends CI_Controller
     public function label($id)
     {
         $this->data['pasien'] = $this->Tbl_pasien_model->get_by_id($id);
+        $desa = $this->db->get_where('tbl_desa',['id' => $this->data['pasien']->id_desa])->row();
+        $kecamatan = $this->db->get_where('tbl_kecamatan',['id' => $this->data['pasien']->id_kecamatan])->row();
+        $this->data['alamat'] = $desa->desa." ".$kecamatan->kecamatan;
         // $data = $this->Tbl_pasien_model->get_by_id($id);
         // var_dump($data);
         $this->load->view('pasien/label_pasien', $this->data);

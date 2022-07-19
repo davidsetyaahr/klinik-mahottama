@@ -12,7 +12,7 @@
     <style>
         * {
             font-family : "Arial";
-            font-size:14px;
+            font-size:13px;
             margin: 0px;
             padding: 0px;
         }
@@ -52,7 +52,7 @@
             flex-direction:column;
             justify-content:center;
         }
-        .row .label p:first-child,.row .label p:last-child{
+        .row .label p:first-child{
             margin-top:5px;
         }
         .row .label p{
@@ -66,7 +66,7 @@
     <style media="print">
         * {
             font-family : "Arial";
-            font-size:14px;
+            font-size:13px;
             margin: 0px;
             padding: 0px;
         }
@@ -106,7 +106,7 @@
             flex-direction:column;
             justify-content:center;
         }
-        .row .label p:first-child,.row .label p:last-child{
+        .row .label p:first-child{
             margin-top:5px;
         }
         .row .label p{
@@ -119,49 +119,53 @@
     </style>
     <div class="a5">
         <div class="row">
+        <?php 
+            $jk = $pasien->jenis_kelamin=='0' ? 'L' : 'P';
+            $tgl_lahir = date('d-m-Y', strtotime($pasien->tanggal_lahir));
+        ?>
             <div class="label">
-                <p><?= $pasien->no_rekam_medis ?></p>
+                <p><?= $pasien->no_rekam_medis." / ".$jk." / ".$tgl_lahir ?></p>
                 <p><?= $pasien->nama_lengkap ?></p>
-                <p><?= $pasien->tanggal_lahir ?></p>
+                <p><?= $alamat ?></p>
                 <p><?= $pasien->nik ?></p>
-                <p><?= $pasien->alamat ?></p>
+                <p><?= date('Y-m-d H:i:s', strtotime($pasien->dtm_crt)) ?></p>
             </div>
             <div class="label">
-                <p><?= $pasien->no_rekam_medis ?></p>
+                <p><?= $pasien->no_rekam_medis." / ".$jk." / ".$tgl_lahir ?></p>
                 <p><?= $pasien->nama_lengkap ?></p>
-                <p><?= $pasien->tanggal_lahir ?></p>
+                <p><?= $alamat ?></p>
                 <p><?= $pasien->nik ?></p>
-                <p><?= $pasien->alamat ?></p>
+                <p><?= date('Y-m-d H:i:s', strtotime($pasien->dtm_crt)) ?></p>
             </div>
             <div class="label">
-                <p><?= $pasien->no_rekam_medis ?></p>
+                <p><?= $pasien->no_rekam_medis." / ".$jk." / ".$tgl_lahir ?></p>
                 <p><?= $pasien->nama_lengkap ?></p>
-                <p><?= $pasien->tanggal_lahir ?></p>
+                <p><?= $alamat ?></p>
                 <p><?= $pasien->nik ?></p>
-                <p><?= $pasien->alamat ?></p>
+                <p><?= date('Y-m-d H:i:s', strtotime($pasien->dtm_crt)) ?></p>
             </div>
         </div>
         <div class="row">
             <div class="label">
-                <p><?= $pasien->no_rekam_medis ?></p>
+                <p><?= $pasien->no_rekam_medis." / ".$jk." / ".$tgl_lahir ?></p>
                 <p><?= $pasien->nama_lengkap ?></p>
-                <p><?= $pasien->tanggal_lahir ?></p>
+                <p><?= $alamat ?></p>
                 <p><?= $pasien->nik ?></p>
-                <p><?= $pasien->alamat ?></p>
+                <p><?= date('Y-m-d H:i:s', strtotime($pasien->dtm_crt)) ?></p>
             </div>
             <div class="label">
-                <p><?= $pasien->no_rekam_medis ?></p>
+                <p><?= $pasien->no_rekam_medis." / ".$jk." / ".$tgl_lahir ?></p>
                 <p><?= $pasien->nama_lengkap ?></p>
-                <p><?= $pasien->tanggal_lahir ?></p>
+                <p><?= $alamat ?></p>
                 <p><?= $pasien->nik ?></p>
-                <p><?= $pasien->alamat ?></p>
+                <p><?= date('Y-m-d H:i:s', strtotime($pasien->dtm_crt)) ?></p>
             </div>
             <div class="label">
-                <p><?= $pasien->no_rekam_medis ?></p>
+                <p><?= $pasien->no_rekam_medis." / ".$jk." / ".$tgl_lahir ?></p>
                 <p><?= $pasien->nama_lengkap ?></p>
-                <p><?= $pasien->tanggal_lahir ?></p>
+                <p><?= $alamat ?></p>
                 <p><?= $pasien->nik ?></p>
-                <p><?= $pasien->alamat ?></p>
+                <p><?= date('Y-m-d H:i:s', strtotime($pasien->dtm_crt)) ?></p>
             </div>
             <!-- <div class="label">
                 <p>Nama: <span>Galih</span></p>
@@ -175,48 +179,48 @@
         </div>
         <div class="row">
             <div class="label">
-                <p><?= $pasien->no_rekam_medis ?></p>
+                <p><?= $pasien->no_rekam_medis." / ".$jk." / ".$tgl_lahir ?></p>
                 <p><?= $pasien->nama_lengkap ?></p>
-                <p><?= $pasien->tanggal_lahir ?></p>
+                <p><?= $alamat ?></p>
                 <p><?= $pasien->nik ?></p>
-                <p><?= $pasien->alamat ?></p>
+                <p><?= date('Y-m-d H:i:s', strtotime($pasien->dtm_crt)) ?></p>
             </div>
             <div class="label">
-                <p><?= $pasien->no_rekam_medis ?></p>
+                <p><?= $pasien->no_rekam_medis." / ".$jk." / ".$tgl_lahir ?></p>
                 <p><?= $pasien->nama_lengkap ?></p>
-                <p><?= $pasien->tanggal_lahir ?></p>
+                <p><?= $alamat ?></p>
                 <p><?= $pasien->nik ?></p>
-                <p><?= $pasien->alamat ?></p>
+                <p><?= date('Y-m-d H:i:s', strtotime($pasien->dtm_crt)) ?></p>
             </div>
             <div class="label">
-                <p><?= $pasien->no_rekam_medis ?></p>
+                <p><?= $pasien->no_rekam_medis." / ".$jk." / ".$tgl_lahir ?></p>
                 <p><?= $pasien->nama_lengkap ?></p>
-                <p><?= $pasien->tanggal_lahir ?></p>
+                <p><?= $alamat ?></p>
                 <p><?= $pasien->nik ?></p>
-                <p><?= $pasien->alamat ?></p>
+                <p><?= date('Y-m-d H:i:s', strtotime($pasien->dtm_crt)) ?></p>
             </div>
         </div>
         <div class="row">
             <div class="label">
-                <p><?= $pasien->no_rekam_medis ?></p>
+                <p><?= $pasien->no_rekam_medis." / ".$jk." / ".$tgl_lahir ?></p>
                 <p><?= $pasien->nama_lengkap ?></p>
-                <p><?= $pasien->tanggal_lahir ?></p>
+                <p><?= $alamat ?></p>
                 <p><?= $pasien->nik ?></p>
-                <p><?= $pasien->alamat ?></p>
+                <p><?= date('Y-m-d H:i:s', strtotime($pasien->dtm_crt)) ?></p>
             </div>
             <div class="label">
-                <p><?= $pasien->no_rekam_medis ?></p>
+                <p><?= $pasien->no_rekam_medis." / ".$jk." / ".$tgl_lahir ?></p>
                 <p><?= $pasien->nama_lengkap ?></p>
-                <p><?= $pasien->tanggal_lahir ?></p>
+                <p><?= $alamat ?></p>
                 <p><?= $pasien->nik ?></p>
-                <p><?= $pasien->alamat ?></p>
+                <p><?= date('Y-m-d H:i:s', strtotime($pasien->dtm_crt)) ?></p>
             </div>
             <div class="label">
-                <p><?= $pasien->no_rekam_medis ?></p>
+                <p><?= $pasien->no_rekam_medis." / ".$jk." / ".$tgl_lahir ?></p>
                 <p><?= $pasien->nama_lengkap ?></p>
-                <p><?= $pasien->tanggal_lahir ?></p>
+                <p><?= $alamat ?></p>
                 <p><?= $pasien->nik ?></p>
-                <p><?= $pasien->alamat ?></p>
+                <p><?= date('Y-m-d H:i:s', strtotime($pasien->dtm_crt)) ?></p>
             </div>
         </div>
     </div>
