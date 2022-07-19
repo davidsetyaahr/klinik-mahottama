@@ -48,11 +48,13 @@
         }
         .map-box{
             margin : auto;
-            width : 816.20409449px;
+            /* width : 816.20409449px; */
+            width : 825px;
             height : 1141.9653543px;
             background : url('<?= base_url()."assets/images/map-rm-bg.png" ?>');
             background-size : cover;
             position : absolute;
+            margin-left: 28mm;
         }
 
         .img-back{
@@ -370,6 +372,8 @@
                     <div class="left">
                         <span>RM</span>
                         <span id="rm"><?= $pasien->no_rekam_medis ?></span>
+                        
+                        <p id="tgl-daftar" style="margin-top : 0px;margin-bottom : 0"><?= date('d-m-Y H:i:s', strtotime($pasien->dtm_crt)) ?></p>
                     </div>
                     <div class="right">
                         <div class="rahasia">
