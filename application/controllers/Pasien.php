@@ -195,6 +195,8 @@ class Pasien extends CI_Controller
         $this->db->join("tbl_desa de", "p.id_desa = de.id", 'left');
         $this->db->join("tbl_dusun du", "p.id_dusun = du.id", 'left');
         $data['pasien'] = $this->db->get_where("tbl_pasien p", ['p.no_rekam_medis' => $no_rm])->row();
+        $data['pendaftaran'] = $this->db->query("select dtm_crt from tbl_pendaftaran where no_rekam_medis = '$no_rm' order by id_pendaftaran desc limit 1 ")->row();
+
         $this->load->view("pasien/map", $data);
     }
 }

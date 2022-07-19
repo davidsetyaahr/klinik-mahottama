@@ -9,6 +9,14 @@
 <body>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap');
+
+        @font-face {
+            font-family: 'fjalla_oneregular';
+            src: url('../../assets/font/fjalla/fjallaone-regular-webfont.woff2') format('woff2'),
+                url('../../assets/font/fjalla/fjallaone-regular-webfont.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
         body{
             font-family: "Poppins", sans-serif;
         }
@@ -100,10 +108,12 @@
         }
         .body .top .left .content .content-top p{
             color : #214193;
-            margin-top : 5%;
-            margin-bottom : 5%;
+            margin-top : 8.5%;
+            margin-bottom : 8.5%;
             font-weight : 600;
             font-size : 21px;
+            font-family: 'fjalla_oneregular';
+
         }
         .body .top .left .content .content-bottom{
             height : 30%;
@@ -142,6 +152,8 @@
             height : 30px;
             padding-left : 10px;
             border : 1px solid #ddd;
+            font-family: 'fjalla_oneregular';
+
         }
         .body .top .right{
             width : 20%;
@@ -197,23 +209,25 @@
             padding : 2%;
             font-weight : 600;
             display : flex;
-            align-items : center;
+            flex-direction:column;
+            align-items : end;
             justify-content : center;
             color : #032651;
         }
         .body .bottom .left span:first-child{
-            font-size : 50px;
-            line-height : 0px;
+            font-size : 70px;
+            font-family:impact;
+            /* line-height : 0px; */
         }
 
         .body .bottom .left #rm{
             font-size : 45px;
-            line-height : 0.9;
+            /* line-height : 0.9; */
             color : black;
             border-top : 5px solid #032651;
             border-bottom : 5px solid #032651;
             padding-left : 20px;
-            padding-bottom :5px;
+            /* padding-bottom :5px; */
             margin-top : 10px;
         }
         .body .bottom .right{
@@ -303,6 +317,11 @@
             -o-transform : translate(-50%,-60%);
             -moz-transform : translate(-50%,-60%);
         }
+        #tgl-daftar{
+            margin-top:5px;
+            text-style : italic;
+            font-size:11px;
+        }
     </style>
     <!-- <div class="row" class="box-paper">
         <div class="column left">
@@ -370,10 +389,11 @@
                 </div>
                 <div class="bottom">
                     <div class="left">
-                        <span>RM</span>
-                        <span id="rm"><?= $pasien->no_rekam_medis ?></span>
-                        
-                        <span id="tgl-daftar"><?= date('d-m-Y H:i:s', strtotime($pasien->dtm_crt)) ?></span>
+                        <div style="display:flex">
+                            <span style="margin-top:5px">RM</span>
+                            <span id="rm"><?= $pasien->no_rekam_medis ?></span>
+                        </div>
+                        <span id="tgl-daftar"><?= date('d-m-Y H:i:s', strtotime($pendaftaran->dtm_crt)) ?></span>
                     </div>
                     <div class="right">
                         <div class="rahasia">
