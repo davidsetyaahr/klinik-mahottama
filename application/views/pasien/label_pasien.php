@@ -220,7 +220,7 @@
                 <p><?= $pasien->nama_lengkap ?></p>
                 <p><?= $alamat ?></p>
                 <p><?= $pasien->nik ?></p>
-                <p><?= date('Y-m-d H:i:s', strtotime($pasien->dtm_crt)) ?></p>
+                <p><?= date('Y-m-d H:i:s', strtotime($pendaftaran->dtm_crt)) ?></p>
             </div>
         </div>
     </div>

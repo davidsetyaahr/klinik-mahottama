@@ -147,6 +147,8 @@ class Pendaftaran_model extends CI_Model
         $this->datatables->add_column('action',anchor(site_url('pendaftaran/existing/$1'),'Daftarkan','class="btn btn-warning btn-sm"'),'no_rekam_medis');
         $this->datatables->add_column('cetak_id',anchor(site_url('pasien/cetak_kartu/$1'), 'Cetak Kartu',array('class' => 'btn btn-info btn-sm','target'=>'_blank')),'no_rekam_medis');
         $this->datatables->add_column('cetak_map',anchor(site_url('pasien/map/$1'),'Cetak Map',array('class' => 'btn btn-success btn-sm','target'=>'_blank')),'no_rekam_medis');
+        $this->datatables->add_column('cetak_label',anchor(site_url('pendaftaran/label-pasien/$1'),'Cetak Label',array('class' => 'btn btn-info btn-sm','target'=>'_blank')),'no_rekam_medis');
+
             
         return $this->datatables->generate();
     }
