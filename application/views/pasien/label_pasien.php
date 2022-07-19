@@ -36,7 +36,7 @@
         }
 
         .row .label {
-            height: 117.16535433px;
+            height: 115.2px;
             font-size: 15px;
             /* width: 204.09448819px; */
             width: 238.11023622px;
