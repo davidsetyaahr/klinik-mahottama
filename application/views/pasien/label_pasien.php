@@ -11,20 +11,24 @@
 <body>
     <style>
         * {
+            font-family : "Arial";
+            font-size:14px;
             margin: 0px;
             padding: 0px;
         }
 
         .a5 {
-            height: 559.37007874px;
-            width: 793.7007874px;
+            /* height: 559.37007874px;
+            width: 793.7007874px; */
             background: yellow;
             margin: auto;
-            padding: 4px;
+            /* padding: 4px; */
+            display:inline-block;
+            padding:3.7795275591px;
         }
 
         .row {
-            margin-bottom: 7px;
+            display:flex;
         }
 
         .row:last-child {
@@ -32,18 +36,30 @@
         }
 
         .row .label {
-            height: 120.94488189px;
+            height: 117.16535433px;
             font-size: 15px;
             /* width: 204.09448819px; */
-            width: 245.66929134px;
+            width: 238.11023622px;
             background: white;
             display: inline-block;
-            /* padding: 12px; */
-            margin-right: 10px;
+            margin-right:3.7795275591px;
+            margin-bottom:3.7795275591px;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
         }
-
+        .row .label p:first-child,.row .label p:last-child{
+            margin-top:5px;
+        }
+        .row .label p{
+            font-weight:bold;
+            padding:3px 10px;
+        }
         .row .label:last-child {
-            margin-right: 0px;
+            margin-right:0px;
+        }
+        .row:last-child .label {
+            margin-bottom:0px;
         }
     </style>
     <div class="a5">
