@@ -28,6 +28,10 @@
             height : 1141.9653543px;
             position:relative;
         }
+        .row .item:last-child{
+            width : calc(816.20409449px + 28mm);
+        }
+
         /* Create two unequal columns that floats next to each other */
         .column {
             float: left;
@@ -56,13 +60,14 @@
         }
         .map-box{
             margin : auto;
-            /* width : 816.20409449px; */
-            width : 825px;
+            width : 816.20409449px;
+            /* width : 825px; */
             height : 1141.9653543px;
             background : url('<?= base_url()."assets/images/map-rm-bg.png" ?>');
             background-size : cover;
             position : absolute;
-            margin-left: 28mm;
+            /* margin-left: 28mm; */
+            right:0;
         }
 
         .img-back{
@@ -153,7 +158,7 @@
             padding-left : 10px;
             border : 1px solid #ddd;
             font-family: 'fjalla_oneregular';
-
+            font-size:20px;
         }
         .body .top .right{
             width : 20%;
@@ -215,7 +220,7 @@
             color : #032651;
         }
         .body .bottom .left span:first-child{
-            font-size : 70px;
+            font-size : 50px;
             font-family:impact;
             /* line-height : 0px; */
         }
@@ -227,8 +232,16 @@
             border-top : 5px solid #032651;
             border-bottom : 5px solid #032651;
             padding-left : 20px;
+            display:flex;
+            align-items:center;
             /* padding-bottom :5px; */
             margin-top : 10px;
+        }
+        .body .bottom .left #rm span{
+            font-family:News706 BT;
+            font-size:40px;
+            color:#e62028;
+
         }
         .body .bottom .right{
             width : 60%;
@@ -337,7 +350,7 @@
             <img src="<?php echo base_url(); ?>assets/images/map-rm-bg-back.png" style="width:100%" alt="">
         </div>
     </div>
-    <div class="item" style="margin-left:75.590551181px">
+    <div class="item">
         <div class="map-box">
             <div class="body">
                 <div class="top">
@@ -390,8 +403,12 @@
                 <div class="bottom">
                     <div class="left">
                         <div style="display:flex">
-                            <span style="margin-top:5px">RM</span>
-                            <span id="rm"><?= $pasien->no_rekam_medis ?></span>
+                            <span style="margin-top:5px;margin-right:10px">RM</span>
+                            <span id="rm">
+                                <span>
+                                <?= $pasien->no_rekam_medis ?>
+                                </span>
+                            </span>
                         </div>
                         <span id="tgl-daftar"><?= date('d-m-Y H:i:s', strtotime($pendaftaran->dtm_crt)) ?></span>
                     </div>
