@@ -99,7 +99,7 @@
                         <div class="form-group">
                             <div class="col-sm-4">Umur <?php echo form_error('umur'); ?></div>
                             <div class="col-sm-8">
-                                <?php echo form_input(array('id'=>'umur','name'=>'umur','type'=>'number','value'=>$umur,'class'=>'form-control'));?>
+                                <?php echo form_input(array('id'=>'umur','name'=>'umur','type'=>'text','value'=>$umur,'class'=>'form-control', 'placeholder'=>'Contoh : Umur 8 Bulan / 24 Tahun'));?>
                             </div>
                         </div>
                         <!-- <div class="form-group">
@@ -123,7 +123,7 @@
                         <div class="form-group">
                             <div class="col-sm-4">Status Menikah <?php echo form_error('status_menikah'); ?></div>
                             <div class="col-sm-8">
-                                <?php echo form_dropdown('status_menikah', array(''=>'Pilih Status Menikah','Menikah'=>'Menikah','Belum Menikah'=>'Belum Menikah'),$status_menikah,array('id'=>'status_menikah','class'=>'form-control'));?>
+                                <?php echo form_dropdown('status_menikah', array(''=>'Pilih Status Menikah','Menikah'=>'Menikah','Belum Menikah'=>'Belum Menikah', 'Cerai Hidup' =>'Cerai Hidup','Cerai Mati' =>'Cerai Mati'),$status_menikah,array('id'=>'status_menikah','class'=>'form-control'));?>
                             </div>
                         </div>
                         <div class="form-group">
@@ -258,7 +258,7 @@
                         <div class="form-group">
                             <div class="col-sm-4">Pendidikan <?php echo form_error('pendidikan'); ?></div>
                             <div class="col-sm-8">
-                                <?php echo form_dropdown('pendidikan', array(''=>'Pilih Pendidikan','0'=>'SD','1'=>'SMP','2'=>'SMA','3'=>'S1','4'=>'S2','5'=>'S3'),$pendidikan,array('id'=>'pendidikan','class'=>'form-control'));?>
+                                <?php echo form_dropdown('pendidikan', array(''=>'Pilih Pendidikan','0'=>'Tidak Bersekolah','1'=>'PAUD','2'=>'TK','3'=>'SD','4'=>'SMP','5'=>'SMA', '6' => 'S1','7'=>'S2','8'=>'S3'),$pendidikan,array('id'=>'pendidikan','class'=>'form-control'));?>
                             </div>
                         </div>
                         <div class="form-group">
